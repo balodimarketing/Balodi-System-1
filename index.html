@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balodi — Sistema Operativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0d0d; --bg2: #141414; --bg3: #1a1a1a; --bg4: #222222;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+    --text: #f0ede8; --text2: #888880; --text3: #555550;
+    --gold: #c9a96e; --gold2: #f0d49a;
+    --red: #e85d3a; --green: #4ec994; --blue: #5b9cf6; --amber: #f0a832;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.7; min-height: 100vh; }
+  .app { display: flex; min-height: 100vh; }
+  .sidebar { width: 260px; min-width: 260px; background: var(--bg2); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); }
+  .logo-mark { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.08em; color: var(--text); text-transform: uppercase; }
+  .logo-sub { font-size: 11px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
+  .sidebar-nav { padding: 16px 0; flex: 1; }
+  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); padding: 8px 24px 6px; margin-top: 8px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; cursor: pointer; color: var(--text2); font-size: 14px; transition: all 0.15s; border-left: 2px solid transparent; user-select: none; }
+  .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .nav-item.active { color: var(--text); border-left-color: var(--gold); background: rgba(201,169,110,0.06); }
+  .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+  .nav-sub { padding-left: 44px; font-size: 13px; }
+  .main { margin-left: 260px; flex: 1; min-height: 100vh; }
+  .page-header { padding: 48px 56px 32px; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(201,169,110,0.04) 0%, transparent 100%); }
+  .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .page-title { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 12px; }
+  .page-desc { font-size: 15px; color: var(--text2); max-width: 580px; line-height: 1.7; }
+  .page-content { padding: 40px 56px 80px; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text3); margin-bottom: 6px; flex-wrap: wrap; }
+  .breadcrumb span { cursor: pointer; transition: color 0.15s; }
+  .breadcrumb span:hover { color: var(--gold); }
+  .breadcrumb span:last-child { cursor: default; color: var(--text2); }
+  .breadcrumb span:last-child:hover { color: var(--text2); }
+  .breadcrumb-sep { color: var(--text3); cursor: default !important; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 14px; }
+  .card { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 10px; transition: all 0.2s; }
+  .card-link { cursor: pointer; }
+  .card-link:hover { border-color: var(--gold); background: rgba(201,169,110,0.04); transform: translateY(-1px); }
+  .card-header { display: flex; align-items: center; gap: 12px; }
+  .card-icon { font-size: 18px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--bg4); border-radius: 8px; flex-shrink: 0; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); }
+  .card-subtitle { font-size: 13px; color: var(--text3); }
+  .card-body { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .card-arrow { color: var(--text3); font-size: 18px; margin-left: auto; transition: all 0.2s; }
+  .card-link:hover .card-arrow { color: var(--gold); transform: translateX(3px); }
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
+  .badge-gold { background: rgba(201,169,110,0.12); color: var(--gold2); border: 1px solid rgba(201,169,110,0.2); }
+  .badge-red { background: rgba(232,93,58,0.1); color: #f08060; border: 1px solid rgba(232,93,58,0.2); }
+  .badge-amber { background: rgba(240,168,50,0.1); color: var(--amber); border: 1px solid rgba(240,168,50,0.2); }
+  .badge-green { background: rgba(78,201,148,0.1); color: var(--green); border: 1px solid rgba(78,201,148,0.2); }
+  .badge-blue { background: rgba(91,156,246,0.1); color: var(--blue); border: 1px solid rgba(91,156,246,0.2); }
+  .checklist { list-style: none; margin-top: 12px; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text2); line-height: 1.55; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border2); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--green); }
+  .avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; flex-shrink: 0; }
+  .av-gold { background: rgba(201,169,110,0.15); color: var(--gold2); border: 1px solid rgba(201,169,110,0.25); }
+  .av-blue { background: rgba(91,156,246,0.12); color: var(--blue); border: 1px solid rgba(91,156,246,0.2); }
+  .av-green { background: rgba(78,201,148,0.12); color: var(--green); border: 1px solid rgba(78,201,148,0.2); }
+  .av-amber { background: rgba(240,168,50,0.12); color: var(--amber); border: 1px solid rgba(240,168,50,0.2); }
+  .av-red { background: rgba(232,93,58,0.12); color: #f08060; border: 1px solid rgba(232,93,58,0.2); }
+  .person-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+  .person-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .person-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); }
+  .person-role { font-size: 13px; color: var(--text3); margin-top: 2px; }
+  .notion-block { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; font-size: 14px; transition: all 0.2s; cursor: pointer; }
+  .notion-block:hover { border-color: var(--gold); background: rgba(201,169,110,0.04); }
+  .notion-block-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+  .notion-block-name { font-weight: 500; color: var(--text); }
+  .notion-block-desc { font-size: 13px; color: var(--text3); margin-top: 2px; }
+  .notion-block-arrow { margin-left: auto; color: var(--text3); font-size: 16px; align-self: center; transition: all 0.2s; }
+  .notion-block:hover .notion-block-arrow { color: var(--gold); transform: translateX(3px); }
+  .block-card { border-radius: 16px; padding: 28px; margin-bottom: 12px; border: 1px solid transparent; }
+  .block-1 { background: rgba(232,93,58,0.05); border-color: rgba(232,93,58,0.15); }
+  .block-2 { background: rgba(240,168,50,0.05); border-color: rgba(240,168,50,0.15); }
+  .block-3 { background: rgba(78,201,148,0.05); border-color: rgba(78,201,148,0.15); }
+  .block-number { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  .block-1 .block-number { color: #f08060; }
+  .block-2 .block-number { color: var(--amber); }
+  .block-3 .block-number { color: var(--green); }
+  .block-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .block-body { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .block-list { margin-top: 14px; list-style: none; }
+  .block-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text2); padding: 5px 0; line-height: 1.5; }
+  .block-list li::before { content: '—'; color: var(--text3); flex-shrink: 0; }
+  .alert { border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; font-size: 13px; line-height: 1.6; display: flex; gap: 12px; align-items: flex-start; }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-warning { background: rgba(240,168,50,0.08); border: 1px solid rgba(240,168,50,0.2); color: #d4a832; }
+  .alert-info { background: rgba(91,156,246,0.08); border: 1px solid rgba(91,156,246,0.2); color: #7ab0f8; }
+  .code-block { background: var(--bg4); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; font-family: 'Courier New', monospace; font-size: 13px; color: var(--text2); line-height: 1.8; white-space: pre-wrap; margin-top: 12px; position: relative; }
+  .copy-btn { position: absolute; top: 12px; right: 12px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 6px; color: var(--text2); font-size: 12px; padding: 4px 10px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .copy-btn:hover { background: var(--bg4); color: var(--text); }
+  .client-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .client-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; }
+  .client-card:hover { border-color: var(--gold); background: rgba(201,169,110,0.04); transform: translateY(-1px); }
+  .client-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); }
+  .client-arrow { color: var(--text3); font-size: 18px; transition: all 0.2s; }
+  .client-card:hover .client-arrow { color: var(--gold); transform: translateX(3px); }
+  .placeholder { background: var(--bg3); border: 1px solid var(--border); border-radius: 16px; padding: 56px 24px; text-align: center; }
+  .placeholder-icon { font-size: 40px; margin-bottom: 16px; }
+  .placeholder-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .placeholder-desc { font-size: 14px; color: var(--text3); line-height: 1.6; }
+  .meeting-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 12px; }
+  .meeting-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; gap: 12px; }
+  .meeting-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+  .meeting-meta { font-size: 12px; color: var(--text3); margin-top: 4px; }
+  .highlight { background: rgba(201,169,110,0.06); border: 1px solid rgba(201,169,110,0.15); border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+  .highlight p { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .highlight strong { color: var(--gold2); }
+  .divider { height: 1px; background: var(--border); margin: 32px 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 12px; bottom: 12px; width: 1px; background: var(--border2); }
+  .tl-item { position: relative; margin-bottom: 24px; }
+  .tl-dot { position: absolute; left: -24px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--bg4); border: 1.5px solid var(--border2); }
+  .tl-item.accent .tl-dot { background: var(--gold); border-color: var(--gold); }
+  .tl-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .tl-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .mobile-header { display: none; padding: 16px 20px; background: var(--bg2); border-bottom: 1px solid var(--border); align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+  .hamburger { background: none; border: 1px solid var(--border2); border-radius: 6px; color: var(--text2); padding: 6px 10px; cursor: pointer; font-size: 18px; }
+  .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; }
+  @media (max-width: 768px) {
+    .mobile-header { display: flex; }
+    .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay.open { display: block; }
+    .main { margin-left: 0; }
+    .page-header { padding: 28px 24px 20px; }
+    .page-content { padding: 24px 24px 60px; }
+    .page-title { font-size: 26px; }
+    .grid2, .client-grid { grid-template-columns: 1fr; }
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .panel.active { animation: fadeUp 0.25s ease; }
+
+  /* PASSWORD MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 300; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 16px; padding: 32px; width: 100%; max-width: 360px; margin: 20px; animation: fadeUp 0.2s ease; }
+  .modal-icon { font-size: 32px; margin-bottom: 16px; text-align: center; }
+  .modal-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); text-align: center; margin-bottom: 6px; }
+  .modal-desc { font-size: 13px; color: var(--text3); text-align: center; margin-bottom: 24px; line-height: 1.5; }
+  .modal-input { width: 100%; background: var(--bg4); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; margin-bottom: 10px; transition: border-color 0.15s; }
+  .modal-input:focus { border-color: var(--gold); }
+  .modal-input.error { border-color: var(--red); }
+  .modal-error { font-size: 12px; color: #f08060; margin-bottom: 10px; display: none; }
+  .modal-error.show { display: block; }
+  .modal-btn { width: 100%; background: var(--text); color: var(--bg); border: none; border-radius: 8px; padding: 10px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; margin-bottom: 8px; }
+  .modal-btn:hover { opacity: 0.85; }
+  .modal-cancel { width: 100%; background: none; border: 1px solid var(--border2); border-radius: 8px; padding: 9px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text3); cursor: pointer; transition: all 0.15s; }
+  .modal-cancel:hover { color: var(--text); border-color: var(--border2); }
+
+  /* COMING SOON clickable */
+  .notion-block.soon { cursor: pointer; }
+  .notion-block.soon:hover { border-color: var(--border2); background: rgba(255,255,255,0.02); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">Balodi</div>
+      <div class="logo-sub">Sistema Operativo</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Compartido — Todo el equipo</div>
+      <div class="nav-item" id="nav-estructura" onclick="go('estructura')"><span class="nav-icon">🗂</span> Estructura</div>
+      <div class="nav-item" id="nav-equipo" onclick="go('equipo')"><span class="nav-icon">👥</span> Equipo</div>
+      <div class="nav-item nav-sub" id="nav-bautista" onclick="go('bautista')"><span class="nav-icon" style="font-size:10px">·</span> Bautista</div>
+      <div class="nav-item nav-sub" id="nav-nicolas" onclick="go('nicolas')"><span class="nav-icon" style="font-size:10px">·</span> Nicolás</div>
+      <div class="nav-item nav-sub" id="nav-lourdes" onclick="go('lourdes')"><span class="nav-icon" style="font-size:10px">·</span> Lourdes</div>
+      <div class="nav-item nav-sub" id="nav-enzo" onclick="go('enzo')"><span class="nav-icon" style="font-size:10px">·</span> Enzo</div>
+      <div class="nav-item nav-sub" id="nav-brunela" onclick="go('brunela')"><span class="nav-icon" style="font-size:10px">·</span> Brunela</div>
+      <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><span class="nav-icon">📁</span> Clientes</div>
+      <div class="nav-item" id="nav-banco" onclick="go('banco')"><span class="nav-icon">💡</span> Banco de Ideas</div>
+      <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><span class="nav-icon">📅</span> Calendario mensual</div>
+      <div class="nav-label">Privado — Bau y Nico</div>
+      <div class="nav-item" id="nav-estrategia" onclick="go('estrategia')"><span class="nav-icon">🔒</span> Estrategia Balodi</div>
+      <div class="nav-item" id="nav-finanzas" onclick="go('finanzas')"><span class="nav-icon">🔒</span> Finanzas</div>
+      <div class="nav-item" id="nav-seguimiento" onclick="go('seguimiento')"><span class="nav-icon">🔒</span> Seguimiento empleados</div>
+      <div class="nav-label">Operaciones</div>
+      <div class="nav-item" id="nav-reuniones" onclick="go('reuniones')"><span class="nav-icon">🤝</span> Reuniones</div>
+      <div class="nav-item" id="nav-informe" onclick="go('informe')"><span class="nav-icon">📊</span> Informe mensual</div>
+      <div class="nav-item" id="nav-implementar" onclick="go('implementar')"><span class="nav-icon">🚀</span> Cómo implementarlo</div>
+    </nav>
+  </aside>
+  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+  <main class="main">
+    <div class="mobile-header">
+      <div class="logo-mark" style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px">Balodi</div>
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    </div>
+
+    <!-- ESTRUCTURA -->
+    <div class="panel active" id="panel-estructura">
+      <div class="page-header">
+        <div class="page-eyebrow">Sistema Operativo</div>
+        <div class="page-title">Estructura del workspace</div>
+        <div class="page-desc">Arquitectura completa de Notion. Las páginas privadas solo las ven Bautista y Nicolás.</div>
+      </div>
+      <div class="page-content">
+        <div class="section">
+          <div class="section-title">Páginas compartidas — todo el equipo</div>
+          <div class="notion-block" onclick="go('equipo')"><div class="notion-block-icon">👥</div><div><div class="notion-block-name">Equipo</div><div class="notion-block-desc">Roles, responsabilidades y entregables de cada integrante</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('clientes')"><div class="notion-block-icon">📁</div><div><div class="notion-block-name">Clientes</div><div class="notion-block-desc">Una subpágina por cliente con calendario, ideas y métricas</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('banco')"><div class="notion-block-icon">💡</div><div><div class="notion-block-name">Banco de Ideas</div><div class="notion-block-desc">Cualquiera del equipo tira ideas acá. Sin filtro.</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('calendario')"><div class="notion-block-icon">📅</div><div><div class="notion-block-name">Calendario de Contenido</div><div class="notion-block-desc">Vista unificada de todo lo que se publica en el mes</div></div><div class="notion-block-arrow">→</div></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Páginas privadas — solo Bautista y Nicolás</div>
+          <div class="notion-block" onclick="go('estrategia')"><div class="notion-block-icon">🔒</div><div><div class="notion-block-name">Estrategia Balodi</div><div class="notion-block-desc">Objetivos, pipeline de clientes, métricas de la agencia</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('finanzas')"><div class="notion-block-icon">🔒</div><div><div class="notion-block-name">Finanzas</div><div class="notion-block-desc">Ingresos, costos, honorarios</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('seguimiento')"><div class="notion-block-icon">🔒</div><div><div class="notion-block-name">Seguimiento de Empleados</div><div class="notion-block-desc">Performance mensual, observaciones y objetivos por persona</div></div><div class="notion-block-arrow">→</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPO -->
+    <div class="panel" id="panel-equipo">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Equipo</span></div>
+        <div class="page-title">Equipo</div>
+        <div class="page-desc">Hacé click en cualquier integrante para ver su rol completo.</div>
+      </div>
+      <div class="page-content">
+        <div class="card card-link" onclick="go('bautista')"><div class="card-header"><div class="avatar av-gold">BA</div><div><div class="card-title">Bautista</div><div class="card-subtitle">Fundador · Estrategia y crecimiento</div></div><span class="badge badge-gold" style="margin-left:auto">Fundador</span><span class="card-arrow">→</span></div></div>
+        <div class="card card-link" onclick="go('nicolas')"><div class="card-header"><div class="avatar av-blue">NI</div><div><div class="card-title">Nicolás</div><div class="card-subtitle">Socio · Operaciones y producción</div></div><span class="badge badge-blue" style="margin-left:auto">Socio</span><span class="card-arrow">→</span></div></div>
+        <div class="card card-link" onclick="go('lourdes')"><div class="card-header"><div class="avatar av-green">LO</div><div><div class="card-title">Lourdes</div><div class="card-subtitle">Community Manager</div></div><span class="badge badge-green" style="margin-left:auto">CM</span><span class="card-arrow">→</span></div></div>
+        <div class="card card-link" onclick="go('enzo')"><div class="card-header"><div class="avatar av-amber">EN</div><div><div class="card-title">Enzo</div><div class="card-subtitle">Editor de Video</div></div><span class="badge badge-amber" style="margin-left:auto">Editor</span><span class="card-arrow">→</span></div></div>
+        <div class="card card-link" onclick="go('brunela')"><div class="card-header"><div class="avatar av-red">BR</div><div><div class="card-title">Brunela</div><div class="card-subtitle">Community Manager por Proyectos</div></div><span class="badge badge-red" style="margin-left:auto">Proyectos</span><span class="card-arrow">→</span></div></div>
+      </div>
+    </div>
+
+    <!-- BAUTISTA -->
+    <div class="panel" id="panel-bautista">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('equipo')">Equipo</span><span class="breadcrumb-sep">/</span><span>Bautista</span></div>
+        <div class="page-title">Bautista</div>
+        <div class="page-desc">Fundador · Estrategia y crecimiento</div>
+      </div>
+      <div class="page-content">
+        <div class="person-card">
+          <div class="person-header"><div class="avatar av-gold" style="width:60px;height:60px;font-size:20px">BA</div><div><div class="person-name" style="font-size:22px">Bautista</div><div class="person-role">Fundador · Estrategia y crecimiento</div></div><span class="badge badge-gold" style="margin-left:auto">Fundador</span></div>
+          <ul class="checklist">
+            <li><div class="check-dot">✓</div>Estrategia general de la agencia y de los clientes</li>
+            <li><div class="check-dot">✓</div>Campañas de Meta Ads para Balodi y clientes</li>
+            <li><div class="check-dot">✓</div>Primer contacto con leads, búsqueda de alianzas y empleados</li>
+            <li><div class="check-dot">✓</div>Podcast "Detrás del Emprendimiento": invitados, preguntas, entrevistas y edición</li>
+            <li><div class="check-dot">✓</div>Adquisición de nuevos clientes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- NICOLÁS -->
+    <div class="panel" id="panel-nicolas">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('equipo')">Equipo</span><span class="breadcrumb-sep">/</span><span>Nicolás</span></div>
+        <div class="page-title">Nicolás</div>
+        <div class="page-desc">Socio · Operaciones y producción</div>
+      </div>
+      <div class="page-content">
+        <div class="person-card">
+          <div class="person-header"><div class="avatar av-blue" style="width:60px;height:60px;font-size:20px">NI</div><div><div class="person-name" style="font-size:22px">Nicolás</div><div class="person-role">Socio · Operaciones y producción</div></div><span class="badge badge-blue" style="margin-left:auto">Socio</span></div>
+          <ul class="checklist">
+            <li><div class="check-dot">✓</div>Contacto diario con clientes y gestión de peticiones</li>
+            <li><div class="check-dot">✓</div>Coordinación del equipo y asignación de tareas a Enzo</li>
+            <li><div class="check-dot">✓</div>Edición de videos de alto nivel</li>
+            <li><div class="check-dot">✓</div>Producción de placas de Instagram cuando se requiere</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOURDES -->
+    <div class="panel" id="panel-lourdes">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('equipo')">Equipo</span><span class="breadcrumb-sep">/</span><span>Lourdes</span></div>
+        <div class="page-title">Lourdes</div>
+        <div class="page-desc">Community Manager · Hielo Rosario · Tarjeta Primicia · Balodi Marketing</div>
+      </div>
+      <div class="page-content">
+        <div class="person-card">
+          <div class="person-header"><div class="avatar av-green" style="width:60px;height:60px;font-size:20px">LO</div><div><div class="person-name" style="font-size:22px">Lourdes</div><div class="person-role">Community Manager</div></div><span class="badge badge-green" style="margin-left:auto">CM</span></div>
+          <div class="card-body" style="margin-bottom:14px"><strong style="color:var(--text)">Cuentas asignadas:</strong> Hielo Rosario · Tarjeta Primicia · Balodi Marketing</div>
+          <ul class="checklist">
+            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 1–5:</strong>&nbsp;TODAS las publicaciones del mes listas, aprobadas y programadas</li>
+            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;analizar métricas y traer 3 ideas virales por cliente</li>
+            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;proponer al menos 1 campaña o acción BTL por cliente</li>
+            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 16–cierre:</strong>&nbsp;revisar rendimiento, ajustar y pre-armar el mes siguiente</li>
+            <li><div class="check-dot">✓</div>Último día del mes: entregar informe mensual completo</li>
+            <li><div class="check-dot">✓</div>Reunión semanal: presentar al menos 1 referencia o idea nueva</li>
+            <li><div class="check-dot">✓</div>Reunión 1:1 viernes: presentar avance e ideas de la semana a Bautista</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENZO -->
+    <div class="panel" id="panel-enzo">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('equipo')">Equipo</span><span class="breadcrumb-sep">/</span><span>Enzo</span></div>
+        <div class="page-title">Enzo</div>
+        <div class="page-desc">Editor de Video · Cliente principal: Murad</div>
+      </div>
+      <div class="page-content">
+        <div class="person-card">
+          <div class="person-header"><div class="avatar av-amber" style="width:60px;height:60px;font-size:20px">EN</div><div><div class="person-name" style="font-size:22px">Enzo</div><div class="person-role">Editor de Video</div></div><span class="badge badge-amber" style="margin-left:auto">Editor</span></div>
+          <div class="card-body" style="margin-bottom:14px"><strong style="color:var(--text)">Trabajo principal:</strong> Edición diaria de 3 a 5 videos. Cliente principal: Murad.</div>
+          <ul class="checklist">
+            <li><div class="check-dot">✓</div>Entregar ediciones en tiempo y forma según brief de Nicolás</li>
+            <li><div class="check-dot">✓</div>Último viernes de cada mes: presentar 2 ideas de formato nuevo para Balodi o cualquier cliente</li>
+            <li><div class="check-dot">✓</div>Traer referencias de edición y tendencias de video cada semana</li>
+            <li><div class="check-dot">✓</div>Entregar informe mensual: qué editó, qué funcionó, qué ideas propone</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRUNELA -->
+    <div class="panel" id="panel-brunela">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('equipo')">Equipo</span><span class="breadcrumb-sep">/</span><span>Brunela</span></div>
+        <div class="page-title">Brunela</div>
+        <div class="page-desc">Community Manager por Proyectos</div>
+      </div>
+      <div class="page-content">
+        <div class="person-card">
+          <div class="person-header"><div class="avatar av-red" style="width:60px;height:60px;font-size:20px">BR</div><div><div class="person-name" style="font-size:22px">Brunela</div><div class="person-role">Community Manager por Proyectos</div></div><span class="badge badge-red" style="margin-left:auto">Proyectos</span></div>
+          <div class="highlight" style="margin-bottom:16px"><p>El compromiso en formato proyecto se construye con <strong>estructura clara</strong>. Sin entregables definidos desde el inicio, no se puede pedir más.</p></div>
+          <ul class="checklist">
+            <li><div class="check-dot">✓</div>Al inicio de cada proyecto: brief con entregables, fechas y criterio de éxito</li>
+            <li><div class="check-dot">✓</div>Misma lógica de 3 bloques que Lourdes, aplicada al proyecto</li>
+            <li><div class="check-dot">✓</div>Check semanal de 10 minutos con Nicolás para ver avance</li>
+            <li><div class="check-dot">✓</div>Al cierre: informe de resultado + lo que haría diferente</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div class="panel" id="panel-clientes">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Clientes</span></div>
+        <div class="page-title">Clientes</div>
+        <div class="page-desc">Hacé click en cualquier cliente para ver su sección. El contenido de cada uno se va a ir armando próximamente.</div>
+      </div>
+      <div class="page-content">
+        <div class="client-grid">
+          <div class="client-card" onclick="go('c-tarjeta')"><div class="client-name">Tarjeta Primicia</div><span class="client-arrow">→</span></div>
+          <div class="client-card" onclick="go('c-mutual')"><div class="client-name">Mutual Entre Asociados</div><span class="client-arrow">→</span></div>
+          <div class="client-card" onclick="go('c-capilar')"><div class="client-name">Capilar Vibes</div><span class="client-arrow">→</span></div>
+          <div class="client-card" onclick="go('c-hielo')"><div class="client-name">Hielo Rosario</div><span class="client-arrow">→</span></div>
+          <div class="client-card" onclick="go('c-donatelli')"><div class="client-name">Donatelli Servicios Integrales</div><span class="client-arrow">→</span></div>
+          <div class="client-card" onclick="go('c-mma')"><div class="client-name">MMAPantera</div><span class="client-arrow">→</span></div>
+          <div class="client-card" onclick="go('c-murad')" style="grid-column: span 1"><div class="client-name">Murad</div><span class="client-arrow">→</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTES INDIVIDUALES -->
+    <div class="panel" id="panel-c-tarjeta"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Tarjeta Primicia</span></div><div class="page-title">Tarjeta Primicia</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-mutual"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Mutual Entre Asociados</span></div><div class="page-title">Mutual Entre Asociados</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-capilar"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Capilar Vibes</span></div><div class="page-title">Capilar Vibes</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-hielo"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Hielo Rosario</span></div><div class="page-title">Hielo Rosario</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-donatelli"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Donatelli Servicios Integrales</span></div><div class="page-title">Donatelli Servicios Integrales</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-mma"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>MMAPantera</span></div><div class="page-title">MMAPantera</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-murad"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Murad</span></div><div class="page-title">Murad</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+
+    <!-- BANCO DE IDEAS -->
+    <div class="panel" id="panel-banco">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Banco de Ideas</span></div>
+        <div class="page-title">Banco de Ideas</div>
+        <div class="page-desc">Cualquiera del equipo tira ideas acá. Ideas virales, campañas, BTL, referencias de TikTok. Sin filtro, sin jerarquía.</div>
+      </div>
+      <div class="page-content"><div class="placeholder"><div class="placeholder-icon">💡</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">Esta sección se va a armar en la próxima actualización.</div></div></div>
+    </div>
+
+    <!-- CALENDARIO -->
+    <div class="panel" id="panel-calendario">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Calendario mensual</span></div>
+        <div class="page-title">Calendario mensual</div>
+        <div class="page-desc">El mes se divide en 3 bloques con responsabilidades claras. Aplica a todos sin excepción.</div>
+      </div>
+      <div class="page-content">
+        <div class="block-card block-1">
+          <div class="block-number">Días 1 al 5</div>
+          <div class="block-title">Bloque 1 — Producción</div>
+          <div class="block-body">Todo el contenido operativo del mes resuelto antes del día 6. Con 5 días no hay excusa.</div>
+          <ul class="block-list">
+            <li>Lourdes: todas las publicaciones de sus 3 cuentas listas, aprobadas y programadas</li>
+            <li>Enzo: ediciones al día, sin deudas del mes anterior</li>
+            <li>Brunela: entregables del proyecto definidos y en marcha</li>
+          </ul>
+        </div>
+        <div class="block-card block-2">
+          <div class="block-number">Días 6 al 15</div>
+          <div class="block-title">Bloque 2 — Estrategia</div>
+          <div class="block-body">Cada empleado deja de ser ejecutor y pasa a ser estratega. No es opcional.</div>
+          <ul class="block-list">
+            <li>Analizar métricas de lo publicado la semana anterior</li>
+            <li>Buscar referencias y tendencias en TikTok y Reels</li>
+            <li>Proponer al menos 3 ideas virales por cliente</li>
+            <li>Proponer al menos 1 campaña o acción BTL por cliente</li>
+            <li>Traer al menos 1 idea concreta para Balodi</li>
+          </ul>
+        </div>
+        <div class="block-card block-3">
+          <div class="block-number">Días 16 al cierre</div>
+          <div class="block-title">Bloque 3 — Revisión y proyección</div>
+          <div class="block-body">No se llega al día 1 del mes siguiente en cero.</div>
+          <ul class="block-list">
+            <li>Revisar qué funcionó y qué no en el mes</li>
+            <li>Ajustar lo que queda según resultados reales</li>
+            <li>Empezar a pensar el mes siguiente con lo aprendido</li>
+            <li>Completar el informe mensual los últimos 2 días</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIVADAS -->
+    <div class="panel" id="panel-estrategia"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Estrategia Balodi</span></div><div class="page-title">🔒 Estrategia Balodi</div><div class="page-desc">Página privada — solo Bautista y Nicolás.</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">🔒</div><div class="placeholder-title">Acceso restringido</div><div class="placeholder-desc">Esta sección es privada. Solo la ven Bautista y Nicolás.<br><br>Contenido: objetivos, pipeline de clientes, métricas de la agencia.</div></div></div></div>
+    <div class="panel" id="panel-finanzas"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Finanzas</span></div><div class="page-title">🔒 Finanzas</div><div class="page-desc">Página privada — solo Bautista y Nicolás.</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">🔒</div><div class="placeholder-title">Acceso restringido</div><div class="placeholder-desc">Esta sección es privada. Solo la ven Bautista y Nicolás.<br><br>Contenido: ingresos, costos, honorarios.</div></div></div></div>
+    <div class="panel" id="panel-seguimiento"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Seguimiento de Empleados</span></div><div class="page-title">🔒 Seguimiento de Empleados</div><div class="page-desc">Página privada — solo Bautista y Nicolás.</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">🔒</div><div class="placeholder-title">Acceso restringido</div><div class="placeholder-desc">Esta sección es privada. Solo la ven Bautista y Nicolás.<br><br>Contenido: performance mensual, observaciones y objetivos por persona.</div></div></div></div>
+
+    <!-- REUNIONES -->
+    <div class="panel" id="panel-reuniones">
+      <div class="page-header">
+        <div class="page-eyebrow">Operaciones</div>
+        <div class="page-title">Reuniones</div>
+        <div class="page-desc">Las reuniones son el hábito más importante. Si instalás esto solo, ya notás la diferencia.</div>
+      </div>
+      <div class="page-content">
+        <div class="meeting-card">
+          <div class="meeting-header"><div><div class="meeting-title">Reunión semanal de equipo</div><div class="meeting-meta">Lunes · 30 minutos · Todo el equipo</div></div><span class="badge badge-green">Semanal</span></div>
+          <div class="card-body" style="margin-bottom:14px">No es una reunión de control. Es una reunión de ideas y cultura de agencia.</div>
+          <ul class="checklist">
+            <li><div class="check-dot" style="background:rgba(78,201,148,0.1);border-color:var(--green);color:var(--green)">5'</div>¿Qué vieron en TikTok/Reels esta semana que les pareció bueno?</li>
+            <li><div class="check-dot" style="background:rgba(78,201,148,0.1);border-color:var(--green);color:var(--green)">10'</div>Cada uno comenta brevemente cómo van sus cuentas</li>
+            <li><div class="check-dot" style="background:rgba(78,201,148,0.1);border-color:var(--green);color:var(--green)">10'</div>Ideas nuevas para Balodi o para clientes. Cualquiera puede tirar</li>
+            <li><div class="check-dot" style="background:rgba(78,201,148,0.1);border-color:var(--green);color:var(--green)">5'</div>Prioridades de la semana, sin drama</li>
+          </ul>
+        </div>
+        <div class="meeting-card">
+          <div class="meeting-header"><div><div class="meeting-title">Reunión 1:1 Bautista + Lourdes</div><div class="meeting-meta">Viernes · 20 minutos</div></div><span class="badge badge-gold">1:1</span></div>
+          <div class="card-body" style="margin-bottom:14px">Ella presenta sus ideas de la semana. No para reportar, sino para que sepa que las ideas se esperan y se discuten.</div>
+          <ul class="checklist">
+            <li><div class="check-dot">✓</div>Qué publicó en sus cuentas esta semana</li>
+            <li><div class="check-dot">✓</div>Qué está funcionando y qué no</li>
+            <li><div class="check-dot">✓</div>Al menos 1 idea que propone para la semana siguiente</li>
+          </ul>
+        </div>
+        <div class="meeting-card">
+          <div class="meeting-header"><div><div class="meeting-title">Reunión de cierre mensual</div><div class="meeting-meta">Último día del mes · 45 minutos · Todo el equipo</div></div><span class="badge badge-amber">Mensual</span></div>
+          <div class="card-body">Cada empleado presenta su informe. Feedback directo, específico y sin endulzar. Se definen prioridades del mes siguiente.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFORME -->
+    <div class="panel" id="panel-informe">
+      <div class="page-header">
+        <div class="page-eyebrow">Operaciones</div>
+        <div class="page-title">Informe mensual</div>
+        <div class="page-desc">Cada empleado completa esta plantilla el último día del mes. Obligatoria. La sección 5 es la más importante.</div>
+      </div>
+      <div class="page-content">
+        <div class="alert alert-warning"><div class="alert-icon">⚠️</div><div>Un empleado que escribe "haría diferente X" está pensando. Uno que escribe "todo bien" todavía no entendió la dinámica.</div></div>
+        <div class="section-title" style="margin-top:24px">Plantilla — copiar y pegar en Notion</div>
+        <div class="code-block" id="informe-code"># Informe Mensual — [Nombre] — [Mes Año]
+
+## 1. Resumen de lo publicado
+→ Cliente 1: X publicaciones, X historias, X reels
+→ Cliente 2: X publicaciones, X historias, X reels
+→ Balodi: X publicaciones, X historias, X reels
+
+## 2. Qué funcionó (top 3 piezas)
+1. [Pieza] — por qué cree que funcionó
+2. [Pieza] — por qué cree que funcionó
+3. [Pieza] — por qué cree que funcionó
+
+## 3. Qué no funcionó (honesto, sin drama)
+→ [Qué no anduvo y por qué cree que fue]
+
+## 4. Ideas para el mes que viene
+→ Cliente 1: idea 1 / idea 2 / idea 3
+→ Cliente 2: idea 1 / idea 2 / idea 3
+→ Balodi: [al menos 1 idea concreta]
+
+## 5. Una cosa que haría diferente
+→ [Reflexión personal. Sin filtro.]
+        <button class="copy-btn" onclick="copyInforme()">Copiar</button></div>
+        <div class="grid2" style="margin-top:24px">
+          <div class="card"><div class="card-header"><div class="card-icon">📋</div><div><div class="card-title">Secciones 1, 2 y 3</div><div class="card-subtitle">Ejecución</div></div></div><div class="card-body" style="margin-top:10px">Muestran si el empleado cumplió y si tiene consciencia de los resultados.</div></div>
+          <div class="card"><div class="card-header"><div class="card-icon">💡</div><div><div class="card-title">Secciones 4 y 5</div><div class="card-subtitle">Pensamiento estratégico</div></div></div><div class="card-body" style="margin-top:10px">Acá se ve quién realmente está pensando en el negocio.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPLEMENTAR -->
+    <div class="panel" id="panel-implementar">
+      <div class="page-header">
+        <div class="page-eyebrow">Arranque</div>
+        <div class="page-title">Cómo implementarlo</div>
+        <div class="page-desc">Seguí estos pasos en orden. No empieces todo junto o no termina nada.</div>
+      </div>
+      <div class="page-content">
+        <div class="timeline">
+          <div class="tl-item accent"><div class="tl-dot"></div><div class="tl-title">Día 1 — Crear el workspace en Notion</div><div class="tl-body">Entrá a notion.so, creá la página "Balodi HQ" y las subpáginas de la sección Estructura. No hace falta que quede perfecto el primer día.</div></div>
+          <div class="tl-item accent"><div class="tl-dot"></div><div class="tl-title">Día 2 — Completar los roles</div><div class="tl-body">Copiá las responsabilidades de cada empleado en la página "Equipo". Nombre, cuentas asignadas y sus responsabilidades.</div></div>
+          <div class="tl-item accent"><div class="tl-dot"></div><div class="tl-title">Día 3 — Reunión de presentación con el equipo</div><div class="tl-body">30 a 45 minutos. Mostrar el sistema, explicar los 3 bloques y el informe mensual. Que cada uno confirme su rol por escrito. Este paso es el más importante.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-title">Semana 1 — Primera reunión semanal</div><div class="tl-body">Arrancá con la reunión de los lunes aunque Notion no esté terminado. Las reuniones son lo primero.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-title">Fin del primer mes — Primer informe</div><div class="tl-body">Feedback real, directo y sin endulzar. Ese momento marca el tono de todo lo que viene.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-title">Mes 2 en adelante — Ajustar y escalar</div><div class="tl-body">Ya tenés datos. Sabés quién propone y quién no. Tomás decisiones reales sobre el equipo.</div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="highlight"><p><strong>Lo más importante:</strong> el primer feedback después del primer informe mensual marca el tono de todo. Directo, concreto y con ejemplos reales.</p></div>
+        <div class="highlight" style="margin-top:10px"><p><strong>Recordá:</strong> las herramientas amplifican lo que ya funciona, no arreglan lo que está roto. Los hábitos primero, las herramientas después.</p></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-icon">🔒</div>
+    <div class="modal-title">Sección privada</div>
+    <div class="modal-desc">Esta sección es solo para Bautista y Nicolás. Ingresá la contraseña para continuar.</div>
+    <input class="modal-input" type="password" id="modal-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="modal-error" id="modal-error">Contraseña incorrecta. Intentá de nuevo.</div>
+    <button class="modal-btn" onclick="checkPassword()">Entrar</button>
+    <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+  const PRIVATE = ['estrategia', 'finanzas', 'seguimiento'];
+  const PASSWORD = 'balodi2024';
+  let unlocked = false;
+  let pendingPanel = null;
+
+  function go(id) {
+    if (PRIVATE.includes(id) && !unlocked) {
+      pendingPanel = id;
+      openModal();
+      return;
+    }
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const panel = document.getElementById('panel-' + id);
+    const nav = document.getElementById('nav-' + id);
+    if (panel) panel.classList.add('active');
+    if (nav) nav.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeSidebar();
+  }
+
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.getElementById('modal-input').value = '';
+    document.getElementById('modal-input').classList.remove('error');
+    document.getElementById('modal-error').classList.remove('show');
+    setTimeout(() => document.getElementById('modal-input').focus(), 100);
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    pendingPanel = null;
+  }
+
+  function checkPassword() {
+    const val = document.getElementById('modal-input').value;
+    if (val === PASSWORD) {
+      unlocked = true;
+      document.getElementById('modal').classList.remove('open');
+      if (pendingPanel) go(pendingPanel);
+    } else {
+      document.getElementById('modal-input').classList.add('error');
+      document.getElementById('modal-error').classList.add('show');
+      document.getElementById('modal-input').value = '';
+      document.getElementById('modal-input').focus();
+    }
+  }
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('open');
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+  }
+
+  function copyInforme() {
+    const text = document.getElementById('informe-code').innerText.replace('Copiar', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✓ Copiado';
+      setTimeout(() => btn.textContent = 'Copiar', 2000);
+    });
+  }
+
+  document.getElementById('nav-estructura').classList.add('active');
+</script>
+</body>
+</html>
