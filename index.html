@@ -381,25 +381,6 @@
   /* SEGUIMIENTO PRIVADO */
   .seguimiento-grid { display: flex; flex-direction: column; gap: 16px; }
 
-
-  /* FULL WIDTH */
-  .main { margin-left: 240px; flex: 1; min-height: 100vh; max-width: none; }
-  .page-content { padding: 28px 40px 60px; max-width: none; }
-  .page-header { max-width: none; }
-  .topbar { max-width: none; }
-  #app-wrapper { max-width: none; width: 100%; }
-  .app { max-width: none; }
-
-
-  /* DASHBOARD NEW LAYOUT */
-  .dash-bottom-grid { display: grid; grid-template-columns: 1fr 320px; gap: 16px; margin-top: 16px; }
-  .dash-cal-box { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; box-shadow: var(--shadow-sm); }
-  .dash-cal-header { display: flex; align-items: center; justify-content: space-between; }
-  @media (max-width: 900px) {
-    .dash-bottom-grid { grid-template-columns: 1fr; }
-    .dash-top { grid-template-columns: 1fr; }
-  }
-
 </style>
 </head>
 <body>
@@ -429,6 +410,11 @@
       <div class="nav-item" id="nav-objetivos" onclick="go('objetivos')"><span class="nav-icon">🎯</span> Objetivos del mes</div>
       <div class="nav-label">Compartido — Todo el equipo</div>
       <div class="nav-item" id="nav-equipo" onclick="go('equipo')"><span class="nav-icon">👥</span> Equipo</div>
+      <div class="nav-item nav-sub" id="nav-bautista" onclick="go('bautista')"><span class="nav-icon" style="font-size:10px">·</span> Bautista</div>
+      <div class="nav-item nav-sub" id="nav-nicolas" onclick="go('nicolas')"><span class="nav-icon" style="font-size:10px">·</span> Nicolás</div>
+      <div class="nav-item nav-sub" id="nav-lourdes" onclick="go('lourdes')"><span class="nav-icon" style="font-size:10px">·</span> Lourdes</div>
+      <div class="nav-item nav-sub" id="nav-enzo" onclick="go('enzo')"><span class="nav-icon" style="font-size:10px">·</span> Enzo</div>
+      <div class="nav-item nav-sub" id="nav-brunela" onclick="go('brunela')"><span class="nav-icon" style="font-size:10px">·</span> Brunela</div>
       <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><span class="nav-icon">📁</span> Clientes</div>
       <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><span class="nav-icon">📅</span> Calendario mensual</div>
       <div class="nav-label">Privado — Bau y Nico</div>
@@ -438,6 +424,7 @@
       <div class="nav-label">Operaciones</div>
       <div class="nav-item" id="nav-tareas" onclick="go('tareas')" style="position:relative"><span class="nav-icon">✅</span> Tareas pendientes<span class="notif-dot hidden" id="notif-tareas">0</span></div>
       <div class="nav-item" id="nav-banco" onclick="go('banco')" style="position:relative"><span class="nav-icon">💡</span> Banco de Ideas<span class="notif-dot hidden" id="notif-banco">0</span></div>
+      <div class="nav-item" id="nav-creativas" onclick="go('creativas')" style="position:relative"><span class="nav-icon">✨</span> Ideas Creativas<span class="notif-dot hidden" id="notif-creativas">0</span></div>
       <div class="nav-item" id="nav-reuniones" onclick="go('reuniones')"><span class="nav-icon">🤝</span> Reuniones</div>
       <div class="nav-item" id="nav-informe" onclick="go('informe')"><span class="nav-icon">📊</span> Informe mensual</div>
     </nav>
@@ -647,6 +634,71 @@
         </div>
         <div id="ideas-container">
           <div class="tasks-loading">⏳ Cargando ideas...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IDEAS CREATIVAS -->
+    <div class="panel" id="panel-creativas">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Ideas Creativas</span></div>
+        <div class="page-title">Ideas Creativas ✨</div>
+        <div class="page-desc">El espacio para las ideas más creativas del equipo. Campañas, conceptos, referencias, lo que se les ocurra. Solo Bautista y Nicolás pueden eliminar.</div>
+      </div>
+      <div class="page-content">
+        <div class="ideas-toolbar">
+          <div class="ideas-filters">
+            <button class="filter-btn active" onclick="filterCreativas('todos', this)">Todas</button>
+            <button class="filter-btn" onclick="filterCreativas('Contenido', this)">Contenido</button>
+            <button class="filter-btn" onclick="filterCreativas('Campaña', this)">Campaña</button>
+            <button class="filter-btn" onclick="filterCreativas('BTL', this)">BTL</button>
+            <button class="filter-btn" onclick="filterCreativas('Viral', this)">Viral</button>
+            <button class="filter-btn" onclick="filterCreativas('Otro', this)">Otro</button>
+          </div>
+          <button class="btn-new-task" onclick="openCreativaModal()">✨ Nueva idea</button>
+        </div>
+        <div id="creativas-container">
+          <div class="tasks-loading">⏳ Cargando ideas creativas...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREATIVA FORM MODAL -->
+    <div class="idea-modal-overlay" id="creativa-modal">
+      <div class="idea-modal">
+        <div class="idea-modal-title">✨ Nueva idea creativa</div>
+        <div class="form-group">
+          <label class="form-label">La idea *</label>
+          <textarea class="form-textarea" id="c-idea" placeholder="Describí la idea con todo el detalle..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Para quién</label>
+            <select class="form-select" id="c-para">
+              <option value="Balodi">Balodi</option>
+              <option value="Tarjeta Primicia">Tarjeta Primicia</option>
+              <option value="Mutual Entre Asociados">Mutual Entre Asociados</option>
+              <option value="Capilar Vibes">Capilar Vibes</option>
+              <option value="Hielo Rosario">Hielo Rosario</option>
+              <option value="Donatelli">Donatelli</option>
+              <option value="MMAPantera">MMAPantera</option>
+              <option value="Murad">Murad</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Categoría</label>
+            <select class="form-select" id="c-categoria">
+              <option value="Contenido">Contenido</option>
+              <option value="Campaña">Campaña</option>
+              <option value="BTL">BTL</option>
+              <option value="Viral">Viral</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="task-modal-actions">
+          <button class="btn-cancel-task" onclick="closeCreativaModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveCreativa()">Guardar idea</button>
         </div>
       </div>
     </div>
@@ -931,118 +983,234 @@
             <div class="quick-grid">
               <div class="quick-card" onclick="go('tareas')"><div class="quick-icon">✅</div><div class="quick-label">Tareas</div></div>
               <div class="quick-card" onclick="go('banco')"><div class="quick-icon">💡</div><div class="quick-label">Ideas</div></div>
+              <div class="quick-card" onclick="go('calendario')"><div class="quick-icon">📅</div><div class="quick-label">Calendario</div></div>
               <div class="quick-card" onclick="go('clientes')"><div class="quick-icon">📁</div><div class="quick-label">Clientes</div></div>
               <div class="quick-card" onclick="go('reuniones')"><div class="quick-icon">🤝</div><div class="quick-label">Reuniones</div></div>
-              <div class="quick-card" onclick="go('objetivos')"><div class="quick-icon">🎯</div><div class="quick-label">Objetivos</div></div>
               <div class="quick-card" onclick="go('informe')"><div class="quick-icon">📊</div><div class="quick-label">Informe</div></div>
             </div>
           </div>
         </div>
 
-        <div class="dash-bottom-grid">
-          <!-- CALENDAR PREVIEW -->
-          <div class="dash-cal-box">
-            <div class="dash-cal-header">
-              <div class="dash-pending-title">📅 Calendario de contenido</div>
-              <button onclick="go('calendario')" style="background:none;border:1px solid var(--orange-border);border-radius:8px;padding:4px 12px;font-size:12px;color:var(--orange);font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif">Ver completo →</button>
-            </div>
-            <div style="border-radius:10px;overflow:hidden;margin-top:12px;">
-              <iframe src="https://calendar.google.com/calendar/embed?src=a81cff773b639442d2100254ddb1563d9db0035fc11256ceb46f7df644d17e06%40group.calendar.google.com&ctz=America%2FArgentina%2FBuenos_Aires&mode=WEEK&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0&bgcolor=%23ffffff" style="border:0;width:100%;height:320px;display:block;" frameborder="0" scrolling="no"></iframe>
+        <div class="dash-cols">
+          <div class="dash-main">
+            <div class="section-title">Equipo</div>
+            <div class="team-list">
+              <div class="team-item" onclick="go('bautista')"><div class="avatar av-gold" style="width:36px;height:36px;font-size:12px">BA</div><div><div class="team-name">Bautista</div><div class="team-role">Fundador · Estrategia</div></div><span class="badge badge-orange" style="margin-left:auto;font-size:10px">Fundador</span></div>
+              <div class="team-item" onclick="go('nicolas')"><div class="avatar av-blue" style="width:36px;height:36px;font-size:12px">NI</div><div><div class="team-name">Nicolás</div><div class="team-role">Socio · Operaciones</div></div><span class="badge badge-blue" style="margin-left:auto;font-size:10px">Socio</span></div>
+              <div class="team-item" onclick="go('lourdes')"><div class="avatar av-green" style="width:36px;height:36px;font-size:12px">LO</div><div><div class="team-name">Lourdes</div><div class="team-role">Community Manager</div></div><span class="badge badge-green" style="margin-left:auto;font-size:10px">CM</span></div>
+              <div class="team-item" onclick="go('enzo')"><div class="avatar av-amber" style="width:36px;height:36px;font-size:12px">EN</div><div><div class="team-name">Enzo</div><div class="team-role">Editor de Video</div></div><span class="badge badge-amber" style="margin-left:auto;font-size:10px">Editor</span></div>
+              <div class="team-item" onclick="go('brunela')"><div class="avatar av-red" style="width:36px;height:36px;font-size:12px">BR</div><div><div class="team-name">Brunela</div><div class="team-role">CM Proyectos</div></div><span class="badge badge-red" style="margin-left:auto;font-size:10px">Proyectos</span></div>
             </div>
           </div>
-
-          <!-- CLIENTES + BLOQUES -->
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div class="dash-quick-box">
-              <div class="dash-quick-title">Clientes activos</div>
-              <div class="client-pills" style="margin-top:8px">
-                <div class="cpill" onclick="go('c-tarjeta')">Tarjeta Primicia</div>
-                <div class="cpill" onclick="go('c-mutual')">Mutual Entre Asoc.</div>
-                <div class="cpill" onclick="go('c-capilar')">Capilar Vibes</div>
-                <div class="cpill" onclick="go('c-hielo')">Hielo Rosario</div>
-                <div class="cpill" onclick="go('c-donatelli')">Donatelli</div>
-                <div class="cpill" onclick="go('c-mma')">MMAPantera</div>
-                <div class="cpill" onclick="go('c-murad')">Murad</div>
-              </div>
+          <div class="dash-side">
+            <div class="section-title">Clientes activos</div>
+            <div class="client-pills">
+              <div class="cpill" onclick="go('c-tarjeta')">Tarjeta Primicia</div>
+              <div class="cpill" onclick="go('c-mutual')">Mutual Entre Asoc.</div>
+              <div class="cpill" onclick="go('c-capilar')">Capilar Vibes</div>
+              <div class="cpill" onclick="go('c-hielo')">Hielo Rosario</div>
+              <div class="cpill" onclick="go('c-donatelli')">Donatelli</div>
+              <div class="cpill" onclick="go('c-mma')">MMAPantera</div>
+              <div class="cpill" onclick="go('c-murad')">Murad</div>
             </div>
-            <div class="dash-quick-box">
-              <div class="dash-quick-title">Los 3 bloques del mes</div>
-              <div class="mini-blocks" style="margin-top:8px">
-                <div class="mini-block b1"><span class="mini-num">Días 1–5</span><span class="mini-title">Producción</span><span class="mini-desc">Todo listo antes del día 6</span></div>
-                <div class="mini-block b2"><span class="mini-num">Días 6–15</span><span class="mini-title">Estrategia</span><span class="mini-desc">Ideas, campañas y propuestas</span></div>
-                <div class="mini-block b3"><span class="mini-num">Días 16–cierre</span><span class="mini-title">Revisión</span><span class="mini-desc">Resultados y proyección</span></div>
-              </div>
+            <div class="section-title" style="margin-top:20px">Los 3 bloques del mes</div>
+            <div class="mini-blocks">
+              <div class="mini-block b1"><span class="mini-num">Días 1–5</span><span class="mini-title">Producción</span></div>
+              <div class="mini-block b2"><span class="mini-num">Días 6–15</span><span class="mini-title">Estrategia</span></div>
+              <div class="mini-block b3"><span class="mini-num">Días 16–cierre</span><span class="mini-title">Revisión</span></div>
             </div>
           </div>
         </div>
       </div>
+
+    </div>
+
+    <!-- OBJETIVOS -->
+    <div class="panel" id="panel-objetivos">
+      <div class="page-header">
+        <div class="page-eyebrow">Operaciones</div>
+        <div class="page-title">Objetivos del mes</div>
+        <div class="page-desc">Los objetivos que Balodi se propone cada mes. Cada integrante del equipo los tiene visibles. Al cierre del mes se evalúa qué se cumplió.</div>
+      </div>
+      <div class="page-content">
+        <div class="alert alert-info"><div class="alert-icon">ℹ️</div><div>Bautista define los objetivos al inicio de cada mes. El equipo los ve acá. Al cierre del mes se discuten en la reunión mensual.</div></div>
+
+        <div class="section-title" style="margin-top:8px">Balodi — Objetivos generales</div>
+        <div class="obj-card">
+          <div class="obj-header">
+            <div class="obj-icon">🚀</div>
+            <div><div class="obj-title">Escalar la agencia</div><div class="obj-sub">Objetivo permanente</div></div>
+            <span class="badge badge-orange">Estratégico</span>
+          </div>
+          <ul class="checklist" style="margin-top:12px">
+            <li><div class="check-dot">✓</div>Conseguir clientes más grandes y con mayor presupuesto</li>
+            <li><div class="check-dot">✓</div>Construir la marca personal de Bautista en paralelo a Balodi</li>
+            <li><div class="check-dot">✓</div>Generar contenido de Balodi que entretenga y venda indirectamente</li>
+            <li><div class="check-dot">✓</div>Ser reconocidos por creatividad y estrategia, no solo por ejecución</li>
+          </ul>
+        </div>
+
+        <div class="section-title" style="margin-top:24px">Este mes — Foco del equipo</div>
+        <div class="obj-month-grid">
+          <div class="obj-month-card">
+            <div class="obj-month-icon">📋</div>
+            <div class="obj-month-title">Lourdes</div>
+            <div class="obj-month-desc">Tener TODO el contenido del mes listo antes del día 5 y proponer al menos 1 campaña disruptiva por cliente</div>
+            <div class="obj-month-status pending">En curso</div>
+          </div>
+          <div class="obj-month-card">
+            <div class="obj-month-icon">🎬</div>
+            <div class="obj-month-title">Enzo</div>
+            <div class="obj-month-desc">Entregar todas las ediciones en tiempo y presentar 2 ideas de formato nuevo para Balodi o algún cliente</div>
+            <div class="obj-month-status pending">En curso</div>
+          </div>
+          <div class="obj-month-card">
+            <div class="obj-month-icon">✨</div>
+            <div class="obj-month-title">Brunela</div>
+            <div class="obj-month-desc">Completar el proyecto asignado con brief definido y entregar informe de cierre con aprendizajes</div>
+            <div class="obj-month-status pending">En curso</div>
+          </div>
+          <div class="obj-month-card">
+            <div class="obj-month-icon">📣</div>
+            <div class="obj-month-title">Balodi (cuenta)</div>
+            <div class="obj-month-desc">Al menos 1 acción de contenido disruptiva o campaña BTL que genere conversación y nuevos seguidores</div>
+            <div class="obj-month-status pending">En curso</div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning" style="margin-top:24px"><div class="alert-icon">⚠️</div><div>Los objetivos se actualizan al inicio de cada mes en la reunión de equipo. Si algo cambió en el mes, Bautista lo actualiza acá para que todos estén alineados.</div></div>
+      </div>
+    </div>
+
+
+    <!-- TAREAS -->
+    <div class="panel" id="panel-tareas">
+      <div class="page-header">
+        <div class="page-eyebrow">Operaciones</div>
+        <div class="page-title">Tareas pendientes</div>
+        <div class="page-desc">Asigná tareas al equipo. Cada uno ve solo las suyas. Todo queda guardado en Google Sheets automáticamente.</div>
+      </div>
+      <div class="page-content">
+        <div class="tasks-toolbar">
+          <div class="tasks-filters">
+            <button class="filter-btn active" onclick="filterTasks('todos', this)">Todas</button>
+            <button class="filter-btn" onclick="filterTasks('Lourdes', this)">Lourdes</button>
+            <button class="filter-btn" onclick="filterTasks('Enzo', this)">Enzo</button>
+            <button class="filter-btn" onclick="filterTasks('Brunela', this)">Brunela</button>
+            <button class="filter-btn" onclick="filterTasks('Nicolás', this)">Nicolás</button>
+            <button class="filter-btn" onclick="filterTasks('pendiente', this)">Pendientes</button>
+            <button class="filter-btn" onclick="filterTasks('hecho', this)">Completadas</button>
+          </div>
+          <button class="btn-new-task" onclick="openTaskModal()">+ Nueva tarea</button>
+        </div>
+        <div id="task-list-container">
+          <div class="tasks-loading">Cargando tareas...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK FORM MODAL -->
+    <div class="task-modal-overlay" id="task-modal">
+      <div class="task-modal">
+        <div class="task-modal-title">➕ Nueva tarea</div>
+        <div class="form-group">
+          <label class="form-label">Tarea *</label>
+          <input class="form-input" id="t-tarea" type="text" placeholder="Ej: Armar 3 reels para Hielo Rosario">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Responsable *</label>
+            <select class="form-select" id="t-responsable">
+              <option value="">Seleccionar...</option>
+              <option>Lourdes</option>
+              <option>Enzo</option>
+              <option>Brunela</option>
+              <option>Nicolás</option>
+              <option>Bautista</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Prioridad</label>
+            <select class="form-select" id="t-prioridad">
+              <option value="Media">Media</option>
+              <option value="Alta">Alta</option>
+              <option value="Baja">Baja</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cliente (opcional)</label>
+          <select class="form-select" id="t-cliente">
+            <option value="">Sin cliente específico</option>
+            <option>Balodi</option>
+            <option>Tarjeta Primicia</option>
+            <option>Mutual Entre Asociados</option>
+            <option>Capilar Vibes</option>
+            <option>Hielo Rosario</option>
+            <option>Donatelli Servicios Integrales</option>
+            <option>MMAPantera</option>
+            <option>Murad</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nota (opcional)</label>
+          <textarea class="form-textarea" id="t-nota" placeholder="Algún detalle o contexto extra..."></textarea>
+        </div>
+        <div class="task-modal-actions">
+          <button class="btn-cancel-task" onclick="closeTaskModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveTask()">Guardar tarea</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
 
 <!-- PASSWORD MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-icon">🔒</div>
     <div class="modal-title">Sección privada</div>
-    <div class="modal-desc">Esta sección es solo para Bautista y Nicolás.</div>
-    <input class="modal-input" type="password" id="modal-input" placeholder="Contraseña">
+    <div class="modal-desc">Esta sección es solo para Bautista y Nicolás. Ingresá la contraseña para continuar.</div>
+    <input class="modal-input" type="password" id="modal-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPassword()">
     <div class="modal-error" id="modal-error">Contraseña incorrecta. Intentá de nuevo.</div>
     <button class="modal-btn" onclick="checkPassword()">Entrar</button>
     <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
   </div>
 </div>
 
-<!-- TASK FORM MODAL -->
-<div class="task-modal-overlay" id="task-modal">
-  <div class="task-modal">
-    <div class="task-modal-title">➕ Nueva tarea</div>
-    <div class="form-group"><label class="form-label">Tarea *</label><input class="form-input" id="t-tarea" type="text" placeholder="Ej: Armar 3 reels para Hielo Rosario"></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Responsable *</label><select class="form-select" id="t-responsable"><option value="">Seleccionar...</option><option>Lourdes</option><option>Enzo</option><option>Brunela</option><option>Nicolás</option><option>Bautista</option></select></div>
-      <div class="form-group"><label class="form-label">Prioridad</label><select class="form-select" id="t-prioridad"><option value="Media">Media</option><option value="Alta">Alta</option><option value="Baja">Baja</option></select></div>
-    </div>
-    <div class="form-group"><label class="form-label">Cliente (opcional)</label><select class="form-select" id="t-cliente"><option value="">Sin cliente específico</option><option>Balodi</option><option>Tarjeta Primicia</option><option>Mutual Entre Asociados</option><option>Capilar Vibes</option><option>Hielo Rosario</option><option>Donatelli Servicios Integrales</option><option>MMAPantera</option><option>Murad</option></select></div>
-    <div class="form-group"><label class="form-label">Nota (opcional)</label><textarea class="form-textarea" id="t-nota" placeholder="Algún detalle extra..."></textarea></div>
-    <div class="task-modal-actions"><button class="btn-cancel-task" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Guardar tarea</button></div>
-  </div>
-</div>
-
-<!-- IDEA FORM MODAL -->
-<div class="idea-modal-overlay" id="idea-modal">
-  <div class="idea-modal">
-    <div class="idea-modal-title">💡 Tirar una idea</div>
-    <div class="form-group"><label class="form-label">La idea *</label><textarea class="form-textarea" id="i-idea" placeholder="Describí la idea..."></textarea></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Para quién</label><select class="form-select" id="i-para"><option value="Balodi">Balodi</option><option value="Tarjeta Primicia">Tarjeta Primicia</option><option value="Mutual Entre Asociados">Mutual Entre Asociados</option><option value="Capilar Vibes">Capilar Vibes</option><option value="Hielo Rosario">Hielo Rosario</option><option value="Donatelli">Donatelli</option><option value="MMAPantera">MMAPantera</option><option value="Murad">Murad</option></select></div>
-      <div class="form-group"><label class="form-label">Categoría</label><select class="form-select" id="i-categoria"><option value="Contenido">Contenido</option><option value="Campaña">Campaña</option><option value="BTL">BTL</option><option value="Viral">Viral</option><option value="Otro">Otro</option></select></div>
-    </div>
-    <div class="task-modal-actions"><button class="btn-cancel-task" onclick="closeIdeaModal()">Cancelar</button><button class="btn-save" onclick="saveIdea()">Guardar idea</button></div>
-  </div>
-</div>
-
 <script>
   const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec";
   const IDEAS_URL = "https://script.google.com/macros/s/AKfycbzM9XggTQifgrkKAteCU1Eef4QYtzLW5ChF7KnN-RXAujyzChFoKOisZsGjkKE6xSnm/exec";
+  const CREATIVAS_URL = "https://script.google.com/macros/s/AKfycbzxwscKqu_szWb_2SLodmfvzhUB_mTSOsk4cWv8hIfn3uE4nXo3YGwut9Zr1WHL3Tu7/exec";
   const PRIVATE_PASSWORD = 'balodi2024';
   const PRIVATE_PANELS = ['estrategia', 'finanzas', 'seguimiento'];
 
   const USERS = {
-    'bautista': { pass: 'bautista28', name: 'Bautista', role: 'Fundador', avatar: 'BA', color: '#b45309' },
-    'nicolas':  { pass: 'nicolas28',  name: 'Nicolás',  role: 'Socio',    avatar: 'NI', color: '#2563eb' },
-    'lourdes':  { pass: 'lourdes28',  name: 'Lourdes',  role: 'CM',       avatar: 'LO', color: '#16a34a' },
-    'enzo':     { pass: 'enzo28',     name: 'Enzo',     role: 'Editor',   avatar: 'EN', color: '#d97706' },
-    'brunela':  { pass: 'brunela28',  name: 'Brunela',  role: 'Proyectos',avatar: 'BR', color: '#dc2626' },
+    'bautista':  { pass: 'bautista28',  name: 'Bautista',  role: 'Fundador',   avatar: 'BA', color: '#b45309' },
+    'nicolas':   { pass: 'nicolas28',   name: 'Nicolás',   role: 'Socio',      avatar: 'NI', color: '#2563eb' },
+    'lourdes':   { pass: 'lourdes28',   name: 'Lourdes',   role: 'CM',         avatar: 'LO', color: '#16a34a' },
+    'enzo':      { pass: 'enzo28',      name: 'Enzo',      role: 'Editor',     avatar: 'EN', color: '#d97706' },
+    'brunela':   { pass: 'brunela28',   name: 'Brunela',   role: 'Proyectos',  avatar: 'BR', color: '#dc2626' },
   };
 
   let currentUser = null;
   let privateUnlocked = false;
   let pendingPanel = null;
   let allTasks = [];
-  let allIdeas = [];
   let currentFilter = 'todos';
+  let allIdeas = [];
   let ideasFilter = 'todos';
+  let allCreativas = [];
+  let creativasFilter = 'todos';
 
+  // ============ LOGIN ============
   function checkSavedSession() {
     const saved = sessionStorage.getItem('balodi_user');
-    if (saved && USERS[saved]) { currentUser = { username: saved, ...USERS[saved] }; return true; }
+    if (saved && USERS[saved]) {
+      currentUser = { username: saved, ...USERS[saved] };
+      return true;
+    }
     return false;
   }
 
@@ -1071,7 +1239,8 @@
 
   function logout() {
     sessionStorage.removeItem('balodi_user');
-    currentUser = null; privateUnlocked = false;
+    currentUser = null;
+    privateUnlocked = false;
     showLoginScreen();
     document.getElementById('login-user').value = '';
     document.getElementById('login-input').value = '';
@@ -1092,20 +1261,34 @@
     if (tb) tb.style.display = 'flex';
   }
 
+  // ============ NAVIGATION ============
   function go(id) {
     if (!currentUser) { showLoginScreen(); return; }
-    if (PRIVATE_PANELS.includes(id) && !privateUnlocked) { pendingPanel = id; openModal(); return; }
+    if (PRIVATE_PANELS.includes(id) && !privateUnlocked) {
+      pendingPanel = id; openModal(); return;
+    }
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     const panel = document.getElementById('panel-' + id);
     const nav = document.getElementById('nav-' + id);
     if (panel) panel.classList.add('active');
     if (nav) nav.classList.add('active');
-    const titles = { dashboard:'Inicio', equipo:'Equipo', bautista:'Bautista', nicolas:'Nicolás', lourdes:'Lourdes', enzo:'Enzo', brunela:'Brunela', clientes:'Clientes', banco:'Banco de Ideas', calendario:'Calendario', estrategia:'Estrategia Balodi', finanzas:'Finanzas', seguimiento:'Seguimiento de Empleados', reuniones:'Reuniones', informe:'Informe Mensual', implementar:'Cómo implementarlo', objetivos:'Objetivos del mes', tareas:'Tareas pendientes', estructura:'Estructura' };
+    const titles = {
+      dashboard: 'Inicio', estructura: 'Estructura', equipo: 'Equipo',
+      bautista: 'Bautista', nicolas: 'Nicolás', lourdes: 'Lourdes',
+      enzo: 'Enzo', brunela: 'Brunela', clientes: 'Clientes',
+      banco: 'Banco de Ideas', calendario: 'Calendario',
+      estrategia: 'Estrategia Balodi', finanzas: 'Finanzas',
+      seguimiento: 'Seguimiento de Empleados', reuniones: 'Reuniones',
+      informe: 'Informe Mensual', implementar: 'Cómo implementarlo',
+      objetivos: 'Objetivos del mes', tareas: 'Tareas pendientes',
+      creativas: 'Ideas Creativas'
+    };
     const tb = document.getElementById('topbar-title');
     if (tb && titles[id]) tb.textContent = titles[id];
     if (id === 'tareas') loadTasks();
     if (id === 'banco') { sessionStorage.setItem('balodi_ideas_seen', allIdeas.length); loadIdeas(); updateIdeasBadge(); }
+    if (id === 'creativas') { sessionStorage.setItem('balodi_creativas_seen', allCreativas.length); loadCreativas(); updateCreativasBadge(); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
   }
@@ -1118,7 +1301,10 @@
     setTimeout(() => document.getElementById('modal-input').focus(), 100);
   }
 
-  function closeModal() { document.getElementById('modal').classList.remove('open'); pendingPanel = null; }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    pendingPanel = null;
+  }
 
   function checkPassword() {
     const val = document.getElementById('modal-input').value;
@@ -1145,7 +1331,7 @@
   }
 
   function copyInforme() {
-    const text = document.getElementById('informe-code').innerText.replace('Copiar','').trim();
+    const text = document.getElementById('informe-code').innerText.replace('Copiar', '').trim();
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.querySelector('.copy-btn');
       btn.textContent = '✓ Copiado';
@@ -1153,7 +1339,7 @@
     });
   }
 
-  // ===== TASKS =====
+  // ============ TASKS ============
   function openTaskModal() {
     document.getElementById('task-modal').classList.add('open');
     document.getElementById('t-tarea').value = '';
@@ -1164,33 +1350,58 @@
     setTimeout(() => document.getElementById('t-tarea').focus(), 100);
   }
 
-  function closeTaskModal() { document.getElementById('task-modal').classList.remove('open'); }
+  function closeTaskModal() {
+    document.getElementById('task-modal').classList.remove('open');
+  }
 
   async function saveTask() {
     const tarea = document.getElementById('t-tarea').value.trim();
     const responsable = document.getElementById('t-responsable').value;
     if (!tarea || !responsable) { alert('Completá la tarea y el responsable.'); return; }
     const btn = document.querySelector('.btn-save');
-    btn.textContent = 'Guardando...'; btn.disabled = true;
-    const data = { tarea, responsable, cliente: document.getElementById('t-cliente').value || '—', prioridad: document.getElementById('t-prioridad').value, estado: 'pendiente', fecha: new Date().toLocaleDateString('es-AR'), nota: document.getElementById('t-nota').value.trim() || '—' };
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
+    const data = {
+      tarea,
+      responsable,
+      cliente: document.getElementById('t-cliente').value || '—',
+      prioridad: document.getElementById('t-prioridad').value,
+      estado: 'pendiente',
+      fecha: new Date().toLocaleDateString('es-AR'),
+      nota: document.getElementById('t-nota').value.trim() || '—'
+    };
     try {
-      await fetch(SHEETS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
-      allTasks.push(data); closeTaskModal(); renderTasks(); updateDashCount();
-    } catch(e) { alert('Error al guardar.'); }
-    btn.textContent = 'Guardar tarea'; btn.disabled = false;
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allTasks.push(data);
+      closeTaskModal();
+      renderTasks();
+      updateDashCount();
+    } catch(e) {
+      alert('Error al guardar. Verificá tu conexión.');
+    }
+    btn.textContent = 'Guardar tarea';
+    btn.disabled = false;
   }
 
   async function loadTasks() {
     const container = document.getElementById('task-list-container');
-    if (container) container.innerHTML = '<div class="tasks-loading">⏳ Cargando tareas...</div>';
+    container.innerHTML = '<div class="tasks-loading">⏳ Cargando tareas...</div>';
     try {
       const res = await fetch(SHEETS_URL + '?t=' + Date.now());
       const raw = await res.json();
-      allTasks = raw.slice(1).map(r => ({ tarea:r[0], responsable:r[1], cliente:r[2], prioridad:r[3], estado:r[4], fecha:r[5], nota:r[6] })).filter(t => t.tarea);
-      renderTasks(); updateDashCount();
-    } catch(e) {
-      if (container) container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las tareas.</div>';
+      allTasks = raw.slice(1).map(r => ({
+        tarea: r[0], responsable: r[1], cliente: r[2],
+        prioridad: r[3], estado: r[4], fecha: r[5], nota: r[6]
+      })).filter(t => t.tarea);
+      renderTasks();
       updateDashCount();
+    } catch(e) {
+      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las tareas. Verificá la conexión.</div>';
     }
   }
 
@@ -1203,18 +1414,24 @@
 
   function renderTasks() {
     const container = document.getElementById('task-list-container');
-    if (!container) return;
     let tasks = [...allTasks];
     if (currentFilter === 'pendiente') tasks = tasks.filter(t => t.estado !== 'hecho');
     else if (currentFilter === 'hecho') tasks = tasks.filter(t => t.estado === 'hecho');
     else if (!['todos','pendiente','hecho'].includes(currentFilter)) tasks = tasks.filter(t => t.responsable === currentFilter);
-    if (!tasks.length) { container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">✅</div><div>No hay tareas en esta categoría</div></div>'; return; }
+
+    if (!tasks.length) {
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">✅</div><div>No hay tareas en esta categoría</div></div>';
+      return;
+    }
+
     container.innerHTML = '<div class="task-list">' + tasks.map(t => {
       const isDone = t.estado === 'hecho';
       const prioClass = t.prioridad === 'Alta' ? 'tag-high' : t.prioridad === 'Baja' ? 'tag-low' : 'tag-mid';
       const globalIdx = allTasks.indexOf(t);
       return `<div class="task-card ${isDone ? 'done' : ''}">
-        <div class="task-check ${isDone ? 'checked' : ''}" onclick="toggleTask(${globalIdx})">${isDone ? '✓' : ''}</div>
+        <div class="task-check ${isDone ? 'checked' : ''}" onclick="toggleTask(${globalIdx})">
+          ${isDone ? '✓' : ''}
+        </div>
         <div class="task-body">
           <div class="task-name">${t.tarea}</div>
           <div class="task-meta">
@@ -1225,7 +1442,7 @@
           </div>
           ${t.nota && t.nota !== '—' ? `<div class="task-note">${t.nota}</div>` : ''}
         </div>
-        <button class="delete-btn" onclick="deleteTask(${globalIdx})" title="Eliminar">🗑️</button>
+        <button class="delete-btn" onclick="deleteTask(${globalIdx})" title="Eliminar tarea">🗑️</button>
       </div>`;
     }).join('') + '</div>';
   }
@@ -1234,10 +1451,18 @@
     if (!allTasks[idx]) return;
     const newEstado = allTasks[idx].estado === 'hecho' ? 'pendiente' : 'hecho';
     allTasks[idx].estado = newEstado;
-    renderTasks(); updateDashCount();
+    renderTasks();
+    updateDashCount();
     try {
-      await fetch(SHEETS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ rowIndex: idx+2, estado: newEstado }) });
-    } catch(e) { console.error(e); }
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rowIndex: idx + 2, estado: newEstado })
+      });
+    } catch(e) {
+      console.error('Error saving task state:', e);
+    }
   }
 
   async function deleteTask(idx) {
@@ -1245,49 +1470,124 @@
     if (!confirm('¿Eliminar esta tarea?')) return;
     const rowIndex = idx + 2;
     allTasks.splice(idx, 1);
-    renderTasks(); updateDashCount();
+    renderTasks();
+    updateDashCount();
     try {
-      await fetch(SHEETS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ action:'delete', rowIndex }) });
-    } catch(e) { console.error(e); }
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', rowIndex })
+      });
+    } catch(e) {
+      console.error('Error deleting task:', e);
+    }
   }
 
   function updateDashCount() {
     const pending = allTasks.filter(t => t.estado !== 'hecho').length;
     const el = document.getElementById('dash-task-count');
     if (el) el.textContent = pending + ' pendientes';
+    // Update notif dot in sidebar
     const notif = document.getElementById('notif-tareas');
-    if (notif) { if (pending > 0) { notif.textContent = pending; notif.classList.remove('hidden'); } else { notif.classList.add('hidden'); } }
+    if (notif) {
+      if (pending > 0) { notif.textContent = pending; notif.classList.remove('hidden'); }
+      else { notif.classList.add('hidden'); }
+    }
+    // Update dashboard pending list
     const list = document.getElementById('dash-pending-list');
     if (list) {
       const pendingTasks = allTasks.filter(t => t.estado !== 'hecho').slice(0, 5);
       if (!pendingTasks.length) {
         list.innerHTML = '<div class="dash-pending-empty">✅ Todo al día</div>';
       } else {
-        list.innerHTML = pendingTasks.map(t => `<div class="dash-pending-item"><div class="dpi-name">${t.responsable}</div><div class="dpi-task">${t.tarea}</div><span class="task-tag ${t.prioridad==='Alta'?'tag-high':t.prioridad==='Baja'?'tag-low':'tag-mid'}" style="font-size:10px">${t.prioridad}</span></div>`).join('');
+        list.innerHTML = pendingTasks.map(t => `
+          <div class="dash-pending-item">
+            <div class="dpi-name">${t.responsable}</div>
+            <div class="dpi-task">${t.tarea}</div>
+            <span class="task-tag ${t.prioridad === 'Alta' ? 'tag-high' : t.prioridad === 'Baja' ? 'tag-low' : 'tag-mid'}" style="font-size:10px">${t.prioridad}</span>
+          </div>`).join('');
       }
     }
   }
 
-  // ===== IDEAS =====
+  function updateIdeasBadge() {
+    const btn = document.getElementById('dash-ideas-btn');
+    const count = document.getElementById('dash-ideas-count');
+    const notif = document.getElementById('notif-banco');
+    const lastSeen = parseInt(sessionStorage.getItem('balodi_ideas_seen') || '0');
+    const newCount = allIdeas.length - lastSeen;
+    if (newCount > 0) {
+      if (btn) { btn.style.display = 'flex'; }
+      if (count) count.textContent = newCount + ' nueva' + (newCount > 1 ? 's' : '');
+      if (notif) { notif.textContent = newCount; notif.classList.remove('hidden'); }
+    } else {
+      if (btn) btn.style.display = 'none';
+      if (notif) notif.classList.add('hidden');
+    }
+  }
+
+  async function deleteIdea(idx) {
+    if (!allIdeas[idx]) return;
+    if (!confirm('¿Eliminar esta idea?')) return;
+    const rowIndex = allIdeas.length - idx + 1;
+    allIdeas.splice(idx, 1);
+    renderIdeas();
+    updateIdeasBadge();
+    try {
+      await fetch(IDEAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', rowIndex })
+      });
+    } catch(e) {
+      console.error('Error deleting idea:', e);
+    }
+  }
+
+
+  // ============ IDEAS ============
   function openIdeaModal() {
     document.getElementById('idea-modal').classList.add('open');
     document.getElementById('i-idea').value = '';
+    document.getElementById('i-para').value = 'Balodi';
+    document.getElementById('i-categoria').value = 'Contenido';
     setTimeout(() => document.getElementById('i-idea').focus(), 100);
   }
 
-  function closeIdeaModal() { document.getElementById('idea-modal').classList.remove('open'); }
+  function closeIdeaModal() {
+    document.getElementById('idea-modal').classList.remove('open');
+  }
 
   async function saveIdea() {
     const idea = document.getElementById('i-idea').value.trim();
     if (!idea) { alert('Escribí la idea primero.'); return; }
     const btn = document.querySelector('#idea-modal .btn-save');
-    btn.textContent = 'Guardando...'; btn.disabled = true;
-    const data = { idea, quien: currentUser ? currentUser.name : 'Equipo', para: document.getElementById('i-para').value, categoria: document.getElementById('i-categoria').value, fecha: new Date().toLocaleDateString('es-AR') };
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
+    const data = {
+      idea,
+      quien: currentUser ? currentUser.name : 'Equipo',
+      para: document.getElementById('i-para').value,
+      categoria: document.getElementById('i-categoria').value,
+      fecha: new Date().toLocaleDateString('es-AR')
+    };
     try {
-      await fetch(IDEAS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
-      allIdeas.unshift(data); closeIdeaModal(); renderIdeas(); updateIdeasBadge();
-    } catch(e) { alert('Error al guardar.'); }
-    btn.textContent = 'Guardar idea'; btn.disabled = false;
+      await fetch(IDEAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allIdeas.unshift(data);
+      closeIdeaModal();
+      renderIdeas();
+    } catch(e) {
+      alert('Error al guardar. Verificá tu conexión.');
+    }
+    btn.textContent = 'Guardar idea';
+    btn.disabled = false;
   }
 
   async function loadIdeas() {
@@ -1297,9 +1597,14 @@
     try {
       const res = await fetch(IDEAS_URL + '?t=' + Date.now());
       const raw = await res.json();
-      allIdeas = raw.slice(1).map(r => ({ idea:r[0], quien:r[1], para:r[2], categoria:r[3], fecha:r[4] })).filter(i => i.idea).reverse();
-      renderIdeas(); updateIdeasBadge();
-    } catch(e) { container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las ideas.</div>'; }
+      allIdeas = raw.slice(1).map(r => ({
+        idea: r[0], quien: r[1], para: r[2], categoria: r[3], fecha: r[4]
+      })).filter(i => i.idea).reverse();
+      renderIdeas();
+      updateIdeasBadge();
+    } catch(e) {
+      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las ideas.</div>';
+    }
   }
 
   function filterIdeas(filter, btn) {
@@ -1310,12 +1615,12 @@
   }
 
   function getAvatarColor(name) {
-    const colors = {'Bautista':'#b45309','Nicolás':'#2563eb','Lourdes':'#16a34a','Enzo':'#d97706','Brunela':'#dc2626'};
+    const colors = { 'Bautista': '#b45309', 'Nicolás': '#2563eb', 'Lourdes': '#16a34a', 'Enzo': '#d97706', 'Brunela': '#dc2626' };
     return colors[name] || '#f5620a';
   }
 
   function getCatClass(cat) {
-    const map = {'Contenido':'cat-contenido','Campaña':'cat-campania','BTL':'cat-btl','Viral':'cat-viral','Otro':'cat-otro'};
+    const map = { 'Contenido': 'cat-contenido', 'Campaña': 'cat-campania', 'BTL': 'cat-btl', 'Viral': 'cat-viral', 'Otro': 'cat-otro' };
     return map[cat] || 'cat-otro';
   }
 
@@ -1324,52 +1629,165 @@
     if (!container) return;
     let ideas = [...allIdeas];
     if (ideasFilter !== 'todos') ideas = ideas.filter(i => i.categoria === ideasFilter);
-    if (!ideas.length) { container.innerHTML = '<div class="ideas-empty"><div class="ideas-empty-icon">💡</div><div>No hay ideas todavía. ¡Sé el primero!</div></div>'; return; }
-    container.innerHTML = '<div class="ideas-grid">' + ideas.map(idea => {
+    if (!ideas.length) {
+      container.innerHTML = '<div class="ideas-empty"><div class="ideas-empty-icon">💡</div><div>No hay ideas todavía. ¡Sé el primero en tirar una!</div></div>';
+      return;
+    }
+    container.innerHTML = '<div class="ideas-grid">' + ideas.map((idea, i) => {
       const globalIdx = allIdeas.indexOf(idea);
       return `<div class="idea-card">
         <div class="idea-header">
           <span class="idea-cat ${getCatClass(idea.categoria)}">${idea.categoria}</span>
           <span class="idea-para">${idea.para}</span>
-          <button class="delete-btn" onclick="deleteIdea(${globalIdx})" title="Eliminar" style="margin-left:auto">🗑️</button>
+          <button class="delete-btn" onclick="deleteIdea(${globalIdx})" title="Eliminar idea" style="margin-left:auto">🗑️</button>
         </div>
         <div class="idea-text">${idea.idea}</div>
         <div class="idea-footer">
-          <div class="idea-quien"><div class="idea-avatar" style="background:${getAvatarColor(idea.quien)}">${idea.quien?idea.quien[0]:'?'}</div>${idea.quien}</div>
+          <div class="idea-quien">
+            <div class="idea-avatar" style="background:${getAvatarColor(idea.quien)}">${idea.quien ? idea.quien[0] : '?'}</div>
+            ${idea.quien}
+          </div>
           <span class="idea-meta">${idea.fecha}</span>
         </div>
       </div>`;
     }).join('') + '</div>';
   }
 
-  async function deleteIdea(idx) {
-    if (!allIdeas[idx]) return;
-    if (!confirm('¿Eliminar esta idea?')) return;
-    const rowIndex = allIdeas.length - idx + 1;
-    allIdeas.splice(idx, 1);
-    renderIdeas(); updateIdeasBadge();
-    try {
-      await fetch(IDEAS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ action:'delete', rowIndex }) });
-    } catch(e) { console.error(e); }
+  // ============ IDEAS CREATIVAS ============
+  function openCreativaModal() {
+    document.getElementById('creativa-modal').classList.add('open');
+    document.getElementById('c-idea').value = '';
+    document.getElementById('c-para').value = 'Balodi';
+    document.getElementById('c-categoria').value = 'Contenido';
+    setTimeout(() => document.getElementById('c-idea').focus(), 100);
   }
 
-  function updateIdeasBadge() {
-    const btn = document.getElementById('dash-ideas-btn');
-    const count = document.getElementById('dash-ideas-count');
-    const notif = document.getElementById('notif-banco');
-    const lastSeen = parseInt(sessionStorage.getItem('balodi_ideas_seen') || '0');
-    const newCount = allIdeas.length - lastSeen;
-    if (newCount > 0) {
-      if (btn) btn.style.display = 'flex';
-      if (count) count.textContent = newCount + ' nueva' + (newCount > 1 ? 's' : '');
-      if (notif) { notif.textContent = newCount; notif.classList.remove('hidden'); }
-    } else {
-      if (btn) btn.style.display = 'none';
-      if (notif) notif.classList.add('hidden');
+  function closeCreativaModal() {
+    document.getElementById('creativa-modal').classList.remove('open');
+  }
+
+  async function saveCreativa() {
+    const idea = document.getElementById('c-idea').value.trim();
+    if (!idea) { alert('Escribí la idea primero.'); return; }
+    const btn = document.querySelector('#creativa-modal .btn-save');
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
+    const data = {
+      idea,
+      quien: currentUser ? currentUser.name : 'Equipo',
+      para: document.getElementById('c-para').value,
+      categoria: document.getElementById('c-categoria').value,
+      fecha: new Date().toLocaleDateString('es-AR')
+    };
+    try {
+      await fetch(CREATIVAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allCreativas.unshift(data);
+      closeCreativaModal();
+      renderCreativas();
+      updateCreativasBadge();
+    } catch(e) {
+      alert('Error al guardar. Verificá tu conexión.');
+    }
+    btn.textContent = 'Guardar idea';
+    btn.disabled = false;
+  }
+
+  async function loadCreativas() {
+    const container = document.getElementById('creativas-container');
+    if (!container) return;
+    container.innerHTML = '<div class="tasks-loading">⏳ Cargando ideas creativas...</div>';
+    try {
+      const res = await fetch(CREATIVAS_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allCreativas = raw.slice(1).map(r => ({
+        idea: r[0], quien: r[1], para: r[2], categoria: r[3], fecha: r[4]
+      })).filter(i => i.idea).reverse();
+      renderCreativas();
+      updateCreativasBadge();
+    } catch(e) {
+      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las ideas creativas.</div>';
     }
   }
 
-  // ===== INIT =====
+  function filterCreativas(filter, btn) {
+    creativasFilter = filter;
+    document.querySelectorAll('#panel-creativas .filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderCreativas();
+  }
+
+  function canDelete() {
+    return currentUser && (currentUser.username === 'bautista' || currentUser.username === 'nicolas');
+  }
+
+  function renderCreativas() {
+    const container = document.getElementById('creativas-container');
+    if (!container) return;
+    let ideas = [...allCreativas];
+    if (creativasFilter !== 'todos') ideas = ideas.filter(i => i.categoria === creativasFilter);
+    if (!ideas.length) {
+      container.innerHTML = '<div class="ideas-empty"><div class="ideas-empty-icon">✨</div><div>No hay ideas creativas todavía. ¡Tirá la primera!</div></div>';
+      return;
+    }
+    container.innerHTML = '<div class="ideas-grid">' + ideas.map((idea) => {
+      const globalIdx = allCreativas.indexOf(idea);
+      const deleteBtn = canDelete()
+        ? `<button class="delete-btn" onclick="deleteCreativa(${globalIdx})" title="Eliminar idea">🗑️</button>`
+        : '';
+      return `<div class="idea-card">
+        <div class="idea-header">
+          <span class="idea-cat ${getCatClass(idea.categoria)}">${idea.categoria}</span>
+          <span class="idea-para">${idea.para}</span>
+          ${deleteBtn}
+        </div>
+        <div class="idea-text">${idea.idea}</div>
+        <div class="idea-footer">
+          <div class="idea-quien">
+            <div class="idea-avatar" style="background:${getAvatarColor(idea.quien)}">${idea.quien ? idea.quien[0] : '?'}</div>
+            ${idea.quien}
+          </div>
+          <span class="idea-meta">${idea.fecha}</span>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+  }
+
+  async function deleteCreativa(idx) {
+    if (!canDelete()) { alert('Solo Bautista y Nicolás pueden eliminar ideas creativas.'); return; }
+    if (!allCreativas[idx]) return;
+    if (!confirm('¿Eliminar esta idea creativa?')) return;
+    const rowIndex = allCreativas.length - idx + 1;
+    allCreativas.splice(idx, 1);
+    renderCreativas();
+    updateCreativasBadge();
+    try {
+      await fetch(CREATIVAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', rowIndex })
+      });
+    } catch(e) {
+      console.error('Error deleting creativa:', e);
+    }
+  }
+
+  function updateCreativasBadge() {
+    const notif = document.getElementById('notif-creativas');
+    const lastSeen = parseInt(sessionStorage.getItem('balodi_creativas_seen') || '0');
+    const newCount = allCreativas.length - lastSeen;
+    if (notif) {
+      if (newCount > 0) { notif.textContent = newCount; notif.classList.remove('hidden'); }
+      else { notif.classList.add('hidden'); }
+    }
+  }
+
+  // ============ INIT ============
   function initApp() {
     updateUserUI();
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -1378,6 +1796,7 @@
     document.getElementById('nav-dashboard').classList.add('active');
     loadTasks();
     loadIdeas();
+    loadCreativas();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -1388,9 +1807,15 @@
     } else {
       showLoginScreen();
     }
-    document.getElementById('login-user').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('login-input').focus(); });
-    document.getElementById('login-input').addEventListener('keydown', e => { if (e.key==='Enter') tryLogin(); });
-    document.getElementById('modal-input').addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+    document.getElementById('login-user').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-input').focus();
+    });
+    document.getElementById('login-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') tryLogin();
+    });
+    document.getElementById('modal-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkPassword();
+    });
   });
 </script>
 </body>
