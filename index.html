@@ -690,7 +690,45 @@
   .feed-empty { font-size: 13px; color: var(--text3); text-align: center; padding: 20px; }
 
 
-  /* ======= JARVIS INTRO ======= */
+  .btn-pdf { background: none; border: 1.5px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-family: "Outfit", sans-serif; font-size: 13px; font-weight: 700; color: var(--text2); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+  .btn-pdf:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
+
+  /* ======= REND METRICS ======= */
+  .rend-metrics-section { margin-bottom: 24px; }
+  .rend-metrics-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+  .metrics-general { display: grid; grid-template-columns: 1fr 280px; gap: 16px; margin-bottom: 20px; }
+  .metrics-bars-box, .metrics-pie-box, .metrics-ind-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; box-shadow: var(--shadow-sm); }
+  .metrics-box-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
+  .metrics-emp-bars { display: flex; flex-direction: column; gap: 12px; }
+  .metrics-emp-row { display: flex; align-items: center; gap: 10px; }
+  .metrics-emp-name { font-size: 12px; font-weight: 700; color: var(--text); min-width: 70px; }
+  .metrics-bar-track { flex: 1; height: 10px; background: var(--bg4); border-radius: 999px; overflow: hidden; }
+  .metrics-bar-fill { height: 100%; border-radius: 999px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+  .metrics-emp-score { font-size: 13px; font-weight: 800; min-width: 28px; text-align: right; }
+  .metrics-individual { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 4px; }
+  .metrics-ind-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .metrics-ind-name { font-family: "Outfit", sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
+  .metrics-ind-avg { font-family: "Outfit", sans-serif; font-size: 22px; font-weight: 800; }
+  .metrics-semanas { display: flex; align-items: flex-end; gap: 6px; height: 80px; margin-bottom: 10px; }
+  .metrics-sem-group { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
+  .metrics-sem-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; transition: height 0.5s ease; }
+  .metrics-sem-label { font-size: 9px; color: var(--text3); font-weight: 600; text-align: center; }
+  .metrics-sem-val { font-size: 10px; font-weight: 800; }
+  .metrics-pie-legend { display: flex; flex-direction: column; gap: 7px; }
+  .metrics-pie-legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; }
+  .metrics-pie-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .metrics-pie-label { font-weight: 600; color: var(--text); flex: 1; }
+  .metrics-pie-val { font-weight: 700; color: var(--text2); font-size: 10px; }
+  @media (max-width: 768px) { .metrics-general { grid-template-columns: 1fr; } .metrics-individual { grid-template-columns: 1fr; } }
+
+  /* ======= PRINT / PDF ======= */
+  #pdf-frame { display: none; }
+  @media print {
+    body * { visibility: hidden; }
+    #pdf-print-area, #pdf-print-area * { visibility: visible; }
+    #pdf-print-area { position: fixed; inset: 0; background: white; padding: 32px 40px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; color: #141414; }
+  }
+
   #jarvis-intro { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; align-items: center; justify-content: center; flex-direction: column; font-family: 'Outfit', monospace; overflow: hidden; }
   #jarvis-intro.show { display: flex; }
   .jarvis-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, #0d0d0d 0%, #000 70%); }
@@ -727,22 +765,7 @@
   .jarvis-skip:hover { color: rgba(255,255,255,0.5); }
   .jarvis-scanline { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; z-index: 5; }
 
-  /* ======= JARVIS VOICE ASSISTANT ======= */
-  #jarvis-assistant { display: none; }
-  #jarvis-assistant.visible { display: block; }
-  .jarvis-btn { position: fixed; bottom: 28px; right: 28px; width: 58px; height: 58px; border-radius: 50%; background: #0a0a0a; border: 1.5px solid rgba(245,98,10,0.5); box-shadow: 0 0 20px rgba(245,98,10,0.2), 0 4px 16px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 500; transition: all 0.2s; }
-  .jarvis-btn:hover { border-color: rgba(245,98,10,0.9); box-shadow: 0 0 30px rgba(245,98,10,0.4); transform: scale(1.07); }
-  .jarvis-btn.listening { border-color: var(--orange); box-shadow: 0 0 0 6px rgba(245,98,10,0.15), 0 0 30px rgba(245,98,10,0.5); animation: jarvisPulseBtn 1s ease-in-out infinite; }
-  .jarvis-btn.thinking { border-color: #2563eb; box-shadow: 0 0 0 6px rgba(37,99,235,0.15), 0 0 30px rgba(37,99,235,0.4); animation: jarvisPulseBtn 0.6s ease-in-out infinite; }
-  .jarvis-btn.speaking { border-color: #16a34a; box-shadow: 0 0 0 6px rgba(22,163,74,0.15), 0 0 30px rgba(22,163,74,0.4); animation: jarvisPulseBtn 0.8s ease-in-out infinite; }
-  @keyframes jarvisPulseBtn { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
-  .jarvis-btn-icon { font-size: 22px; }
-  .jarvis-bubble { position: fixed; bottom: 98px; right: 28px; max-width: 300px; background: #0a0a0a; border: 1px solid rgba(245,98,10,0.3); border-radius: 16px 16px 4px 16px; padding: 14px 18px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: #e0e0e0; line-height: 1.5; z-index: 499; box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: none; animation: fadeUp 0.2s ease; }
-  .jarvis-bubble.show { display: block; }
-  .jarvis-bubble-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,98,10,0.7); margin-bottom: 6px; font-family: 'Outfit', sans-serif; }
-  .jarvis-bubble-user { border-color: rgba(255,255,255,0.1); border-radius: 16px 16px 16px 4px; margin-bottom: 8px; }
-  .jarvis-bubble-user .jarvis-bubble-label { color: rgba(255,255,255,0.3); }
-  .jarvis-bubble-user .jarvis-bubble-text { color: rgba(255,255,255,0.7); }
+
 </style>
 </head>
 <body>
@@ -772,20 +795,7 @@
   <div class="jarvis-skip" onclick="closeJarvis()">[ SALTAR → ]</div>
 </div>
 
-<!-- JARVIS VOICE ASSISTANT -->
-<div id="jarvis-assistant">
-  <div class="jarvis-bubble jarvis-bubble-user" id="jarvis-user-bubble" style="display:none">
-    <div class="jarvis-bubble-label">Vos</div>
-    <div class="jarvis-bubble-text" id="jarvis-user-text"></div>
-  </div>
-  <div class="jarvis-bubble" id="jarvis-reply-bubble" style="display:none">
-    <div class="jarvis-bubble-label">J.A.R.V.I.S.</div>
-    <div class="jarvis-bubble-text" id="jarvis-reply-text"></div>
-  </div>
-  <div class="jarvis-btn" id="jarvis-btn" onclick="toggleJarvisListen()">
-    <span class="jarvis-btn-icon" id="jarvis-btn-icon">🎙️</span>
-  </div>
-</div>
+
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">📊</div>
@@ -1493,6 +1503,7 @@
           <option value="">Todos los meses</option>
         </select>
         <button class="btn-new-task" onclick="openFinModal()">+ Nuevo registro</button>
+        <button class="btn-pdf" onclick="exportFinanzasPDF()">⬇ Descargar PDF</button>
       </div>
     </div>
     <div style="overflow-x:auto">
@@ -1581,6 +1592,22 @@
     <div class="page-desc">Calificación semanal y mensual del equipo. Puntajes por categoría del 1 al 5.</div>
   </div>
   <div class="page-content">
+
+    <!-- MÉTRICAS VISUALES -->
+    <div class="rend-metrics-section">
+      <div class="rend-metrics-header">
+        <div class="section-title" style="margin-bottom:0">📊 Métricas del mes</div>
+        <select class="seg-select" id="metrics-mes-filter" onchange="renderMetrics()">
+          <option value="">Seleccioná un mes...</option>
+        </select>
+      </div>
+      <div id="rend-metrics-content">
+        <div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">Seleccioná un mes para ver las métricas</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
     <div class="rend-toolbar">
       <div class="rend-filters">
         <select class="seg-select" id="rend-empleado-filter" onchange="renderRendimiento()">
@@ -1599,7 +1626,10 @@
           <option value="">Todos los meses</option>
         </select>
       </div>
-      <button class="seg-new-btn" onclick="openRendModal()">+ Nueva calificación</button>
+      <div style="display:flex;gap:8px">
+        <button class="seg-new-btn" onclick="openRendModal()">+ Nueva calificación</button>
+        <button class="btn-pdf" onclick="exportRendimientoPDF()">⬇ Descargar PDF</button>
+      </div>
     </div>
     <div id="rend-container"><div class="rend-loading">⏳ Cargando calificaciones...</div></div>
   </div>
@@ -3592,6 +3622,197 @@
     const cur = sel.value;
     sel.innerHTML = '<option value="">Todos los meses</option>' +
       meses.map(m => `<option value="${m}" ${m===cur?'selected':''}>${m}</option>`).join('');
+
+    // También poblar el filtro de métricas
+    const mSel = document.getElementById('metrics-mes-filter');
+    if (mSel) {
+      const curM = mSel.value;
+      mSel.innerHTML = '<option value="">Seleccioná un mes...</option>' +
+        meses.map(m => `<option value="${m}" ${m===curM?'selected':''}>${m}</option>`).join('');
+    }
+  }
+
+  const EMP_COLORS = {
+    'Lourdes': '#16a34a', 'Enzo': '#d97706', 'Brunela': '#dc2626', 'Facundo': '#2563eb'
+  };
+
+  function scoreColor(v) {
+    return v >= 4.5 ? '#16a34a' : v >= 3.5 ? '#22c55e' : v >= 2.5 ? '#d97706' : v >= 1.5 ? '#f97316' : '#dc2626';
+  }
+
+  function drawPie(canvasId, data) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const cx = canvas.width / 2, cy = canvas.height / 2, r = Math.min(cx, cy) - 6;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const total = data.reduce((s, d) => s + d.val, 0);
+    if (!total) return;
+    let angle = -Math.PI / 2;
+    data.forEach(d => {
+      const slice = (d.val / total) * 2 * Math.PI;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, angle, angle + slice);
+      ctx.closePath();
+      ctx.fillStyle = d.color;
+      ctx.fill();
+      angle += slice;
+    });
+    // donut hole
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.55, 0, 2 * Math.PI);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim() || '#fff';
+    ctx.fill();
+  }
+
+  function renderMetrics() {
+    const mes = document.getElementById('metrics-mes-filter')?.value || '';
+    const container = document.getElementById('rend-metrics-content');
+    if (!container) return;
+
+    if (!mes) {
+      container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">Seleccioná un mes para ver las métricas</div>';
+      return;
+    }
+
+    const data = allRendimiento.filter(r => r.mes === mes);
+    if (!data.length) {
+      container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">No hay calificaciones para este mes.</div>';
+      return;
+    }
+
+    // Agrupar por empleado — promedio de todas sus entradas del mes
+    const empleados = [...new Set(data.map(r => r.empleado))];
+    const empData = empleados.map(emp => {
+      const rows = data.filter(r => r.empleado === emp);
+      const avg = rows.reduce((s, r) => {
+        const v = r.puntaje_total || ((r.proactividad+r.creatividad+r.responsabilidad+r.comunicacion+r.resolucion)/5);
+        return s + v;
+      }, 0) / rows.length;
+      return { emp, avg: Math.round(avg * 10) / 10, rows, color: EMP_COLORS[emp] || '#6366f1' };
+    }).sort((a, b) => b.avg - a.avg);
+
+    // ---- GENERAL: barras + torta ----
+    const barras = empData.map(e => `
+      <div class="metrics-emp-row">
+        <div class="metrics-emp-name">${e.emp}</div>
+        <div class="metrics-bar-track">
+          <div class="metrics-bar-fill" style="width:${(e.avg/5)*100}%;background:${e.color}"></div>
+        </div>
+        <div class="metrics-emp-score" style="color:${scoreColor(e.avg)}">${e.avg}</div>
+      </div>`).join('');
+
+    const pieId = 'metrics-pie-general';
+    const totalAvg = empData.reduce((s,e) => s + e.avg, 0);
+    const legend = empData.map(e => {
+      const pct = totalAvg > 0 ? Math.round((e.avg / totalAvg) * 100) : 0;
+      return `
+      <div class="metrics-pie-legend-item">
+        <div class="metrics-pie-dot" style="background:${e.color}"></div>
+        <div class="metrics-pie-label">${e.emp}</div>
+        <div class="metrics-pie-val">${e.avg}/5 · ${pct}%</div>
+      </div>`;
+    }).join('');
+
+    // ---- INDIVIDUAL: barras por semana + mini torta ----
+    const individuales = empData.map((e, idx) => {
+      const semanas = e.rows.filter(r => r.tipo === 'semana').sort((a,b) => (a.semana||'').localeCompare(b.semana||''));
+      const mensual = e.rows.find(r => r.tipo === 'mes');
+      const max = 5;
+      const semBars = semanas.length
+        ? semanas.map(r => {
+            const v = r.puntaje_total || ((r.proactividad+r.creatividad+r.responsabilidad+r.comunicacion+r.resolucion)/5);
+            const vr = Math.round(v * 10) / 10;
+            const h = Math.round((v / max) * 64);
+            return `<div class="metrics-sem-group">
+              <div class="metrics-sem-val" style="color:${scoreColor(v)}">${vr}</div>
+              <div class="metrics-sem-bar" style="height:${h}px;background:${e.color};opacity:0.85"></div>
+              <div class="metrics-sem-label">${(r.semana||'').replace('Semana ','S')}</div>
+            </div>`;
+          }).join('')
+        : '<div style="font-size:11px;color:var(--text3);margin:auto">Sin datos semanales</div>';
+
+      const pieCatId = `metrics-pie-${idx}`;
+      const cats = [
+        { label: 'Proact.', val: e.rows.reduce((s,r)=>s+r.proactividad,0)/e.rows.length },
+        { label: 'Creativ.', val: e.rows.reduce((s,r)=>s+r.creatividad,0)/e.rows.length },
+        { label: 'Respons.', val: e.rows.reduce((s,r)=>s+r.responsabilidad,0)/e.rows.length },
+        { label: 'Comunic.', val: e.rows.reduce((s,r)=>s+r.comunicacion,0)/e.rows.length },
+        { label: 'Resoluc.', val: e.rows.reduce((s,r)=>s+r.resolucion,0)/e.rows.length },
+      ];
+      const catColors = ['#f5620a','#2563eb','#16a34a','#d97706','#8b5cf6'];
+      const catTotal = cats.reduce((s,c) => s + c.val, 0);
+      const catLegend = cats.map((c,i) => {
+        const pct = catTotal > 0 ? Math.round((c.val / catTotal) * 100) : 0;
+        return `
+        <div class="metrics-pie-legend-item">
+          <div class="metrics-pie-dot" style="background:${catColors[i]}"></div>
+          <div class="metrics-pie-label">${c.label}</div>
+          <div class="metrics-pie-val">${Math.round(c.val*10)/10} · ${pct}%</div>
+        </div>`;
+      }).join('');
+
+      const mensualBadge = mensual
+        ? `<span style="font-size:11px;background:var(--orange-light);color:var(--orange);padding:2px 8px;border-radius:999px;font-weight:700;margin-left:8px">📆 Mensual: ${Math.round((mensual.puntaje_total||((mensual.proactividad+mensual.creatividad+mensual.responsabilidad+mensual.comunicacion+mensual.resolucion)/5))*10)/10}</span>`
+        : '';
+
+      return `<div class="metrics-ind-card">
+        <div class="metrics-ind-header">
+          <div>
+            <div class="metrics-ind-name">${e.emp}${mensualBadge}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">${semanas.length} semana${semanas.length!==1?'s':''} registrada${semanas.length!==1?'s':''}</div>
+          </div>
+          <div class="metrics-ind-avg" style="color:${scoreColor(e.avg)}">${e.avg}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 160px;gap:14px;align-items:end">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Semanas</div>
+            <div class="metrics-semanas">${semBars}</div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Por categoría</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <canvas id="${pieCatId}" width="70" height="70"></canvas>
+              <div class="metrics-pie-legend">${catLegend}</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="metrics-general">
+        <div class="metrics-bars-box">
+          <div class="metrics-box-title">🏆 Promedio del equipo — ${mes}</div>
+          <div class="metrics-emp-bars">${barras}</div>
+        </div>
+        <div class="metrics-pie-box">
+          <div class="metrics-box-title">🥧 Distribución</div>
+          <div style="display:flex;align-items:center;gap:14px">
+            <canvas id="${pieId}" width="100" height="100"></canvas>
+            <div class="metrics-pie-legend">${legend}</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">👤 Detalle por empleado</div>
+      <div class="metrics-individual">${individuales}</div>`;
+
+    // Dibujar tortas después de que el DOM esté listo
+    requestAnimationFrame(() => {
+      drawPie(pieId, empData.map(e => ({ val: e.avg, color: e.color })));
+      empData.forEach((e, idx) => {
+        const cats = [
+          e.rows.reduce((s,r)=>s+r.proactividad,0)/e.rows.length,
+          e.rows.reduce((s,r)=>s+r.creatividad,0)/e.rows.length,
+          e.rows.reduce((s,r)=>s+r.responsabilidad,0)/e.rows.length,
+          e.rows.reduce((s,r)=>s+r.comunicacion,0)/e.rows.length,
+          e.rows.reduce((s,r)=>s+r.resolucion,0)/e.rows.length,
+        ];
+        const catColors = ['#f5620a','#2563eb','#16a34a','#d97706','#8b5cf6'];
+        drawPie(`metrics-pie-${idx}`, cats.map((v,i) => ({ val: v, color: catColors[i] })));
+      });
+    });
   }
 
   async function loadRendimiento() {
@@ -3822,7 +4043,6 @@
     loadAllComments();
     if (currentUser && currentUser.username === 'bautista') {
       initClapDetection();
-      initJarvisAssistant();
     }
   }
 
@@ -3944,119 +4164,241 @@
     } catch(e) { console.log('Micrófono no disponible:', e); }
   }
 
-  // ============ JARVIS VOICE ASSISTANT ============
-  const GEMINI_KEY = 'AIzaSyAhJma-LT2eCQ3oks8qsHVSwO5ogLgprt4';
-  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
+  // ============ PDF EXPORT ============
+  function exportFinanzasPDF() {
+    const ingresos = document.getElementById('fin-total-ingresos')?.textContent || '$0';
+    const gastos = document.getElementById('fin-total-gastos')?.textContent || '$0';
+    const neto = document.getElementById('fin-neto')?.textContent || '$0';
+    const mes = document.getElementById('fin-mes-filter')?.value || 'Todos los meses';
+    const filas = [...document.querySelectorAll('#fin-tbody tr')].map(tr => {
+      const celdas = [...tr.querySelectorAll('td')];
+      if (celdas.length < 7) return '';
+      const tipo = celdas[0]?.textContent?.trim();
+      const concepto = celdas[1]?.textContent?.trim();
+      const cat = celdas[2]?.textContent?.trim();
+      const mesF = celdas[3]?.textContent?.trim();
+      const fecha = celdas[4]?.textContent?.trim();
+      const monto = celdas[5]?.textContent?.trim();
+      const estado = celdas[6]?.textContent?.trim();
+      const color = tipo === 'INGRESO' ? '#16a34a' : '#dc2626';
+      return `<tr style="border-bottom:1px solid #e5e5e5">
+        <td style="padding:8px 10px;color:${color};font-weight:700;font-size:11px">${tipo}</td>
+        <td style="padding:8px 10px">${concepto}</td>
+        <td style="padding:8px 10px;color:#6b6b65">${cat}</td>
+        <td style="padding:8px 10px;color:#6b6b65">${mesF}</td>
+        <td style="padding:8px 10px;color:#6b6b65">${fecha}</td>
+        <td style="padding:8px 10px;font-weight:700;color:${color}">${monto}</td>
+        <td style="padding:8px 10px"><span style="background:${estado==='Pagado'?'#f0fdf4':'#fffbeb'};color:${estado==='Pagado'?'#16a34a':'#d97706'};padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700">${estado}</span></td>
+      </tr>`;
+    }).join('');
 
-  let jarvisRecognition = null;
-  let jarvisIsListening = false;
-  let jarvisSpeaking = false;
-  let bubbleTimeout = null;
-
-  function getPageContext() {
-    const tareas = allTasks || [];
-    const ideas = allIdeas || [];
-    const creativas = allCreativas || [];
-    const pendientes = tareas.filter(t => t.estado !== 'hecho').length;
-    const hechas = tareas.filter(t => t.estado === 'hecho').length;
-    return `Sos J.A.R.V.I.S., el asistente de inteligencia artificial de Bautista, fundador de Balodi Marketing en Rosario, Argentina. Hablás en español rioplatense, sos directo, inteligente y levemente irónico. Respondés SIEMPRE en menos de 3 oraciones, corto y al punto. Sin markdown, sin asteriscos, texto limpio para voz.
-
-Contexto actual del sistema:
-- Tareas pendientes: ${pendientes}
-- Tareas completadas: ${hechas}
-- Ideas en el banco: ${ideas.length}
-- Ideas creativas: ${creativas.length}
-- Clientes activos: Tarjeta Primicia, Mutual Entre Asociados, Capilar Vibes, Hielo Rosario, Donatelli, MMAPantera, Murad
-- Tareas recientes: ${tareas.slice(0,5).map(t => `"${t.tarea}" (${t.estado})`).join(', ')}`;
+    const html = `
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;padding:40px;max-width:900px;margin:0 auto;color:#141414">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #f5620a">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:4px">Balodi Marketing</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:#141414">Reporte de Finanzas</div>
+            <div style="font-size:12px;color:#6b6b65;margin-top:4px">${mes !== '' ? mes : 'Todos los períodos'} · Generado el ${new Date().toLocaleDateString('es-AR')}</div>
+          </div>
+          <div style="font-size:32px">📊</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 20px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#16a34a;margin-bottom:4px">💰 Ingresos</div>
+            <div style="font-size:28px;font-weight:800;color:#16a34a">${ingresos}</div>
+          </div>
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:16px 20px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#dc2626;margin-bottom:4px">📤 Gastos</div>
+            <div style="font-size:28px;font-weight:800;color:#dc2626">${gastos}</div>
+          </div>
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px 20px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#2563eb;margin-bottom:4px">📊 Resultado neto</div>
+            <div style="font-size:28px;font-weight:800;color:#2563eb">${neto}</div>
+          </div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:#f5f5f0">
+              <th style="padding:10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a8a89e;border-bottom:1px solid #e5e5e5">Tipo</th>
+              <th style="padding:10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a8a89e;border-bottom:1px solid #e5e5e5">Concepto</th>
+              <th style="padding:10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a8a89e;border-bottom:1px solid #e5e5e5">Categoría</th>
+              <th style="padding:10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a8a89e;border-bottom:1px solid #e5e5e5">Mes</th>
+              <th style="padding:10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a8a89e;border-bottom:1px solid #e5e5e5">Fecha</th>
+              <th style="padding:10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a8a89e;border-bottom:1px solid #e5e5e5">Monto</th>
+              <th style="padding:10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#a8a89e;border-bottom:1px solid #e5e5e5">Estado</th>
+            </tr>
+          </thead>
+          <tbody>${filas}</tbody>
+        </table>
+        <div style="margin-top:32px;font-size:11px;color:#a8a89e;text-align:center">Balodi Sistema Operativo · Documento confidencial · Solo para uso interno</div>
+      </div>`;
+    abrirVentanaPDF(html, 'Balodi_Finanzas');
   }
 
-  function setJarvisState(state) {
-    const btn = document.getElementById('jarvis-btn');
-    const icon = document.getElementById('jarvis-btn-icon');
-    if (!btn) return;
-    btn.className = 'jarvis-btn';
-    if (state === 'listening') { btn.classList.add('listening'); icon.textContent = '🔴'; }
-    else if (state === 'thinking') { btn.classList.add('thinking'); icon.textContent = '💭'; }
-    else if (state === 'speaking') { btn.classList.add('speaking'); icon.textContent = '🔊'; }
-    else { icon.textContent = '🎙️'; }
-  }
+  function exportRendimientoPDF() {
+    const empleadoF = document.getElementById('rend-empleado-filter')?.value || '';
+    const tipoF = document.getElementById('rend-tipo-filter')?.value || '';
+    const mesF = document.getElementById('rend-mes-filter')?.value || '';
+    const metricsMes = document.getElementById('metrics-mes-filter')?.value || '';
 
-  function showBubble(type, text) {
-    if (type === 'user') {
-      document.getElementById('jarvis-user-text').textContent = text;
-      document.getElementById('jarvis-user-bubble').style.display = 'block';
-    } else {
-      document.getElementById('jarvis-reply-text').textContent = text;
-      document.getElementById('jarvis-reply-bubble').style.display = 'block';
+    let data = [...allRendimiento];
+    if (empleadoF) data = data.filter(r => r.empleado === empleadoF);
+    if (tipoF) data = data.filter(r => r.tipo === tipoF);
+    if (mesF) data = data.filter(r => r.mes === mesF);
+    if (!data.length) { alert('No hay calificaciones para mostrar con los filtros actuales.'); return; }
+
+    const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
+
+    // ---- Capturar gráficos si hay métricas visibles ----
+    let metricsSection = '';
+    if (metricsMes) {
+      const pieGeneral = document.getElementById('metrics-pie-general');
+      const pieImg = pieGeneral ? `<img src="${pieGeneral.toDataURL()}" style="width:100px;height:100px">` : '';
+      const metData = allRendimiento.filter(r => r.mes === metricsMes);
+      const empleados = [...new Set(metData.map(r => r.empleado))];
+      const empData = empleados.map(emp => {
+        const rows = metData.filter(r => r.empleado === emp);
+        const avg = rows.reduce((s,r) => s + (r.puntaje_total||((r.proactividad+r.creatividad+r.responsabilidad+r.comunicacion+r.resolucion)/5)),0) / rows.length;
+        return { emp, avg: Math.round(avg*10)/10, rows, color: EMP_COLORS[emp]||'#6366f1' };
+      }).sort((a,b) => b.avg - a.avg);
+      const totalAvg = empData.reduce((s,e) => s+e.avg, 0);
+      const barrasHtml = empData.map(e => {
+        const pct = totalAvg > 0 ? Math.round((e.avg/totalAvg)*100) : 0;
+        const sc = e.avg >= 4 ? '#16a34a' : e.avg >= 3 ? '#d97706' : '#dc2626';
+        return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="font-size:12px;font-weight:700;color:#141414;min-width:70px">${e.emp}</div>
+          <div style="flex:1;height:10px;background:#f0efe9;border-radius:999px;overflow:hidden">
+            <div style="height:100%;width:${(e.avg/5)*100}%;background:${e.color};border-radius:999px"></div>
+          </div>
+          <div style="font-size:12px;font-weight:800;color:${sc};min-width:60px;text-align:right">${e.avg} · ${pct}%</div>
+        </div>`;
+      }).join('');
+      const indCards = empData.map((e, idx) => {
+        const semanas = e.rows.filter(r => r.tipo === 'semana').sort((a,b) => (a.semana||'').localeCompare(b.semana||''));
+        const mensual = e.rows.find(r => r.tipo === 'mes');
+        const semBarras = semanas.map(r => {
+          const v = r.puntaje_total||((r.proactividad+r.creatividad+r.responsabilidad+r.comunicacion+r.resolucion)/5);
+          const vr = Math.round(v*10)/10;
+          const sc2 = v >= 4 ? '#16a34a' : v >= 3 ? '#d97706' : '#dc2626';
+          return `<div style="text-align:center;flex:1">
+            <div style="font-size:11px;font-weight:800;color:${sc2};margin-bottom:3px">${vr}</div>
+            <div style="height:40px;background:${e.color};opacity:0.8;border-radius:4px 4px 0 0;margin:0 2px"></div>
+            <div style="font-size:9px;color:#a8a89e;margin-top:3px">${(r.semana||'').replace('Semana ','S')}</div>
+          </div>`;
+        }).join('');
+        const pieCatCanvas = document.getElementById(`metrics-pie-${idx}`);
+        const pieCatImg = pieCatCanvas ? `<img src="${pieCatCanvas.toDataURL()}" style="width:70px;height:70px">` : '';
+        const cats = [
+          { label: 'Proact.', val: e.rows.reduce((s,r)=>s+r.proactividad,0)/e.rows.length },
+          { label: 'Creativ.', val: e.rows.reduce((s,r)=>s+r.creatividad,0)/e.rows.length },
+          { label: 'Respons.', val: e.rows.reduce((s,r)=>s+r.responsabilidad,0)/e.rows.length },
+          { label: 'Comunic.', val: e.rows.reduce((s,r)=>s+r.comunicacion,0)/e.rows.length },
+          { label: 'Resoluc.', val: e.rows.reduce((s,r)=>s+r.resolucion,0)/e.rows.length },
+        ];
+        const catColors = ['#f5620a','#2563eb','#16a34a','#d97706','#8b5cf6'];
+        const catTotal = cats.reduce((s,c)=>s+c.val,0);
+        const catLeg = cats.map((c,i) => {
+          const pct = catTotal > 0 ? Math.round((c.val/catTotal)*100) : 0;
+          return `<div style="display:flex;align-items:center;gap:5px;font-size:10px;margin-bottom:3px">
+            <div style="width:7px;height:7px;border-radius:50%;background:${catColors[i]};flex-shrink:0"></div>
+            <div style="flex:1;font-weight:600;color:#141414">${c.label}</div>
+            <div style="color:#6b6b65;font-weight:700">${Math.round(c.val*10)/10} · ${pct}%</div>
+          </div>`;
+        }).join('');
+        const mensualBadge = mensual ? ` · 📆 ${Math.round((mensual.puntaje_total||((mensual.proactividad+mensual.creatividad+mensual.responsabilidad+mensual.comunicacion+mensual.resolucion)/5))*10)/10}` : '';
+        const sc3 = e.avg >= 4 ? '#16a34a' : e.avg >= 3 ? '#d97706' : '#dc2626';
+        return `<div style="background:white;border:1px solid #e5e5e5;border-radius:12px;padding:18px;break-inside:avoid;margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e5e5e5">
+            <div><div style="font-size:15px;font-weight:700;color:#141414">${e.emp}${mensualBadge}</div>
+            <div style="font-size:11px;color:#a8a89e;margin-top:2px">${semanas.length} semana${semanas.length!==1?'s':''} · ${metricsMes}</div></div>
+            <div style="font-size:26px;font-weight:800;color:${sc3}">${e.avg}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 180px;gap:14px;align-items:end">
+            <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e;margin-bottom:6px">Semanas</div>
+            <div style="display:flex;align-items:flex-end;gap:0;height:60px">${semBarras}</div></div>
+            <div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e;margin-bottom:6px">Por categoría</div>
+            <div style="display:flex;align-items:center;gap:8px">${pieCatImg}<div>${catLeg}</div></div></div>
+          </div>
+        </div>`;
+      }).join('');
+      metricsSection = `
+        <div style="margin-bottom:28px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:12px">📊 Métricas — ${metricsMes}</div>
+          <div style="display:grid;grid-template-columns:1fr 200px;gap:16px;margin-bottom:20px">
+            <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:18px">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e;margin-bottom:12px">🏆 Promedio del equipo</div>
+              ${barrasHtml}
+            </div>
+            <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e">🥧 Distribución</div>
+              ${pieImg}
+            </div>
+          </div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e;margin-bottom:10px">👤 Detalle por empleado</div>
+          ${indCards}
+        </div>
+        <div style="height:1px;background:#e5e5e5;margin-bottom:24px"></div>`;
     }
-    if (bubbleTimeout) clearTimeout(bubbleTimeout);
-    bubbleTimeout = setTimeout(() => {
-      document.getElementById('jarvis-user-bubble').style.display = 'none';
-      document.getElementById('jarvis-reply-bubble').style.display = 'none';
-    }, 10000);
+
+    const bloques = data.map(r => {
+      const avg = r.puntaje_total || ((r.proactividad + r.creatividad + r.responsabilidad + r.comunicacion + r.resolucion) / 5);
+      const avgRound = Math.round(avg * 10) / 10;
+      const sc = avg >= 4 ? '#16a34a' : avg >= 3 ? '#d97706' : '#dc2626';
+      const tipo = r.tipo === 'semana' ? `📅 ${r.semana || 'Semanal'}` : '📆 Mensual';
+      const cats = [
+        { label: 'Proactividad', val: r.proactividad },
+        { label: 'Creatividad', val: r.creatividad },
+        { label: 'Responsabilidad', val: r.responsabilidad },
+        { label: 'Comunicación', val: r.comunicacion },
+        { label: 'Resolución', val: r.resolucion },
+      ];
+      const catsHtml = cats.map(c => {
+        const c2 = c.val >= 4.5 ? '#16a34a' : c.val >= 3.5 ? '#22c55e' : c.val >= 2.5 ? '#d97706' : c.val >= 1.5 ? '#f97316' : '#dc2626';
+        return `<div style="text-align:center;background:#f5f5f0;border-radius:8px;padding:10px 6px">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a8a89e;margin-bottom:4px">${c.label}</div>
+          <div style="font-size:22px;font-weight:800;color:${c2}">${c.val}</div>
+          <div style="font-size:10px;color:#d97706">${stars(c.val)}</div>
+        </div>`;
+      }).join('');
+      return `<div style="background:white;border:1px solid #e5e5e5;border-radius:14px;padding:22px;margin-bottom:16px;break-inside:avoid">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #e5e5e5">
+            <div style="width:48px;height:48px;border-radius:50%;background:#fff8e6;border:1px solid #fde68a;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#b45309;flex-shrink:0">${r.empleado.slice(0,2).toUpperCase()}</div>
+            <div style="flex:1"><div style="font-size:17px;font-weight:700;color:#141414">${r.empleado}</div>
+            <div style="font-size:12px;color:#a8a89e;margin-top:2px">${r.mes || ''} · ${tipo}</div></div>
+            <div style="font-size:30px;font-weight:800;color:${sc}">${avgRound}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:${r.comentario ? '14px' : '0'}">${catsHtml}</div>
+          ${r.comentario ? `<div style="background:#fff4ee;border:1px solid rgba(245,98,10,0.2);border-radius:8px;padding:10px 14px;font-size:12px;color:#7c2d12;font-style:italic">"${r.comentario}"</div>` : ''}
+        </div>`;
+    }).join('');
+
+    const html = `
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;padding:40px;max-width:900px;margin:0 auto;color:#141414">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #f5620a">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:4px">Balodi Marketing</div>
+            <div style="font-size:26px;font-weight:800;color:#141414">Reporte de Rendimiento</div>
+            <div style="font-size:12px;color:#6b6b65;margin-top:4px">${empleadoF || 'Todo el equipo'} · ${mesF || 'Todos los períodos'} · Generado el ${new Date().toLocaleDateString('es-AR')}</div>
+          </div>
+          <div style="font-size:32px">👥</div>
+        </div>
+        ${metricsSection}
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#a8a89e;margin-bottom:16px">Registros detallados</div>
+        ${bloques}
+        <div style="margin-top:32px;font-size:11px;color:#a8a89e;text-align:center">Balodi Sistema Operativo · Documento confidencial · Solo para uso interno</div>
+      </div>`;
+    abrirVentanaPDF(html, 'Balodi_Rendimiento');
   }
 
-  async function askGemini(question) {
-    setJarvisState('thinking');
-    try {
-      const res = await fetch(GEMINI_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: getPageContext() + '\n\nPregunta de Bautista: ' + question }] }] })
-      });
-      const data = await res.json();
-      console.log('Gemini response:', JSON.stringify(data));
-      if (data.error) return 'Error de Gemini: ' + data.error.message;
-      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sin respuesta del servidor.';
-      return reply.replace(/\*+/g, '').trim();
-    } catch(e) { console.error('Gemini error:', e); return 'Hay un problema de conexión con los servidores, señor.'; }
-  }
-
-  function speakReply(text) {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'es-AR';
-    utter.rate = 1.05;
-    utter.pitch = 0.85;
-    utter.volume = 1;
-    const voices = window.speechSynthesis.getVoices();
-    const esVoice = voices.find(v => v.lang.startsWith('es')) || null;
-    if (esVoice) utter.voice = esVoice;
-    utter.onstart = () => { setJarvisState('speaking'); jarvisSpeaking = true; };
-    utter.onend = () => { setJarvisState('idle'); jarvisSpeaking = false; };
-    window.speechSynthesis.speak(utter);
-  }
-
-  function toggleJarvisListen() {
-    if (jarvisSpeaking) { window.speechSynthesis.cancel(); setJarvisState('idle'); return; }
-    if (jarvisIsListening) { jarvisRecognition?.stop(); return; }
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Tu navegador no soporta reconocimiento de voz. Usá Chrome.');
-      return;
-    }
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    jarvisRecognition = new SR();
-    jarvisRecognition.lang = 'es-AR';
-    jarvisRecognition.continuous = false;
-    jarvisRecognition.interimResults = false;
-    jarvisRecognition.onstart = () => { jarvisIsListening = true; setJarvisState('listening'); };
-    jarvisRecognition.onend = () => { jarvisIsListening = false; };
-    jarvisRecognition.onresult = async (e) => {
-      const question = e.results[0][0].transcript;
-      showBubble('user', question);
-      const reply = await askGemini(question);
-      showBubble('reply', reply);
-      speakReply(reply);
-    };
-    jarvisRecognition.onerror = () => { setJarvisState('idle'); jarvisIsListening = false; };
-    jarvisRecognition.start();
-  }
-
-  function initJarvisAssistant() {
-    document.getElementById('jarvis-assistant').classList.add('visible');
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  function abrirVentanaPDF(html, nombre) {
+    const ventana = window.open('', '_blank');
+    ventana.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${nombre}</title>
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+      <style>body{margin:0;background:white} @media print{@page{margin:15mm}}</style>
+      </head><body>${html}
+      <script>window.onload=function(){window.print();}<\/script>
+      </body></html>`);
+    ventana.document.close();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
