@@ -286,7 +286,30 @@
   .tasks-loading { text-align: center; padding: 32px; color: var(--text3); font-size: 13px; }
   .tasks-error { text-align: center; padding: 32px; color: var(--red); font-size: 13px; background: var(--red-light); border-radius: 10px; border: 1px solid #fecaca; }
 
-  /* TASK FORM MODAL */
+  .task-venc { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .venc-ok { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+  .venc-hoy { background: var(--amber-light); color: var(--amber); border: 1px solid #fde68a; }
+  .venc-vencida { background: var(--red-light); color: var(--red); border: 1px solid #fecaca; }
+  .task-card.vencida { border-left: 3px solid var(--red); }
+  .task-card.vence-hoy { border-left: 3px solid var(--amber); }
+
+  /* COMENTARIOS */
+  .task-comments-btn { background: none; border: none; color: var(--text3); font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.15s; display: flex; align-items: center; gap: 4px; margin-top: 6px; }
+  .task-comments-btn:hover { background: var(--bg4); color: var(--text); }
+  .task-comments-area { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; display: none; }
+  .task-comments-area.open { display: block; }
+  .comment-item { display: flex; gap: 8px; margin-bottom: 8px; }
+  .comment-avatar { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; flex-shrink: 0; margin-top: 1px; }
+  .comment-bubble { background: var(--bg4); border-radius: 0 8px 8px 8px; padding: 7px 10px; flex: 1; }
+  .comment-autor { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .comment-text { font-size: 12.5px; color: var(--text2); line-height: 1.5; }
+  .comment-fecha { font-size: 10px; color: var(--text3); margin-top: 3px; }
+  .comment-input-row { display: flex; gap: 8px; margin-top: 8px; }
+  .comment-input { flex: 1; background: var(--bg4); border: 1.5px solid var(--border2); border-radius: 8px; padding: 7px 10px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 12.5px; color: var(--text); outline: none; transition: border-color 0.15s; }
+  .comment-input:focus { border-color: var(--orange); }
+  .comment-send { background: var(--orange); color: white; border: none; border-radius: 8px; padding: 7px 14px; font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .comment-send:hover { background: var(--orange2); }
+  .comments-loading { font-size: 12px; color: var(--text3); padding: 6px 0; }
   .task-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 400; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
   .task-modal-overlay.open { display: flex; }
   .task-modal { background: white; border-radius: 20px; padding: 28px 32px; width: 100%; max-width: 480px; margin: 20px; box-shadow: var(--shadow-lg); animation: fadeUp 0.2s ease; }
@@ -378,8 +401,276 @@
   .dash-quick-box { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; box-shadow: var(--shadow-sm); }
   .dash-quick-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
 
-  /* SEGUIMIENTO PRIVADO */
+  /* ESTRATEGIA */
+  .est-tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--bg4); border-radius: 12px; padding: 4px; }
+  .est-tab { flex: 1; padding: 9px 12px; border-radius: 8px; border: none; background: none; font-family: "Outfit", sans-serif; font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all 0.15s; text-align: center; }
+  .est-tab.active { background: var(--bg2); color: var(--orange); box-shadow: var(--shadow-sm); }
+  .est-section { display: none; }
+  .est-section.active { display: block; }
+
+  /* PIPELINE */
+  .pipe-kanban { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+  .pipe-col { background: var(--bg4); border-radius: 12px; padding: 12px; min-height: 120px; }
+  .pipe-col-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .pipe-col-count { background: var(--bg2); border-radius: 999px; padding: 1px 7px; font-size: 10px; font-weight: 800; }
+  .pipe-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; box-shadow: var(--shadow-sm); cursor: default; }
+  .pipe-card-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .pipe-card-servicio { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
+  .pipe-card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .pipe-card-valor { font-size: 11px; font-weight: 700; color: var(--green); }
+  .pipe-card-fecha { font-size: 10px; color: var(--text3); }
+  .pipe-contactado { border-top: 3px solid var(--blue); }
+  .pipe-reunion { border-top: 3px solid var(--amber); }
+  .pipe-propuesta { border-top: 3px solid var(--orange); }
+  .pipe-cerrado { border-top: 3px solid var(--green); }
+  .pipe-col-contactado .pipe-col-title { color: var(--blue); }
+  .pipe-col-reunion .pipe-col-title { color: var(--amber); }
+  .pipe-col-propuesta .pipe-col-title { color: var(--orange); }
+  .pipe-col-cerrado .pipe-col-title { color: var(--green); }
+  .pipe-table { width: 100%; border-collapse: collapse; background: var(--bg2); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-top: 20px; }
+  .pipe-table th { background: var(--bg4); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  .pipe-table td { padding: 11px 14px; font-size: 13px; color: var(--text2); border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .pipe-table tr:last-child td { border-bottom: none; }
+  .pipe-table tr:hover td { background: var(--bg3); }
+  .pipe-estado { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .pipe-estado-contactado { background: var(--blue-light); color: var(--blue); border: 1px solid #bfdbfe; }
+  .pipe-estado-reunion { background: var(--amber-light); color: var(--amber); border: 1px solid #fde68a; }
+  .pipe-estado-propuesta { background: var(--orange-light); color: var(--orange); border: 1px solid var(--orange-border); }
+  .pipe-estado-cerrado { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+
+  /* DECISIONES */
+  .dec-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 12px; box-shadow: var(--shadow-sm); border-left: 4px solid var(--orange); }
+  .dec-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .dec-titulo { font-family: "Outfit", sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
+  .dec-meta { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 500; }
+  .dec-decision { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .dec-razonamiento { font-size: 13px; color: var(--text2); line-height: 1.6; font-style: italic; }
+
+  /* OBJETIVOS ANUALES */
+  .obj-anual-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+  .obj-anual-num { font-family: "Outfit", sans-serif; font-size: 32px; font-weight: 800; color: var(--orange); margin-bottom: 4px; }
+  .obj-anual-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .obj-anual-desc { font-size: 12px; color: var(--text3); line-height: 1.5; }
+  .obj-anual-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+
+  /* MODALES ESTRATEGIA */
+  .est-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 400; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .est-modal-overlay.open { display: flex; }
+  .est-modal { background: white; border-radius: 20px; padding: 28px 32px; width: 100%; max-width: 500px; margin: 20px; box-shadow: var(--shadow-lg); animation: fadeUp 0.2s ease; max-height: 90vh; overflow-y: auto; }
+  body.dark .est-modal { background: var(--bg2); }
+  .est-modal-title { font-family: "Outfit", sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+  @media (max-width: 768px) { .pipe-kanban { grid-template-columns: 1fr 1fr; } .obj-anual-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .pipe-kanban { grid-template-columns: 1fr; } .obj-anual-grid { grid-template-columns: 1fr; } }
+  .rend-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+  .rend-filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .rend-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 14px; }
+  .rend-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg3); }
+  .rend-name { font-family: "Outfit", sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+  .rend-meta { font-size: 11px; color: var(--text3); margin-top: 2px; font-weight: 500; }
+  .rend-score-pill { margin-left: auto; font-family: "Outfit", sans-serif; font-size: 22px; font-weight: 800; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .rend-score-pill.high { background: var(--green-light); color: var(--green); border: 2px solid #bbf7d0; }
+  .rend-score-pill.mid { background: var(--amber-light); color: var(--amber); border: 2px solid #fde68a; }
+  .rend-score-pill.low { background: var(--red-light); color: var(--red); border: 2px solid #fecaca; }
+  .rend-body { padding: 16px 20px; }
+  .rend-cats { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-bottom: 14px; }
+  .rend-cat { background: var(--bg4); border-radius: 10px; padding: 10px 6px; text-align: center; }
+  .rend-cat-label { font-size: 9px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .rend-cat-val { font-family: "Outfit", sans-serif; font-size: 22px; font-weight: 800; }
+  .rend-cat-val.s5 { color: var(--green); }
+  .rend-cat-val.s4 { color: #22c55e; }
+  .rend-cat-val.s3 { color: var(--amber); }
+  .rend-cat-val.s2 { color: #f97316; }
+  .rend-cat-val.s1 { color: var(--red); }
+  .rend-stars { display: flex; gap: 2px; justify-content: center; margin-top: 3px; }
+  .rend-star { font-size: 8px; }
+  .rend-comentario { background: var(--bg4); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--text2); font-style: italic; line-height: 1.5; margin-top: 2px; }
+  .rend-tipo-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .rend-tipo-semana { background: var(--blue-light); color: var(--blue); border: 1px solid #bfdbfe; }
+  .rend-tipo-mes { background: var(--orange-light); color: var(--orange); border: 1px solid var(--orange-border); }
+  .rend-empty { text-align: center; padding: 56px 20px; color: var(--text3); font-size: 13px; }
+  .rend-loading { text-align: center; padding: 32px; color: var(--text3); font-size: 13px; }
+  .rend-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 400; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .rend-modal-overlay.open { display: flex; }
+  .rend-modal { background: white; border-radius: 20px; padding: 28px 32px; width: 100%; max-width: 520px; margin: 20px; box-shadow: var(--shadow-lg); animation: fadeUp 0.2s ease; max-height: 90vh; overflow-y: auto; }
+  body.dark .rend-modal { background: var(--bg2); }
+  .rend-modal-title { font-family: "Outfit", sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+  .rend-score-input { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; background: var(--bg4); border-radius: 10px; padding: 10px 14px; }
+  .rend-score-label { font-size: 13px; font-weight: 600; color: var(--text); }
+  .rend-score-btns { display: flex; gap: 6px; }
+  .rend-score-btn { width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--border2); background: var(--bg2); font-family: "Outfit", sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; color: var(--text2); }
+  .rend-score-btn.selected { background: var(--orange); color: white; border-color: var(--orange); }
+  .rend-avg-display { font-family: "Outfit", sans-serif; font-size: 36px; font-weight: 800; text-align: center; margin: 16px 0 4px; }
+  .rend-avg-label { font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  @media (max-width: 600px) { .rend-cats { grid-template-columns: repeat(3,1fr); } }
+  .fin-resumen { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+  .fin-stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .fin-stat-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+  .fin-stat-num { font-family: "Outfit", sans-serif; font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .fin-stat-num.green { color: var(--green); }
+  .fin-stat-num.red { color: var(--red); }
+  .fin-stat-num.blue { color: var(--blue); }
+  .fin-stat-sub { font-size: 11px; color: var(--text3); font-weight: 500; }
+  .fin-chart-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+  .fin-chart-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
+  .fin-bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; }
+  .fin-bar-group { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+  .fin-bar-wrap { display: flex; gap: 3px; align-items: flex-end; height: 120px; width: 100%; justify-content: center; }
+  .fin-bar { border-radius: 4px 4px 0 0; min-height: 4px; width: 14px; transition: height 0.4s ease; }
+  .fin-bar.ingreso { background: var(--green); }
+  .fin-bar.gasto { background: var(--red); }
+  .fin-bar-label { font-size: 10px; color: var(--text3); font-weight: 600; white-space: nowrap; }
+  .fin-legend { display: flex; gap: 16px; margin-top: 12px; }
+  .fin-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text2); font-weight: 600; }
+  .fin-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+  .fin-charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .fin-pie-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; box-shadow: var(--shadow-sm); }
+  .fin-pie-wrap { display: flex; align-items: center; gap: 20px; }
+  .fin-pie-legend { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .fin-pie-legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
+  .fin-pie-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .fin-pie-legend-label { font-weight: 600; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fin-pie-legend-pct { font-weight: 700; color: var(--text2); font-size: 11px; }
+  @media (max-width: 700px) { .fin-charts-row { grid-template-columns: 1fr; } }
+  .fin-cliente-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow-sm); }
+  .fin-cliente-name { font-family: "Outfit", sans-serif; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .fin-cliente-monto { font-family: "Outfit", sans-serif; font-size: 20px; font-weight: 800; color: var(--green); margin-bottom: 2px; }
+  .fin-cliente-sub { font-size: 11px; color: var(--text3); }
+  .fin-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+  .fin-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .fin-table { width: 100%; border-collapse: collapse; background: var(--bg2); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+  .fin-table th { background: var(--bg4); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  .fin-table td { padding: 11px 14px; font-size: 13px; color: var(--text2); border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .fin-table tr:last-child td { border-bottom: none; }
+  .fin-table tr:hover td { background: var(--bg3); }
+  .fin-tipo-ingreso { color: var(--green); font-weight: 700; font-size: 11px; }
+  .fin-tipo-gasto { color: var(--red); font-weight: 700; font-size: 11px; }
+  .fin-monto-ingreso { color: var(--green); font-weight: 700; font-family: "Outfit", sans-serif; }
+  .fin-monto-gasto { color: var(--red); font-weight: 700; font-family: "Outfit", sans-serif; }
+  .fin-estado-pagado { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .fin-estado-pendiente { background: var(--amber-light); color: var(--amber); border: 1px solid #fde68a; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .fin-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 400; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .fin-modal-overlay.open { display: flex; }
+  .fin-modal { background: white; border-radius: 20px; padding: 28px 32px; width: 100%; max-width: 480px; margin: 20px; box-shadow: var(--shadow-lg); animation: fadeUp 0.2s ease; }
+  body.dark .fin-modal { background: var(--bg2); }
+  .fin-modal-title { font-family: "Outfit", sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+  .fin-tab-row { display: flex; gap: 6px; margin-bottom: 20px; }
+  .fin-tab { flex: 1; padding: 8px; border-radius: 8px; border: 1.5px solid var(--border2); background: none; font-family: "Outfit", sans-serif; font-size: 13px; font-weight: 700; color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .fin-tab.active-ingreso { background: var(--green-light); color: var(--green); border-color: #bbf7d0; }
+  .fin-tab.active-gasto { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+  @media (max-width: 768px) { .fin-resumen { grid-template-columns: 1fr 1fr; } .fin-bars { height: 100px; } }
+  @media (max-width: 500px) { .fin-resumen { grid-template-columns: 1fr; } }
   .seguimiento-grid { display: flex; flex-direction: column; gap: 16px; }
+
+  /* SEGUIMIENTO SHEET */
+  .seg-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+  .seg-selects { display: flex; gap: 10px; flex-wrap: wrap; }
+  .seg-select { background: var(--bg2); border: 1.5px solid var(--border2); border-radius: 10px; padding: 8px 14px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 13px; color: var(--text); outline: none; cursor: pointer; transition: border-color 0.15s; }
+  .seg-select:focus { border-color: var(--orange); }
+  .seg-empleado-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .seg-empleado-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; border-bottom: 1px solid var(--border); background: var(--bg3); }
+  .seg-empleado-name { font-family: "Outfit", sans-serif; font-size: 17px; font-weight: 700; color: var(--text); }
+  .seg-empleado-role { font-size: 12px; color: var(--text3); font-weight: 500; margin-top: 2px; }
+  .seg-score-big { font-family: "Outfit", sans-serif; font-size: 28px; font-weight: 800; margin-left: auto; }
+  .seg-score-big.high { color: var(--green); }
+  .seg-score-big.mid { color: var(--amber); }
+  .seg-score-big.low { color: var(--red); }
+  .seg-body { padding: 18px 22px; }
+  .seg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .seg-field { display: flex; flex-direction: column; gap: 4px; }
+  .seg-field-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); }
+  .seg-field-val { font-size: 13px; color: var(--text); font-weight: 500; }
+  .seg-divider { height: 1px; background: var(--border); margin: 14px 0; }
+  .seg-actitud-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 14px; }
+  .seg-actitud-item { background: var(--bg4); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .seg-actitud-label { font-size: 10px; font-weight: 700; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .seg-actitud-score { font-family: "Outfit", sans-serif; font-size: 20px; font-weight: 800; }
+  .seg-actitud-score.s5 { color: var(--green); }
+  .seg-actitud-score.s4 { color: #22c55e; }
+  .seg-actitud-score.s3 { color: var(--amber); }
+  .seg-actitud-score.s2 { color: #f97316; }
+  .seg-actitud-score.s1 { color: var(--red); }
+  .seg-edit-btn { background: none; border: 1.5px solid var(--border2); border-radius: 8px; padding: 6px 14px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .seg-edit-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .seg-save-btn { background: var(--orange); color: white; border: none; border-radius: 8px; padding: 6px 14px; font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .seg-save-btn:hover { background: var(--orange2); }
+  .seg-input { width: 100%; background: var(--bg4); border: 1.5px solid var(--border2); border-radius: 8px; padding: 7px 10px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.15s; }
+  .seg-input:focus { border-color: var(--orange); }
+  .seg-score-select { background: var(--bg4); border: 1.5px solid var(--border2); border-radius: 8px; padding: 6px 10px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 13px; color: var(--text); outline: none; width: 100%; }
+  .seg-score-select:focus { border-color: var(--orange); }
+  .seg-comentario { width: 100%; background: var(--bg4); border: 1.5px solid var(--border2); border-radius: 8px; padding: 8px 10px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 13px; color: var(--text); outline: none; resize: vertical; min-height: 60px; }
+  .seg-new-btn { background: var(--orange); color: white; border: none; border-radius: 10px; padding: 9px 18px; font-family: "Outfit", sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+  .seg-new-btn:hover { background: var(--orange2); transform: translateY(-1px); }
+  .seg-empty { text-align: center; padding: 48px 20px; color: var(--text3); font-size: 13px; }
+  .seg-loading { text-align: center; padding: 32px; color: var(--text3); font-size: 13px; }
+  .seg-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 400; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .seg-modal-overlay.open { display: flex; }
+  .seg-modal { background: white; border-radius: 20px; padding: 28px 32px; width: 100%; max-width: 540px; margin: 20px; box-shadow: var(--shadow-lg); animation: fadeUp 0.2s ease; max-height: 90vh; overflow-y: auto; }
+  body.dark .seg-modal { background: var(--bg2); }
+  .seg-modal-title { font-family: "Outfit", sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+  .seg-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .seg-form-group { margin-bottom: 12px; }
+  .seg-form-label { font-size: 11px; font-weight: 700; color: var(--text2); margin-bottom: 4px; display: block; letter-spacing: 0.04em; text-transform: uppercase; }
+  @media (max-width: 600px) { .seg-actitud-grid { grid-template-columns: repeat(3,1fr); } .seg-row { grid-template-columns: 1fr; } .seg-form-grid { grid-template-columns: 1fr; } }
+
+  /* DARK MODE */
+  body.dark {
+    --bg: #0f0f0f; --bg2: #1a1a1a; --bg3: #141414; --bg4: #222222;
+    --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+    --text: #f0f0f0; --text2: #a0a09a; --text3: #606060;
+    --orange-light: rgba(245,98,10,0.12); --orange-border: rgba(245,98,10,0.25);
+    --green-light: rgba(22,163,74,0.12); --blue-light: rgba(37,99,235,0.12);
+    --amber-light: rgba(217,119,6,0.12); --red-light: rgba(220,38,38,0.12);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3); --shadow: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  body.dark .dash-pending-item { background: var(--bg4); }
+  body.dark .login-box { background: var(--bg2); }
+  body.dark .modal { background: var(--bg2); }
+  body.dark .task-modal { background: var(--bg2); }
+  body.dark .idea-modal { background: var(--bg2); }
+  body.dark .task-card { background: var(--bg2); }
+  body.dark .idea-card { background: var(--bg2); }
+  body.dark .code-block { background: #0a0a0a; }
+  body.dark .badge-gold { background: rgba(180,83,9,0.2); }
+  body.dark .badge-blue { background: rgba(37,99,235,0.2); }
+  body.dark .badge-green { background: rgba(22,163,74,0.2); }
+  body.dark .badge-amber { background: rgba(217,119,6,0.2); }
+  body.dark .badge-red { background: rgba(220,38,38,0.2); }
+  body.dark .badge-orange { background: rgba(245,98,10,0.2); }
+
+  /* DARK MODE TOGGLE */
+  .dark-toggle { display: flex; align-items: center; gap: 8px; padding: 10px 18px; cursor: pointer; margin-top: auto; border-top: 1px solid var(--border); }
+  .dark-toggle-label { font-size: 12px; font-weight: 600; color: var(--text3); }
+  .toggle-switch { width: 34px; height: 19px; background: var(--border2); border-radius: 999px; position: relative; transition: background 0.2s; margin-left: auto; }
+  .toggle-switch.on { background: var(--orange); }
+  .toggle-knob { position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; background: white; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .toggle-switch.on .toggle-knob { transform: translateX(15px); }
+
+  /* RESUMEN DEL MES */
+  .resumen-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+  .resumen-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 4px; }
+  .resumen-num { font-family: "Outfit", sans-serif; font-size: 32px; font-weight: 800; color: var(--text); line-height: 1; }
+  .resumen-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .resumen-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .resumen-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  @media (max-width: 900px) { .resumen-grid { grid-template-columns: 1fr 1fr; } }
+
+  /* FEED DE ACTIVIDAD */
+  .feed-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+  .feed-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 14px; }
+  .feed-list { display: flex; flex-direction: column; gap: 0; }
+  .feed-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .feed-item:last-child { border-bottom: none; }
+  .feed-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .feed-icon.tarea-done { background: var(--green-light); }
+  .feed-icon.tarea-new { background: var(--blue-light); }
+  .feed-icon.idea-new { background: var(--orange-light); }
+  .feed-icon.creativa-new { background: var(--amber-light); }
+  .feed-body { flex: 1; }
+  .feed-text { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
+  .feed-text span { color: var(--orange); font-weight: 700; }
+  .feed-time { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .feed-empty { font-size: 13px; color: var(--text3); text-align: center; padding: 20px; }
 
 </style>
 </head>
@@ -409,12 +700,14 @@
       <div class="nav-item" id="nav-dashboard" onclick="go('dashboard')"><span class="nav-icon">🏠</span> Inicio</div>
       <div class="nav-item" id="nav-objetivos" onclick="go('objetivos')"><span class="nav-icon">🎯</span> Objetivos del mes</div>
       <div class="nav-label">Compartido — Todo el equipo</div>
-      <div class="nav-item" id="nav-equipo" onclick="go('equipo')"><span class="nav-icon">👥</span> Equipo</div>
-      <div class="nav-item nav-sub" id="nav-bautista" onclick="go('bautista')"><span class="nav-icon" style="font-size:10px">·</span> Bautista</div>
-      <div class="nav-item nav-sub" id="nav-nicolas" onclick="go('nicolas')"><span class="nav-icon" style="font-size:10px">·</span> Nicolás</div>
-      <div class="nav-item nav-sub" id="nav-lourdes" onclick="go('lourdes')"><span class="nav-icon" style="font-size:10px">·</span> Lourdes</div>
-      <div class="nav-item nav-sub" id="nav-enzo" onclick="go('enzo')"><span class="nav-icon" style="font-size:10px">·</span> Enzo</div>
-      <div class="nav-item nav-sub" id="nav-brunela" onclick="go('brunela')"><span class="nav-icon" style="font-size:10px">·</span> Brunela</div>
+      <div class="nav-item" id="nav-equipo" onclick="toggleEquipo(event)"><span class="nav-icon">👥</span> Equipo<span id="equipo-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);transition:transform 0.2s">▸</span></div>
+      <div id="equipo-submenu" style="overflow:hidden;max-height:0;transition:max-height 0.25s ease">
+        <div class="nav-item nav-sub" id="nav-bautista" onclick="go('bautista')"><span class="nav-icon" style="font-size:10px">·</span> Bautista</div>
+        <div class="nav-item nav-sub" id="nav-nicolas" onclick="go('nicolas')"><span class="nav-icon" style="font-size:10px">·</span> Nicolás</div>
+        <div class="nav-item nav-sub" id="nav-lourdes" onclick="go('lourdes')"><span class="nav-icon" style="font-size:10px">·</span> Lourdes</div>
+        <div class="nav-item nav-sub" id="nav-enzo" onclick="go('enzo')"><span class="nav-icon" style="font-size:10px">·</span> Enzo</div>
+        <div class="nav-item nav-sub" id="nav-brunela" onclick="go('brunela')"><span class="nav-icon" style="font-size:10px">·</span> Brunela</div>
+      </div>
       <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><span class="nav-icon">📁</span> Clientes</div>
       <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><span class="nav-icon">📅</span> Calendario mensual</div>
       <div class="nav-label">Privado — Bau y Nico</div>
@@ -428,6 +721,11 @@
       <div class="nav-item" id="nav-reuniones" onclick="go('reuniones')"><span class="nav-icon">🤝</span> Reuniones</div>
       <div class="nav-item" id="nav-informe" onclick="go('informe')"><span class="nav-icon">📊</span> Informe mensual</div>
     </nav>
+    <div class="dark-toggle" onclick="toggleDarkMode()">
+      <span style="font-size:15px">🌙</span>
+      <span class="dark-toggle-label">Modo oscuro</span>
+      <div class="toggle-switch" id="dark-switch"><div class="toggle-knob"></div></div>
+    </div>
   </aside>
   <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
   <main class="main">
@@ -805,52 +1103,427 @@
     </div>
 
     <!-- PRIVADAS -->
-    <div class="panel" id="panel-estrategia"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Estrategia Balodi</span></div><div class="page-title">🔒 Estrategia Balodi</div><div class="page-desc">Página privada — solo Bautista y Nicolás.</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">🔒</div><div class="placeholder-title">Acceso restringido</div><div class="placeholder-desc">Esta sección es privada. Solo la ven Bautista y Nicolás.<br><br>Contenido: objetivos, pipeline de clientes, métricas de la agencia.</div></div></div></div>
-    <div class="panel" id="panel-finanzas"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Finanzas</span></div><div class="page-title">🔒 Finanzas</div><div class="page-desc">Página privada — solo Bautista y Nicolás.</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">🔒</div><div class="placeholder-title">Acceso restringido</div><div class="placeholder-desc">Esta sección es privada. Solo la ven Bautista y Nicolás.<br><br>Contenido: ingresos, costos, honorarios.</div></div></div></div>
+    <div class="panel" id="panel-estrategia">
+  <div class="page-header">
+    <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Estrategia Balodi</span></div>
+    <div class="page-title">🔒 Estrategia Balodi</div>
+    <div class="page-desc">Pipeline de clientes, objetivos anuales y registro de decisiones. Solo Bautista y Nicolás.</div>
+  </div>
+  <div class="page-content">
+
+    <div class="est-tabs">
+      <button class="est-tab active" onclick="switchEstTab('pipeline', this)">🎯 Pipeline</button>
+      <button class="est-tab" onclick="switchEstTab('objetivos', this)">🚀 Objetivos anuales</button>
+      <button class="est-tab" onclick="switchEstTab('decisiones', this)">📌 Decisiones</button>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="est-section active" id="est-pipeline">
+      <div class="tasks-toolbar" style="margin-bottom:16px">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em">Vista kanban</div>
+        <button class="btn-new-task" onclick="openPipeModal()">+ Nuevo lead</button>
+      </div>
+      <div class="pipe-kanban">
+        <div class="pipe-col pipe-col-contactado">
+          <div class="pipe-col-title" style="color:var(--blue)">📞 Contactado <span class="pipe-col-count" id="count-contactado">0</span></div>
+          <div id="pipe-col-contactado"></div>
+        </div>
+        <div class="pipe-col pipe-col-reunion">
+          <div class="pipe-col-title" style="color:var(--amber)">🤝 Reunión <span class="pipe-col-count" id="count-reunion">0</span></div>
+          <div id="pipe-col-reunion"></div>
+        </div>
+        <div class="pipe-col pipe-col-propuesta">
+          <div class="pipe-col-title" style="color:var(--orange)">📄 Propuesta <span class="pipe-col-count" id="count-propuesta">0</span></div>
+          <div id="pipe-col-propuesta"></div>
+        </div>
+        <div class="pipe-col pipe-col-cerrado">
+          <div class="pipe-col-title" style="color:var(--green)">✅ Cerrado <span class="pipe-col-count" id="count-cerrado">0</span></div>
+          <div id="pipe-col-cerrado"></div>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="pipe-table">
+          <thead><tr>
+            <th>Cliente</th><th>Servicio</th><th>Estado</th><th>Valor est.</th><th>Contacto</th><th>Fecha</th><th>Notas</th><th></th>
+          </tr></thead>
+          <tbody id="pipe-tbody"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">⏳ Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- OBJETIVOS ANUALES -->
+    <div class="est-section" id="est-objetivos">
+      <div class="obj-anual-grid">
+        <div class="obj-anual-card">
+          <div class="obj-anual-num" id="oa-clientes">—</div>
+          <div class="obj-anual-label">Clientes activos meta</div>
+          <div class="obj-anual-desc">Cantidad de clientes que queremos tener a fin de año</div>
+        </div>
+        <div class="obj-anual-card">
+          <div class="obj-anual-num" id="oa-facturacion">—</div>
+          <div class="obj-anual-label">Facturación anual meta</div>
+          <div class="obj-anual-desc">Objetivo de facturación total del año</div>
+        </div>
+        <div class="obj-anual-card">
+          <div class="obj-anual-num" id="oa-equipo">—</div>
+          <div class="obj-anual-label">Tamaño del equipo meta</div>
+          <div class="obj-anual-desc">Cantidad de personas en el equipo a fin de año</div>
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-bottom:20px"><div class="alert-icon">✏️</div><div>Editá los objetivos anuales haciendo click en cada número.</div></div>
+      <div class="section-title">Pilares estratégicos 2026</div>
+      <div class="obj-card">
+        <div class="obj-header"><div class="obj-icon">📈</div><div><div class="obj-title">Escalar la facturación</div></div><span class="badge badge-orange">Financiero</span></div>
+        <ul class="checklist" style="margin-top:12px">
+          <li><div class="check-dot">✓</div>Conseguir clientes con presupuesto mínimo de $X por mes</li>
+          <li><div class="check-dot">✓</div>Reducir dependencia de clientes pequeños de bajo margen</li>
+          <li><div class="check-dot">✓</div>Armar paquetes de servicios con precios claros</li>
+        </ul>
+      </div>
+      <div class="obj-card">
+        <div class="obj-header"><div class="obj-icon">🏆</div><div><div class="obj-title">Posicionamiento de marca</div></div><span class="badge badge-blue">Marca</span></div>
+        <ul class="checklist" style="margin-top:12px">
+          <li><div class="check-dot">✓</div>Construir la marca personal de Bautista en paralelo a Balodi</li>
+          <li><div class="check-dot">✓</div>Generar casos de éxito documentados de cada cliente</li>
+          <li><div class="check-dot">✓</div>Ser reconocidos por creatividad y estrategia, no solo ejecución</li>
+        </ul>
+      </div>
+      <div class="obj-card">
+        <div class="obj-header"><div class="obj-icon">👥</div><div><div class="obj-title">Equipo y cultura</div></div><span class="badge badge-green">Equipo</span></div>
+        <ul class="checklist" style="margin-top:12px">
+          <li><div class="check-dot">✓</div>Consolidar el equipo actual con roles y responsabilidades claras</li>
+          <li><div class="check-dot">✓</div>Incorporar al menos un perfil nuevo según crecimiento</li>
+          <li><div class="check-dot">✓</div>Mantener cultura de propuesta de ideas y mejora continua</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DECISIONES -->
+    <div class="est-section" id="est-decisiones">
+      <div class="tasks-toolbar" style="margin-bottom:16px">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em">Historial de decisiones</div>
+        <button class="btn-new-task" onclick="openDecModal()">+ Nueva decisión</button>
+      </div>
+      <div id="dec-container"><div class="tasks-loading">⏳ Cargando decisiones...</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PIPELINE MODAL -->
+<div class="est-modal-overlay" id="pipe-modal">
+  <div class="est-modal">
+    <div class="est-modal-title">🎯 Nuevo lead</div>
+    <div class="form-group">
+      <label class="form-label">Nombre del cliente *</label>
+      <input class="form-input" id="pm-nombre" placeholder="Ej: Empresa XYZ">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Servicio</label>
+        <input class="form-input" id="pm-servicio" placeholder="Ej: Community Management">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Estado</label>
+        <select class="form-select" id="pm-estado">
+          <option value="Contactado">Contactado</option>
+          <option value="Reunión">Reunión</option>
+          <option value="Propuesta">Propuesta</option>
+          <option value="Cerrado">Cerrado</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Valor estimado ($)</label>
+        <input class="form-input" id="pm-valor" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contacto</label>
+        <input class="form-input" id="pm-contacto" placeholder="Nombre / Instagram / Tel">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notas</label>
+      <textarea class="form-textarea" id="pm-notas" placeholder="Contexto, observaciones..."></textarea>
+    </div>
+    <div class="task-modal-actions">
+      <button class="btn-cancel-task" onclick="closePipeModal()">Cancelar</button>
+      <button class="btn-save" id="pipe-save-btn" onclick="savePipeline()">Guardar lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- DECISIONES MODAL -->
+<div class="est-modal-overlay" id="dec-modal">
+  <div class="est-modal">
+    <div class="est-modal-title">📌 Registrar decisión</div>
+    <div class="form-group">
+      <label class="form-label">Título *</label>
+      <input class="form-input" id="dm-titulo" placeholder="Ej: Cambio de precio de servicios">
+    </div>
+    <div class="form-group">
+      <label class="form-label">La decisión *</label>
+      <textarea class="form-textarea" id="dm-decision" placeholder="¿Qué se decidió exactamente?"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Razonamiento</label>
+      <textarea class="form-textarea" id="dm-razonamiento" placeholder="¿Por qué se tomó esta decisión?"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Fecha</label>
+        <input class="form-input" id="dm-fecha" type="date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Quién decidió?</label>
+        <select class="form-select" id="dm-quien">
+          <option value="Bautista y Nicolás">Bautista y Nicolás</option>
+          <option value="Bautista">Bautista</option>
+          <option value="Nicolás">Nicolás</option>
+        </select>
+      </div>
+    </div>
+    <div class="task-modal-actions">
+      <button class="btn-cancel-task" onclick="closeDecModal()">Cancelar</button>
+      <button class="btn-save" id="dec-save-btn" onclick="saveDecision()">Guardar decisión</button>
+    </div>
+  </div>
+</div>
+    <div class="panel" id="panel-finanzas">
+  <div class="page-header">
+    <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Finanzas</span></div>
+    <div class="page-title">🔒 Finanzas</div>
+    <div class="page-desc">Ingresos por cliente, gastos fijos y variables. Solo visible para Bautista y Nicolás.</div>
+  </div>
+  <div class="page-content">
+
+    <!-- RESUMEN -->
+    <div class="fin-resumen">
+      <div class="fin-stat">
+        <div class="fin-stat-label">💰 Ingresos del mes</div>
+        <div class="fin-stat-num green" id="fin-total-ingresos">$0</div>
+        <div class="fin-stat-sub" id="fin-sub-ingresos">Este mes</div>
+      </div>
+      <div class="fin-stat">
+        <div class="fin-stat-label">📤 Gastos del mes</div>
+        <div class="fin-stat-num red" id="fin-total-gastos">$0</div>
+        <div class="fin-stat-sub" id="fin-sub-gastos">Este mes</div>
+      </div>
+      <div class="fin-stat">
+        <div class="fin-stat-label">📊 Resultado neto</div>
+        <div class="fin-stat-num blue" id="fin-neto">$0</div>
+        <div class="fin-stat-sub" id="fin-sub-neto">Ingresos − Gastos</div>
+      </div>
+    </div>
+
+    <!-- GRAFICOS -->
+    <div class="fin-charts-row">
+      <div class="fin-chart-box">
+        <div class="fin-chart-title">📈 Evolución mensual</div>
+        <div class="fin-bars" id="fin-chart-bars">
+          <div style="color:var(--text3);font-size:13px;margin:auto">Cargando datos...</div>
+        </div>
+        <div class="fin-legend">
+          <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--green)"></div>Ingresos</div>
+          <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--red)"></div>Gastos</div>
+        </div>
+      </div>
+      <div class="fin-pie-box">
+        <div class="fin-chart-title">🥧 Distribución del mes</div>
+        <div class="fin-pie-wrap" id="fin-pie-wrap">
+          <div style="color:var(--text3);font-size:13px;margin:auto">Cargando...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POR CLIENTE -->
+    <div class="fin-chart-title" style="margin-bottom:12px">👥 Ingresos por cliente (mes actual)</div>
+    <div class="fin-clientes-grid" id="fin-clientes-grid">
+      <div style="color:var(--text3);font-size:13px">Cargando...</div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="fin-toolbar">
+      <div class="fin-filters">
+        <button class="filter-btn active" onclick="filterFinanzas('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filterFinanzas('ingreso', this)">Ingresos</button>
+        <button class="filter-btn" onclick="filterFinanzas('gasto', this)">Gastos</button>
+        <button class="filter-btn" onclick="filterFinanzas('pendiente', this)">Pendientes</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select class="seg-select" id="fin-mes-filter" onchange="applyFinanzasFilters()">
+          <option value="">Todos los meses</option>
+        </select>
+        <button class="btn-new-task" onclick="openFinModal()">+ Nuevo registro</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="fin-table" id="fin-table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Concepto</th>
+            <th>Categoría</th>
+            <th>Mes</th>
+            <th>Fecha</th>
+            <th>Monto</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="fin-tbody">
+          <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">⏳ Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINANZAS MODAL -->
+<div class="fin-modal-overlay" id="fin-modal">
+  <div class="fin-modal">
+    <div class="fin-modal-title" id="fin-modal-title">+ Nuevo registro</div>
+    <div class="fin-tab-row">
+      <button class="fin-tab active-ingreso" id="fin-tab-ingreso" onclick="setFinTipo('ingreso')">💰 Ingreso</button>
+      <button class="fin-tab" id="fin-tab-gasto" onclick="setFinTipo('gasto')">📤 Gasto</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Concepto *</label>
+      <input class="form-input" id="fin-concepto" placeholder="Ej: Hielo Rosario — Mayo">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Categoría</label>
+        <select class="form-select" id="fin-categoria">
+          <option value="Cliente">Cliente</option>
+          <option value="Sueldo">Sueldo empleado</option>
+          <option value="Oficina">Oficina / Servicios</option>
+          <option value="Herramientas">Herramientas / Software</option>
+          <option value="Publicidad">Publicidad Balodi</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Monto ($) *</label>
+        <input class="form-input" id="fin-monto" type="number" placeholder="0">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Mes</label>
+        <input class="form-input" id="fin-mes" placeholder="Ej: Mayo 2026">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fecha</label>
+        <input class="form-input" id="fin-fecha" type="date">
+      </div>
+    </div>
+    <div class="form-group" id="fin-estado-group">
+      <label class="form-label">Estado</label>
+      <select class="form-select" id="fin-estado">
+        <option value="Pagado">Pagado</option>
+        <option value="Pendiente">Pendiente</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notas (opcional)</label>
+      <textarea class="form-textarea" id="fin-notas" placeholder="Algún detalle extra..."></textarea>
+    </div>
+    <div class="task-modal-actions">
+      <button class="btn-cancel-task" onclick="closeFinModal()">Cancelar</button>
+      <button class="btn-save" id="fin-save-btn" onclick="saveFinanza()">Guardar</button>
+    </div>
+  </div>
+</div>
     <div class="panel" id="panel-seguimiento">
   <div class="page-header">
     <div class="page-eyebrow">Privado — Bau y Nico</div>
-    <div class="page-title">🔒 Seguimiento de Empleados</div>
-    <div class="page-desc">Roles, responsabilidades y seguimiento del equipo. Solo visible para Bautista y Nicolás.</div>
+    <div class="page-title">🔒 Rendimiento de Empleados</div>
+    <div class="page-desc">Calificación semanal y mensual del equipo. Puntajes por categoría del 1 al 5.</div>
   </div>
   <div class="page-content">
-    <div class="seguimiento-grid">
-
-      <div class="person-card">
-        <div class="person-header"><div class="avatar av-green" style="width:52px;height:52px;font-size:17px">LO</div><div><div class="person-name">Lourdes</div><div class="person-role">Community Manager</div></div><span class="badge badge-green" style="margin-left:auto">CM</span></div>
-        <div class="card-body" style="margin-bottom:12px"><strong style="color:var(--text)">Cuentas:</strong> Hielo Rosario · Tarjeta Primicia · Balodi Marketing</div>
-        <ul class="checklist">
-          <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 1–5:</strong>&nbsp;TODAS las publicaciones del mes listas, aprobadas y programadas</li>
-          <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;analizar métricas y traer 3 ideas virales por cliente</li>
-          <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;proponer al menos 1 campaña o acción BTL por cliente</li>
-          <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 16–cierre:</strong>&nbsp;revisar rendimiento, ajustar y pre-armar el mes siguiente</li>
-          <li><div class="check-dot">✓</div>Último día del mes: entregar informe mensual completo</li>
-          <li><div class="check-dot">✓</div>Reunión semanal: presentar al menos 1 referencia o idea nueva</li>
-          <li><div class="check-dot">✓</div>Reunión 1:1 viernes: presentar avance e ideas a Bautista</li>
-        </ul>
+    <div class="rend-toolbar">
+      <div class="rend-filters">
+        <select class="seg-select" id="rend-empleado-filter" onchange="renderRendimiento()">
+          <option value="">Todos los empleados</option>
+          <option value="Lourdes">Lourdes</option>
+          <option value="Enzo">Enzo</option>
+          <option value="Brunela">Brunela</option>
+          <option value="Facundo">Facundo</option>
+        </select>
+        <select class="seg-select" id="rend-tipo-filter" onchange="renderRendimiento()">
+          <option value="">Semanal y mensual</option>
+          <option value="semana">Solo semanal</option>
+          <option value="mes">Solo mensual</option>
+        </select>
+        <select class="seg-select" id="rend-mes-filter" onchange="renderRendimiento()">
+          <option value="">Todos los meses</option>
+        </select>
       </div>
+      <button class="seg-new-btn" onclick="openRendModal()">+ Nueva calificación</button>
+    </div>
+    <div id="rend-container"><div class="rend-loading">⏳ Cargando calificaciones...</div></div>
+  </div>
+</div>
 
-      <div class="person-card">
-        <div class="person-header"><div class="avatar av-amber" style="width:52px;height:52px;font-size:17px">EN</div><div><div class="person-name">Enzo</div><div class="person-role">Editor de Video</div></div><span class="badge badge-amber" style="margin-left:auto">Editor</span></div>
-        <div class="card-body" style="margin-bottom:12px"><strong style="color:var(--text)">Trabajo principal:</strong> Edición diaria de 3 a 5 videos. Cliente principal: Murad.</div>
-        <ul class="checklist">
-          <li><div class="check-dot">✓</div>Entregar ediciones en tiempo y forma según brief de Nicolás</li>
-          <li><div class="check-dot">✓</div>Último viernes del mes: presentar 2 ideas de formato nuevo</li>
-          <li><div class="check-dot">✓</div>Traer referencias de edición y tendencias de video cada semana</li>
-          <li><div class="check-dot">✓</div>Entregar informe mensual al cierre</li>
-        </ul>
+<!-- RENDIMIENTO MODAL -->
+<div class="rend-modal-overlay" id="rend-modal">
+  <div class="rend-modal">
+    <div class="rend-modal-title">⭐ Nueva calificación</div>
+    <div class="form-row" style="margin-bottom:14px">
+      <div class="form-group">
+        <label class="form-label">Empleado *</label>
+        <select class="form-select" id="rm-empleado">
+          <option value="Lourdes">Lourdes</option>
+          <option value="Enzo">Enzo</option>
+          <option value="Brunela">Brunela</option>
+          <option value="Facundo">Facundo</option>
+        </select>
       </div>
-
-      <div class="person-card">
-        <div class="person-header"><div class="avatar av-red" style="width:52px;height:52px;font-size:17px">BR</div><div><div class="person-name">Brunela</div><div class="person-role">CM por Proyectos</div></div><span class="badge badge-red" style="margin-left:auto">Proyectos</span></div>
-        <div class="highlight" style="margin-bottom:12px"><p>El compromiso en formato proyecto se construye con <strong>estructura clara</strong>. Sin entregables definidos desde el inicio, no se puede pedir más.</p></div>
-        <ul class="checklist">
-          <li><div class="check-dot">✓</div>Al inicio de cada proyecto: brief con entregables, fechas y criterio de éxito</li>
-          <li><div class="check-dot">✓</div>Check semanal de 10 minutos con Nicolás para ver avance</li>
-          <li><div class="check-dot">✓</div>Al cierre del proyecto: informe de resultado + lo que haría diferente</li>
-        </ul>
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select class="form-select" id="rm-tipo" onchange="toggleRendSemana()">
+          <option value="semana">Semanal</option>
+          <option value="mes">Mensual</option>
+        </select>
       </div>
+    </div>
+    <div class="form-row" style="margin-bottom:14px">
+      <div class="form-group">
+        <label class="form-label">Mes *</label>
+        <input class="form-input" id="rm-mes" placeholder="Ej: Mayo 2026">
+      </div>
+      <div class="form-group" id="rm-semana-group">
+        <label class="form-label">Semana</label>
+        <select class="form-select" id="rm-semana">
+          <option value="Semana 1">Semana 1</option>
+          <option value="Semana 2">Semana 2</option>
+          <option value="Semana 3">Semana 3</option>
+          <option value="Semana 4">Semana 4</option>
+        </select>
+      </div>
+    </div>
 
+    <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Calificaciones (1 al 5)</div>
+
+    <div class="rend-score-input"><span class="rend-score-label">🚀 Proactividad</span><div class="rend-score-btns" id="rm-btns-proactividad"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label">🎨 Creatividad</span><div class="rend-score-btns" id="rm-btns-creatividad"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label">✅ Responsabilidad</span><div class="rend-score-btns" id="rm-btns-responsabilidad"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label">💬 Comunicación</span><div class="rend-score-btns" id="rm-btns-comunicacion"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label">🔧 Resolución</span><div class="rend-score-btns" id="rm-btns-resolucion"></div></div>
+
+    <div class="rend-avg-display" id="rm-avg-display">3.0</div>
+    <div class="rend-avg-label">Promedio general</div>
+
+    <div class="form-group">
+      <label class="form-label">Comentario</label>
+      <textarea class="form-textarea" id="rm-comentario" placeholder="Observaciones, puntos a mejorar, logros destacados..."></textarea>
+    </div>
+    <div class="task-modal-actions">
+      <button class="btn-cancel-task" onclick="closeRendModal()">Cancelar</button>
+      <button class="btn-save" id="rend-save-btn" onclick="saveRendimiento()">Guardar calificación</button>
     </div>
   </div>
 </div>
@@ -988,6 +1661,22 @@
               <div class="quick-card" onclick="go('reuniones')"><div class="quick-icon">🤝</div><div class="quick-label">Reuniones</div></div>
               <div class="quick-card" onclick="go('informe')"><div class="quick-icon">📊</div><div class="quick-label">Informe</div></div>
             </div>
+          </div>
+        </div>
+
+        <!-- RESUMEN DEL MES -->
+        <div class="resumen-grid" id="resumen-grid">
+          <div class="resumen-card"><div class="resumen-num" id="res-pendientes">—</div><div class="resumen-label">Tareas pendientes</div><div class="resumen-sub">Este mes</div></div>
+          <div class="resumen-card"><div class="resumen-num" id="res-completadas">—</div><div class="resumen-label">Tareas completadas</div><div class="resumen-sub">Este mes</div></div>
+          <div class="resumen-card"><div class="resumen-num" id="res-ideas">—</div><div class="resumen-label">Ideas en banco</div><div class="resumen-sub">Total acumulado</div></div>
+          <div class="resumen-card"><div class="resumen-num" id="res-creativas">—</div><div class="resumen-label">Ideas creativas</div><div class="resumen-sub">Total acumulado</div></div>
+        </div>
+
+        <!-- FEED DE ACTIVIDAD -->
+        <div class="feed-box">
+          <div class="feed-title">🕐 Actividad reciente</div>
+          <div class="feed-list" id="feed-list">
+            <div class="feed-empty">Cargando actividad...</div>
           </div>
         </div>
 
@@ -1153,6 +1842,10 @@
           </select>
         </div>
         <div class="form-group">
+          <label class="form-label">Fecha límite (opcional)</label>
+          <input class="form-input" id="t-vencimiento" type="date">
+        </div>
+        <div class="form-group">
           <label class="form-label">Nota (opcional)</label>
           <textarea class="form-textarea" id="t-nota" placeholder="Algún detalle o contexto extra..."></textarea>
         </div>
@@ -1183,6 +1876,12 @@
   const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec";
   const IDEAS_URL = "https://script.google.com/macros/s/AKfycbzM9XggTQifgrkKAteCU1Eef4QYtzLW5ChF7KnN-RXAujyzChFoKOisZsGjkKE6xSnm/exec";
   const CREATIVAS_URL = "https://script.google.com/macros/s/AKfycbzxwscKqu_szWb_2SLodmfvzhUB_mTSOsk4cWv8hIfn3uE4nXo3YGwut9Zr1WHL3Tu7/exec";
+  const COMMENTS_URL = "https://script.google.com/macros/s/AKfycby-rqh_W3pA5WV9ReACRyeforaUkGTn73KtkAynO2GOtsJJM-XQgpkK9SAFuKjmHpsJ/exec";
+  const SEGUIMIENTO_URL = "https://script.google.com/macros/s/AKfycbyvy0OSK-8dxf3iWZzz2IX5bBI1o90ki1vE2hzgh-HsR--14d1oJxyCcbBySj4H8Mg/exec";
+  const FINANZAS_URL = "https://script.google.com/macros/s/AKfycbzLydN6tfUoVBhtxIGibzsfvZ1JxYx5FuMhelzOo3B64zK1NCHs-m9SKDHjvbtjtOAe/exec";
+  const RENDIMIENTO_URL = "https://script.google.com/macros/s/AKfycbxFT9OEJ7QQF9_WNsy9p3oWITPWes0sFjZD46ROQoPBFvWIRA9MOdFh3VcM75ZoIYQ/exec";
+  const PIPELINE_URL = "https://script.google.com/macros/s/AKfycbwsNLMTfDiBVXSrd0_iF_AKlWimMJ3gpfWf0Aoo8tpHiCJXavj8JeUEW3gXbYCJGNeg/exec";
+  const DECISIONES_URL = "https://script.google.com/macros/s/AKfycbzD2vw91Z-n-a9XJp8KiNITxmTZyNct_ZZaBVHPjwJahooIjEDwf7UZl9fnu1ITzGACoQ/exec";
   const PRIVATE_PASSWORD = 'balodi2024';
   const PRIVATE_PANELS = ['estrategia', 'finanzas', 'seguimiento'];
 
@@ -1204,7 +1903,27 @@
   let allCreativas = [];
   let creativasFilter = 'todos';
 
-  // ============ LOGIN ============
+  let equipoOpen = false;
+
+  function toggleEquipo(e) {
+    e.stopPropagation();
+    equipoOpen = !equipoOpen;
+    const submenu = document.getElementById('equipo-submenu');
+    const chevron = document.getElementById('equipo-chevron');
+    const navEquipo = document.getElementById('nav-equipo');
+    if (equipoOpen) {
+      submenu.style.maxHeight = submenu.scrollHeight + 'px';
+      chevron.style.transform = 'rotate(90deg)';
+      chevron.style.color = 'var(--orange)';
+      navEquipo.classList.add('active');
+    } else {
+      submenu.style.maxHeight = '0';
+      chevron.style.transform = 'rotate(0deg)';
+      chevron.style.color = 'var(--text3)';
+      navEquipo.classList.remove('active');
+      go('equipo');
+    }
+  }
   function checkSavedSession() {
     const saved = sessionStorage.getItem('balodi_user');
     if (saved && USERS[saved]) {
@@ -1273,6 +1992,16 @@
     const nav = document.getElementById('nav-' + id);
     if (panel) panel.classList.add('active');
     if (nav) nav.classList.add('active');
+    // Auto-expand equipo submenu when navigating to a team member
+    const equipoMembers = ['bautista','nicolas','lourdes','enzo','brunela'];
+    if (equipoMembers.includes(id) && !equipoOpen) {
+      equipoOpen = true;
+      const submenu = document.getElementById('equipo-submenu');
+      const chevron = document.getElementById('equipo-chevron');
+      if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+      if (chevron) { chevron.style.transform = 'rotate(90deg)'; chevron.style.color = 'var(--orange)'; }
+      document.getElementById('nav-equipo').classList.add('active');
+    }
     const titles = {
       dashboard: 'Inicio', estructura: 'Estructura', equipo: 'Equipo',
       bautista: 'Bautista', nicolas: 'Nicolás', lourdes: 'Lourdes',
@@ -1289,6 +2018,9 @@
     if (id === 'tareas') loadTasks();
     if (id === 'banco') { sessionStorage.setItem('balodi_ideas_seen', allIdeas.length); loadIdeas(); updateIdeasBadge(); }
     if (id === 'creativas') { sessionStorage.setItem('balodi_creativas_seen', allCreativas.length); loadCreativas(); updateCreativasBadge(); }
+    if (id === 'seguimiento') loadRendimiento();
+    if (id === 'finanzas') loadFinanzas();
+    if (id === 'estrategia') loadPipeline();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
   }
@@ -1347,6 +2079,7 @@
     document.getElementById('t-prioridad').value = 'Media';
     document.getElementById('t-cliente').value = '';
     document.getElementById('t-nota').value = '';
+    document.getElementById('t-vencimiento').value = '';
     setTimeout(() => document.getElementById('t-tarea').focus(), 100);
   }
 
@@ -1368,7 +2101,8 @@
       prioridad: document.getElementById('t-prioridad').value,
       estado: 'pendiente',
       fecha: new Date().toLocaleDateString('es-AR'),
-      nota: document.getElementById('t-nota').value.trim() || '—'
+      nota: document.getElementById('t-nota').value.trim() || '—',
+      vencimiento: document.getElementById('t-vencimiento').value || '—'
     };
     try {
       await fetch(SHEETS_URL, {
@@ -1396,10 +2130,12 @@
       const raw = await res.json();
       allTasks = raw.slice(1).map(r => ({
         tarea: r[0], responsable: r[1], cliente: r[2],
-        prioridad: r[3], estado: r[4], fecha: r[5], nota: r[6]
+        prioridad: r[3], estado: r[4], fecha: r[5], nota: r[6], vencimiento: r[7] || '—'
       })).filter(t => t.tarea);
       renderTasks();
       updateDashCount();
+      updateResumen();
+      buildFeed();
     } catch(e) {
       container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las tareas. Verificá la conexión.</div>';
     }
@@ -1428,7 +2164,19 @@
       const isDone = t.estado === 'hecho';
       const prioClass = t.prioridad === 'Alta' ? 'tag-high' : t.prioridad === 'Baja' ? 'tag-low' : 'tag-mid';
       const globalIdx = allTasks.indexOf(t);
-      return `<div class="task-card ${isDone ? 'done' : ''}">
+
+      // Vencimiento logic
+      let vencClass = '', vencLabel = '', cardVencClass = '';
+      if (t.vencimiento && t.vencimiento !== '—' && !isDone) {
+        const hoy = new Date(); hoy.setHours(0,0,0,0);
+        const venc = new Date(t.vencimiento + 'T00:00:00');
+        const diff = Math.floor((venc - hoy) / 86400000);
+        if (diff < 0) { vencClass = 'venc-vencida'; vencLabel = '⚠️ Vencida'; cardVencClass = 'vencida'; }
+        else if (diff === 0) { vencClass = 'venc-hoy'; vencLabel = '🔥 Vence hoy'; cardVencClass = 'vence-hoy'; }
+        else if (diff === 1) { vencClass = 'venc-hoy'; vencLabel = '⏰ Vence mañana'; cardVencClass = 'vence-hoy'; }
+        else { vencClass = 'venc-ok'; vencLabel = '📅 ' + venc.toLocaleDateString('es-AR'); }
+      }
+      return `<div class="task-card ${isDone ? 'done' : ''} ${cardVencClass}">
         <div class="task-check ${isDone ? 'checked' : ''}" onclick="toggleTask(${globalIdx})">
           ${isDone ? '✓' : ''}
         </div>
@@ -1439,8 +2187,19 @@
             <span class="task-tag ${prioClass}">${t.prioridad}</span>
             ${t.cliente && t.cliente !== '—' ? `<span class="task-client">📁 ${t.cliente}</span>` : ''}
             <span class="task-date">📅 ${t.fecha}</span>
+            ${vencLabel ? `<span class="task-venc ${vencClass}">${vencLabel}</span>` : ''}
           </div>
           ${t.nota && t.nota !== '—' ? `<div class="task-note">${t.nota}</div>` : ''}
+          <button class="task-comments-btn" onclick="toggleComments(${globalIdx}, this)">
+            💬 <span class="comments-count-${globalIdx}">Comentarios</span>
+          </button>
+          <div class="task-comments-area" id="comments-area-${globalIdx}">
+            <div class="comments-loading" id="comments-list-${globalIdx}">Cargando...</div>
+            <div class="comment-input-row">
+              <input class="comment-input" id="comment-input-${globalIdx}" placeholder="Escribí un comentario..." onkeydown="if(event.key==='Enter')sendComment(${globalIdx})">
+              <button class="comment-send" onclick="sendComment(${globalIdx})">Enviar</button>
+            </div>
+          </div>
         </div>
         <button class="delete-btn" onclick="deleteTask(${globalIdx})" title="Eliminar tarea">🗑️</button>
       </div>`;
@@ -1602,6 +2361,8 @@
       })).filter(i => i.idea).reverse();
       renderIdeas();
       updateIdeasBadge();
+      updateResumen();
+      buildFeed();
     } catch(e) {
       container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las ideas.</div>';
     }
@@ -1709,6 +2470,8 @@
       })).filter(i => i.idea).reverse();
       renderCreativas();
       updateCreativasBadge();
+      updateResumen();
+      buildFeed();
     } catch(e) {
       container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las ideas creativas.</div>';
     }
@@ -1787,8 +2550,947 @@
     }
   }
 
+  // ============ COMENTARIOS ============
+  let allComments = [];
+  let commentsLoaded = false;
+
+  async function loadAllComments() {
+    if (commentsLoaded) return;
+    try {
+      const res = await fetch(COMMENTS_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allComments = raw.slice(1).map(r => ({
+        tareaId: r[0], autor: r[1], comentario: r[2], fecha: r[3]
+      })).filter(c => c.comentario);
+      commentsLoaded = true;
+      updateAllCommentCounts();
+    } catch(e) {
+      console.error('Error loading comments:', e);
+    }
+  }
+
+  function updateAllCommentCounts() {
+    allTasks.forEach((t, idx) => {
+      const tareaId = buildTareaId(t);
+      const count = allComments.filter(c => c.tareaId === tareaId).length;
+      const el = document.querySelector(`.comments-count-${idx}`);
+      if (el) el.textContent = count > 0 ? `${count} comentario${count > 1 ? 's' : ''}` : 'Comentarios';
+    });
+  }
+
+  function buildTareaId(t) {
+    return (t.tarea + '_' + t.responsable + '_' + t.fecha).replace(/\s/g, '_').substring(0, 60);
+  }
+
+  function toggleComments(idx, btn) {
+    const area = document.getElementById('comments-area-' + idx);
+    if (!area) return;
+    const isOpen = area.classList.toggle('open');
+    if (isOpen) {
+      renderComments(idx);
+      loadAllComments().then(() => renderComments(idx));
+      setTimeout(() => document.getElementById('comment-input-' + idx)?.focus(), 100);
+    }
+  }
+
+  function renderComments(idx) {
+    const listEl = document.getElementById('comments-list-' + idx);
+    if (!listEl) return;
+    const t = allTasks[idx];
+    if (!t) return;
+    const tareaId = buildTareaId(t);
+    const taskComments = allComments.filter(c => c.tareaId === tareaId);
+    if (!taskComments.length) {
+      listEl.innerHTML = '<div class="comments-loading">Sin comentarios todavía.</div>';
+      return;
+    }
+    listEl.innerHTML = taskComments.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar" style="background:${getAvatarColor(c.autor)}">${c.autor ? c.autor[0] : '?'}</div>
+        <div class="comment-bubble">
+          <div class="comment-autor">${c.autor}</div>
+          <div class="comment-text">${c.comentario}</div>
+          <div class="comment-fecha">${c.fecha}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  async function sendComment(idx) {
+    const input = document.getElementById('comment-input-' + idx);
+    if (!input) return;
+    const texto = input.value.trim();
+    if (!texto) return;
+    const t = allTasks[idx];
+    if (!t) return;
+    const tareaId = buildTareaId(t);
+    const data = {
+      tareaId,
+      autor: currentUser ? currentUser.name : 'Equipo',
+      comentario: texto,
+      fecha: new Date().toLocaleDateString('es-AR')
+    };
+    input.value = '';
+    input.disabled = true;
+    allComments.push(data);
+    renderComments(idx);
+    updateAllCommentCounts();
+    try {
+      await fetch(COMMENTS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch(e) {
+      console.error('Error saving comment:', e);
+    }
+    input.disabled = false;
+    input.focus();
+  }
+
+  // ============ FINANZAS ============
+  let allFinanzas = [];
+  let finFilter = 'todos';
+  let finTipo = 'ingreso';
+
+  function normalizeFecha(val) {
+    if (!val) return '—';
+    // If it looks like ISO (contains T or is yyyy-mm-dd)
+    if (typeof val === 'string' && (val.includes('T') || /^\d{4}-\d{2}-\d{2}$/.test(val))) {
+      const d = new Date(val);
+      if (!isNaN(d)) return d.toLocaleDateString('es-AR');
+    }
+    return String(val);
+  }
+
+  function normalizeMes(val, fecha) {
+    if (val && !val.includes('T') && !/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+    // Derive from fecha
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const d = new Date(fecha || val);
+    if (!isNaN(d)) return meses[d.getMonth()] + ' ' + d.getFullYear();
+    return val || '—';
+  }
+
+  async function loadFinanzas() {
+    try {
+      const res = await fetch(FINANZAS_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allFinanzas = raw.slice(1).map(r => {
+        const fechaNorm = normalizeFecha(r[4]);
+        const mesNorm = normalizeMes(r[3], r[4]);
+        return {
+          tipo: r[0], concepto: r[1], monto: parseFloat(r[2]) || 0,
+          mes: mesNorm, fecha: fechaNorm, estado: r[5], categoria: r[6], notas: r[7]
+        };
+      }).filter(r => r.concepto);
+      populateFinMesFilter();
+      renderFinanzas();
+      renderFinChart();
+      renderFinPie();
+      renderFinClientes();
+      updateFinResumen();
+    } catch(e) {
+      document.getElementById('fin-tbody').innerHTML =
+        '<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--red)">⚠️ No se pudo cargar.</td></tr>';
+    }
+  }
+
+  function getCurrentMes() {
+    const now = new Date();
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    return meses[now.getMonth()] + ' ' + now.getFullYear();
+  }
+
+  function populateFinMesFilter() {
+    const sel = document.getElementById('fin-mes-filter');
+    if (!sel) return;
+    const meses = [...new Set(allFinanzas.map(r => r.mes))].filter(Boolean);
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Todos los meses</option>' +
+      meses.map(m => `<option value="${m}" ${m===current?'selected':''}>${m}</option>`).join('');
+  }
+
+  function filterFinanzas(filter, btn) {
+    finFilter = filter;
+    document.querySelectorAll('#panel-finanzas .filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderFinanzas();
+  }
+
+  function applyFinanzasFilters() { renderFinanzas(); renderFinPie(); updateFinResumen(); renderFinClientes(); }
+
+  function renderFinanzas() {
+    const tbody = document.getElementById('fin-tbody');
+    if (!tbody) return;
+    const mesF = document.getElementById('fin-mes-filter')?.value || '';
+    let data = [...allFinanzas];
+    if (mesF) data = data.filter(r => r.mes === mesF);
+    if (finFilter === 'ingreso') data = data.filter(r => r.tipo === 'ingreso');
+    else if (finFilter === 'gasto') data = data.filter(r => r.tipo === 'gasto');
+    else if (finFilter === 'pendiente') data = data.filter(r => r.estado === 'Pendiente');
+
+    if (!data.length) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">Sin registros para este filtro.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map((r, i) => {
+      const globalIdx = allFinanzas.indexOf(r);
+      const esIngreso = r.tipo === 'ingreso';
+      const estadoBadge = r.estado === 'Pagado'
+        ? `<span class="fin-estado-pagado">Pagado</span>`
+        : `<span class="fin-estado-pendiente">Pendiente</span>`;
+      return `<tr>
+        <td><span class="${esIngreso ? 'fin-tipo-ingreso' : 'fin-tipo-gasto'}">${esIngreso ? '↑ Ingreso' : '↓ Gasto'}</span></td>
+        <td style="font-weight:600;color:var(--text)">${r.concepto}</td>
+        <td>${r.categoria || '—'}</td>
+        <td>${r.mes || '—'}</td>
+        <td>${r.fecha || '—'}</td>
+        <td class="${esIngreso ? 'fin-monto-ingreso' : 'fin-monto-gasto'}">${esIngreso ? '+' : '-'}$${r.monto.toLocaleString('es-AR')}</td>
+        <td>${estadoBadge}</td>
+        <td><button class="delete-btn" onclick="deleteFinanza(${globalIdx})">🗑️</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function updateFinResumen() {
+    // Use the mes filter if set, otherwise use the most recent month in data, fallback to current
+    const mesFilter = document.getElementById('fin-mes-filter')?.value;
+    const mesesEnData = [...new Set(allFinanzas.map(r => r.mes))].filter(Boolean);
+    const mes = mesFilter || mesesEnData[mesesEnData.length - 1] || getCurrentMes();
+    const delMes = allFinanzas.filter(r => r.mes === mes);
+    const ingresos = delMes.filter(r => r.tipo === 'ingreso').reduce((s, r) => s + r.monto, 0);
+    const gastos = delMes.filter(r => r.tipo === 'gasto').reduce((s, r) => s + r.monto, 0);
+    const neto = ingresos - gastos;
+    const fmt = n => '$' + Math.abs(n).toLocaleString('es-AR');
+    const el = id => document.getElementById(id);
+    if (el('fin-total-ingresos')) el('fin-total-ingresos').textContent = fmt(ingresos);
+    if (el('fin-total-gastos')) el('fin-total-gastos').textContent = fmt(gastos);
+    if (el('fin-neto')) {
+      el('fin-neto').textContent = (neto >= 0 ? '+' : '-') + fmt(neto);
+      el('fin-neto').className = 'fin-stat-num ' + (neto >= 0 ? 'green' : 'red');
+    }
+    if (el('fin-sub-ingresos')) el('fin-sub-ingresos').textContent = mes;
+    if (el('fin-sub-gastos')) el('fin-sub-gastos').textContent = mes;
+    if (el('fin-sub-neto')) el('fin-sub-neto').textContent = 'Ingresos − Gastos';
+  }
+
+  function renderFinChart() {
+    const container = document.getElementById('fin-chart-bars');
+    if (!container) return;
+    const meses = [...new Set(allFinanzas.map(r => r.mes))].filter(Boolean).slice(-6);
+    if (!meses.length) { container.innerHTML = '<div style="color:var(--text3);font-size:13px;margin:auto">Sin datos todavía.</div>'; return; }
+    const maxVal = Math.max(...meses.flatMap(m => {
+      const d = allFinanzas.filter(r => r.mes === m);
+      return [d.filter(r=>r.tipo==='ingreso').reduce((s,r)=>s+r.monto,0), d.filter(r=>r.tipo==='gasto').reduce((s,r)=>s+r.monto,0)];
+    }), 1);
+    container.innerHTML = meses.map(m => {
+      const d = allFinanzas.filter(r => r.mes === m);
+      const ing = d.filter(r=>r.tipo==='ingreso').reduce((s,r)=>s+r.monto,0);
+      const gas = d.filter(r=>r.tipo==='gasto').reduce((s,r)=>s+r.monto,0);
+      const hIng = Math.round((ing/maxVal)*110) || 2;
+      const hGas = Math.round((gas/maxVal)*110) || 2;
+      const label = m.split(' ')[0].substring(0,3);
+      return `<div class="fin-bar-group">
+        <div class="fin-bar-wrap">
+          <div class="fin-bar ingreso" style="height:${hIng}px" title="Ingresos: $${ing.toLocaleString('es-AR')}"></div>
+          <div class="fin-bar gasto" style="height:${hGas}px" title="Gastos: $${gas.toLocaleString('es-AR')}"></div>
+        </div>
+        <div class="fin-bar-label">${label}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderFinClientes() {
+    const container = document.getElementById('fin-clientes-grid');
+    if (!container) return;
+    const mesFilter = document.getElementById('fin-mes-filter')?.value;
+    const mesesEnData = [...new Set(allFinanzas.map(r => r.mes))].filter(Boolean);
+    const mes = mesFilter || mesesEnData[mesesEnData.length - 1] || getCurrentMes();
+    const ingresos = allFinanzas.filter(r => r.tipo === 'ingreso' && r.mes === mes && r.categoria === 'Cliente');
+    if (!ingresos.length) { container.innerHTML = '<div style="color:var(--text3);font-size:13px">Sin ingresos de clientes este mes.</div>'; return; }
+    const porCliente = {};
+    ingresos.forEach(r => { porCliente[r.concepto] = (porCliente[r.concepto] || 0) + r.monto; });
+    container.innerHTML = Object.entries(porCliente).map(([nombre, monto]) =>
+      `<div class="fin-cliente-card">
+        <div class="fin-cliente-name">${nombre}</div>
+        <div class="fin-cliente-monto">$${monto.toLocaleString('es-AR')}</div>
+        <div class="fin-cliente-sub">${mes}</div>
+      </div>`
+    ).join('');
+  }
+
+  function renderFinPie() {
+    const container = document.getElementById('fin-pie-wrap');
+    if (!container) return;
+    const mesFilter = document.getElementById('fin-mes-filter')?.value;
+    const mesesEnData = [...new Set(allFinanzas.map(r => r.mes))].filter(Boolean);
+    const mes = mesFilter || mesesEnData[mesesEnData.length - 1] || getCurrentMes();
+    const data = allFinanzas.filter(r => r.mes === mes);
+
+    const colors = ['#16a34a','#dc2626','#2563eb','#d97706','#7c3aed','#db2777','#0891b2','#65a30d'];
+    const slices = [];
+    const ingresos = data.filter(r => r.tipo === 'ingreso');
+    const gastos = data.filter(r => r.tipo === 'gasto');
+    const totalIng = ingresos.reduce((s,r) => s + r.monto, 0);
+    const gastosCat = {};
+    gastos.forEach(r => { gastosCat[r.categoria || 'Otro'] = (gastosCat[r.categoria || 'Otro'] || 0) + r.monto; });
+    const totalGas = Object.values(gastosCat).reduce((s,v) => s+v, 0);
+    const total = totalIng + totalGas;
+
+    if (total === 0) {
+      container.innerHTML = '<div style="color:var(--text3);font-size:13px;margin:auto">Sin datos este mes.</div>';
+      return;
+    }
+
+    if (totalIng > 0) slices.push({ label: 'Ingresos', monto: totalIng, color: colors[0] });
+    let ci = 1;
+    Object.entries(gastosCat).forEach(([cat, monto]) => {
+      slices.push({ label: cat, monto, color: colors[ci++ % colors.length] });
+    });
+
+    // Build with canvas
+    container.innerHTML = `<canvas id="fin-pie-canvas" width="130" height="130" style="flex-shrink:0"></canvas>
+      <div class="fin-pie-legend" id="fin-pie-legend"></div>`;
+
+    const canvas = document.getElementById('fin-pie-canvas');
+    const ctx = canvas.getContext('2d');
+    const cx = 65, cy = 65, r = 58, inner = 30;
+    let angle = -Math.PI / 2;
+
+    slices.forEach(s => {
+      const sweep = (s.monto / total) * 2 * Math.PI;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, angle, angle + sweep);
+      ctx.closePath();
+      ctx.fillStyle = s.color;
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      angle += sweep;
+    });
+
+    // Donut hole
+    ctx.beginPath();
+    ctx.arc(cx, cy, inner, 0, 2 * Math.PI);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim() || '#ffffff';
+    ctx.fill();
+
+    // Center text
+    const pctIng = Math.round(totalIng / total * 100);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#141414';
+    ctx.font = 'bold 13px Outfit, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(pctIng + '%', cx, cy + 2);
+    ctx.font = '8px Plus Jakarta Sans, sans-serif';
+    ctx.fillStyle = '#a8a89e';
+    ctx.fillText('ing.', cx, cy + 13);
+
+    // Legend
+    const legend = document.getElementById('fin-pie-legend');
+    legend.innerHTML = slices.map(s =>
+      `<div class="fin-pie-legend-item">
+        <div class="fin-pie-legend-dot" style="background:${s.color}"></div>
+        <span class="fin-pie-legend-label">${s.label}</span>
+        <span class="fin-pie-legend-pct">${Math.round(s.monto/total*100)}%</span>
+      </div>`
+    ).join('');
+  }
+
+  function setFinTipo(tipo) {
+    finTipo = tipo;
+    const tabIng = document.getElementById('fin-tab-ingreso');
+    const tabGas = document.getElementById('fin-tab-gasto');
+    if (tipo === 'ingreso') {
+      tabIng.className = 'fin-tab active-ingreso';
+      tabGas.className = 'fin-tab';
+      document.getElementById('fin-categoria').value = 'Cliente';
+      document.getElementById('fin-estado-group').style.display = '';
+    } else {
+      tabGas.className = 'fin-tab active-gasto';
+      tabIng.className = 'fin-tab';
+      document.getElementById('fin-categoria').value = 'Sueldo';
+      document.getElementById('fin-estado-group').style.display = 'none';
+    }
+  }
+
+  function openFinModal() {
+    finTipo = 'ingreso';
+    document.getElementById('fin-modal').classList.add('open');
+    document.getElementById('fin-tab-ingreso').className = 'fin-tab active-ingreso';
+    document.getElementById('fin-tab-gasto').className = 'fin-tab';
+    document.getElementById('fin-concepto').value = '';
+    document.getElementById('fin-monto').value = '';
+    document.getElementById('fin-mes').value = getCurrentMes();
+    document.getElementById('fin-fecha').value = new Date().toISOString().split('T')[0];
+    document.getElementById('fin-estado').value = 'Pagado';
+    document.getElementById('fin-notas').value = '';
+    document.getElementById('fin-categoria').value = 'Cliente';
+    document.getElementById('fin-estado-group').style.display = '';
+    setTimeout(() => document.getElementById('fin-concepto').focus(), 100);
+  }
+
+  function closeFinModal() {
+    document.getElementById('fin-modal').classList.remove('open');
+  }
+
+  async function saveFinanza() {
+    const concepto = document.getElementById('fin-concepto').value.trim();
+    const monto = document.getElementById('fin-monto').value;
+    if (!concepto || !monto) { alert('Completá el concepto y el monto.'); return; }
+    const btn = document.getElementById('fin-save-btn');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+
+    // Normalize fecha to dd/mm/yyyy and mes to "Mes YYYY"
+    const fechaRaw = document.getElementById('fin-fecha').value;
+    let fechaFmt = fechaRaw;
+    let mesFmt = document.getElementById('fin-mes').value;
+    if (fechaRaw) {
+      const d = new Date(fechaRaw + 'T12:00:00');
+      fechaFmt = d.toLocaleDateString('es-AR');
+      const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      if (!mesFmt) mesFmt = meses[d.getMonth()] + ' ' + d.getFullYear();
+    }
+
+    const data = {
+      tipo: finTipo,
+      concepto,
+      monto: parseFloat(monto),
+      mes: mesFmt,
+      fecha: fechaFmt,
+      estado: finTipo === 'ingreso' ? document.getElementById('fin-estado').value : 'N/A',
+      categoria: document.getElementById('fin-categoria').value,
+      notas: document.getElementById('fin-notas').value.trim()
+    };
+    try {
+      await fetch(FINANZAS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allFinanzas.push(data);
+      populateFinMesFilter();
+      renderFinanzas();
+      renderFinChart();
+      renderFinPie();
+      renderFinClientes();
+      updateFinResumen();
+      closeFinModal();
+    } catch(e) {
+      alert('Error al guardar. Verificá tu conexión.');
+    }
+    btn.textContent = 'Guardar'; btn.disabled = false;
+  }
+
+  async function deleteFinanza(idx) {
+    if (!allFinanzas[idx]) return;
+    if (!confirm('¿Eliminar este registro?')) return;
+    const rowIndex = idx + 2;
+    allFinanzas.splice(idx, 1);
+    renderFinanzas();
+    renderFinChart();
+      renderFinPie();
+    renderFinClientes();
+    updateFinResumen();
+    try {
+      await fetch(FINANZAS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', rowIndex })
+      });
+    } catch(e) { console.error('Error deleting:', e); }
+  }
+
+  // ============ ESTRATEGIA ============
+  let allPipeline = [];
+  let allDecisiones = [];
+  let estTabActiva = 'pipeline';
+
+  function switchEstTab(tab, btn) {
+    estTabActiva = tab;
+    document.querySelectorAll('.est-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.est-section').forEach(s => s.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.getElementById('est-' + tab)?.classList.add('active');
+    if (tab === 'pipeline' && !allPipeline.length) loadPipeline();
+    if (tab === 'decisiones' && !allDecisiones.length) loadDecisiones();
+  }
+
+  // ---- PIPELINE ----
+  async function loadPipeline() {
+    try {
+      const res = await fetch(PIPELINE_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allPipeline = raw.slice(1).map(r => ({
+        nombre: r[0], contacto: r[1], servicio: r[2],
+        estado: r[3], valor: parseFloat(r[4]) || 0,
+        fecha_contacto: r[5], notas: r[6]
+      })).filter(r => r.nombre);
+      renderPipeline();
+    } catch(e) {
+      document.getElementById('pipe-tbody').innerHTML =
+        '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--red)">⚠️ No se pudo cargar.</td></tr>';
+    }
+  }
+
+  function getEstadoClass(estado) {
+    const map = { 'Contactado': 'pipe-estado-contactado', 'Reunión': 'pipe-estado-reunion', 'Propuesta': 'pipe-estado-propuesta', 'Cerrado': 'pipe-estado-cerrado' };
+    return map[estado] || 'pipe-estado-contactado';
+  }
+
+  function renderPipeline() {
+    const cols = { 'Contactado': [], 'Reunión': [], 'Propuesta': [], 'Cerrado': [] };
+    allPipeline.forEach(r => { if (cols[r.estado]) cols[r.estado].push(r); });
+
+    const colIds = { 'Contactado': 'contactado', 'Reunión': 'reunion', 'Propuesta': 'propuesta', 'Cerrado': 'cerrado' };
+    Object.entries(cols).forEach(([estado, items]) => {
+      const colId = colIds[estado];
+      const col = document.getElementById('pipe-col-' + colId);
+      const count = document.getElementById('count-' + colId);
+      if (count) count.textContent = items.length;
+      if (!col) return;
+      col.innerHTML = items.length ? items.map((r, i) => {
+        const globalIdx = allPipeline.indexOf(r);
+        return `<div class="pipe-card pipe-${colId}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div class="pipe-card-name">${r.nombre}</div>
+            <button class="delete-btn" onclick="deletePipeline(${globalIdx})" style="font-size:12px">🗑️</button>
+          </div>
+          <div class="pipe-card-servicio">${r.servicio || '—'}</div>
+          <div class="pipe-card-footer">
+            <span class="pipe-card-valor">${r.valor ? '$' + r.valor.toLocaleString('es-AR') : '—'}</span>
+            <span class="pipe-card-fecha">${r.fecha_contacto || ''}</span>
+          </div>
+        </div>`;
+      }).join('') : '<div style="font-size:12px;color:var(--text3);text-align:center;padding:12px">Vacío</div>';
+    });
+
+    // Table
+    const tbody = document.getElementById('pipe-tbody');
+    if (!tbody) return;
+    if (!allPipeline.length) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text3)">Sin leads todavía.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allPipeline.map((r, i) => `
+      <tr>
+        <td style="font-weight:600;color:var(--text)">${r.nombre}</td>
+        <td>${r.servicio || '—'}</td>
+        <td><span class="pipe-estado ${getEstadoClass(r.estado)}">${r.estado}</span></td>
+        <td style="color:var(--green);font-weight:700">${r.valor ? '$' + r.valor.toLocaleString('es-AR') : '—'}</td>
+        <td>${r.contacto || '—'}</td>
+        <td>${r.fecha_contacto || '—'}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.notas || '—'}</td>
+        <td><button class="delete-btn" onclick="deletePipeline(${i})">🗑️</button></td>
+      </tr>`).join('');
+  }
+
+  function openPipeModal() {
+    document.getElementById('pipe-modal').classList.add('open');
+    ['pm-nombre','pm-servicio','pm-contacto','pm-notas'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('pm-valor').value = '';
+    document.getElementById('pm-estado').value = 'Contactado';
+    setTimeout(() => document.getElementById('pm-nombre').focus(), 100);
+  }
+
+  function closePipeModal() { document.getElementById('pipe-modal').classList.remove('open'); }
+
+  async function savePipeline() {
+    const nombre = document.getElementById('pm-nombre').value.trim();
+    if (!nombre) { alert('Completá el nombre del cliente.'); return; }
+    const btn = document.getElementById('pipe-save-btn');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const data = {
+      nombre, contacto: document.getElementById('pm-contacto').value,
+      servicio: document.getElementById('pm-servicio').value,
+      estado: document.getElementById('pm-estado').value,
+      valor: parseFloat(document.getElementById('pm-valor').value) || 0,
+      fecha_contacto: new Date().toLocaleDateString('es-AR'),
+      notas: document.getElementById('pm-notas').value.trim()
+    };
+    try {
+      await fetch(PIPELINE_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allPipeline.push(data);
+      renderPipeline();
+      closePipeModal();
+    } catch(e) { alert('Error al guardar.'); }
+    btn.textContent = 'Guardar lead'; btn.disabled = false;
+  }
+
+  async function deletePipeline(idx) {
+    if (!allPipeline[idx] || !confirm('¿Eliminar este lead?')) return;
+    const rowIndex = idx + 2;
+    allPipeline.splice(idx, 1);
+    renderPipeline();
+    try {
+      await fetch(PIPELINE_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', rowIndex }) });
+    } catch(e) {}
+  }
+
+  // ---- DECISIONES ----
+  async function loadDecisiones() {
+    const container = document.getElementById('dec-container');
+    if (!container) return;
+    container.innerHTML = '<div class="tasks-loading">⏳ Cargando decisiones...</div>';
+    try {
+      const res = await fetch(DECISIONES_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allDecisiones = raw.slice(1).map(r => ({
+        titulo: r[0], decision: r[1], razonamiento: r[2], fecha: r[3], quien: r[4]
+      })).filter(r => r.titulo).reverse();
+      renderDecisiones();
+    } catch(e) {
+      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las decisiones.</div>';
+    }
+  }
+
+  function renderDecisiones() {
+    const container = document.getElementById('dec-container');
+    if (!container) return;
+    if (!allDecisiones.length) {
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">📌</div><div>No hay decisiones registradas todavía.</div></div>';
+      return;
+    }
+    container.innerHTML = allDecisiones.map((d, i) => `
+      <div class="dec-card">
+        <div class="dec-header">
+          <div>
+            <div class="dec-titulo">${d.titulo}</div>
+            <div class="dec-meta">📅 ${d.fecha || '—'} · 👤 ${d.quien || '—'}</div>
+          </div>
+          <button class="delete-btn" onclick="deleteDecision(${i})">🗑️</button>
+        </div>
+        <div class="dec-decision">${d.decision}</div>
+        ${d.razonamiento ? `<div class="dec-razonamiento">"${d.razonamiento}"</div>` : ''}
+      </div>`).join('');
+  }
+
+  function openDecModal() {
+    document.getElementById('dec-modal').classList.add('open');
+    ['dm-titulo','dm-decision','dm-razonamiento'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('dm-fecha').value = new Date().toISOString().split('T')[0];
+    document.getElementById('dm-quien').value = 'Bautista y Nicolás';
+    setTimeout(() => document.getElementById('dm-titulo').focus(), 100);
+  }
+
+  function closeDecModal() { document.getElementById('dec-modal').classList.remove('open'); }
+
+  async function saveDecision() {
+    const titulo = document.getElementById('dm-titulo').value.trim();
+    const decision = document.getElementById('dm-decision').value.trim();
+    if (!titulo || !decision) { alert('Completá el título y la decisión.'); return; }
+    const btn = document.getElementById('dec-save-btn');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const fechaRaw = document.getElementById('dm-fecha').value;
+    const fecha = fechaRaw ? new Date(fechaRaw + 'T12:00:00').toLocaleDateString('es-AR') : new Date().toLocaleDateString('es-AR');
+    const data = {
+      titulo, decision,
+      razonamiento: document.getElementById('dm-razonamiento').value.trim(),
+      fecha, quien: document.getElementById('dm-quien').value
+    };
+    try {
+      await fetch(DECISIONES_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allDecisiones.unshift(data);
+      renderDecisiones();
+      closeDecModal();
+    } catch(e) { alert('Error al guardar.'); }
+    btn.textContent = 'Guardar decisión'; btn.disabled = false;
+  }
+
+  async function deleteDecision(idx) {
+    if (!allDecisiones[idx] || !confirm('¿Eliminar esta decisión?')) return;
+    const rowIndex = allDecisiones.length - idx + 1;
+    allDecisiones.splice(idx, 1);
+    renderDecisiones();
+    try {
+      await fetch(DECISIONES_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', rowIndex }) });
+    } catch(e) {}
+  }
+
+  // ============ RENDIMIENTO ============
+  let allRendimiento = [];
+  const rendScores = { proactividad: 3, creatividad: 3, responsabilidad: 3, comunicacion: 3, resolucion: 3 };
+
+  function getScoreClass(val) {
+    const n = parseFloat(val);
+    if (n >= 4.5) return 's5';
+    if (n >= 3.5) return 's4';
+    if (n >= 2.5) return 's3';
+    if (n >= 1.5) return 's2';
+    return 's1';
+  }
+
+  function getAvClass(name) {
+    const cls = { 'Lourdes': 'av-green', 'Enzo': 'av-amber', 'Brunela': 'av-red', 'Facundo': 'av-blue' };
+    return cls[name] || 'av-gold';
+  }
+
+  function buildScoreBtns(cat) {
+    const container = document.getElementById('rm-btns-' + cat);
+    if (!container) return;
+    container.innerHTML = [1,2,3,4,5].map(n =>
+      `<button class="rend-score-btn ${rendScores[cat] === n ? 'selected' : ''}"
+        onclick="setRendScore('${cat}', ${n})">${n}</button>`
+    ).join('');
+  }
+
+  function setRendScore(cat, val) {
+    rendScores[cat] = val;
+    buildScoreBtns(cat);
+    updateAvgDisplay();
+  }
+
+  function updateAvgDisplay() {
+    const vals = Object.values(rendScores);
+    const avg = (vals.reduce((s,v) => s+v, 0) / vals.length).toFixed(1);
+    const el = document.getElementById('rm-avg-display');
+    if (!el) return;
+    el.textContent = avg;
+    el.style.color = parseFloat(avg) >= 4 ? 'var(--green)' : parseFloat(avg) >= 3 ? 'var(--amber)' : 'var(--red)';
+  }
+
+  function toggleRendSemana() {
+    const tipo = document.getElementById('rm-tipo')?.value;
+    const semGrp = document.getElementById('rm-semana-group');
+    if (semGrp) semGrp.style.display = tipo === 'mes' ? 'none' : '';
+  }
+
+  function populateRendMesFilter() {
+    const sel = document.getElementById('rend-mes-filter');
+    if (!sel) return;
+    const meses = [...new Set(allRendimiento.map(r => r.mes))].filter(Boolean);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">Todos los meses</option>' +
+      meses.map(m => `<option value="${m}" ${m===cur?'selected':''}>${m}</option>`).join('');
+  }
+
+  async function loadRendimiento() {
+    const container = document.getElementById('rend-container');
+    if (!container) return;
+    container.innerHTML = '<div class="rend-loading">⏳ Cargando calificaciones...</div>';
+    try {
+      const res = await fetch(RENDIMIENTO_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allRendimiento = raw.slice(1).map(r => ({
+        empleado: r[0], periodo: r[1], tipo: r[2], mes: r[3], semana: r[4],
+        proactividad: parseFloat(r[5])||0, creatividad: parseFloat(r[6])||0,
+        responsabilidad: parseFloat(r[7])||0, comunicacion: parseFloat(r[8])||0,
+        resolucion: parseFloat(r[9])||0, puntaje_total: parseFloat(r[10])||0,
+        comentario: r[11], fecha: r[12]
+      })).filter(r => r.empleado);
+      populateRendMesFilter();
+      renderRendimiento();
+    } catch(e) {
+      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las calificaciones.</div>';
+    }
+  }
+
+  function renderRendimiento() {
+    const container = document.getElementById('rend-container');
+    if (!container) return;
+    const empF = document.getElementById('rend-empleado-filter')?.value || '';
+    const tipoF = document.getElementById('rend-tipo-filter')?.value || '';
+    const mesF = document.getElementById('rend-mes-filter')?.value || '';
+
+    let data = [...allRendimiento];
+    if (empF) data = data.filter(r => r.empleado === empF);
+    if (tipoF) data = data.filter(r => r.tipo === tipoF);
+    if (mesF) data = data.filter(r => r.mes === mesF);
+
+    if (!data.length) {
+      container.innerHTML = '<div class="rend-empty">⭐ No hay calificaciones para estos filtros.</div>';
+      return;
+    }
+
+    container.innerHTML = data.map((r, i) => {
+      const avg = r.puntaje_total || ((r.proactividad+r.creatividad+r.responsabilidad+r.comunicacion+r.resolucion)/5);
+      const avgRound = Math.round(avg * 10) / 10;
+      const scoreClass = avg >= 4 ? 'high' : avg >= 3 ? 'mid' : 'low';
+      const initials = r.empleado.substring(0,2).toUpperCase();
+      const tipoBadge = r.tipo === 'semana'
+        ? `<span class="rend-tipo-badge rend-tipo-semana">📅 ${r.semana || 'Semanal'}</span>`
+        : `<span class="rend-tipo-badge rend-tipo-mes">📆 Mensual</span>`;
+      const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5-Math.round(n));
+      const globalIdx = allRendimiento.indexOf(r);
+      return `<div class="rend-card">
+        <div class="rend-header">
+          <div class="avatar ${getAvClass(r.empleado)}" style="width:44px;height:44px;font-size:14px">${initials}</div>
+          <div>
+            <div class="rend-name">${r.empleado}</div>
+            <div class="rend-meta">${r.mes || ''} · ${tipoBadge}</div>
+          </div>
+          <div class="rend-score-pill ${scoreClass}">${avgRound}</div>
+          <button class="delete-btn" onclick="deleteRendimiento(${globalIdx})" title="Eliminar">🗑️</button>
+        </div>
+        <div class="rend-body">
+          <div class="rend-cats">
+            <div class="rend-cat"><div class="rend-cat-label">Proactividad</div><div class="rend-cat-val ${getScoreClass(r.proactividad)}">${r.proactividad}</div><div class="rend-stars">${stars(r.proactividad)}</div></div>
+            <div class="rend-cat"><div class="rend-cat-label">Creatividad</div><div class="rend-cat-val ${getScoreClass(r.creatividad)}">${r.creatividad}</div><div class="rend-stars">${stars(r.creatividad)}</div></div>
+            <div class="rend-cat"><div class="rend-cat-label">Responsabilidad</div><div class="rend-cat-val ${getScoreClass(r.responsabilidad)}">${r.responsabilidad}</div><div class="rend-stars">${stars(r.responsabilidad)}</div></div>
+            <div class="rend-cat"><div class="rend-cat-label">Comunicación</div><div class="rend-cat-val ${getScoreClass(r.comunicacion)}">${r.comunicacion}</div><div class="rend-stars">${stars(r.comunicacion)}</div></div>
+            <div class="rend-cat"><div class="rend-cat-label">Resolución</div><div class="rend-cat-val ${getScoreClass(r.resolucion)}">${r.resolucion}</div><div class="rend-stars">${stars(r.resolucion)}</div></div>
+          </div>
+          ${r.comentario ? `<div class="rend-comentario">"${r.comentario}"</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function openRendModal() {
+    document.getElementById('rend-modal').classList.add('open');
+    document.getElementById('rm-mes').value = '';
+    document.getElementById('rm-comentario').value = '';
+    document.getElementById('rm-tipo').value = 'semana';
+    document.getElementById('rm-semana-group').style.display = '';
+    Object.keys(rendScores).forEach(k => rendScores[k] = 3);
+    ['proactividad','creatividad','responsabilidad','comunicacion','resolucion'].forEach(buildScoreBtns);
+    updateAvgDisplay();
+    setTimeout(() => document.getElementById('rm-mes').focus(), 100);
+  }
+
+  function closeRendModal() {
+    document.getElementById('rend-modal').classList.remove('open');
+  }
+
+  async function saveRendimiento() {
+    const mes = document.getElementById('rm-mes').value.trim();
+    const empleado = document.getElementById('rm-empleado').value;
+    if (!mes || !empleado) { alert('Completá el mes y el empleado.'); return; }
+    const btn = document.getElementById('rend-save-btn');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const tipo = document.getElementById('rm-tipo').value;
+    const semana = tipo === 'semana' ? document.getElementById('rm-semana').value : '';
+    const avg = (Object.values(rendScores).reduce((s,v)=>s+v,0)/5).toFixed(2);
+    const data = {
+      empleado, periodo: tipo === 'semana' ? `${mes} · ${semana}` : mes,
+      tipo, mes, semana,
+      proactividad: rendScores.proactividad,
+      creatividad: rendScores.creatividad,
+      responsabilidad: rendScores.responsabilidad,
+      comunicacion: rendScores.comunicacion,
+      resolucion: rendScores.resolucion,
+      puntaje_total: parseFloat(avg),
+      comentario: document.getElementById('rm-comentario').value.trim(),
+      fecha: new Date().toLocaleDateString('es-AR')
+    };
+    try {
+      await fetch(RENDIMIENTO_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allRendimiento.unshift(data);
+      populateRendMesFilter();
+      renderRendimiento();
+      closeRendModal();
+    } catch(e) {
+      alert('Error al guardar. Verificá tu conexión.');
+    }
+    btn.textContent = 'Guardar calificación'; btn.disabled = false;
+  }
+
+  async function deleteRendimiento(idx) {
+    if (!allRendimiento[idx]) return;
+    if (!confirm('¿Eliminar esta calificación?')) return;
+    const rowIndex = idx + 2;
+    allRendimiento.splice(idx, 1);
+    renderRendimiento();
+    try {
+      await fetch(RENDIMIENTO_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', rowIndex })
+      });
+    } catch(e) { console.error('Error deleting:', e); }
+  }
+
+  // ============ DARK MODE ============
+  function toggleDarkMode() {
+    const isDark = document.body.classList.toggle('dark');
+    const sw = document.getElementById('dark-switch');
+    if (sw) sw.classList.toggle('on', isDark);
+    localStorage.setItem('balodi_dark', isDark ? '1' : '0');
+  }
+
+  function initDarkMode() {
+    const saved = localStorage.getItem('balodi_dark');
+    if (saved === '1') {
+      document.body.classList.add('dark');
+      const sw = document.getElementById('dark-switch');
+      if (sw) sw.classList.add('on');
+    }
+  }
+
+  // ============ RESUMEN + FEED ============
+  function updateResumen() {
+    const pendientes = allTasks.filter(t => t.estado !== 'hecho').length;
+    const completadas = allTasks.filter(t => t.estado === 'hecho').length;
+    const elP = document.getElementById('res-pendientes');
+    const elC = document.getElementById('res-completadas');
+    const elI = document.getElementById('res-ideas');
+    const elCr = document.getElementById('res-creativas');
+    if (elP) elP.textContent = pendientes;
+    if (elC) elC.textContent = completadas;
+    if (elI) elI.textContent = allIdeas.length;
+    if (elCr) elCr.textContent = allCreativas.length;
+  }
+
+  function buildFeed() {
+    const feedEl = document.getElementById('feed-list');
+    if (!feedEl) return;
+    const events = [];
+
+    allTasks.forEach(t => {
+      if (t.estado === 'hecho') {
+        events.push({ icon: '✅', iconClass: 'tarea-done', text: `<span>${t.responsable}</span> completó "${t.tarea}"`, fecha: t.fecha });
+      } else {
+        events.push({ icon: '📋', iconClass: 'tarea-new', text: `Nueva tarea para <span>${t.responsable}</span>: "${t.tarea}"`, fecha: t.fecha });
+      }
+    });
+
+    allIdeas.forEach(i => {
+      events.push({ icon: '💡', iconClass: 'idea-new', text: `<span>${i.quien}</span> tiró una idea: "${i.idea.substring(0,55)}${i.idea.length>55?'...':''}"`, fecha: i.fecha });
+    });
+
+    allCreativas.forEach(i => {
+      events.push({ icon: '✨', iconClass: 'creativa-new', text: `<span>${i.quien}</span> agregó idea creativa: "${i.idea.substring(0,55)}${i.idea.length>55?'...':''}"`, fecha: i.fecha });
+    });
+
+    const parseDate = d => {
+      if (!d || d === '—') return 0;
+      const p = d.split('/');
+      return p.length === 3 ? new Date(p[2], p[1]-1, p[0]).getTime() : 0;
+    };
+    events.sort((a, b) => parseDate(b.fecha) - parseDate(a.fecha));
+    const recent = events.slice(0, 6);
+
+    if (!recent.length) {
+      feedEl.innerHTML = '<div class="feed-empty">Sin actividad reciente todavía.</div>';
+      return;
+    }
+    feedEl.innerHTML = recent.map(e => `
+      <div class="feed-item">
+        <div class="feed-icon ${e.iconClass}">${e.icon}</div>
+        <div class="feed-body">
+          <div class="feed-text">${e.text}</div>
+          <div class="feed-time">${e.fecha || ''}</div>
+        </div>
+      </div>`).join('');
+  }
+
   // ============ INIT ============
   function initApp() {
+    initDarkMode();
     updateUserUI();
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1797,6 +3499,7 @@
     loadTasks();
     loadIdeas();
     loadCreativas();
+    loadAllComments();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
