@@ -410,7 +410,11 @@
 
   /* PIPELINE */
   .pipe-kanban { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
-  .pipe-col { background: var(--bg4); border-radius: 12px; padding: 12px; min-height: 120px; }
+  .pipe-col { background: var(--bg4); border-radius: 12px; padding: 12px; min-height: 120px; max-height: 420px; display: flex; flex-direction: column; }
+  .pipe-col-inner { overflow-y: auto; flex: 1; padding-right: 2px; }
+  .pipe-col-inner::-webkit-scrollbar { width: 4px; }
+  .pipe-col-inner::-webkit-scrollbar-track { background: transparent; }
+  .pipe-col-inner::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
   .pipe-col-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
   .pipe-col-count { background: var(--bg2); border-radius: 999px; padding: 1px 7px; font-size: 10px; font-weight: 800; }
   .pipe-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; box-shadow: var(--shadow-sm); cursor: default; }
@@ -432,7 +436,11 @@
   .pipe-table td { padding: 11px 14px; font-size: 13px; color: var(--text2); border-bottom: 1px solid var(--border); vertical-align: middle; }
   .pipe-table tr:last-child td { border-bottom: none; }
   .pipe-table tr:hover td { background: var(--bg3); }
-  .pipe-estado { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .pipe-estado-select { font-size: 10px; font-weight: 700; border: none; border-radius: 999px; padding: 2px 6px; cursor: pointer; outline: none; background: transparent; }
+  .pipe-estado-select.contactado { background: var(--blue-light); color: var(--blue); }
+  .pipe-estado-select.reunion { background: var(--amber-light); color: var(--amber); }
+  .pipe-estado-select.propuesta { background: var(--orange-light); color: var(--orange); }
+  .pipe-estado-select.cerrado { background: var(--green-light); color: var(--green); }
   .pipe-estado-contactado { background: var(--blue-light); color: var(--blue); border: 1px solid #bfdbfe; }
   .pipe-estado-reunion { background: var(--amber-light); color: var(--amber); border: 1px solid #fde68a; }
   .pipe-estado-propuesta { background: var(--orange-light); color: var(--orange); border: 1px solid var(--orange-border); }
@@ -447,7 +455,8 @@
   .dec-razonamiento { font-size: 13px; color: var(--text2); line-height: 1.6; font-style: italic; }
 
   /* OBJETIVOS ANUALES */
-  .obj-anual-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+  .obj-anual-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 12px; box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.15s; }
+  .obj-anual-card:hover { border-color: var(--orange); transform: translateY(-2px); box-shadow: var(--shadow); }
   .obj-anual-num { font-family: "Outfit", sans-serif; font-size: 32px; font-weight: 800; color: var(--orange); margin-bottom: 4px; }
   .obj-anual-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
   .obj-anual-desc { font-size: 12px; color: var(--text3); line-height: 1.5; }
@@ -672,9 +681,250 @@
   .feed-time { font-size: 11px; color: var(--text3); margin-top: 2px; }
   .feed-empty { font-size: 13px; color: var(--text3); text-align: center; padding: 20px; }
 
+
+  /* ======= JARVIS INTRO ======= */
+  #jarvis-intro {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: 'Outfit', monospace;
+    overflow: hidden;
+  }
+  #jarvis-intro.show { display: flex; }
+
+  .jarvis-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, #0d0d0d 0%, #000 70%);
+  }
+  .jarvis-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,98,10,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,98,10,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridPulse 4s ease-in-out infinite;
+  }
+  @keyframes gridPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+  .jarvis-rings {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    z-index: 2;
+  }
+  .jarvis-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+  }
+  .ring-1 {
+    width: 260px; height: 260px;
+    border-top-color: rgba(245,98,10,0.9);
+    border-right-color: rgba(245,98,10,0.2);
+    animation: spin1 3s linear infinite;
+  }
+  .ring-2 {
+    width: 220px; height: 220px;
+    border-bottom-color: rgba(245,98,10,0.7);
+    border-left-color: rgba(245,98,10,0.15);
+    animation: spin2 2.2s linear infinite;
+  }
+  .ring-3 {
+    width: 180px; height: 180px;
+    border-top-color: rgba(255,255,255,0.5);
+    border-right-color: rgba(255,255,255,0.1);
+    animation: spin1 1.6s linear infinite reverse;
+  }
+  .ring-4 {
+    width: 140px; height: 140px;
+    border-bottom-color: rgba(245,98,10,0.6);
+    border-left-color: rgba(245,98,10,0.1);
+    animation: spin2 2.8s linear infinite reverse;
+  }
+  @keyframes spin1 { to { transform: rotate(360deg); } }
+  @keyframes spin2 { to { transform: rotate(-360deg); } }
+
+  .jarvis-core {
+    position: relative;
+    z-index: 3;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,98,10,0.3) 0%, rgba(245,98,10,0.05) 60%, transparent 100%);
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(245,98,10,0.4);
+    box-shadow: 0 0 30px rgba(245,98,10,0.4), inset 0 0 20px rgba(245,98,10,0.1);
+    animation: corePulse 1.5s ease-in-out infinite;
+  }
+  @keyframes corePulse {
+    0%,100% { box-shadow: 0 0 20px rgba(245,98,10,0.3), inset 0 0 10px rgba(245,98,10,0.1); }
+    50% { box-shadow: 0 0 50px rgba(245,98,10,0.7), inset 0 0 30px rgba(245,98,10,0.2); }
+  }
+  .jarvis-core-icon { font-size: 28px; }
+
+  .jarvis-content {
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .jarvis-system-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(245,98,10,0.6);
+    margin-bottom: 4px;
+  }
+  .jarvis-welcome {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .jarvis-name {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 30px rgba(245,98,10,0.8);
+    min-height: 52px;
+  }
+  .jarvis-name .cursor {
+    display: inline-block;
+    width: 3px;
+    height: 42px;
+    background: var(--orange);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 0.7s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .jarvis-role {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(245,98,10,0.8);
+    margin-top: 2px;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .jarvis-role.show { opacity: 1; }
+
+  .jarvis-bootlog {
+    margin-top: 28px;
+    width: 340px;
+    text-align: left;
+    z-index: 2;
+  }
+  .jarvis-log-line {
+    font-size: 11px;
+    color: rgba(245,98,10,0.55);
+    letter-spacing: 0.05em;
+    padding: 2px 0;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.3s, transform 0.3s;
+    font-family: 'Courier New', monospace;
+  }
+  .jarvis-log-line.show { opacity: 1; transform: translateX(0); }
+  .jarvis-log-line .ok { color: rgba(22,163,74,0.9); }
+
+  .jarvis-bar-wrap {
+    margin-top: 24px;
+    width: 340px;
+    z-index: 2;
+  }
+  .jarvis-bar-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 6px;
+  }
+  .jarvis-bar-track {
+    height: 2px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .jarvis-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--orange), #ff9a5c);
+    border-radius: 999px;
+    transition: width 3.5s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 0 8px rgba(245,98,10,0.6);
+  }
+
+  .jarvis-skip {
+    position: absolute;
+    bottom: 28px;
+    right: 32px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    z-index: 10;
+    transition: color 0.2s;
+  }
+  .jarvis-skip:hover { color: rgba(255,255,255,0.5); }
+
+  /* scan line effect */
+  .jarvis-scanline {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
 </style>
 </head>
 <body>
+<!-- JARVIS INTRO -->
+<div id="jarvis-intro">
+  <div class="jarvis-bg"></div>
+  <div class="jarvis-grid"></div>
+  <div class="jarvis-scanline"></div>
+  <div class="jarvis-rings">
+    <div class="jarvis-ring ring-1"></div>
+    <div class="jarvis-ring ring-2"></div>
+    <div class="jarvis-ring ring-3"></div>
+    <div class="jarvis-ring ring-4"></div>
+    <div class="jarvis-core"><div class="jarvis-core-icon">⬡</div></div>
+  </div>
+  <div class="jarvis-content">
+    <div class="jarvis-system-label">Balodi — Sistema Operativo v2.0</div>
+    <div class="jarvis-welcome">Bienvenido de vuelta,</div>
+    <div class="jarvis-name" id="jarvis-name-text"><span class="cursor"></span></div>
+    <div class="jarvis-role" id="jarvis-role">Fundador · Estrategia y Crecimiento</div>
+  </div>
+  <div class="jarvis-bootlog" id="jarvis-bootlog"></div>
+  <div class="jarvis-bar-wrap">
+    <div class="jarvis-bar-label">Inicializando sistema...</div>
+    <div class="jarvis-bar-track"><div class="jarvis-bar-fill" id="jarvis-bar"></div></div>
+  </div>
+  <div class="jarvis-skip" onclick="closeJarvis()">[ SALTAR → ]</div>
+</div>
+
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">📊</div>
@@ -1126,19 +1376,19 @@
       <div class="pipe-kanban">
         <div class="pipe-col pipe-col-contactado">
           <div class="pipe-col-title" style="color:var(--blue)">📞 Contactado <span class="pipe-col-count" id="count-contactado">0</span></div>
-          <div id="pipe-col-contactado"></div>
+          <div class="pipe-col-inner" id="pipe-col-contactado"></div>
         </div>
         <div class="pipe-col pipe-col-reunion">
           <div class="pipe-col-title" style="color:var(--amber)">🤝 Reunión <span class="pipe-col-count" id="count-reunion">0</span></div>
-          <div id="pipe-col-reunion"></div>
+          <div class="pipe-col-inner" id="pipe-col-reunion"></div>
         </div>
         <div class="pipe-col pipe-col-propuesta">
           <div class="pipe-col-title" style="color:var(--orange)">📄 Propuesta <span class="pipe-col-count" id="count-propuesta">0</span></div>
-          <div id="pipe-col-propuesta"></div>
+          <div class="pipe-col-inner" id="pipe-col-propuesta"></div>
         </div>
         <div class="pipe-col pipe-col-cerrado">
           <div class="pipe-col-title" style="color:var(--green)">✅ Cerrado <span class="pipe-col-count" id="count-cerrado">0</span></div>
-          <div id="pipe-col-cerrado"></div>
+          <div class="pipe-col-inner" id="pipe-col-cerrado"></div>
         </div>
       </div>
       <div style="overflow-x:auto">
@@ -1153,49 +1403,32 @@
 
     <!-- OBJETIVOS ANUALES -->
     <div class="est-section" id="est-objetivos">
-      <div class="obj-anual-grid">
-        <div class="obj-anual-card">
+      <div class="obj-anual-grid" id="oa-grid">
+        <div class="obj-anual-card" onclick="editObjetivo('clientes')" title="Click para editar">
           <div class="obj-anual-num" id="oa-clientes">—</div>
-          <div class="obj-anual-label">Clientes activos meta</div>
-          <div class="obj-anual-desc">Cantidad de clientes que queremos tener a fin de año</div>
+          <div class="obj-anual-label" id="oa-clientes-label">Clientes activos meta</div>
+          <div class="obj-anual-desc" id="oa-clientes-desc">Cantidad de clientes que queremos tener a fin de año</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:8px">✏️ Click para editar</div>
         </div>
-        <div class="obj-anual-card">
+        <div class="obj-anual-card" onclick="editObjetivo('facturacion')" title="Click para editar">
           <div class="obj-anual-num" id="oa-facturacion">—</div>
-          <div class="obj-anual-label">Facturación anual meta</div>
-          <div class="obj-anual-desc">Objetivo de facturación total del año</div>
+          <div class="obj-anual-label" id="oa-facturacion-label">Facturación anual meta</div>
+          <div class="obj-anual-desc" id="oa-facturacion-desc">Objetivo de facturación total del año</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:8px">✏️ Click para editar</div>
         </div>
-        <div class="obj-anual-card">
+        <div class="obj-anual-card" onclick="editObjetivo('equipo')" title="Click para editar">
           <div class="obj-anual-num" id="oa-equipo">—</div>
-          <div class="obj-anual-label">Tamaño del equipo meta</div>
-          <div class="obj-anual-desc">Cantidad de personas en el equipo a fin de año</div>
+          <div class="obj-anual-label" id="oa-equipo-label">Tamaño del equipo meta</div>
+          <div class="obj-anual-desc" id="oa-equipo-desc">Cantidad de personas en el equipo a fin de año</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:8px">✏️ Click para editar</div>
         </div>
       </div>
-      <div class="alert alert-info" style="margin-bottom:20px"><div class="alert-icon">✏️</div><div>Editá los objetivos anuales haciendo click en cada número.</div></div>
-      <div class="section-title">Pilares estratégicos 2026</div>
-      <div class="obj-card">
-        <div class="obj-header"><div class="obj-icon">📈</div><div><div class="obj-title">Escalar la facturación</div></div><span class="badge badge-orange">Financiero</span></div>
-        <ul class="checklist" style="margin-top:12px">
-          <li><div class="check-dot">✓</div>Conseguir clientes con presupuesto mínimo de $X por mes</li>
-          <li><div class="check-dot">✓</div>Reducir dependencia de clientes pequeños de bajo margen</li>
-          <li><div class="check-dot">✓</div>Armar paquetes de servicios con precios claros</li>
-        </ul>
+
+      <div class="section-title" style="margin-bottom:14px">Pilares estratégicos</div>
+      <div id="pilares-container">
+        <div class="tasks-loading">⏳ Cargando...</div>
       </div>
-      <div class="obj-card">
-        <div class="obj-header"><div class="obj-icon">🏆</div><div><div class="obj-title">Posicionamiento de marca</div></div><span class="badge badge-blue">Marca</span></div>
-        <ul class="checklist" style="margin-top:12px">
-          <li><div class="check-dot">✓</div>Construir la marca personal de Bautista en paralelo a Balodi</li>
-          <li><div class="check-dot">✓</div>Generar casos de éxito documentados de cada cliente</li>
-          <li><div class="check-dot">✓</div>Ser reconocidos por creatividad y estrategia, no solo ejecución</li>
-        </ul>
-      </div>
-      <div class="obj-card">
-        <div class="obj-header"><div class="obj-icon">👥</div><div><div class="obj-title">Equipo y cultura</div></div><span class="badge badge-green">Equipo</span></div>
-        <ul class="checklist" style="margin-top:12px">
-          <li><div class="check-dot">✓</div>Consolidar el equipo actual con roles y responsabilidades claras</li>
-          <li><div class="check-dot">✓</div>Incorporar al menos un perfil nuevo según crecimiento</li>
-          <li><div class="check-dot">✓</div>Mantener cultura de propuesta de ideas y mejora continua</li>
-        </ul>
-      </div>
+      <button class="seg-new-btn" onclick="openPilarModal()" style="margin-top:12px">+ Agregar pilar</button>
     </div>
 
     <!-- DECISIONES -->
@@ -1207,6 +1440,49 @@
       <div id="dec-container"><div class="tasks-loading">⏳ Cargando decisiones...</div></div>
     </div>
 
+  </div>
+</div>
+
+<!-- EDITAR OBJETIVO MODAL -->
+<div class="est-modal-overlay" id="oa-modal">
+  <div class="est-modal">
+    <div class="est-modal-title" id="oa-modal-title">✏️ Editar objetivo</div>
+    <input type="hidden" id="oa-clave">
+    <div class="form-group">
+      <label class="form-label">Valor *</label>
+      <input class="form-input" id="oa-valor" placeholder="Ej: 15, $5.000.000, 8 personas">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descripción</label>
+      <input class="form-input" id="oa-desc" placeholder="Descripción breve">
+    </div>
+    <div class="task-modal-actions">
+      <button class="btn-cancel-task" onclick="closeOaModal()">Cancelar</button>
+      <button class="btn-save" id="oa-save-btn" onclick="saveObjetivo()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PILAR MODAL -->
+<div class="est-modal-overlay" id="pilar-modal">
+  <div class="est-modal">
+    <div class="est-modal-title">🏛️ Agregar pilar estratégico</div>
+    <div class="form-group">
+      <label class="form-label">Título *</label>
+      <input class="form-input" id="pl-titulo" placeholder="Ej: Escalar la facturación">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Ícono</label>
+      <input class="form-input" id="pl-icono" placeholder="Ej: 📈">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descripción / acciones</label>
+      <textarea class="form-textarea" id="pl-desc" placeholder="Describí las acciones clave de este pilar..."></textarea>
+    </div>
+    <div class="task-modal-actions">
+      <button class="btn-cancel-task" onclick="closePilarModal()">Cancelar</button>
+      <button class="btn-save" id="pilar-save-btn" onclick="savePilar()">Guardar pilar</button>
+    </div>
   </div>
 </div>
 
@@ -1880,8 +2156,9 @@
   const SEGUIMIENTO_URL = "https://script.google.com/macros/s/AKfycbyvy0OSK-8dxf3iWZzz2IX5bBI1o90ki1vE2hzgh-HsR--14d1oJxyCcbBySj4H8Mg/exec";
   const FINANZAS_URL = "https://script.google.com/macros/s/AKfycbzLydN6tfUoVBhtxIGibzsfvZ1JxYx5FuMhelzOo3B64zK1NCHs-m9SKDHjvbtjtOAe/exec";
   const RENDIMIENTO_URL = "https://script.google.com/macros/s/AKfycbxFT9OEJ7QQF9_WNsy9p3oWITPWes0sFjZD46ROQoPBFvWIRA9MOdFh3VcM75ZoIYQ/exec";
-  const PIPELINE_URL = "https://script.google.com/macros/s/AKfycbwsNLMTfDiBVXSrd0_iF_AKlWimMJ3gpfWf0Aoo8tpHiCJXavj8JeUEW3gXbYCJGNeg/exec";
+  const PIPELINE_URL = "https://script.google.com/macros/s/AKfycbxF6Dyt5vv_34-GyMTpezFWxZ38qAHwg__PIWEs5m9fxGJcpZi39FI-SSRLo9F7NNz0/exec";
   const DECISIONES_URL = "https://script.google.com/macros/s/AKfycbzD2vw91Z-n-a9XJp8KiNITxmTZyNct_ZZaBVHPjwJahooIjEDwf7UZl9fnu1ITzGACoQ/exec";
+  const OBJETIVOS_URL = "https://script.google.com/macros/s/AKfycbzd2WYi_wGcqBBYNTF5juT-xHG3yIM2q6xY4H9yR9iCWkPoUdha3vtcRlLLw0d-vl4LRw/exec";
   const PRIVATE_PASSWORD = 'balodi2024';
   const PRIVATE_PANELS = ['estrategia', 'finanzas', 'seguimiento'];
 
@@ -1938,6 +2215,99 @@
     document.getElementById('app-wrapper').style.display = 'none';
   }
 
+  let jarvisTimeout = null;
+  let jarvisUsed = false;
+
+  function closeJarvis() {
+    const el = document.getElementById('jarvis-intro');
+    if (!el) return;
+    el.style.transition = 'opacity 0.6s';
+    el.style.opacity = '0';
+    setTimeout(() => { el.classList.remove('show'); el.style.opacity = ''; }, 600);
+    if (jarvisTimeout) clearTimeout(jarvisTimeout);
+  }
+
+  function launchJarvis() {
+    if (jarvisUsed) return;
+    jarvisUsed = true;
+    const intro = document.getElementById('jarvis-intro');
+    if (!intro) return;
+
+    // Reset estado previo
+    const nameEl = document.getElementById('jarvis-name-text');
+    const roleEl = document.getElementById('jarvis-role');
+    const logEl = document.getElementById('jarvis-bootlog');
+    const bar = document.getElementById('jarvis-bar');
+    nameEl.innerHTML = '<span class="cursor"></span>';
+    roleEl.classList.remove('show');
+    logEl.innerHTML = '';
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+
+    // Precargar audio
+    const audio = new Audio('https://www.dropbox.com/scl/fi/mq6eclgpj7sxe2iol1vqt/iron_man_2_bienvenido_a_casa_senor_escena_del_taller_mp3_66853.mp3?rlkey=yja7nm1nr1kj19rl33jstonde&st=fq8v20bo&dl=1');
+    audio.volume = 0.85;
+    audio.currentTime = 3;
+    audio.addEventListener('timeupdate', () => {
+      if (audio.currentTime >= 18) { audio.pause(); }
+    });
+
+    function startAll() {
+      intro.classList.add('show');
+
+      // Audio arranca ya
+      audio.play().catch(() => {});
+
+      // Typewriter name
+      const name = 'BAUTISTA';
+      let i = 0;
+      const typeInterval = setInterval(() => {
+        if (i < name.length) {
+          nameEl.innerHTML = name.slice(0, i+1) + '<span class="cursor"></span>';
+          i++;
+        } else {
+          clearInterval(typeInterval);
+          nameEl.innerHTML = name;
+          setTimeout(() => roleEl.classList.add('show'), 200);
+        }
+      }, 80);
+
+      // Boot log lines
+      const logs = [
+        '> Autenticando credenciales...',
+        '> Cargando perfil: <span class="ok">[OK]</span>',
+        '> Sincronizando datos del equipo...',
+        '> Módulo Finanzas: <span class="ok">[ACTIVO]</span>',
+        '> Módulo Pipeline: <span class="ok">[ACTIVO]</span>',
+        '> Permisos de fundador: <span class="ok">[VERIFICADO]</span>',
+        '> Sistema listo.',
+      ];
+      logEl.innerHTML = logs.map(l => `<div class="jarvis-log-line">${l}</div>`).join('');
+      logEl.querySelectorAll('.jarvis-log-line').forEach((line, idx) => {
+        setTimeout(() => line.classList.add('show'), 400 + idx * 320);
+      });
+
+      // Barra de progreso — arranca junto
+      requestAnimationFrame(() => {
+        bar.style.transition = 'width 3.5s cubic-bezier(0.4,0,0.2,1)';
+        bar.style.width = '100%';
+      });
+
+      // Auto-close
+      if (jarvisTimeout) clearTimeout(jarvisTimeout);
+      jarvisTimeout = setTimeout(closeJarvis, 5200);
+    }
+
+    // Esperar a que el audio esté listo para reproducir
+    if (audio.readyState >= 3) {
+      startAll();
+    } else {
+      audio.addEventListener('canplay', startAll, { once: true });
+      // Fallback: si tarda más de 800ms arrancamos igual
+      setTimeout(() => { if (!intro.classList.contains('show')) startAll(); }, 800);
+    }
+  }
+
   function tryLogin() {
     const username = document.getElementById('login-user').value.trim().toLowerCase();
     const pass = document.getElementById('login-input').value;
@@ -1960,6 +2330,9 @@
     sessionStorage.removeItem('balodi_user');
     currentUser = null;
     privateUnlocked = false;
+    jarvisUsed = false;
+    clapListening = false;
+    if (clapAudioContext) { clapAudioContext.close(); clapAudioContext = null; }
     showLoginScreen();
     document.getElementById('login-user').value = '';
     document.getElementById('login-input').value = '';
@@ -3015,7 +3388,141 @@
     if (btn) btn.classList.add('active');
     document.getElementById('est-' + tab)?.classList.add('active');
     if (tab === 'pipeline' && !allPipeline.length) loadPipeline();
+    if (tab === 'objetivos' && !Object.keys(allObjetivos).length) loadObjetivos();
     if (tab === 'decisiones' && !allDecisiones.length) loadDecisiones();
+  }
+
+  // ---- OBJETIVOS ANUALES ----
+  let allObjetivos = {};
+  let allPilares = [];
+
+  const oaConfig = {
+    clientes:    { label: 'Clientes activos meta', desc: 'Cantidad de clientes que queremos tener a fin de año' },
+    facturacion: { label: 'Facturación anual meta', desc: 'Objetivo de facturación total del año' },
+    equipo:      { label: 'Tamaño del equipo meta', desc: 'Cantidad de personas en el equipo a fin de año' }
+  };
+
+  async function loadObjetivos() {
+    try {
+      const res = await fetch(OBJETIVOS_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allObjetivos = {};
+      allPilares = [];
+      raw.slice(1).forEach(r => {
+        if (!r[0]) return;
+        if (r[0].startsWith('pilar_')) {
+          allPilares.push({ clave: r[0], titulo: r[1], icono: r[2], desc: r[3] || '' });
+        } else {
+          allObjetivos[r[0]] = { valor: r[1], descripcion: r[2] };
+        }
+      });
+      renderObjetivos();
+      renderPilares();
+    } catch(e) { console.error('Error loading objetivos:', e); }
+  }
+
+  function renderObjetivos() {
+    ['clientes','facturacion','equipo'].forEach(clave => {
+      const el = document.getElementById('oa-' + clave);
+      const elDesc = document.getElementById('oa-' + clave + '-desc');
+      const data = allObjetivos[clave];
+      if (el) el.textContent = data?.valor || '—';
+      if (elDesc && data?.descripcion) elDesc.textContent = data.descripcion;
+    });
+  }
+
+  function renderPilares() {
+    const container = document.getElementById('pilares-container');
+    if (!container) return;
+    if (!allPilares.length) {
+      container.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:16px 0">Sin pilares definidos todavía. Agregá el primero.</div>';
+      return;
+    }
+    container.innerHTML = allPilares.map((p, i) => `
+      <div class="obj-card" style="margin-bottom:12px">
+        <div class="obj-header">
+          <div class="obj-icon">${p.icono || '🏛️'}</div>
+          <div><div class="obj-title">${p.titulo}</div></div>
+          <button class="delete-btn" onclick="deletePilar(${i})" style="margin-left:auto">🗑️</button>
+        </div>
+        ${p.desc ? `<div style="font-size:13px;color:var(--text2);margin-top:10px;line-height:1.6">${p.desc}</div>` : ''}
+      </div>`).join('');
+  }
+
+  function editObjetivo(clave) {
+    const config = oaConfig[clave];
+    const data = allObjetivos[clave];
+    document.getElementById('oa-modal-title').textContent = '✏️ ' + config.label;
+    document.getElementById('oa-clave').value = clave;
+    document.getElementById('oa-valor').value = data?.valor || '';
+    document.getElementById('oa-desc').value = data?.descripcion || config.desc;
+    document.getElementById('oa-modal').classList.add('open');
+    setTimeout(() => document.getElementById('oa-valor').focus(), 100);
+  }
+
+  function closeOaModal() { document.getElementById('oa-modal').classList.remove('open'); }
+
+  async function saveObjetivo() {
+    const clave = document.getElementById('oa-clave').value;
+    const valor = document.getElementById('oa-valor').value.trim();
+    if (!valor) { alert('Completá el valor.'); return; }
+    const btn = document.getElementById('oa-save-btn');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const descripcion = document.getElementById('oa-desc').value.trim();
+    const data = { clave, valor, descripcion };
+    try {
+      await fetch(OBJETIVOS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allObjetivos[clave] = { valor, descripcion };
+      renderObjetivos();
+      closeOaModal();
+    } catch(e) { alert('Error al guardar.'); }
+    btn.textContent = 'Guardar'; btn.disabled = false;
+  }
+
+  function openPilarModal() {
+    document.getElementById('pilar-modal').classList.add('open');
+    document.getElementById('pl-titulo').value = '';
+    document.getElementById('pl-icono').value = '';
+    document.getElementById('pl-desc').value = '';
+    setTimeout(() => document.getElementById('pl-titulo').focus(), 100);
+  }
+
+  function closePilarModal() { document.getElementById('pilar-modal').classList.remove('open'); }
+
+  async function savePilar() {
+    const titulo = document.getElementById('pl-titulo').value.trim();
+    if (!titulo) { alert('Completá el título.'); return; }
+    const btn = document.getElementById('pilar-save-btn');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const clave = 'pilar_' + Date.now();
+    const icono = document.getElementById('pl-icono').value.trim() || '🏛️';
+    const desc = document.getElementById('pl-desc').value.trim();
+    const data = { clave, valor: titulo, descripcion: icono, desc };
+    try {
+      await fetch(OBJETIVOS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clave, valor: titulo, descripcion: icono + '|' + desc })
+      });
+      allPilares.push({ clave, titulo, icono, desc });
+      renderPilares();
+      closePilarModal();
+    } catch(e) { alert('Error al guardar.'); }
+    btn.textContent = 'Guardar pilar'; btn.disabled = false;
+  }
+
+  async function deletePilar(idx) {
+    if (!allPilares[idx] || !confirm('¿Eliminar este pilar?')) return;
+    const clave = allPilares[idx].clave;
+    allPilares.splice(idx, 1);
+    renderPilares();
+    try {
+      await fetch(OBJETIVOS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', clave }) });
+    } catch(e) {}
   }
 
   // ---- PIPELINE ----
@@ -3035,9 +3542,9 @@
     }
   }
 
-  function getEstadoClass(estado) {
-    const map = { 'Contactado': 'pipe-estado-contactado', 'Reunión': 'pipe-estado-reunion', 'Propuesta': 'pipe-estado-propuesta', 'Cerrado': 'pipe-estado-cerrado' };
-    return map[estado] || 'pipe-estado-contactado';
+  function getEstadoSelectClass(estado) {
+    const map = { 'Contactado': 'contactado', 'Reunión': 'reunion', 'Propuesta': 'propuesta', 'Cerrado': 'cerrado' };
+    return map[estado] || 'contactado';
   }
 
   function renderPipeline() {
@@ -3051,17 +3558,25 @@
       const count = document.getElementById('count-' + colId);
       if (count) count.textContent = items.length;
       if (!col) return;
-      col.innerHTML = items.length ? items.map((r, i) => {
+      col.innerHTML = items.length ? items.map(r => {
         const globalIdx = allPipeline.indexOf(r);
+        const selClass = getEstadoSelectClass(r.estado);
         return `<div class="pipe-card pipe-${colId}">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px">
             <div class="pipe-card-name">${r.nombre}</div>
-            <button class="delete-btn" onclick="deletePipeline(${globalIdx})" style="font-size:12px">🗑️</button>
+            <button class="delete-btn" onclick="deletePipeline(${globalIdx})" style="font-size:12px;flex-shrink:0">🗑️</button>
           </div>
           <div class="pipe-card-servicio">${r.servicio || '—'}</div>
           <div class="pipe-card-footer">
             <span class="pipe-card-valor">${r.valor ? '$' + r.valor.toLocaleString('es-AR') : '—'}</span>
-            <span class="pipe-card-fecha">${r.fecha_contacto || ''}</span>
+          </div>
+          <div style="margin-top:8px">
+            <select class="pipe-estado-select ${selClass}" onchange="updatePipeEstado(${globalIdx}, this.value, this)">
+              <option value="Contactado" ${r.estado==='Contactado'?'selected':''}>📞 Contactado</option>
+              <option value="Reunión" ${r.estado==='Reunión'?'selected':''}>🤝 Reunión</option>
+              <option value="Propuesta" ${r.estado==='Propuesta'?'selected':''}>📄 Propuesta</option>
+              <option value="Cerrado" ${r.estado==='Cerrado'?'selected':''}>✅ Cerrado</option>
+            </select>
           </div>
         </div>`;
       }).join('') : '<div style="font-size:12px;color:var(--text3);text-align:center;padding:12px">Vacío</div>';
@@ -3078,7 +3593,14 @@
       <tr>
         <td style="font-weight:600;color:var(--text)">${r.nombre}</td>
         <td>${r.servicio || '—'}</td>
-        <td><span class="pipe-estado ${getEstadoClass(r.estado)}">${r.estado}</span></td>
+        <td>
+          <select class="pipe-estado-select ${getEstadoSelectClass(r.estado)}" onchange="updatePipeEstado(${i}, this.value, this)">
+            <option value="Contactado" ${r.estado==='Contactado'?'selected':''}>📞 Contactado</option>
+            <option value="Reunión" ${r.estado==='Reunión'?'selected':''}>🤝 Reunión</option>
+            <option value="Propuesta" ${r.estado==='Propuesta'?'selected':''}>📄 Propuesta</option>
+            <option value="Cerrado" ${r.estado==='Cerrado'?'selected':''}>✅ Cerrado</option>
+          </select>
+        </td>
         <td style="color:var(--green);font-weight:700">${r.valor ? '$' + r.valor.toLocaleString('es-AR') : '—'}</td>
         <td>${r.contacto || '—'}</td>
         <td>${r.fecha_contacto || '—'}</td>
@@ -3131,6 +3653,36 @@
     try {
       await fetch(PIPELINE_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', rowIndex }) });
     } catch(e) {}
+  }
+
+  async function updatePipeEstado(idx, nuevoEstado, selectEl) {
+    if (!allPipeline[idx]) return;
+    const oldEstado = allPipeline[idx].estado;
+    allPipeline[idx].estado = nuevoEstado;
+    // Update select class
+    if (selectEl) {
+      selectEl.className = 'pipe-estado-select ' + getEstadoSelectClass(nuevoEstado);
+    }
+    // Re-render kanban
+    renderPipeline();
+    // Save to sheet — send full row with action update
+    try {
+      await fetch(PIPELINE_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update',
+          rowIndex: idx + 2,
+          nombre: allPipeline[idx].nombre,
+          contacto: allPipeline[idx].contacto,
+          servicio: allPipeline[idx].servicio,
+          estado: nuevoEstado,
+          valor: allPipeline[idx].valor,
+          fecha_contacto: allPipeline[idx].fecha_contacto,
+          notas: allPipeline[idx].notas
+        })
+      });
+    } catch(e) { console.error('Error updating estado:', e); }
   }
 
   // ---- DECISIONES ----
@@ -3489,6 +4041,45 @@
   }
 
   // ============ INIT ============
+  // ============ CLAP DETECTION ============
+  let clapAudioContext = null;
+  let clapListening = false;
+
+  async function initClapDetection() {
+    if (clapListening) return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      clapAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = clapAudioContext.createMediaStreamSource(stream);
+      const analyser = clapAudioContext.createAnalyser();
+      analyser.fftSize = 512;
+      analyser.smoothingTimeConstant = 0.3;
+      source.connect(analyser);
+
+      const data = new Uint8Array(analyser.frequencyBinCount);
+      let lastClapTime = 0;
+      let lastVolume = 0;
+      clapListening = true;
+
+      function detect() {
+        if (!clapListening) return;
+        analyser.getByteFrequencyData(data);
+        const volume = data.reduce((a, b) => a + b, 0) / data.length;
+        const now = Date.now();
+        // Clap: pico súbito de volumen (sube más de 40 puntos de golpe) y volumen alto
+        if (volume - lastVolume > 40 && volume > 60 && now - lastClapTime > 1500) {
+          lastClapTime = now;
+          launchJarvis();
+        }
+        lastVolume = volume;
+        requestAnimationFrame(detect);
+      }
+      detect();
+    } catch(e) {
+      console.log('Micrófono no disponible:', e);
+    }
+  }
+
   function initApp() {
     initDarkMode();
     updateUserUI();
@@ -3500,6 +4091,9 @@
     loadIdeas();
     loadCreativas();
     loadAllComments();
+    if (currentUser && currentUser.username === 'bautista') {
+      initClapDetection();
+    }
   }
 
   window.addEventListener('DOMContentLoaded', () => {
