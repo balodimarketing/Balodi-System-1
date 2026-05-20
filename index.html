@@ -2262,6 +2262,22 @@
           a.volume = 0.9; a.play().catch(()=>{});
         } catch(e) {}
       }
+      if (username === 'lourdes') {
+        try {
+          const a = new Audio('https://www.dropbox.com/scl/fi/c8nvvdq71lexphdh13yw8/venga_bea_soy_lesbiana_lyric_video_mp3_64731.mp3?rlkey=3w64n6iawk0qrrgym1jhqhzno&st=wtpnueci&dl=1');
+          a.volume = 0.9; a.currentTime = 7;
+          a.play().catch(()=>{});
+          a.addEventListener('timeupdate', () => { if (a.currentTime >= 17) a.pause(); });
+        } catch(e) {}
+      }
+      if (username === 'nicolas') {
+        try {
+          const a = new Audio('https://www.dropbox.com/scl/fi/f3ct5625t0h9m8ew4njfl/soy_vago_mp3_65010.mp3?rlkey=swngr8zmttg4m9wy5uoot5mcr&st=ngc4t2q7&dl=1');
+          a.volume = 0.9; a.currentTime = 30;
+          a.play().catch(()=>{});
+          a.addEventListener('timeupdate', () => { if (a.currentTime >= 40) a.pause(); });
+        } catch(e) {}
+      }
       initApp();
     } else {
       document.getElementById('login-user').classList.add('error');
