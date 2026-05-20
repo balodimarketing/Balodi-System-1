@@ -1985,7 +1985,7 @@
       </select>
       <button class="btn-new-task" onclick="openAlianzaModal()">+ Nueva alianza</button>
     </div>
-    <div id="alianza-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px"></div>
+    <div id="alianza-kpis" style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px"></div>
     <div id="alianza-container"><div class="rend-loading">⏳ Cargando alianzas...</div></div>
   </div>
 </div>
@@ -4201,6 +4201,12 @@
     'Aliado activo': 'est-activo', 'No interesado': 'est-no'
   };
 
+  function filtrarAlianzaKPI(filtro) {
+    const sel = document.getElementById('alianza-filter-estado');
+    if (sel) sel.value = filtro;
+    renderAlianzas();
+  }
+
   async function loadAlianzas() {
     const container = document.getElementById('alianza-container');
     if (!container) return;
@@ -4230,15 +4236,27 @@
 
     // KPIs
     const total = allAlianzas.length;
+    const sinContactar = allAlianzas.filter(a => a.estado === 'Sin contactar').length;
+    const reunion = allAlianzas.filter(a => a.estado === 'Reunión agendada').length;
+    const propuesta = allAlianzas.filter(a => a.estado === 'Propuesta enviada').length;
     const activos = allAlianzas.filter(a => a.estado === 'Aliado activo').length;
-    const cerrados = allAlianzas.filter(a => a.cerrado === 'Sí').length;
-    const comisionTotal = allAlianzas.reduce((s,a) => s + (parseFloat(a.comision)||0), 0);
+    const noInteresado = allAlianzas.filter(a => a.estado === 'No interesado').length;
+    const filtroActual = document.getElementById('alianza-filter-estado')?.value || '';
     if (kpisEl) kpisEl.innerHTML = [
-      { val: total, label: 'Total alianzas', icon: '🤝' },
-      { val: activos, label: 'Aliados activos', icon: '✅' },
-      { val: cerrados, label: 'Clientes cerrados', icon: '🏆' },
-      { val: comisionTotal > 0 ? '$'+comisionTotal.toLocaleString('es-AR') : '$0', label: 'Comisiones generadas', icon: '💰' },
-    ].map(k => `<div class="alianza-kpi"><div style="font-size:20px;margin-bottom:4px">${k.icon}</div><div class="alianza-kpi-val">${k.val}</div><div class="alianza-kpi-label">${k.label}</div></div>`).join('');
+      { val: total, label: 'Total', icon: '🤝', filtro: '' },
+      { val: sinContactar, label: 'Sin contactar', icon: '📋', filtro: 'Sin contactar' },
+      { val: reunion, label: 'Reunión agendada', icon: '📅', filtro: 'Reunión agendada' },
+      { val: propuesta, label: 'Propuesta enviada', icon: '📨', filtro: 'Propuesta enviada' },
+      { val: activos, label: 'Aliado activo', icon: '✅', filtro: 'Aliado activo' },
+      { val: noInteresado, label: 'No interesado', icon: '❌', filtro: 'No interesado' },
+    ].map(k => {
+      const isActive = filtroActual === k.filtro;
+      return `<div class="alianza-kpi" onclick="filtrarAlianzaKPI('${k.filtro}')" style="cursor:pointer;transition:all 0.15s;${isActive ? 'border-color:var(--orange);box-shadow:0 0 0 2px rgba(245,98,10,0.15)' : ''}">
+        <div style="font-size:18px;margin-bottom:4px">${k.icon}</div>
+        <div class="alianza-kpi-val" style="${isActive ? 'color:var(--orange)' : ''}">${k.val}</div>
+        <div class="alianza-kpi-label">${k.label}</div>
+      </div>`;
+    }).join('');
 
     if (!data.length) {
       container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3)">No hay alianzas registradas aún. ¡Agregá la primera!</div>';
