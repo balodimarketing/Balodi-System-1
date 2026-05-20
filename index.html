@@ -693,6 +693,31 @@
   .btn-pdf { background: none; border: 1.5px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-family: "Outfit", sans-serif; font-size: 13px; font-weight: 700; color: var(--text2); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
   .btn-pdf:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
 
+  /* ======= ALIANZAS ======= */
+  .alianza-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 12px; transition: box-shadow 0.15s; }
+  .alianza-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .alianza-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .alianza-nombre { font-family: "Outfit", sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+  .alianza-rubro { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .alianza-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .alianza-estado { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+  .est-sin { background: var(--bg4); color: var(--text3); }
+  .est-contactado { background: #eff6ff; color: #2563eb; }
+  .est-reunion { background: #fff7ed; color: #ea580c; }
+  .est-propuesta { background: #fefce8; color: #ca8a04; }
+  .est-activo { background: #f0fdf4; color: #16a34a; }
+  .est-no { background: #fef2f2; color: #dc2626; }
+  .alianza-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+  .alianza-field { font-size: 12px; color: var(--text2); }
+  .alianza-field span { color: var(--text3); font-size: 10px; display: block; margin-bottom: 1px; }
+  .alianza-actions { display: flex; gap: 8px; }
+  .alianza-btn { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 8px; border: 1px solid var(--border2); background: none; color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .alianza-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .alianza-btn.danger:hover { border-color: var(--red); color: var(--red); }
+  .alianza-kpi { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .alianza-kpi-val { font-family: "Outfit", sans-serif; font-size: 26px; font-weight: 800; color: var(--text); }
+  .alianza-kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-top: 2px; }
+
   /* ======= REND METRICS ======= */
   .rend-metrics-section { margin-bottom: 24px; }
   .rend-metrics-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
@@ -833,6 +858,7 @@
       <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><span class="nav-icon">📅</span> Calendario mensual</div>
       <div class="nav-label">Privado — Bau y Nico</div>
       <div class="nav-item" id="nav-estrategia" onclick="go('estrategia')"><span class="nav-icon">🔒</span> Estrategia Balodi</div>
+      <div class="nav-item" id="nav-alianzas" onclick="go('alianzas')"><span class="nav-icon">🤝</span> Red de Alianzas</div>
       <div class="nav-item" id="nav-finanzas" onclick="go('finanzas')"><span class="nav-icon">🔒</span> Finanzas</div>
       <div class="nav-item" id="nav-seguimiento" onclick="go('seguimiento')"><span class="nav-icon">🔒</span> Seguimiento empleados</div>
       <div class="nav-label">Operaciones</div>
@@ -1939,6 +1965,117 @@
     </div>
 
 
+<!-- ALIANZAS PANEL -->
+<div class="panel" id="panel-alianzas">
+  <div class="page-header">
+    <div class="page-eyebrow">Privado — Bau y Nico</div>
+    <div class="page-title">🤝 Red de Alianzas</div>
+    <div class="page-desc">Estudios contables, jurídicos y otros referentes. Meta Ads gratis 3 meses · 30% comisión por cliente cerrado.</div>
+  </div>
+  <div class="page-content">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <select class="seg-select" id="alianza-filter-estado" onchange="renderAlianzas()">
+        <option value="">Todos los estados</option>
+        <option value="Sin contactar">Sin contactar</option>
+        <option value="Contactado">Contactado</option>
+        <option value="Reunión agendada">Reunión agendada</option>
+        <option value="Propuesta enviada">Propuesta enviada</option>
+        <option value="Aliado activo">Aliado activo</option>
+        <option value="No interesado">No interesado</option>
+      </select>
+      <button class="btn-new-task" onclick="openAlianzaModal()">+ Nueva alianza</button>
+    </div>
+    <div id="alianza-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px"></div>
+    <div id="alianza-container"><div class="rend-loading">⏳ Cargando alianzas...</div></div>
+  </div>
+</div>
+
+<!-- ALIANZAS MODAL -->
+<div id="alianza-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;overflow-y:auto;padding:32px 16px">
+  <div style="background:var(--bg2);border-radius:18px;padding:28px;width:100%;max-width:560px;margin:0 auto;position:relative" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--text)" id="alianza-modal-title">Nueva alianza</div>
+      <button onclick="closeAlianzaModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);line-height:1">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="grid-column:1/-1">
+        <label class="form-label">Nombre / Empresa *</label>
+        <input class="form-input" id="al-nombre" placeholder="Ej: Estudio Contable Pérez">
+      </div>
+      <div>
+        <label class="form-label">Rubro *</label>
+        <input class="form-input" id="al-rubro" placeholder="Ej: Estudio contable">
+      </div>
+      <div>
+        <label class="form-label">Contacto (nombre)</label>
+        <input class="form-input" id="al-contacto" placeholder="Ej: Martín Pérez">
+      </div>
+      <div>
+        <label class="form-label">Email</label>
+        <input class="form-input" id="al-email" type="email" placeholder="contacto@email.com">
+      </div>
+      <div>
+        <label class="form-label">Teléfono</label>
+        <input class="form-input" id="al-telefono" placeholder="+54 341 ...">
+      </div>
+      <div>
+        <label class="form-label">Web</label>
+        <input class="form-input" id="al-web" placeholder="www.empresa.com">
+      </div>
+      <div style="grid-column:1/-1">
+        <label class="form-label">Dirección</label>
+        <input class="form-input" id="al-direccion" placeholder="Ej: Córdoba 1234, Rosario">
+      </div>
+      <div>
+        <label class="form-label">Fecha de contacto</label>
+        <input class="form-input" id="al-fecha" type="date">
+      </div>
+      <div>
+        <label class="form-label">Estado</label>
+        <select class="form-select" id="al-estado">
+          <option value="Sin contactar">Sin contactar</option>
+          <option value="Contactado">Contactado</option>
+          <option value="Reunión agendada">Reunión agendada</option>
+          <option value="Propuesta enviada">Propuesta enviada</option>
+          <option value="Aliado activo">Aliado activo</option>
+          <option value="No interesado">No interesado</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">¿Reunión agendada?</label>
+        <select class="form-select" id="al-reunion">
+          <option value="No">No</option>
+          <option value="Sí">Sí</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Fecha de reunión</label>
+        <input class="form-input" id="al-fecha-reunion" type="date">
+      </div>
+      <div>
+        <label class="form-label">¿Cerró cliente?</label>
+        <select class="form-select" id="al-cerrado">
+          <option value="No">No</option>
+          <option value="Sí">Sí</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Comisión 30% ($)</label>
+        <input class="form-input" id="al-comision" type="number" placeholder="0">
+      </div>
+      <div style="grid-column:1/-1">
+        <label class="form-label">Notas</label>
+        <textarea class="form-textarea" id="al-notas" placeholder="Observaciones, próximos pasos..."></textarea>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+      <button class="btn-cancel-task" onclick="closeAlianzaModal()">Cancelar</button>
+      <button class="btn-save" id="al-save-btn" onclick="saveAlianza()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+    <!-- TAREAS -->
     <!-- TAREAS -->
     <div class="panel" id="panel-tareas">
       <div class="page-header">
@@ -2051,7 +2188,7 @@
   const DECISIONES_URL = "https://script.google.com/macros/s/AKfycbzD2vw91Z-n-a9XJp8KiNITxmTZyNct_ZZaBVHPjwJahooIjEDwf7UZl9fnu1ITzGACoQ/exec";
   const OBJETIVOS_URL = "https://script.google.com/macros/s/AKfycbzd2WYi_wGcqBBYNTF5juT-xHG3yIM2q6xY4H9yR9iCWkPoUdha3vtcRlLLw0d-vl4LRw/exec";
   const PRIVATE_PASSWORD = 'balodi2024';
-  const PRIVATE_PANELS = ['estrategia', 'finanzas', 'seguimiento'];
+  const PRIVATE_PANELS = ['estrategia', 'alianzas', 'finanzas', 'seguimiento'];
 
   const USERS = {
     'bautista':  { pass: 'bautista28',  name: 'Bautista',  role: 'Fundador',   avatar: 'BA', color: '#b45309' },
@@ -2115,6 +2252,12 @@
       currentUser = { username, ...user };
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app-wrapper').style.display = 'flex';
+      if (username === 'enzo') {
+        try {
+          const a = new Audio('https://www.dropbox.com/scl/fi/12pujvzxfsm6fbdps0snu/el_babo_cantando_hey_yo_soy_gey_mp3_49082.mp3?rlkey=gth84a3ghnt6nyc4xnxin3a1l&st=it91k7g9&dl=1');
+          a.volume = 0.9; a.play().catch(()=>{});
+        } catch(e) {}
+      }
       initApp();
     } else {
       document.getElementById('login-user').classList.add('error');
@@ -2178,7 +2321,7 @@
       bautista: 'Bautista', nicolas: 'Nicolás', lourdes: 'Lourdes',
       enzo: 'Enzo', brunela: 'Brunela', clientes: 'Clientes',
       banco: 'Banco de Ideas', calendario: 'Calendario',
-      estrategia: 'Estrategia Balodi', finanzas: 'Finanzas',
+      estrategia: 'Estrategia Balodi', alianzas: 'Red de Alianzas', finanzas: 'Finanzas',
       seguimiento: 'Seguimiento de Empleados', reuniones: 'Reuniones',
       informe: 'Informe Mensual', implementar: 'Cómo implementarlo',
       objetivos: 'Objetivos del mes', tareas: 'Tareas pendientes',
@@ -2192,6 +2335,7 @@
     if (id === 'seguimiento') loadRendimiento();
     if (id === 'finanzas') loadFinanzas();
     if (id === 'estrategia') loadPipeline();
+    if (id === 'alianzas') loadAlianzas();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
   }
@@ -4044,6 +4188,179 @@
     if (currentUser && currentUser.username === 'bautista') {
       initClapDetection();
     }
+  }
+
+  // ============ ALIANZAS ============
+  const ALIANZAS_URL = 'https://script.google.com/macros/s/AKfycbx906gDKu5o1J8khNwNCasDrvjoE1uE9Mfux63MU8mTQFBjDLQt8CgmsvSg5lyvYkFk/exec';
+  let allAlianzas = [];
+  let alianzaEditIndex = null;
+
+  const ALIANZA_ESTADO_CLASS = {
+    'Sin contactar': 'est-sin', 'Contactado': 'est-contactado',
+    'Reunión agendada': 'est-reunion', 'Propuesta enviada': 'est-propuesta',
+    'Aliado activo': 'est-activo', 'No interesado': 'est-no'
+  };
+
+  async function loadAlianzas() {
+    const container = document.getElementById('alianza-container');
+    if (!container) return;
+    container.innerHTML = '<div class="rend-loading">⏳ Cargando alianzas...</div>';
+    try {
+      const res = await fetch(ALIANZAS_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      allAlianzas = raw.slice(1).map(r => ({
+        nombre: r[0], rubro: r[1], contacto: r[2], email: r[3],
+        telefono: r[4], web: r[5], direccion: r[6], fecha_contacto: r[7],
+        estado: r[8]||'Sin contactar', tiene_reunion: r[9], fecha_reunion: r[10],
+        cerrado: r[11], comision: r[12], notas: r[13], creado: r[14]
+      })).filter(r => r.nombre);
+      renderAlianzas();
+    } catch(e) {
+      container.innerHTML = '<div class="rend-loading">❌ Error cargando alianzas.</div>';
+    }
+  }
+
+  function renderAlianzas() {
+    const container = document.getElementById('alianza-container');
+    const kpisEl = document.getElementById('alianza-kpis');
+    if (!container) return;
+    const filtroEstado = document.getElementById('alianza-filter-estado')?.value || '';
+    let data = [...allAlianzas];
+    if (filtroEstado) data = data.filter(a => a.estado === filtroEstado);
+
+    // KPIs
+    const total = allAlianzas.length;
+    const activos = allAlianzas.filter(a => a.estado === 'Aliado activo').length;
+    const cerrados = allAlianzas.filter(a => a.cerrado === 'Sí').length;
+    const comisionTotal = allAlianzas.reduce((s,a) => s + (parseFloat(a.comision)||0), 0);
+    if (kpisEl) kpisEl.innerHTML = [
+      { val: total, label: 'Total alianzas', icon: '🤝' },
+      { val: activos, label: 'Aliados activos', icon: '✅' },
+      { val: cerrados, label: 'Clientes cerrados', icon: '🏆' },
+      { val: comisionTotal > 0 ? '$'+comisionTotal.toLocaleString('es-AR') : '$0', label: 'Comisiones generadas', icon: '💰' },
+    ].map(k => `<div class="alianza-kpi"><div style="font-size:20px;margin-bottom:4px">${k.icon}</div><div class="alianza-kpi-val">${k.val}</div><div class="alianza-kpi-label">${k.label}</div></div>`).join('');
+
+    if (!data.length) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3)">No hay alianzas registradas aún. ¡Agregá la primera!</div>';
+      return;
+    }
+
+    container.innerHTML = data.map((a, i) => {
+      const estClass = ALIANZA_ESTADO_CLASS[a.estado] || 'est-sin';
+      const reunionBadge = a.tiene_reunion === 'Sí' ? `<span class="alianza-estado est-reunion">📅 Reunión</span>` : '';
+      const cerradoBadge = a.cerrado === 'Sí' ? `<span class="alianza-estado est-activo">🏆 Cerrado</span>` : '';
+      return `<div class="alianza-card">
+        <div class="alianza-header">
+          <div>
+            <div class="alianza-nombre">${a.nombre}</div>
+            <div class="alianza-rubro">${a.rubro||''}</div>
+          </div>
+          <div class="alianza-badges">
+            <span class="alianza-estado ${estClass}">${a.estado}</span>
+            ${reunionBadge}${cerradoBadge}
+          </div>
+        </div>
+        <div class="alianza-info">
+          <div class="alianza-field"><span>👤 Contacto</span>${a.contacto||'—'}</div>
+          <div class="alianza-field"><span>📧 Email</span>${a.email||'—'}</div>
+          <div class="alianza-field"><span>📱 Teléfono</span>${a.telefono||'—'}</div>
+          <div class="alianza-field"><span>🌐 Web</span>${a.web ? `<a href="${a.web.startsWith('http')?a.web:'https://'+a.web}" target="_blank" style="color:var(--orange)">${a.web}</a>` : '—'}</div>
+          <div class="alianza-field"><span>📍 Dirección</span>${a.direccion||'—'}</div>
+          <div class="alianza-field"><span>📅 Fecha contacto</span>${a.fecha_contacto||'—'}</div>
+          ${a.fecha_reunion ? `<div class="alianza-field"><span>🗓 Fecha reunión</span>${a.fecha_reunion}</div>` : ''}
+          ${a.comision ? `<div class="alianza-field"><span>💰 Comisión</span>$${parseFloat(a.comision).toLocaleString('es-AR')}</div>` : ''}
+        </div>
+        ${a.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-style:italic">"${a.notas}"</div>` : ''}
+        <div class="alianza-actions">
+          <button class="alianza-btn" onclick="editAlianza(${allAlianzas.indexOf(a)})">✏️ Editar</button>
+          <button class="alianza-btn danger" onclick="deleteAlianza(${allAlianzas.indexOf(a)})">🗑 Eliminar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function openAlianzaModal(idx = null) {
+    alianzaEditIndex = idx;
+    const modal = document.getElementById('alianza-modal');
+    const today = new Date().toISOString().split('T')[0];
+    if (idx !== null) {
+      const a = allAlianzas[idx];
+      document.getElementById('alianza-modal-title').textContent = 'Editar alianza';
+      document.getElementById('al-nombre').value = a.nombre||'';
+      document.getElementById('al-rubro').value = a.rubro||'';
+      document.getElementById('al-contacto').value = a.contacto||'';
+      document.getElementById('al-email').value = a.email||'';
+      document.getElementById('al-telefono').value = a.telefono||'';
+      document.getElementById('al-web').value = a.web||'';
+      document.getElementById('al-direccion').value = a.direccion||'';
+      document.getElementById('al-fecha').value = a.fecha_contacto||'';
+      document.getElementById('al-estado').value = a.estado||'Sin contactar';
+      document.getElementById('al-reunion').value = a.tiene_reunion||'No';
+      document.getElementById('al-fecha-reunion').value = a.fecha_reunion||'';
+      document.getElementById('al-cerrado').value = a.cerrado||'No';
+      document.getElementById('al-comision').value = a.comision||'';
+      document.getElementById('al-notas').value = a.notas||'';
+    } else {
+      document.getElementById('alianza-modal-title').textContent = 'Nueva alianza';
+      ['al-nombre','al-rubro','al-contacto','al-email','al-telefono','al-web','al-direccion','al-fecha-reunion','al-notas'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('al-fecha').value = today;
+      document.getElementById('al-estado').value = 'Sin contactar';
+      document.getElementById('al-reunion').value = 'No';
+      document.getElementById('al-cerrado').value = 'No';
+      document.getElementById('al-comision').value = '';
+    }
+    modal.style.display = 'block';
+  }
+
+  function editAlianza(idx) { openAlianzaModal(idx); }
+
+  function closeAlianzaModal() {
+    document.getElementById('alianza-modal').style.display = 'none';
+    alianzaEditIndex = null;
+  }
+
+  async function saveAlianza() {
+    const nombre = document.getElementById('al-nombre').value.trim();
+    const rubro = document.getElementById('al-rubro').value.trim();
+    if (!nombre || !rubro) { alert('Nombre y rubro son obligatorios.'); return; }
+    const btn = document.getElementById('al-save-btn');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+
+    const payload = {
+      action: alianzaEditIndex !== null ? 'update' : 'add',
+      nombre_original: alianzaEditIndex !== null ? allAlianzas[alianzaEditIndex].nombre : nombre,
+      nombre, rubro,
+      contacto: document.getElementById('al-contacto').value,
+      email: document.getElementById('al-email').value,
+      telefono: document.getElementById('al-telefono').value,
+      web: document.getElementById('al-web').value,
+      direccion: document.getElementById('al-direccion').value,
+      fecha_contacto: document.getElementById('al-fecha').value,
+      estado: document.getElementById('al-estado').value,
+      tiene_reunion: document.getElementById('al-reunion').value,
+      fecha_reunion: document.getElementById('al-fecha-reunion').value,
+      cerrado: document.getElementById('al-cerrado').value,
+      comision: document.getElementById('al-comision').value,
+      notas: document.getElementById('al-notas').value,
+    };
+
+    try {
+      await fetch(ALIANZAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+      closeAlianzaModal();
+      await loadAlianzas();
+    } catch(e) {
+      alert('Error guardando. Intentá de nuevo.');
+    }
+    btn.textContent = 'Guardar'; btn.disabled = false;
+  }
+
+  async function deleteAlianza(idx) {
+    const a = allAlianzas[idx];
+    if (!confirm(`¿Eliminar "${a.nombre}"?`)) return;
+    try {
+      await fetch(ALIANZAS_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', nombre: a.nombre, fecha_contacto: a.fecha_contacto }) });
+      await loadAlianzas();
+    } catch(e) { alert('Error eliminando.'); }
   }
 
   // ============ JARVIS INTRO ============
