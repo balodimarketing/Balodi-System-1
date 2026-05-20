@@ -4215,13 +4215,14 @@
       const res = await fetch(ALIANZAS_URL + '?t=' + Date.now());
       const raw = await res.json();
       allAlianzas = raw.slice(1).map(r => ({
-        nombre: r[0], rubro: r[1], contacto: r[2], email: r[3],
-        telefono: r[4], web: r[5], direccion: r[6], fecha_contacto: r[7],
-        estado: r[8]||'Sin contactar', tiene_reunion: r[9], fecha_reunion: r[10],
-        cerrado: r[11], comision: r[12], notas: r[13], creado: r[14]
-      })).filter(r => r.nombre);
+        nombre: r[0]||'', rubro: r[1]||'', contacto: r[2]||'', email: r[3]||'',
+        telefono: r[4]||'', web: r[5]||'', direccion: r[6]||'', fecha_contacto: r[7]||'',
+        estado: r[8]||'Sin contactar', tiene_reunion: r[9]||'No', fecha_reunion: r[10]||'',
+        cerrado: r[11]||'No', comision: r[12]||'', notas: r[13]||'', creado: r[14]||''
+      })).filter(r => r.nombre.trim() !== '');
       renderAlianzas();
     } catch(e) {
+      console.error('Error alianzas:', e);
       container.innerHTML = '<div class="rend-loading">❌ Error cargando alianzas.</div>';
     }
   }
@@ -4264,36 +4265,42 @@
     }
 
     container.innerHTML = data.map((a, i) => {
-      const estClass = ALIANZA_ESTADO_CLASS[a.estado] || 'est-sin';
-      const reunionBadge = a.tiene_reunion === 'Sí' ? `<span class="alianza-estado est-reunion">📅 Reunión</span>` : '';
-      const cerradoBadge = a.cerrado === 'Sí' ? `<span class="alianza-estado est-activo">🏆 Cerrado</span>` : '';
-      return `<div class="alianza-card">
-        <div class="alianza-header">
-          <div>
-            <div class="alianza-nombre">${a.nombre}</div>
-            <div class="alianza-rubro">${a.rubro||''}</div>
+      try {
+        const estClass = ALIANZA_ESTADO_CLASS[a.estado] || 'est-sin';
+        const reunionBadge = a.tiene_reunion === 'Sí' ? `<span class="alianza-estado est-reunion">📅 Reunión</span>` : '';
+        const cerradoBadge = a.cerrado === 'Sí' ? `<span class="alianza-estado est-activo">🏆 Cerrado</span>` : '';
+        const webLink = a.web ? `<a href="${a.web.startsWith('http')?a.web:'https://'+a.web}" target="_blank" style="color:var(--orange)">${a.web}</a>` : '—';
+        return `<div class="alianza-card">
+          <div class="alianza-header">
+            <div>
+              <div class="alianza-nombre">${a.nombre}</div>
+              <div class="alianza-rubro">${a.rubro||''}</div>
+            </div>
+            <div class="alianza-badges">
+              <span class="alianza-estado ${estClass}">${a.estado}</span>
+              ${reunionBadge}${cerradoBadge}
+            </div>
           </div>
-          <div class="alianza-badges">
-            <span class="alianza-estado ${estClass}">${a.estado}</span>
-            ${reunionBadge}${cerradoBadge}
+          <div class="alianza-info">
+            <div class="alianza-field"><span>👤 Contacto</span>${a.contacto||'—'}</div>
+            <div class="alianza-field"><span>📧 Email</span>${a.email||'—'}</div>
+            <div class="alianza-field"><span>📱 Teléfono</span>${a.telefono||'—'}</div>
+            <div class="alianza-field"><span>🌐 Web</span>${webLink}</div>
+            <div class="alianza-field"><span>📍 Dirección</span>${a.direccion||'—'}</div>
+            <div class="alianza-field"><span>📅 Fecha contacto</span>${a.fecha_contacto||'—'}</div>
+            ${a.fecha_reunion ? `<div class="alianza-field"><span>🗓 Fecha reunión</span>${a.fecha_reunion}</div>` : ''}
+            ${a.comision ? `<div class="alianza-field"><span>💰 Comisión</span>$${parseFloat(a.comision||0).toLocaleString('es-AR')}</div>` : ''}
           </div>
-        </div>
-        <div class="alianza-info">
-          <div class="alianza-field"><span>👤 Contacto</span>${a.contacto||'—'}</div>
-          <div class="alianza-field"><span>📧 Email</span>${a.email||'—'}</div>
-          <div class="alianza-field"><span>📱 Teléfono</span>${a.telefono||'—'}</div>
-          <div class="alianza-field"><span>🌐 Web</span>${a.web ? `<a href="${a.web.startsWith('http')?a.web:'https://'+a.web}" target="_blank" style="color:var(--orange)">${a.web}</a>` : '—'}</div>
-          <div class="alianza-field"><span>📍 Dirección</span>${a.direccion||'—'}</div>
-          <div class="alianza-field"><span>📅 Fecha contacto</span>${a.fecha_contacto||'—'}</div>
-          ${a.fecha_reunion ? `<div class="alianza-field"><span>🗓 Fecha reunión</span>${a.fecha_reunion}</div>` : ''}
-          ${a.comision ? `<div class="alianza-field"><span>💰 Comisión</span>$${parseFloat(a.comision).toLocaleString('es-AR')}</div>` : ''}
-        </div>
-        ${a.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-style:italic">"${a.notas}"</div>` : ''}
-        <div class="alianza-actions">
-          <button class="alianza-btn" onclick="editAlianza(${allAlianzas.indexOf(a)})">✏️ Editar</button>
-          <button class="alianza-btn danger" onclick="deleteAlianza(${allAlianzas.indexOf(a)})">🗑 Eliminar</button>
-        </div>
-      </div>`;
+          ${a.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-style:italic">"${a.notas}"</div>` : ''}
+          <div class="alianza-actions">
+            <button class="alianza-btn" onclick="editAlianza(${allAlianzas.indexOf(a)})">✏️ Editar</button>
+            <button class="alianza-btn danger" onclick="deleteAlianza(${allAlianzas.indexOf(a)})">🗑 Eliminar</button>
+          </div>
+        </div>`;
+      } catch(err) {
+        console.error('Error renderizando alianza:', a, err);
+        return '';
+      }
     }).join('');
   }
 
