@@ -2112,15 +2112,19 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Responsable *</label>
-            <select class="form-select" id="t-responsable">
-              <option value="">Seleccionar...</option>
-              <option>Lourdes</option>
-              <option>Enzo</option>
-              <option>Brunela</option>
-              <option>Nicolás</option>
-              <option>Bautista</option>
-            </select>
+            <label class="form-label">Responsable * <span style="font-size:10px;color:var(--text3);font-weight:400">(podés elegir varios)</span></label>
+            <div style="border:1.5px solid var(--border2);border-radius:10px;overflow:hidden;background:var(--bg4)">
+              <div onclick="toggleTodosResponsable()" id="t-responsable-todos" style="padding:8px 12px;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;transition:background 0.15s">
+                <span id="t-todos-check" style="font-size:16px">☐</span> Todos
+              </div>
+              <select class="form-select" id="t-responsable" multiple style="border:none;border-radius:0;height:110px;background:var(--bg4);padding:4px 8px">
+                <option>Lourdes</option>
+                <option>Enzo</option>
+                <option>Brunela</option>
+                <option>Nicolás</option>
+                <option>Bautista</option>
+              </select>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label">Prioridad</label>
@@ -2390,7 +2394,10 @@
   function openTaskModal() {
     document.getElementById('task-modal').classList.add('open');
     document.getElementById('t-tarea').value = '';
-    document.getElementById('t-responsable').value = '';
+    document.getElementById('t-responsable').selectedIndex = -1;
+    document.getElementById('t-todos-check').textContent = '☐';
+    const todosDiv = document.getElementById('t-responsable-todos');
+    if (todosDiv) { todosDiv.style.background = ''; todosDiv.style.color = ''; }
     document.getElementById('t-prioridad').value = 'Media';
     document.getElementById('t-cliente').value = '';
     document.getElementById('t-nota').value = '';
@@ -2402,16 +2409,47 @@
     document.getElementById('task-modal').classList.remove('open');
   }
 
+  const NOTIFY_URL = 'https://script.google.com/macros/s/AKfycbyYUYroeb7FQo8eYc1L7XdJLs95yQgNgU_pmP62S_i2C1jp6hVUKw124M21sm3-u6T1/exec';
+
+  async function notificarNuevaTarea(data, todosNombres) {
+    try {
+      const params = new URLSearchParams({
+        action: 'nueva_tarea',
+        tarea: data.tarea,
+        responsable: data.responsable,
+        todos_nombres: todosNombres,
+        asignado_por: currentUser?.username || 'Bautista',
+        fecha: data.vencimiento !== '—' ? data.vencimiento : 'Sin fecha',
+        cliente: data.cliente !== '—' ? data.cliente : 'Sin cliente',
+        nota: data.nota || '—',
+        prioridad: data.prioridad || 'Media'
+      });
+      const img = new Image();
+      img.src = NOTIFY_URL + '?' + params.toString();
+    } catch(e) { console.log('Notificación no enviada:', e); }
+  }
+
+  function toggleTodosResponsable() {
+    const sel = document.getElementById('t-responsable');
+    const check = document.getElementById('t-todos-check');
+    const todosDiv = document.getElementById('t-responsable-todos');
+    const todosSelected = [...sel.options].every(o => o.selected);
+    [...sel.options].forEach(o => o.selected = !todosSelected);
+    check.textContent = todosSelected ? '☐' : '☑';
+    todosDiv.style.background = todosSelected ? '' : 'var(--orange-light)';
+    todosDiv.style.color = todosSelected ? '' : 'var(--orange)';
+  }
+
   async function saveTask() {
+    const sel = document.getElementById('t-responsable');
+    const responsables = [...sel.options].filter(o => o.selected).map(o => o.value);
     const tarea = document.getElementById('t-tarea').value.trim();
-    const responsable = document.getElementById('t-responsable').value;
-    if (!tarea || !responsable) { alert('Completá la tarea y el responsable.'); return; }
+    if (!tarea || responsables.length === 0) { alert('Completá la tarea y elegí al menos un responsable.'); return; }
     const btn = document.querySelector('.btn-save');
     btn.textContent = 'Guardando...';
     btn.disabled = true;
-    const data = {
-      tarea,
-      responsable,
+
+    const base = {
       cliente: document.getElementById('t-cliente').value || '—',
       prioridad: document.getElementById('t-prioridad').value,
       estado: 'pendiente',
@@ -2419,14 +2457,20 @@
       nota: document.getElementById('t-nota').value.trim() || '—',
       vencimiento: document.getElementById('t-vencimiento').value || '—'
     };
+
     try {
-      await fetch(SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      allTasks.push(data);
+      const todosNombres = responsables.join(', ');
+      for (const responsable of responsables) {
+        const data = { tarea, responsable, ...base };
+        await fetch(SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        allTasks.push(data);
+        notificarNuevaTarea(data, todosNombres);
+      }
       closeTaskModal();
       renderTasks();
       updateDashCount();
