@@ -855,6 +855,7 @@
         <div class="nav-item nav-sub" id="nav-brunela" onclick="go('brunela')"><span class="nav-icon" style="font-size:10px">·</span> Brunela</div>
       </div>
       <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><span class="nav-icon">📁</span> Clientes</div>
+      <div class="nav-item nav-sub" id="nav-c-balodi" onclick="go('c-balodi')" style="color:var(--orange);font-weight:700"><span class="nav-icon" style="font-size:10px">★</span> Balodi Marketing</div>
       <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><span class="nav-icon">📅</span> Calendario mensual</div>
       <div class="nav-label">Privado — Bau y Nico</div>
       <div class="nav-item" id="nav-estrategia" onclick="go('estrategia')"><span class="nav-icon">🔒</span> Estrategia Balodi</div>
@@ -1038,6 +1039,7 @@
       </div>
       <div class="page-content">
         <div class="client-grid">
+          <div class="client-card" onclick="go('c-balodi')" style="border-color:var(--orange-border);background:var(--orange-light);grid-column:span 2"><div style="display:flex;align-items:center;gap:10px;flex:1"><div style="width:32px;height:32px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px">📊</div><div><div class="client-name" style="color:var(--orange)">Balodi Marketing</div><div style="font-size:11px;color:var(--orange);opacity:0.8;margin-top:2px">Cuenta propia · Meta Ads integrado</div></div></div><span class="badge badge-orange" style="margin-right:8px">Interna</span><span class="client-arrow" style="color:var(--orange)">→</span></div>
           <div class="client-card" onclick="go('c-tarjeta')"><div class="client-name">Tarjeta Primicia</div><span class="client-arrow">→</span></div>
           <div class="client-card" onclick="go('c-mutual')"><div class="client-name">Mutual Entre Asociados</div><span class="client-arrow">→</span></div>
           <div class="client-card" onclick="go('c-capilar')"><div class="client-name">Capilar Vibes</div><span class="client-arrow">→</span></div>
@@ -1045,6 +1047,200 @@
           <div class="client-card" onclick="go('c-donatelli')"><div class="client-name">Donatelli Servicios Integrales</div><span class="client-arrow">→</span></div>
           <div class="client-card" onclick="go('c-mma')"><div class="client-name">MMAPantera</div><span class="client-arrow">→</span></div>
           <div class="client-card" onclick="go('c-murad')" style="grid-column: span 1"><div class="client-name">Murad</div><span class="client-arrow">→</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BALODI MARKETING — CLIENTE INTERNO -->
+    <div class="panel" id="panel-c-balodi">
+      <div class="page-header">
+        <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Balodi Marketing</span></div>
+        <div class="page-eyebrow" style="color:var(--orange)">★ Cuenta propia</div>
+        <div class="page-title">Balodi Marketing</div>
+        <div class="page-desc">La cuenta interna de la agencia. Meta Ads, contenido propio y estrategia de marca.</div>
+      </div>
+      <div class="page-content">
+
+        <!-- TABS -->
+        <div class="est-tabs" style="margin-bottom:24px">
+          <button class="est-tab active" onclick="switchBalodiTab('meta-ads', this)">📊 Meta Ads</button>
+          <button class="est-tab" onclick="switchBalodiTab('contenido', this)">📅 Contenido</button>
+          <button class="est-tab" onclick="switchBalodiTab('ideas-balodi', this)">💡 Ideas</button>
+          <button class="est-tab" onclick="switchBalodiTab('objetivos-balodi', this)">🎯 Objetivos</button>
+        </div>
+
+        <!-- META ADS TAB -->
+        <div class="est-section active" id="balodi-meta-ads">
+
+          <!-- CONFIG BANNER -->
+          <div id="meta-config-banner" style="background:linear-gradient(135deg,#fff4ee,#fff);border:1.5px solid var(--orange-border);border-radius:14px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:flex-start;gap:16px">
+            <div style="font-size:28px;flex-shrink:0">🔌</div>
+            <div style="flex:1">
+              <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px">Conectar con la API de Meta</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:12px">Ahora estás viendo datos de ejemplo. Para ver tus campañas reales de Facebook/Instagram, ingresá tu Access Token de Meta. <strong>Solo visible para Bau y Nico.</strong></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                <input id="meta-token-input" type="password" placeholder="Access Token de Meta..." style="flex:1;min-width:200px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'">
+                <input id="meta-account-input" type="text" placeholder="ID de Ad Account (act_XXXXXX)" style="flex:1;min-width:200px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'">
+                <button onclick="connectMetaAPI()" style="background:var(--orange);color:white;border:none;border-radius:8px;padding:8px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Conectar</button>
+              </div>
+              <div id="meta-connect-status" style="font-size:11px;color:var(--text3);margin-top:8px">💡 Conseguís el token en <strong>developers.facebook.com → Graph API Explorer</strong>. El ID de cuenta lo encontrás en Meta Business Manager → Cuentas publicitarias.</div>
+            </div>
+          </div>
+
+          <!-- KPI CARDS -->
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px" id="meta-kpi-row">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#fff4ee">💸</div>
+              <div class="stat-number" id="meta-kpi-gasto">$0</div>
+              <div class="stat-label">Gasto del mes</div>
+              <div class="stat-trend" id="meta-kpi-gasto-trend" style="color:var(--text3)">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#eff6ff">👁️</div>
+              <div class="stat-number" id="meta-kpi-alcance">0</div>
+              <div class="stat-label">Alcance total</div>
+              <div class="stat-trend" id="meta-kpi-alcance-trend" style="color:var(--text3)">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#f0fdf4">🖱️</div>
+              <div class="stat-number" id="meta-kpi-clicks">0</div>
+              <div class="stat-label">Clicks totales</div>
+              <div class="stat-trend" id="meta-kpi-ctr" style="color:var(--text3)">CTR —</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#f5f0ff">💬</div>
+              <div class="stat-number" id="meta-kpi-conversaciones">0</div>
+              <div class="stat-label">Conversaciones</div>
+              <div class="stat-trend" id="meta-kpi-conv-trend" style="color:var(--text3)">Personas que escribieron</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#fffbeb">💰</div>
+              <div class="stat-number" id="meta-kpi-cpc">$0</div>
+              <div class="stat-label">Costo por conv. iniciada</div>
+              <div class="stat-trend" id="meta-kpi-cpm" style="color:var(--text3)">CPM —</div>
+            </div>
+          </div>
+
+          <!-- CAMPAÑAS TABLE -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div class="section-title" style="margin-bottom:0">Campañas activas</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span id="meta-last-update" style="font-size:11px;color:var(--text3)"></span>
+              <button onclick="loadMetaAds()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:7px;padding:5px 12px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;color:var(--text2)">↻ Actualizar</button>
+              <button onclick="exportMetaGeneralPDF()" style="background:var(--orange);color:white;border:none;border-radius:7px;padding:5px 12px;font-size:12px;font-family:'Outfit',sans-serif;font-weight:700;cursor:pointer">⬇ Descargar PDF</button>
+            </div>
+          </div>
+          <div id="meta-campaigns-container">
+            <!-- generado por JS -->
+          </div>
+
+          <div class="alert alert-info" style="margin-top:20px">
+            <div class="alert-icon">ℹ️</div>
+            <div style="font-size:12.5px">Para conectar campañas de <strong>otros clientes</strong>, se puede agregar una sección de Meta Ads en cada panel de cliente con su propio token y Ad Account ID.</div>
+          </div>
+
+        </div>
+
+        <!-- CONTENIDO TAB -->
+        <div class="est-section" id="balodi-contenido">
+          <div class="alert alert-info" style="margin-bottom:20px">
+            <div class="alert-icon">📅</div>
+            <div>El calendario de contenido de Balodi. Para agregar eventos, usá <strong>calendar.google.com</strong> directamente.</div>
+          </div>
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+            <iframe src="https://calendar.google.com/calendar/embed?src=a81cff773b639442d2100254ddb1563d9db0035fc11256ceb46f7df644d17e06%40group.calendar.google.com&ctz=America%2FArgentina%2FBuenos_Aires&mode=MONTH&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0&bgcolor=%231a1a1a&color=%23c9a96e" style="border:0;width:100%;height:500px;display:block;" frameborder="0" scrolling="no"></iframe>
+          </div>
+        </div>
+
+        <!-- IDEAS TAB -->
+        <div class="est-section" id="balodi-ideas-balodi">
+          <div class="alert alert-info" style="margin-bottom:20px">
+            <div class="alert-icon">💡</div>
+            <div>Ideas específicas para la cuenta de Balodi. Campañas propias, contenido de marca, BTL, lo que sea.</div>
+          </div>
+          <div class="ideas-toolbar" style="margin-bottom:16px">
+            <div class="ideas-filters">
+              <button class="filter-btn active" onclick="filterBalodiIdeas('todos', this)">Todas</button>
+              <button class="filter-btn" onclick="filterBalodiIdeas('Contenido', this)">Contenido</button>
+              <button class="filter-btn" onclick="filterBalodiIdeas('Campaña', this)">Campaña</button>
+              <button class="filter-btn" onclick="filterBalodiIdeas('Meta Ads', this)">Meta Ads</button>
+              <button class="filter-btn" onclick="filterBalodiIdeas('BTL', this)">BTL</button>
+              <button class="filter-btn" onclick="filterBalodiIdeas('Viral', this)">Viral</button>
+            </div>
+            <button class="btn-new-task" onclick="openBalodiIdeaModal()">💡 Nueva idea</button>
+          </div>
+          <div id="balodi-ideas-container">
+            <div class="tasks-loading">⏳ Cargando...</div>
+          </div>
+        </div>
+
+        <!-- OBJETIVOS TAB -->
+        <div class="est-section" id="balodi-objetivos-balodi">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px" id="balodi-obj-grid">
+            <div class="card" style="cursor:pointer" onclick="editBalodiObj('seguidores')">
+              <div class="card-header"><div class="card-icon" style="background:#fff4ee">👥</div><div><div class="card-title">Meta de seguidores</div><div class="card-subtitle">Instagram / Facebook</div></div></div>
+              <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--orange);margin-top:10px" id="bobj-seguidores">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+            </div>
+            <div class="card" style="cursor:pointer" onclick="editBalodiObj('leads')">
+              <div class="card-header"><div class="card-icon" style="background:#eff6ff">🎯</div><div><div class="card-title">Leads del mes</div><div class="card-subtitle">Via campañas propias</div></div></div>
+              <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--blue);margin-top:10px" id="bobj-leads">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+            </div>
+            <div class="card" style="cursor:pointer" onclick="editBalodiObj('presupuesto')">
+              <div class="card-header"><div class="card-icon" style="background:#f0fdf4">💸</div><div><div class="card-title">Presupuesto Meta Ads</div><div class="card-subtitle">Inversión mensual propia</div></div></div>
+              <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--green);margin-top:10px" id="bobj-presupuesto">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+            </div>
+            <div class="card" style="cursor:pointer" onclick="editBalodiObj('cpa')">
+              <div class="card-header"><div class="card-icon" style="background:#fffbeb">📉</div><div><div class="card-title">CPA objetivo</div><div class="card-subtitle">Costo por adquisición meta</div></div></div>
+              <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--amber);margin-top:10px" id="bobj-cpa">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BALODI IDEA MODAL -->
+    <div class="idea-modal-overlay" id="balodi-idea-modal">
+      <div class="idea-modal">
+        <div class="idea-modal-title">💡 Idea para Balodi Marketing</div>
+        <div class="form-group">
+          <label class="form-label">La idea *</label>
+          <textarea class="form-textarea" id="bi-idea" placeholder="Describí la idea con detalle..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categoría</label>
+          <select class="form-select" id="bi-categoria">
+            <option value="Contenido">Contenido</option>
+            <option value="Campaña">Campaña</option>
+            <option value="Meta Ads">Meta Ads</option>
+            <option value="BTL">BTL</option>
+            <option value="Viral">Viral</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="task-modal-actions">
+          <button class="btn-cancel-task" onclick="closeBalodiIdeaModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveBalodiIdea()">Guardar idea</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BALODI OBJ MODAL -->
+    <div class="est-modal-overlay" id="balodi-obj-modal">
+      <div class="est-modal">
+        <div class="est-modal-title" id="balodi-obj-modal-title">✏️ Editar objetivo</div>
+        <input type="hidden" id="balodi-obj-clave">
+        <div class="form-group">
+          <label class="form-label">Valor *</label>
+          <input class="form-input" id="balodi-obj-valor" placeholder="Ej: 5.000, $15.000, 50">
+        </div>
+        <div class="task-modal-actions">
+          <button class="btn-cancel-task" onclick="closeBalodiObjModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveBalodiObj()">Guardar</button>
         </div>
       </div>
     </div>
@@ -2345,7 +2541,11 @@
       seguimiento: 'Seguimiento de Empleados', reuniones: 'Reuniones',
       informe: 'Informe Mensual', implementar: 'Cómo implementarlo',
       objetivos: 'Objetivos del mes', tareas: 'Tareas pendientes',
-      creativas: 'Ideas Creativas'
+      creativas: 'Ideas Creativas',
+      'c-balodi': 'Balodi Marketing', 'c-tarjeta': 'Tarjeta Primicia',
+      'c-mutual': 'Mutual Entre Asociados', 'c-capilar': 'Capilar Vibes',
+      'c-hielo': 'Hielo Rosario', 'c-donatelli': 'Donatelli',
+      'c-mma': 'MMAPantera', 'c-murad': 'Murad'
     };
     const tb = document.getElementById('topbar-title');
     if (tb && titles[id]) tb.textContent = titles[id];
@@ -2356,6 +2556,7 @@
     if (id === 'finanzas') loadFinanzas();
     if (id === 'estrategia') loadPipeline();
     if (id === 'alianzas') loadAlianzas();
+    if (id === 'c-balodi') { loadMetaAds(); loadBalodiIdeas(); loadBalodiObjs(); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
   }
@@ -4803,6 +5004,607 @@
     ventana.document.close();
   }
 
+  // ============ BALODI MARKETING — META ADS ============
+
+  let metaToken = localStorage.getItem('balodi_meta_token') || '';
+  let metaAccountId = localStorage.getItem('balodi_meta_account') || '';
+  let metaConnected = false;
+
+  // Datos simulados realistas para cuando no hay token real
+  const META_MOCK = {
+    kpi: { gasto: 18450, alcance: 87200, clicks: 3140, ctr: 3.6, cpc: 245, cpm: 212, conversaciones: 47 },
+    trend_gasto: '+12% vs mes anterior',
+    trend_alcance: '+8% vs mes anterior',
+    diario: [820,1100,950,1380,1220,1640,1100,890,1350,1750,1200,980,1430,1640],
+    por_objetivo: [
+      { label: 'Tráfico', pct: 45, color: '#2563eb' },
+      { label: 'Reconocimiento', pct: 30, color: '#7c3aed' },
+      { label: 'Leads', pct: 25, color: '#16a34a' },
+    ],
+    campanas: [
+      { nombre: 'Balodi — Captación leads mayo', estado: 'ACTIVE', objetivo: 'Leads', presupuesto: 8000, gastado: 6240, alcance: 32400, clicks: 1180, ctr: 3.64, cpc: 5.29, resultado: '47 leads', cpa: 132.76 },
+      { nombre: 'Balodi — Reconocimiento de marca', estado: 'ACTIVE', objetivo: 'Alcance', presupuesto: 5000, gastado: 4820, alcance: 41200, clicks: 980, ctr: 2.38, cpc: 4.92, resultado: '41.2K alcance', cpa: null },
+      { nombre: 'Contenido Balodi — Engagement', estado: 'ACTIVE', objetivo: 'Interacción', presupuesto: 3500, gastado: 3100, alcance: 13600, clicks: 720, ctr: 5.29, cpc: 4.31, resultado: '2.1K interacc.', cpa: null },
+      { nombre: 'Balodi — Retargeting web', estado: 'PAUSED', objetivo: 'Tráfico', presupuesto: 2000, gastado: 1240, alcance: 4200, clicks: 260, ctr: 6.19, cpc: 4.77, resultado: '260 clicks', cpa: null },
+    ]
+  };
+
+  function switchBalodiTab(tab, btn) {
+    document.querySelectorAll('#panel-c-balodi .est-tab').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('#panel-c-balodi .est-section').forEach(s => s.classList.remove('active'));
+    const sec = document.getElementById('balodi-' + tab);
+    if (sec) sec.classList.add('active');
+    if (tab === 'ideas-balodi') loadBalodiIdeas();
+  }
+
+  async function connectMetaAPI() {
+    const token = document.getElementById('meta-token-input').value.trim();
+    const account = document.getElementById('meta-account-input').value.trim();
+    const statusEl = document.getElementById('meta-connect-status');
+
+    if (!token || !account) {
+      statusEl.textContent = '⚠️ Ingresá el token y el ID de la cuenta antes de conectar.';
+      statusEl.style.color = 'var(--red)';
+      return;
+    }
+
+    statusEl.textContent = '⏳ Verificando conexión con Meta...';
+    statusEl.style.color = 'var(--text3)';
+
+    try {
+      const accountId = account.startsWith('act_') ? account : 'act_' + account;
+      const url = `https://graph.facebook.com/v19.0/${accountId}?fields=name,currency,account_status&access_token=${token}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.error) {
+        statusEl.textContent = '❌ Error: ' + (data.error.message || 'Token o ID inválido.');
+        statusEl.style.color = 'var(--red)';
+        return;
+      }
+
+      localStorage.setItem('balodi_meta_token', token);
+      localStorage.setItem('balodi_meta_account', accountId);
+      metaToken = token;
+      metaAccountId = accountId;
+      metaConnected = true;
+
+      statusEl.textContent = '✅ Conectado a: ' + (data.name || accountId) + ' (' + (data.currency || '') + ')';
+      statusEl.style.color = 'var(--green)';
+
+      document.getElementById('meta-config-banner').style.borderColor = '#bbf7d0';
+      document.getElementById('meta-config-banner').style.background = 'linear-gradient(135deg,#f0fdf4,#fff)';
+
+      await loadMetaAdsReal();
+    } catch(e) {
+      statusEl.textContent = '❌ No se pudo conectar. Verificá el token y que la cuenta no tenga restricciones de CORS.';
+      statusEl.style.color = 'var(--red)';
+    }
+  }
+
+  async function loadMetaAdsReal() {
+    const since = new Date(); since.setDate(since.getDate() - 30);
+    const sinceStr = since.toISOString().split('T')[0];
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    try {
+      const insightsUrl = `https://graph.facebook.com/v19.0/${metaAccountId}/insights?fields=spend,reach,clicks,ctr,cpc,cpm,impressions,actions,cost_per_action_type&time_range={"since":"${sinceStr}","until":"${todayStr}"}&access_token=${metaToken}`;
+      const insRes = await fetch(insightsUrl);
+      const insData = await insRes.json();
+
+      if (insData.data && insData.data[0]) {
+        const d = insData.data[0];
+
+        // Buscar costo por conversación iniciada dentro de cost_per_action_type
+        let costPerConv = 0;
+        if (d.cost_per_action_type && Array.isArray(d.cost_per_action_type)) {
+          const convAction = d.cost_per_action_type.find(a =>
+            a.action_type === 'onsite_conversion.messaging_conversation_started_7d' ||
+            a.action_type === 'onsite_conversion.total_messaging_connection' ||
+            a.action_type === 'onsite_conversion.messaging_first_reply'
+          );
+          if (convAction) costPerConv = parseFloat(convAction.value || 0);
+        }
+
+        // Buscar número de conversaciones en actions
+        let conversaciones = 0;
+        if (d.actions && Array.isArray(d.actions)) {
+          const convAction = d.actions.find(a =>
+            a.action_type === 'onsite_conversion.messaging_conversation_started_7d' ||
+            a.action_type === 'onsite_conversion.total_messaging_connection' ||
+            a.action_type === 'onsite_conversion.messaging_first_reply'
+          );
+          if (convAction) conversaciones = parseInt(convAction.value || 0);
+        }
+
+        renderMetaKPIs({
+          gasto: parseFloat(d.spend || 0),
+          alcance: parseInt(d.reach || 0),
+          clicks: parseInt(d.clicks || 0),
+          ctr: parseFloat(d.ctr || 0),
+          cpc: costPerConv,
+          cpm: parseFloat(d.cpm || 0),
+          conversaciones,
+        });
+      }
+
+      const campUrl = `https://graph.facebook.com/v19.0/${metaAccountId}/campaigns?fields=name,status,objective,daily_budget,lifetime_budget&access_token=${metaToken}&limit=20`;
+      const campRes = await fetch(campUrl);
+      const campData = await campRes.json();
+
+      if (campData.data) {
+        renderMetaCampaignsReal(campData.data);
+      }
+
+      document.getElementById('meta-last-update').textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-AR');
+    } catch(e) {
+      console.error('Error cargando datos de Meta:', e);
+    }
+  }
+
+  function renderMetaCampaignsReal(campaigns) {
+    const container = document.getElementById('meta-campaigns-container');
+    if (!campaigns.length) {
+      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon">📭</div><div class="placeholder-title">Sin campañas</div><div class="placeholder-desc">No se encontraron campañas en esta cuenta.</div></div>';
+      return;
+    }
+    container.innerHTML = campaigns.map(c => {
+      const isActive = c.status === 'ACTIVE';
+      const budget = c.daily_budget ? '$' + (c.daily_budget / 100).toLocaleString('es-AR') + '/día' : c.lifetime_budget ? '$' + (c.lifetime_budget / 100).toLocaleString('es-AR') + ' total' : '—';
+      const presup = c.daily_budget ? c.daily_budget / 100 * 30 : c.lifetime_budget ? c.lifetime_budget / 100 : 0;
+      return `<div class="card" style="margin-bottom:10px;padding:16px 20px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'" onmouseout="this.style.borderColor='';this.style.background=''" onclick="openCampModal('${c.id}','${(c.name||'').replace(/'/g,"\\'")}','${c.status}','${c.objective||''}',0,${presup})">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="width:10px;height:10px;border-radius:50%;background:${isActive ? 'var(--green)' : '#d1d5db'};flex-shrink:0"></div>
+          <div style="flex:1;min-width:160px">
+            <div style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:var(--text)">${c.name}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">${c.objective || '—'} · Presupuesto: ${budget}</div>
+          </div>
+          <span class="badge ${isActive ? 'badge-green' : 'badge-amber'}">${isActive ? '● Activa' : '⏸ Pausada'}</span>
+          <span style="color:var(--text3);font-size:13px">→</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function loadMetaAds() {
+    // Si hay token guardado, intentar conectar automáticamente
+    if (metaToken && metaAccountId) {
+      metaConnected = true;
+      document.getElementById('meta-token-input').value = metaToken;
+      document.getElementById('meta-account-input').value = metaAccountId;
+      loadMetaAdsReal().catch(() => renderMetaMock());
+    } else {
+      renderMetaMock();
+    }
+  }
+
+  function renderMetaMock() {
+    const d = META_MOCK;
+    renderMetaKPIs(d.kpi, d.trend_gasto, d.trend_alcance);
+    renderMetaGastoChart(d.diario);
+    renderMetaObjetivos(d.por_objetivo);
+    renderMetaCampaigns(d.campanas);
+    document.getElementById('meta-last-update').textContent = '⚠️ Datos de ejemplo';
+  }
+
+  function renderMetaKPIs(kpi, trendGasto, trendAlcance) {
+    document.getElementById('meta-kpi-gasto').textContent = '$' + Math.round(kpi.gasto).toLocaleString('es-AR');
+    document.getElementById('meta-kpi-alcance').textContent = kpi.alcance >= 1000 ? (kpi.alcance / 1000).toFixed(1) + 'K' : kpi.alcance;
+    document.getElementById('meta-kpi-clicks').textContent = kpi.clicks.toLocaleString('es-AR');
+    document.getElementById('meta-kpi-conversaciones').textContent = kpi.conversaciones > 0 ? kpi.conversaciones.toLocaleString('es-AR') : '—';
+    document.getElementById('meta-kpi-conv-trend').textContent = kpi.conversaciones > 0 ? 'Personas que escribieron' : 'Sin datos aún';
+    document.getElementById('meta-kpi-conv-trend').style.color = kpi.conversaciones > 0 ? 'var(--green)' : 'var(--text3)';
+    document.getElementById('meta-kpi-cpc').textContent = kpi.cpc > 0 ? '$' + kpi.cpc.toFixed(0) : '—';
+    if (trendGasto) document.getElementById('meta-kpi-gasto-trend').textContent = trendGasto;
+    if (trendAlcance) document.getElementById('meta-kpi-alcance-trend').textContent = trendAlcance;
+    document.getElementById('meta-kpi-ctr').textContent = 'CTR ' + kpi.ctr.toFixed(2) + '%';
+    document.getElementById('meta-kpi-cpm').textContent = kpi.cpc > 0 ? 'CPM $' + (kpi.cpm || 0).toFixed(0) : 'Sin conversaciones aún';
+  }
+
+  function renderMetaGastoChart(diario) {
+    const chart = document.getElementById('meta-gasto-chart');
+    const labels = document.getElementById('meta-gasto-labels');
+    if (!chart) return;
+    const max = Math.max(...diario);
+    const dias = diario.map((v, i) => {
+      const d = new Date(); d.setDate(d.getDate() - (diario.length - 1 - i));
+      return d.getDate();
+    });
+    chart.innerHTML = diario.map((v, i) => {
+      const h = Math.max(4, Math.round((v / max) * 90));
+      const isToday = i === diario.length - 1;
+      return `<div title="Día ${dias[i]}: $${v.toLocaleString('es-AR')}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:default">
+        <div style="font-size:9px;color:var(--text3);font-weight:600">${v >= 1000 ? (v/1000).toFixed(1)+'K' : '$'+v}</div>
+        <div style="width:100%;height:${h}px;border-radius:4px 4px 0 0;background:${isToday ? 'var(--orange)' : 'rgba(245,98,10,0.35)'};transition:height 0.5s ease"></div>
+      </div>`;
+    }).join('');
+    labels.innerHTML = diario.map((v, i) => {
+      const show = i === 0 || i === Math.floor(diario.length / 2) || i === diario.length - 1;
+      return `<span style="flex:1;text-align:center">${show ? dias[i] : ''}</span>`;
+    }).join('');
+  }
+
+  function renderMetaObjetivos(breakdown) {
+    const el = document.getElementById('meta-objetivo-breakdown');
+    if (!el) return;
+    el.innerHTML = breakdown.map(b => `
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:12px;font-weight:600;color:var(--text)">${b.label}</span>
+          <span style="font-size:12px;font-weight:700;color:${b.color}">${b.pct}%</span>
+        </div>
+        <div style="height:6px;background:var(--bg4);border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:${b.pct}%;background:${b.color};border-radius:999px;transition:width 0.6s ease"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  function renderMetaCampaigns(campaigns) {
+    const container = document.getElementById('meta-campaigns-container');
+    if (!container) return;
+    container.innerHTML = `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead><tr style="border-bottom:2px solid var(--border)">
+        <th style="text-align:left;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">Campaña</th>
+        <th style="text-align:center;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">Estado</th>
+        <th style="text-align:right;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">Gastado / Presup.</th>
+        <th style="text-align:right;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">Alcance</th>
+        <th style="text-align:right;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">CTR</th>
+        <th style="text-align:right;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">CPC</th>
+        <th style="text-align:right;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">Resultado</th>
+        <th style="padding:8px 10px"></th>
+      </tr></thead>
+      <tbody>
+        ${campaigns.map(c => {
+          const isActive = c.estado === 'ACTIVE';
+          const pct = Math.round((c.gastado / c.presupuesto) * 100);
+          const pctColor = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--amber)' : 'var(--green)';
+          const campId = c.id || '';
+          return `<tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='var(--orange-light)'" onmouseout="this.style.background=''" onclick="openCampModal('${campId}','${c.nombre.replace(/'/g,"\\'")}','${c.estado}','${c.objetivo}',${c.gastado},${c.presupuesto})">
+            <td style="padding:10px 10px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:8px;height:8px;border-radius:50%;background:${isActive ? 'var(--green)' : '#d1d5db'};flex-shrink:0"></div>
+                <div>
+                  <div style="font-weight:600;color:var(--text)">${c.nombre}</div>
+                  <div style="font-size:11px;color:var(--text3)">${c.objetivo}</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align:center;padding:10px 10px">
+              <span class="badge ${isActive ? 'badge-green' : 'badge-amber'}">${isActive ? '● Activa' : '⏸ Pausada'}</span>
+            </td>
+            <td style="text-align:right;padding:10px 10px">
+              <div style="font-weight:700;color:var(--text)">$${c.gastado.toLocaleString('es-AR')}</div>
+              <div style="font-size:10px;color:${pctColor}">${pct}% de $${c.presupuesto.toLocaleString('es-AR')}</div>
+              <div style="height:3px;background:var(--bg4);border-radius:999px;margin-top:3px;overflow:hidden"><div style="height:100%;width:${Math.min(pct,100)}%;background:${pctColor};border-radius:999px"></div></div>
+            </td>
+            <td style="text-align:right;padding:10px 10px;font-weight:600;color:var(--text)">${c.alcance >= 1000 ? (c.alcance/1000).toFixed(1)+'K' : c.alcance}</td>
+            <td style="text-align:right;padding:10px 10px;font-weight:600;color:${c.ctr >= 3 ? 'var(--green)' : c.ctr >= 2 ? 'var(--amber)' : 'var(--red)'}">${c.ctr.toFixed(2)}%</td>
+            <td style="text-align:right;padding:10px 10px;font-weight:600;color:var(--text)">$${c.cpc.toFixed(2)}</td>
+            <td style="text-align:right;padding:10px 10px">
+              <div style="font-weight:700;color:var(--orange)">${c.resultado}</div>
+              ${c.cpa ? `<div style="font-size:10px;color:var(--text3)">CPA $${c.cpa.toFixed(2)}</div>` : ''}
+            </td>
+            <td style="padding:10px 10px;text-align:center;color:var(--text3);font-size:12px">→</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table></div>`;
+  }
+
+  // ============ BALODI IDEAS ============
+  let allBalodiIdeas = [];
+  let balodiIdeasFilter = 'todos';
+
+  function filterBalodiIdeas(cat, btn) {
+    balodiIdeasFilter = cat;
+    document.querySelectorAll('#panel-c-balodi .filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderBalodiIdeas();
+  }
+
+  function loadBalodiIdeas() {
+    const saved = JSON.parse(localStorage.getItem('balodi_ideas_internas') || '[]');
+    allBalodiIdeas = saved;
+    renderBalodiIdeas();
+  }
+
+  function renderBalodiIdeas() {
+    const container = document.getElementById('balodi-ideas-container');
+    if (!container) return;
+    let ideas = balodiIdeasFilter === 'todos' ? allBalodiIdeas : allBalodiIdeas.filter(i => i.categoria === balodiIdeasFilter);
+    if (!ideas.length) {
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">💡</div><div>Sin ideas todavía. ¡Tirá la primera!</div></div>';
+      return;
+    }
+    const catColors = { 'Meta Ads': 'badge-blue', 'Contenido': 'badge-green', 'Campaña': 'badge-orange', 'BTL': 'badge-amber', 'Viral': 'badge-red', 'Otro': 'badge-blue' };
+    container.innerHTML = ideas.map((idea, i) => `
+      <div class="card" style="margin-bottom:10px;padding:16px 20px">
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="font-size:20px">💡</div>
+          <div style="flex:1">
+            <div style="font-size:13.5px;color:var(--text);line-height:1.6;margin-bottom:8px">${idea.idea}</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span class="badge ${catColors[idea.categoria] || 'badge-blue'}">${idea.categoria}</span>
+              <span style="font-size:11px;color:var(--text3)">📅 ${idea.fecha}</span>
+              <span style="font-size:11px;color:var(--text3)">👤 ${idea.autor || currentUser?.name || 'Balodi'}</span>
+            </div>
+          </div>
+          ${['bautista','nicolas'].includes(currentUser?.username) ? `<button class="delete-btn" onclick="deleteBalodiIdea(${i})">🗑️</button>` : ''}
+        </div>
+      </div>`).join('');
+  }
+
+  function openBalodiIdeaModal() {
+    document.getElementById('balodi-idea-modal').classList.add('open');
+    document.getElementById('bi-idea').value = '';
+    setTimeout(() => document.getElementById('bi-idea').focus(), 100);
+  }
+
+  function closeBalodiIdeaModal() {
+    document.getElementById('balodi-idea-modal').classList.remove('open');
+  }
+
+  function saveBalodiIdea() {
+    const idea = document.getElementById('bi-idea').value.trim();
+    if (!idea) { alert('Escribí la idea antes de guardar.'); return; }
+    const nueva = {
+      idea,
+      categoria: document.getElementById('bi-categoria').value,
+      fecha: new Date().toLocaleDateString('es-AR'),
+      autor: currentUser?.name || 'Balodi'
+    };
+    allBalodiIdeas.unshift(nueva);
+    localStorage.setItem('balodi_ideas_internas', JSON.stringify(allBalodiIdeas));
+    closeBalodiIdeaModal();
+    renderBalodiIdeas();
+  }
+
+  function deleteBalodiIdea(idx) {
+    if (!confirm('¿Eliminar esta idea?')) return;
+    allBalodiIdeas.splice(idx, 1);
+    localStorage.setItem('balodi_ideas_internas', JSON.stringify(allBalodiIdeas));
+    renderBalodiIdeas();
+  }
+
+  // ============ BALODI OBJETIVOS ============
+  const BALODI_OBJ_CONFIG = {
+    seguidores: { label: 'Meta de seguidores', placeholder: 'Ej: 10.000', elId: 'bobj-seguidores' },
+    leads: { label: 'Leads del mes', placeholder: 'Ej: 50', elId: 'bobj-leads' },
+    presupuesto: { label: 'Presupuesto Meta Ads', placeholder: 'Ej: $20.000', elId: 'bobj-presupuesto' },
+    cpa: { label: 'CPA objetivo', placeholder: 'Ej: $150', elId: 'bobj-cpa' },
+  };
+
+  function loadBalodiObjs() {
+    const saved = JSON.parse(localStorage.getItem('balodi_objetivos_internos') || '{}');
+    Object.keys(BALODI_OBJ_CONFIG).forEach(k => {
+      const el = document.getElementById(BALODI_OBJ_CONFIG[k].elId);
+      if (el) el.textContent = saved[k] || '—';
+    });
+  }
+
+  function editBalodiObj(clave) {
+    const config = BALODI_OBJ_CONFIG[clave];
+    document.getElementById('balodi-obj-modal-title').textContent = '✏️ ' + config.label;
+    document.getElementById('balodi-obj-clave').value = clave;
+    const saved = JSON.parse(localStorage.getItem('balodi_objetivos_internos') || '{}');
+    document.getElementById('balodi-obj-valor').value = saved[clave] || '';
+    document.getElementById('balodi-obj-valor').placeholder = config.placeholder;
+    document.getElementById('balodi-obj-modal').classList.add('open');
+    setTimeout(() => document.getElementById('balodi-obj-valor').focus(), 100);
+  }
+
+  function closeBalodiObjModal() {
+    document.getElementById('balodi-obj-modal').classList.remove('open');
+  }
+
+  function saveBalodiObj() {
+    const clave = document.getElementById('balodi-obj-clave').value;
+    const valor = document.getElementById('balodi-obj-valor').value.trim();
+    if (!valor) { alert('Completá el valor.'); return; }
+    const saved = JSON.parse(localStorage.getItem('balodi_objetivos_internos') || '{}');
+    saved[clave] = valor;
+    localStorage.setItem('balodi_objetivos_internos', JSON.stringify(saved));
+    const el = document.getElementById(BALODI_OBJ_CONFIG[clave].elId);
+    if (el) el.textContent = valor;
+    closeBalodiObjModal();
+  }
+
+  // ============ CAMPAIGN DETAIL MODAL ============
+
+  function openCampModal(campId, campNombre, campEstado, campObjetivo, campGastado, campPresupuesto) {
+    const overlay = document.getElementById('camp-modal-overlay');
+    overlay.style.display = 'flex';
+    document.getElementById('camp-modal-nombre').textContent = campNombre;
+    document.getElementById('camp-modal-meta').textContent = campObjetivo + ' · ' + (campEstado === 'ACTIVE' ? '● Activa' : '⏸ Pausada');
+
+    ['cm-gasto','cm-alcance','cm-clicks','cm-conv','cm-conversaciones','cm-cpm','cm-cpc','cm-freq','cm-impresiones','cm-ctr','cm-conv-total','cm-presupuesto'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.textContent = '—';
+    });
+    document.getElementById('cm-pct-bar').style.width = '0%';
+    document.getElementById('cm-pct-label').textContent = '—';
+    document.getElementById('camp-modal-loading').style.display = 'block';
+    document.getElementById('camp-modal-error').style.display = 'none';
+
+    if (metaConnected && campId) {
+      loadCampanaDetail(campId, campGastado, campPresupuesto);
+    } else {
+      document.getElementById('camp-modal-loading').style.display = 'none';
+      renderCampModalData({
+        spend: campGastado, budget: campPresupuesto,
+        reach: Math.round(campGastado * 3.8), clicks: Math.round(campGastado * 0.18),
+        ctr: 3.2, cpm: 210, cpc: 4.8, impressions: Math.round(campGastado * 18),
+        conv: campGastado > 0 ? Math.round(campGastado / 280) : 0,
+        costPerConv: campGastado > 0 ? 280 : 0, frequency: 1.8
+      });
+    }
+  }
+
+  async function loadCampanaDetail(campId, gastado, presupuesto) {
+    const since = new Date(); since.setDate(since.getDate() - 30);
+    const sinceStr = since.toISOString().split('T')[0];
+    const todayStr = new Date().toISOString().split('T')[0];
+    try {
+      const url = `https://graph.facebook.com/v19.0/${campId}/insights?fields=spend,reach,clicks,ctr,cpm,cpc,impressions,frequency,actions,cost_per_action_type&time_range={"since":"${sinceStr}","until":"${todayStr}"}&access_token=${metaToken}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      document.getElementById('camp-modal-loading').style.display = 'none';
+      if (data.error) {
+        document.getElementById('camp-modal-error').style.display = 'block';
+        document.getElementById('camp-modal-error-msg').textContent = 'Error: ' + data.error.message;
+        return;
+      }
+      if (!data.data || !data.data[0]) {
+        document.getElementById('camp-modal-error').style.display = 'block';
+        document.getElementById('camp-modal-error-msg').textContent = 'Esta campaña no tiene datos en los últimos 30 días.';
+        return;
+      }
+      const d = data.data[0];
+      let conv = 0, costPerConv = 0;
+      const convTypes = ['onsite_conversion.messaging_conversation_started_7d','onsite_conversion.total_messaging_connection','onsite_conversion.messaging_first_reply'];
+      if (d.actions) { const a = d.actions.find(x => convTypes.includes(x.action_type)); if (a) conv = parseInt(a.value || 0); }
+      if (d.cost_per_action_type) { const a = d.cost_per_action_type.find(x => convTypes.includes(x.action_type)); if (a) costPerConv = parseFloat(a.value || 0); }
+      renderCampModalData({
+        spend: parseFloat(d.spend || 0), budget: presupuesto,
+        reach: parseInt(d.reach || 0), clicks: parseInt(d.clicks || 0),
+        ctr: parseFloat(d.ctr || 0), cpm: parseFloat(d.cpm || 0),
+        cpc: parseFloat(d.cpc || 0), impressions: parseInt(d.impressions || 0),
+        frequency: parseFloat(d.frequency || 0), conv, costPerConv
+      });
+    } catch(e) {
+      document.getElementById('camp-modal-loading').style.display = 'none';
+      document.getElementById('camp-modal-error').style.display = 'block';
+      document.getElementById('camp-modal-error-msg').textContent = 'No se pudo conectar. Verificá el token.';
+    }
+  }
+
+  function renderCampModalData(d) {
+    const fmt = n => n >= 1000 ? (n/1000).toFixed(1) + 'K' : n.toString();
+    document.getElementById('cm-gasto').textContent = '$' + Math.round(d.spend).toLocaleString('es-AR');
+    document.getElementById('cm-presupuesto').textContent = d.budget ? 'de $' + Math.round(d.budget).toLocaleString('es-AR') : '';
+    document.getElementById('cm-alcance').textContent = fmt(d.reach);
+    document.getElementById('cm-impresiones').textContent = d.impressions ? fmt(d.impressions) + ' impresiones' : '';
+    document.getElementById('cm-clicks').textContent = fmt(d.clicks);
+    document.getElementById('cm-ctr').textContent = 'CTR ' + (d.ctr || 0).toFixed(2) + '%';
+    document.getElementById('cm-conversaciones').textContent = d.conv > 0 ? d.conv.toLocaleString('es-AR') : '—';
+    document.getElementById('cm-conversaciones').style.color = d.conv > 0 ? '#7c3aed' : 'var(--text3)';
+    document.getElementById('cm-conv-sub').textContent = d.conv > 0 ? 'Personas que escribieron' : 'Sin datos aún';
+    document.getElementById('cm-conv').textContent = d.costPerConv > 0 ? '$' + Math.round(d.costPerConv).toLocaleString('es-AR') : '—';
+    document.getElementById('cm-conv-total').textContent = d.conv > 0 ? d.conv + ' conversaciones' : 'Sin datos de conversación';
+    document.getElementById('cm-cpm').textContent = '$' + Math.round(d.cpm || 0).toLocaleString('es-AR');
+    document.getElementById('cm-cpc').textContent = '$' + (d.cpc || 0).toFixed(2);
+    document.getElementById('cm-freq').textContent = (d.frequency || 0).toFixed(2) + 'x';
+    if (d.budget && d.budget > 0) {
+      const pct = Math.min(Math.round((d.spend / d.budget) * 100), 100);
+      const color = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--amber)' : 'var(--green)';
+      document.getElementById('cm-pct-bar').style.width = pct + '%';
+      document.getElementById('cm-pct-bar').style.background = color;
+      document.getElementById('cm-pct-label').textContent = pct + '%';
+      document.getElementById('cm-pct-label').style.color = color;
+    }
+  }
+
+  function exportMetaGeneralPDF() {
+    const fecha = new Date().toLocaleDateString('es-AR');
+    const gasto = document.getElementById('meta-kpi-gasto')?.textContent || '—';
+    const alcance = document.getElementById('meta-kpi-alcance')?.textContent || '—';
+    const clicks = document.getElementById('meta-kpi-clicks')?.textContent || '—';
+    const conv = document.getElementById('meta-kpi-conversaciones')?.textContent || '—';
+    const costo = document.getElementById('meta-kpi-cpc')?.textContent || '—';
+    const ctr = document.getElementById('meta-kpi-ctr')?.textContent || '—';
+    const cpm = document.getElementById('meta-kpi-cpm')?.textContent || '—';
+    const campTable = document.getElementById('meta-campaigns-container')?.innerHTML || '';
+
+    const html = `
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;padding:40px;max-width:900px;margin:0 auto;color:#141414">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid #f5620a">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:4px">Balodi Marketing</div>
+            <div style="font-size:24px;font-weight:800;color:#141414">Reporte Meta Ads</div>
+            <div style="font-size:12px;color:#6b6b65;margin-top:4px">Generado el ${fecha} · Últimos 30 días</div>
+          </div>
+          <div style="font-size:32px">📊</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px">
+          ${[
+            {label:'💸 Gasto del mes', val: gasto},
+            {label:'👁️ Alcance', val: alcance},
+            {label:'🖱️ Clicks', val: clicks},
+            {label:'💬 Conversaciones', val: conv},
+            {label:'💰 Costo por conv.', val: costo},
+          ].map(k => `
+            <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:16px;text-align:center">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e;margin-bottom:8px">${k.label}</div>
+              <div style="font-size:22px;font-weight:800;color:#141414">${k.val}</div>
+            </div>`).join('')}
+        </div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#a8a89e;margin-bottom:14px">Campañas</div>
+        ${campTable}
+        <div style="margin-top:32px;font-size:11px;color:#a8a89e;text-align:center">Balodi Sistema Operativo · Documento confidencial · Solo para uso interno</div>
+      </div>`;
+    abrirVentanaPDF(html, 'Balodi_MetaAds_General');
+  }
+
+  function exportCampañaPDF() {
+    const nombre = document.getElementById('camp-modal-nombre')?.textContent || 'Campaña';
+    const meta = document.getElementById('camp-modal-meta')?.textContent || '';
+    const fecha = new Date().toLocaleDateString('es-AR');
+    const metricas = [
+      { label: '💸 Gastado', val: document.getElementById('cm-gasto')?.textContent, sub: document.getElementById('cm-presupuesto')?.textContent },
+      { label: '👁️ Alcance', val: document.getElementById('cm-alcance')?.textContent, sub: document.getElementById('cm-impresiones')?.textContent },
+      { label: '🖱️ Clicks', val: document.getElementById('cm-clicks')?.textContent, sub: document.getElementById('cm-ctr')?.textContent },
+      { label: '💬 Conversaciones', val: document.getElementById('cm-conversaciones')?.textContent, sub: 'Personas que escribieron' },
+      { label: '💰 Costo conv.', val: document.getElementById('cm-conv')?.textContent, sub: document.getElementById('cm-conv-total')?.textContent },
+    ];
+    const secundarias = [
+      { label: 'CPM', val: document.getElementById('cm-cpm')?.textContent },
+      { label: 'CPC', val: document.getElementById('cm-cpc')?.textContent },
+      { label: 'Frecuencia', val: document.getElementById('cm-freq')?.textContent },
+    ];
+    const pct = document.getElementById('cm-pct-label')?.textContent || '—';
+
+    const html = `
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;padding:40px;max-width:900px;margin:0 auto;color:#141414">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid #f5620a">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:4px">Balodi Marketing · Detalle de Campaña</div>
+            <div style="font-size:22px;font-weight:800;color:#141414">${nombre}</div>
+            <div style="font-size:12px;color:#6b6b65;margin-top:4px">${meta} · Generado el ${fecha}</div>
+          </div>
+          <div style="font-size:32px">📣</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
+          ${metricas.map(m => `
+            <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:16px;text-align:center">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e;margin-bottom:8px">${m.label}</div>
+              <div style="font-size:22px;font-weight:800;color:#141414">${m.val || '—'}</div>
+              ${m.sub ? `<div style="font-size:10px;color:#a8a89e;margin-top:4px">${m.sub}</div>` : ''}
+            </div>`).join('')}
+        </div>
+        <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin-bottom:20px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b6b65;margin-bottom:8px">
+            <span>Presupuesto consumido</span><span style="font-weight:700;color:#f5620a">${pct}</span>
+          </div>
+          <div style="height:8px;background:#e5e5e5;border-radius:999px;overflow:hidden">
+            <div style="height:100%;width:${pct};background:#f5620a;border-radius:999px"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
+          ${secundarias.map(s => `
+            <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:16px;text-align:center">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e;margin-bottom:8px">${s.label}</div>
+              <div style="font-size:22px;font-weight:800;color:#141414">${s.val || '—'}</div>
+            </div>`).join('')}
+        </div>
+        <div style="margin-top:32px;font-size:11px;color:#a8a89e;text-align:center">Balodi Sistema Operativo · Documento confidencial · Solo para uso interno</div>
+      </div>`;
+    abrirVentanaPDF(html, 'Balodi_Campaña_' + nombre.replace(/\s+/g, '_').substring(0, 30));
+  }
+
+  function closeCampModal() {
+    document.getElementById('camp-modal-overlay').style.display = 'none';
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
     if (checkSavedSession()) {
       document.getElementById('login-screen').style.display = 'none';
@@ -4822,5 +5624,82 @@
     });
   });
 </script>
+
+<!-- CAMPAIGN DETAIL MODAL -->
+<div id="camp-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)" onclick="closeCampModal()">
+  <div style="background:var(--bg2);border-radius:20px;width:100%;max-width:680px;margin:20px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:fadeUp 0.2s ease" onclick="event.stopPropagation()">
+    <div style="padding:24px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:4px">📊 Detalle de campaña</div>
+        <div id="camp-modal-nombre" style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.3"></div>
+        <div id="camp-modal-meta" style="font-size:12px;color:var(--text3);margin-top:4px"></div>
+      </div>
+      <button onclick="closeCampModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0">✕</button>
+    </div>
+    <div style="padding:20px 28px;border-bottom:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+        <div style="text-align:center;padding:16px 10px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">💸 Gastado</div>
+          <div id="cm-gasto" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text)">—</div>
+          <div id="cm-presupuesto" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
+        </div>
+        <div style="text-align:center;padding:16px 10px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">👁️ Alcance</div>
+          <div id="cm-alcance" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--blue)">—</div>
+          <div id="cm-impresiones" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
+        </div>
+        <div style="text-align:center;padding:16px 10px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">🖱️ Clicks</div>
+          <div id="cm-clicks" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--green)">—</div>
+          <div id="cm-ctr" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
+        </div>
+        <div style="text-align:center;padding:16px 10px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">💬 Conversaciones</div>
+          <div id="cm-conversaciones" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:#7c3aed">—</div>
+          <div id="cm-conv-sub" style="font-size:11px;color:var(--text3);margin-top:2px">Personas que escribieron</div>
+        </div>
+        <div style="text-align:center;padding:16px 10px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">💰 Costo conv.</div>
+          <div id="cm-conv" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--orange)">—</div>
+          <div id="cm-conv-total" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
+        </div>
+      </div>
+      <div style="margin-top:8px;padding:0 10px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px">
+          <span>Presupuesto consumido</span><span id="cm-pct-label">—</span>
+        </div>
+        <div style="height:6px;background:var(--bg4);border-radius:999px;overflow:hidden">
+          <div id="cm-pct-bar" style="height:100%;width:0%;border-radius:999px;transition:width 0.6s ease"></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:20px 28px;border-bottom:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px">Métricas secundarias</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div style="background:var(--bg4);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px">CPM</div>
+          <div id="cm-cpm" style="font-size:18px;font-weight:800;color:var(--text)">—</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px">CPC</div>
+          <div id="cm-cpc" style="font-size:18px;font-weight:800;color:var(--text)">—</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px">Frecuencia</div>
+          <div id="cm-freq" style="font-size:18px;font-weight:800;color:var(--text)">—</div>
+        </div>
+      </div>
+    </div>
+    <div id="camp-modal-loading" style="padding:32px;text-align:center;color:var(--text3);font-size:13px;display:none">⏳ Cargando datos de la campaña...</div>
+    <div id="camp-modal-error" style="padding:20px 28px;display:none">
+      <div class="alert alert-warning"><div class="alert-icon">⚠️</div><div id="camp-modal-error-msg">No se pudieron cargar los datos.</div></div>
+    </div>
+    <div style="padding:16px 28px;display:flex;justify-content:space-between;align-items:center">
+      <button onclick="exportCampañaPDF()" style="background:var(--orange);color:white;border:none;border-radius:8px;padding:8px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer">⬇ Descargar PDF</button>
+      <button onclick="closeCampModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:8px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
