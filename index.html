@@ -918,6 +918,7 @@
       <div class="nav-item nav-sub" id="nav-c-balodi" onclick="go('c-balodi')" style="color:var(--orange);font-weight:700"><span class="nav-icon" style="font-size:10px">★</span> Balodi Marketing</div>
       <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><span class="nav-icon">📅</span> Calendario mensual</div>
       <div class="nav-label nav-admin-only" id="label-privado">Privado — Bau y Nico</div>
+      <div class="nav-item nav-admin-only" id="nav-crm" onclick="go('crm')" style="position:relative"><span class="nav-icon">🎯</span> CRM <span class="notif-dot hidden" id="notif-crm">0</span></div>
       <div class="nav-item nav-admin-only" id="nav-estrategia" onclick="go('estrategia')"><span class="nav-icon">🔒</span> Estrategia Balodi</div>
       <div class="nav-item nav-admin-only" id="nav-alianzas" onclick="go('alianzas')"><span class="nav-icon">🤝</span> Red de Alianzas</div>
       <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><span class="nav-icon">🔒</span> Finanzas</div>
@@ -1299,6 +1300,174 @@
         <div class="task-modal-actions">
           <button class="btn-cancel-task" onclick="closeBalodiObjModal()">Cancelar</button>
           <button class="btn-save" onclick="saveBalodiObj()">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRM PANEL -->
+    <div class="panel" id="panel-crm">
+      <div class="page-header">
+        <div class="page-eyebrow" style="color:var(--orange)">🎯 Privado — Bau y Nico</div>
+        <div class="page-title">CRM — Pipeline de ventas</div>
+        <div class="page-desc">Seguimiento de prospectos, historial de contactos y alertas automáticas.</div>
+      </div>
+      <div class="page-content">
+
+        <!-- ALERTAS AUTOMÁTICAS -->
+        <div id="crm-alertas-box" style="margin-bottom:20px;display:none">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">⚠️ Requieren atención hoy</div>
+          <div id="crm-alertas-lista"></div>
+        </div>
+
+        <!-- KPIs -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px" id="crm-kpi-row">
+          <div class="stat-card"><div class="stat-icon" style="background:#eff6ff">📋</div><div class="stat-number" id="crm-k-total">0</div><div class="stat-label">Total prospectos</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fff4ee">🔥</div><div class="stat-number" id="crm-k-calientes">0</div><div class="stat-label">Calientes</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fffbeb">🟡</div><div class="stat-number" id="crm-k-tibios">0</div><div class="stat-label">Tibios</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4">✅</div><div class="stat-number" id="crm-k-cerrados">0</div><div class="stat-label">Cerrados este mes</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fef2f2">💰</div><div class="stat-number" id="crm-k-valor">$0</div><div class="stat-label">Valor del pipeline</div></div>
+        </div>
+
+        <!-- TABS -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <div class="est-tabs" style="margin:0">
+            <button class="est-tab active" onclick="switchCRMTab('pipeline',this)">📊 Pipeline</button>
+            <button class="est-tab" onclick="switchCRMTab('lista',this)">📋 Lista completa</button>
+            <button class="est-tab" onclick="switchCRMTab('historial',this)">📝 Historial</button>
+          </div>
+          <button class="btn-new-task" onclick="openCRMModal()">+ Nuevo prospecto</button>
+        </div>
+
+        <!-- PIPELINE KANBAN -->
+        <div class="est-section active" id="crm-tab-pipeline">
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));gap:10px;overflow-x:auto;padding-bottom:8px" id="crm-kanban"></div>
+        </div>
+
+        <!-- LISTA COMPLETA -->
+        <div class="est-section" id="crm-tab-lista">
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <input id="crm-search" type="text" placeholder="Buscar prospecto..." oninput="renderCRMLista()" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+            <select id="crm-filter-etapa" onchange="renderCRMLista()" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+              <option value="">Todas las etapas</option>
+              <option>Prospecto</option><option>Contactado</option><option>Propuesta enviada</option><option>Negociación</option><option>Cerrado</option><option>Perdido</option><option>Sin respuesta</option>
+            </select>
+            <select id="crm-filter-temp" onchange="renderCRMLista()" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+              <option value="">Toda temperatura</option>
+              <option value="🔥">🔥 Caliente</option><option value="🟡">🟡 Tibio</option><option value="❄️">❄️ Frío</option>
+            </select>
+          </div>
+          <div id="crm-lista-container"></div>
+        </div>
+
+        <!-- HISTORIAL -->
+        <div class="est-section" id="crm-tab-historial">
+          <div id="crm-historial-container"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CRM NUEVO PROSPECTO MODAL -->
+    <div class="idea-modal-overlay" id="crm-modal">
+      <div class="idea-modal" style="max-width:520px;width:100%">
+        <div class="idea-modal-title" id="crm-modal-title">🎯 Nuevo prospecto</div>
+        <input type="hidden" id="crm-edit-id">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group" style="grid-column:span 2">
+            <label class="form-label">Nombre / Empresa *</label>
+            <input class="form-input" id="crm-nombre" placeholder="Ej: Agencia XYZ">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contacto</label>
+            <input class="form-input" id="crm-contacto" placeholder="Nombre del contacto">
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp / Email</label>
+            <input class="form-input" id="crm-whatsapp" placeholder="+54 9 341...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Etapa</label>
+            <select class="form-select" id="crm-etapa">
+              <option>Prospecto</option><option>Contactado</option><option>Propuesta enviada</option><option>Negociación</option><option>Cerrado</option><option>Perdido</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor estimado (USD)</label>
+            <input class="form-input" id="crm-valor" type="number" placeholder="150">
+          </div>
+          <div class="form-group" style="grid-column:span 2">
+            <label class="form-label">Origen</label>
+            <select class="form-select" id="crm-origen">
+              <option>Instagram</option><option>Referido</option><option>LinkedIn</option><option>WhatsApp</option><option>Sitio web</option><option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column:span 2">
+            <label class="form-label">Nota inicial</label>
+            <textarea class="form-textarea" id="crm-nota" placeholder="Contexto del prospecto, qué necesita, cómo llegó..." rows="3"></textarea>
+          </div>
+        </div>
+        <div class="task-modal-actions">
+          <button class="btn-cancel-task" onclick="closeCRMModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveCRMProspecto()">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRM DETALLE PROSPECTO MODAL -->
+    <div class="idea-modal-overlay" id="crm-detalle-modal">
+      <div class="idea-modal" style="max-width:620px;width:100%;max-height:90vh;overflow-y:auto">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
+          <div>
+            <div id="crm-det-temp" style="font-size:20px;margin-bottom:4px"></div>
+            <div id="crm-det-nombre" style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--text)"></div>
+            <div id="crm-det-meta" style="font-size:12px;color:var(--text3);margin-top:2px"></div>
+          </div>
+          <button onclick="closeCRMDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0">✕</button>
+        </div>
+
+        <!-- Info -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+          <div style="background:var(--bg4);border-radius:10px;padding:12px">
+            <div style="font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px">ETAPA</div>
+            <div id="crm-det-etapa" style="font-weight:700;color:var(--orange);font-size:13px"></div>
+          </div>
+          <div style="background:var(--bg4);border-radius:10px;padding:12px">
+            <div style="font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px">VALOR</div>
+            <div id="crm-det-valor" style="font-weight:700;color:var(--green);font-size:13px"></div>
+          </div>
+          <div style="background:var(--bg4);border-radius:10px;padding:12px">
+            <div style="font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px">ÚLTIMO CONTACTO</div>
+            <div id="crm-det-ultimo" style="font-weight:700;color:var(--text);font-size:13px"></div>
+          </div>
+        </div>
+
+        <!-- Cambiar etapa -->
+        <div style="margin-bottom:16px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:8px">Cambiar etapa</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap" id="crm-det-etapas-btns"></div>
+        </div>
+
+        <!-- Registrar interacción -->
+        <div style="margin-bottom:16px;background:var(--bg4);border-radius:12px;padding:14px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:10px">📝 Registrar interacción</div>
+          <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <select id="crm-int-tipo" style="background:var(--bg2);border:1.5px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+              <option>📞 Llamada</option><option>💬 WhatsApp</option><option>📧 Email</option><option>🤝 Reunión</option><option>📋 Propuesta</option><option>Otro</option>
+            </select>
+          </div>
+          <textarea id="crm-int-nota" placeholder="¿Qué pasó en esta interacción?" style="width:100%;background:var(--bg2);border:1.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:60px;box-sizing:border-box" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'"></textarea>
+          <button onclick="registrarInteraccion()" style="margin-top:8px;background:var(--orange);color:white;border:none;border-radius:8px;padding:7px 16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer">Registrar</button>
+        </div>
+
+        <!-- Historial de interacciones -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:10px">Historial</div>
+          <div id="crm-det-historial"></div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <button onclick="editCRMProspecto(crmDetalleActual)" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">✏️ Editar</button>
+          <button onclick="closeCRMDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Cerrar</button>
         </div>
       </div>
     </div>
@@ -2445,6 +2614,7 @@
   const PIPELINE_URL = "https://script.google.com/macros/s/AKfycbxF6Dyt5vv_34-GyMTpezFWxZ38qAHwg__PIWEs5m9fxGJcpZi39FI-SSRLo9F7NNz0/exec";
   const DECISIONES_URL = "https://script.google.com/macros/s/AKfycbzD2vw91Z-n-a9XJp8KiNITxmTZyNct_ZZaBVHPjwJahooIjEDwf7UZl9fnu1ITzGACoQ/exec";
   const OBJETIVOS_URL = "https://script.google.com/macros/s/AKfycbzd2WYi_wGcqBBYNTF5juT-xHG3yIM2q6xY4H9yR9iCWkPoUdha3vtcRlLLw0d-vl4LRw/exec";
+  const CRM_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec"; // Reemplazar con tu URL de CRM
   const PRIVATE_PASSWORD = 'balodi2024';
   const PRIVATE_PANELS = ['estrategia', 'alianzas', 'finanzas', 'seguimiento'];
 
@@ -2607,6 +2777,7 @@
       objetivos: 'Objetivos del mes', tareas: 'Tareas pendientes',
       creativas: 'Ideas Creativas',
       'c-balodi': 'Balodi Marketing', 'c-tarjeta': 'Tarjeta Primicia',
+      crm: 'CRM — Pipeline',
       'c-mutual': 'Mutual Entre Asociados', 'c-capilar': 'Capilar Vibes',
       'c-hielo': 'Hielo Rosario', 'c-donatelli': 'Donatelli',
       'c-mma': 'MMAPantera', 'c-murad': 'Murad'
@@ -2620,6 +2791,8 @@
     if (id === 'finanzas') loadFinanzas();
     if (id === 'estrategia') loadPipeline();
     if (id === 'alianzas') loadAlianzas();
+    if (id === 'crm') initCRM();
+    if (id === 'crm') autoCRMCheck();
     if (id === 'c-balodi') { loadMetaAds(); loadBalodiIdeas(); loadBalodiObjs(); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
@@ -5566,6 +5739,419 @@
       document.getElementById('cm-pct-label').textContent = pct + '%';
       document.getElementById('cm-pct-label').style.color = color;
     }
+  }
+
+  // ============ CRM ============
+
+  const CRM_ETAPAS = ['Prospecto','Contactado','Propuesta enviada','Negociación','Cerrado','Perdido','Sin respuesta'];
+  const CRM_ETAPA_COLORS = {
+    'Prospecto':'#6366f1','Contactado':'#2563eb','Propuesta enviada':'#f5620a',
+    'Negociación':'#d97706','Cerrado':'#16a34a','Perdido':'#dc2626','Sin respuesta':'#9ca3af'
+  };
+  const DIAS_TIBIO = 7;
+  const DIAS_FRIO = 14;
+
+  let crmData = [];
+  let crmDetalleActual = null;
+  let crmTabActual = 'pipeline';
+
+  function getTemperatura(prospecto) {
+    if (['Cerrado','Perdido'].includes(prospecto.etapa)) return null;
+    const ultimo = prospecto.ultimo_contacto ? new Date(prospecto.ultimo_contacto) : new Date(prospecto.fecha_creacion);
+    const dias = Math.floor((new Date() - ultimo) / 86400000);
+    if (dias >= DIAS_FRIO) return '❄️';
+    if (dias >= DIAS_TIBIO) return '🟡';
+    return '🔥';
+  }
+
+  function getDiasDesde(fecha) {
+    if (!fecha) return 999;
+    return Math.floor((new Date() - new Date(fecha)) / 86400000);
+  }
+
+  function initCRM() {
+    loadCRMData();
+  }
+
+  async function loadCRMData() {
+    // Intentar cargar de Sheets, si falla usar localStorage
+    try {
+      const saved = localStorage.getItem('crm_prospectos');
+      if (saved) crmData = JSON.parse(saved);
+    } catch(e) { crmData = []; }
+    renderCRM();
+    checkCRMAlertas();
+  }
+
+  function saveCRMData() {
+    localStorage.setItem('crm_prospectos', JSON.stringify(crmData));
+    // Intentar sincronizar con Sheets en background
+    syncCRMSheets();
+  }
+
+  async function syncCRMSheets() {
+    try {
+      await fetch(CRM_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'setCRM', data: crmData }),
+      });
+    } catch(e) {} // silencioso, localStorage es el backup
+  }
+
+  function checkCRMAlertas() {
+    const alertas = [];
+    crmData.forEach(p => {
+      if (['Cerrado','Perdido'].includes(p.etapa)) return;
+      const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
+      if (p.etapa === 'Propuesta enviada' && dias >= 14) {
+        alertas.push({ tipo: 'sin-respuesta', msg: `<strong>${p.nombre}</strong> — Propuesta enviada hace ${dias} días sin respuesta`, id: p.id });
+      } else if (dias >= DIAS_FRIO) {
+        alertas.push({ tipo: 'frio', msg: `<strong>${p.nombre}</strong> — Sin contacto hace ${dias} días (❄️ Frío)`, id: p.id });
+      } else if (dias >= DIAS_TIBIO) {
+        alertas.push({ tipo: 'tibio', msg: `<strong>${p.nombre}</strong> — Sin contacto hace ${dias} días (🟡 Tibio)`, id: p.id });
+      }
+      if (p.seguimiento_fecha) {
+        const diasSeg = getDiasDesde(p.seguimiento_fecha) * -1;
+        if (diasSeg <= 0) alertas.push({ tipo: 'seguimiento', msg: `<strong>${p.nombre}</strong> — Seguimiento programado para hoy`, id: p.id });
+      }
+    });
+
+    const box = document.getElementById('crm-alertas-box');
+    const lista = document.getElementById('crm-alertas-lista');
+    const notif = document.getElementById('notif-crm');
+
+    if (alertas.length > 0) {
+      box.style.display = 'block';
+      lista.innerHTML = alertas.map(a => `
+        <div onclick="abrirCRMDetalle('${a.id}')" style="background:${a.tipo==='sin-respuesta'?'#fef2f2':a.tipo==='frio'?'#eff6ff':'#fffbeb'};border-left:3px solid ${a.tipo==='sin-respuesta'?'var(--red)':a.tipo==='frio'?'var(--blue)':'var(--amber)'};border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--text)">
+          ${a.msg}
+        </div>`).join('');
+      notif.textContent = alertas.length;
+      notif.classList.remove('hidden');
+    } else {
+      box.style.display = 'none';
+      notif.classList.add('hidden');
+    }
+  }
+
+  function renderCRM() {
+    renderCRMKPIs();
+    if (crmTabActual === 'pipeline') renderCRMKanban();
+    else if (crmTabActual === 'lista') renderCRMLista();
+    else renderCRMHistorial();
+  }
+
+  function renderCRMKPIs() {
+    const activos = crmData.filter(p => !['Cerrado','Perdido'].includes(p.etapa));
+    const calientes = activos.filter(p => getTemperatura(p) === '🔥').length;
+    const tibios = activos.filter(p => getTemperatura(p) === '🟡').length;
+    const ahora = new Date();
+    const cerradosMes = crmData.filter(p => p.etapa === 'Cerrado' && p.fecha_cierre &&
+      new Date(p.fecha_cierre).getMonth() === ahora.getMonth() &&
+      new Date(p.fecha_cierre).getFullYear() === ahora.getFullYear()).length;
+    const valorPipeline = activos.reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
+
+    document.getElementById('crm-k-total').textContent = crmData.length;
+    document.getElementById('crm-k-calientes').textContent = calientes;
+    document.getElementById('crm-k-tibios').textContent = tibios;
+    document.getElementById('crm-k-cerrados').textContent = cerradosMes;
+    document.getElementById('crm-k-valor').textContent = '$' + Math.round(valorPipeline).toLocaleString('es-AR');
+  }
+
+  function renderCRMKanban() {
+    const container = document.getElementById('crm-kanban');
+    if (!container) return;
+    const etapas = ['Prospecto','Contactado','Propuesta enviada','Negociación','Cerrado','Perdido'];
+    container.innerHTML = etapas.map(etapa => {
+      const items = crmData.filter(p => p.etapa === etapa);
+      const color = CRM_ETAPA_COLORS[etapa] || '#6b6b65';
+      return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;min-width:160px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${color}">${etapa}</div>
+          <span style="background:${color}22;color:${color};border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700">${items.length}</span>
+        </div>
+        ${items.length === 0 ? `<div style="font-size:12px;color:var(--text3);text-align:center;padding:12px 0">Vacío</div>` :
+          items.map(p => {
+            const temp = getTemperatura(p);
+            const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
+            return `<div onclick="abrirCRMDetalle('${p.id}')" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='${color}'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div style="font-size:13px;font-weight:600;color:var(--text)">${p.nombre}</div>
+                ${temp ? `<span style="font-size:14px">${temp}</span>` : ''}
+              </div>
+              ${p.valor ? `<div style="font-size:11px;color:var(--green);font-weight:600">$${parseFloat(p.valor).toLocaleString('es-AR')}</div>` : ''}
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Hace ${dias} días</div>
+            </div>`;
+          }).join('')
+        }
+      </div>`;
+    }).join('');
+  }
+
+  function renderCRMLista() {
+    const container = document.getElementById('crm-lista-container');
+    if (!container) return;
+    const search = document.getElementById('crm-search')?.value.toLowerCase() || '';
+    const filterEtapa = document.getElementById('crm-filter-etapa')?.value || '';
+    const filterTemp = document.getElementById('crm-filter-temp')?.value || '';
+
+    let data = [...crmData];
+    if (search) data = data.filter(p => p.nombre.toLowerCase().includes(search) || (p.contacto||'').toLowerCase().includes(search));
+    if (filterEtapa) data = data.filter(p => p.etapa === filterEtapa);
+    if (filterTemp) data = data.filter(p => getTemperatura(p) === filterTemp);
+
+    if (!data.length) {
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">🎯</div><div>Sin prospectos que coincidan</div></div>';
+      return;
+    }
+
+    container.innerHTML = `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr style="border-bottom:2px solid var(--border)">
+        <th style="text-align:left;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3)">Prospecto</th>
+        <th style="text-align:left;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3)">Etapa</th>
+        <th style="text-align:center;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3)">Temp.</th>
+        <th style="text-align:right;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3)">Valor</th>
+        <th style="text-align:right;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3)">Último contacto</th>
+        <th style="text-align:left;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3)">Origen</th>
+      </tr></thead>
+      <tbody>
+        ${data.map(p => {
+          const temp = getTemperatura(p);
+          const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
+          const color = CRM_ETAPA_COLORS[p.etapa] || '#6b6b65';
+          return `<tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='var(--orange-light)'" onmouseout="this.style.background=''" onclick="abrirCRMDetalle('${p.id}')">
+            <td style="padding:10px 12px">
+              <div style="font-weight:600;color:var(--text)">${p.nombre}</div>
+              ${p.contacto ? `<div style="font-size:11px;color:var(--text3)">${p.contacto}</div>` : ''}
+            </td>
+            <td style="padding:10px 12px"><span style="background:${color}22;color:${color};border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700">${p.etapa}</span></td>
+            <td style="padding:10px 12px;text-align:center;font-size:16px">${temp || '—'}</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:600;color:var(--green)">${p.valor ? '$'+parseFloat(p.valor).toLocaleString('es-AR') : '—'}</td>
+            <td style="padding:10px 12px;text-align:right;font-size:12px;color:${dias >= DIAS_FRIO ? 'var(--red)' : dias >= DIAS_TIBIO ? 'var(--amber)' : 'var(--text3)'}">Hace ${dias} día${dias!==1?'s':''}</td>
+            <td style="padding:10px 12px;font-size:12px;color:var(--text3)">${p.origen || '—'}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table></div>`;
+  }
+
+  function renderCRMHistorial() {
+    const container = document.getElementById('crm-historial-container');
+    if (!container) return;
+    const todasInteracciones = [];
+    crmData.forEach(p => {
+      (p.interacciones || []).forEach(i => {
+        todasInteracciones.push({ ...i, prospecto_nombre: p.nombre, prospecto_id: p.id });
+      });
+    });
+    todasInteracciones.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    if (!todasInteracciones.length) {
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">📝</div><div>Sin interacciones registradas todavía</div></div>';
+      return;
+    }
+
+    container.innerHTML = todasInteracciones.map(i => `
+      <div onclick="abrirCRMDetalle('${i.prospecto_id}')" style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;cursor:pointer;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:20px;flex-shrink:0">${i.tipo.split(' ')[0]}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
+            <span style="font-weight:700;color:var(--orange);font-size:13px">${i.prospecto_nombre}</span>
+            <span style="font-size:11px;color:var(--text3)">${i.tipo}</span>
+            <span style="font-size:11px;color:var(--text3);margin-left:auto">${new Date(i.fecha).toLocaleDateString('es-AR')} · ${i.usuario || ''}</span>
+          </div>
+          <div style="font-size:13px;color:var(--text2)">${i.nota}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  function switchCRMTab(tab, btn) {
+    crmTabActual = tab;
+    document.querySelectorAll('#panel-crm .est-tab').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('#panel-crm .est-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('crm-tab-' + tab)?.classList.add('active');
+    if (tab === 'pipeline') renderCRMKanban();
+    else if (tab === 'lista') renderCRMLista();
+    else renderCRMHistorial();
+  }
+
+  function openCRMModal(prospecto = null) {
+    document.getElementById('crm-modal').classList.add('open');
+    if (prospecto) {
+      document.getElementById('crm-modal-title').textContent = '✏️ Editar prospecto';
+      document.getElementById('crm-edit-id').value = prospecto.id;
+      document.getElementById('crm-nombre').value = prospecto.nombre || '';
+      document.getElementById('crm-contacto').value = prospecto.contacto || '';
+      document.getElementById('crm-whatsapp').value = prospecto.whatsapp || '';
+      document.getElementById('crm-etapa').value = prospecto.etapa || 'Prospecto';
+      document.getElementById('crm-valor').value = prospecto.valor || '';
+      document.getElementById('crm-origen').value = prospecto.origen || 'Instagram';
+      document.getElementById('crm-nota').value = prospecto.nota || '';
+    } else {
+      document.getElementById('crm-modal-title').textContent = '🎯 Nuevo prospecto';
+      document.getElementById('crm-edit-id').value = '';
+      ['crm-nombre','crm-contacto','crm-whatsapp','crm-valor','crm-nota'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('crm-etapa').value = 'Prospecto';
+      document.getElementById('crm-origen').value = 'Instagram';
+    }
+  }
+
+  function closeCRMModal() {
+    document.getElementById('crm-modal').classList.remove('open');
+  }
+
+  function saveCRMProspecto() {
+    const nombre = document.getElementById('crm-nombre').value.trim();
+    if (!nombre) { alert('Ingresá el nombre del prospecto.'); return; }
+    const editId = document.getElementById('crm-edit-id').value;
+    const ahora = new Date().toISOString();
+
+    if (editId) {
+      const idx = crmData.findIndex(p => p.id === editId);
+      if (idx !== -1) {
+        crmData[idx] = { ...crmData[idx],
+          nombre, contacto: document.getElementById('crm-contacto').value,
+          whatsapp: document.getElementById('crm-whatsapp').value,
+          etapa: document.getElementById('crm-etapa').value,
+          valor: document.getElementById('crm-valor').value,
+          origen: document.getElementById('crm-origen').value,
+          nota: document.getElementById('crm-nota').value,
+        };
+      }
+    } else {
+      const nuevo = {
+        id: 'crm_' + Date.now(),
+        nombre, contacto: document.getElementById('crm-contacto').value,
+        whatsapp: document.getElementById('crm-whatsapp').value,
+        etapa: document.getElementById('crm-etapa').value,
+        valor: document.getElementById('crm-valor').value,
+        origen: document.getElementById('crm-origen').value,
+        nota: document.getElementById('crm-nota').value,
+        fecha_creacion: ahora,
+        ultimo_contacto: ahora,
+        interacciones: [],
+        usuario_creacion: currentUser?.name || 'Balodi'
+      };
+      if (nuevo.nota) {
+        nuevo.interacciones.push({ tipo: 'Otro', nota: nuevo.nota, fecha: ahora, usuario: currentUser?.name || 'Balodi' });
+      }
+      crmData.unshift(nuevo);
+    }
+    saveCRMData();
+    closeCRMModal();
+    renderCRM();
+    checkCRMAlertas();
+  }
+
+  function abrirCRMDetalle(id) {
+    const p = crmData.find(x => x.id === id);
+    if (!p) return;
+    crmDetalleActual = p;
+    document.getElementById('crm-det-temp').textContent = getTemperatura(p) || '';
+    document.getElementById('crm-det-nombre').textContent = p.nombre;
+    document.getElementById('crm-det-meta').textContent = (p.contacto || '') + (p.whatsapp ? ' · ' + p.whatsapp : '') + (p.origen ? ' · Origen: ' + p.origen : '');
+    document.getElementById('crm-det-etapa').textContent = p.etapa;
+    document.getElementById('crm-det-valor').textContent = p.valor ? '$' + parseFloat(p.valor).toLocaleString('es-AR') + ' USD' : '—';
+    const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
+    document.getElementById('crm-det-ultimo').textContent = `Hace ${dias} día${dias!==1?'s':''}`;
+
+    // Botones de etapa
+    const btns = document.getElementById('crm-det-etapas-btns');
+    btns.innerHTML = CRM_ETAPAS.map(e => `<button onclick="cambiarEtapaCRM('${p.id}','${e}')" style="background:${p.etapa===e ? CRM_ETAPA_COLORS[e] : 'var(--bg4)'};color:${p.etapa===e?'white':'var(--text2)'};border:1.5px solid ${CRM_ETAPA_COLORS[e]||'var(--border2)'};border-radius:8px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">${e}</button>`).join('');
+
+    // Historial
+    renderDetalleHistorial(p);
+    document.getElementById('crm-int-nota').value = '';
+    document.getElementById('crm-detalle-modal').classList.add('open');
+  }
+
+  function renderDetalleHistorial(p) {
+    const container = document.getElementById('crm-det-historial');
+    const ints = [...(p.interacciones || [])].reverse();
+    if (!ints.length) {
+      container.innerHTML = '<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Sin interacciones registradas</div>';
+      return;
+    }
+    container.innerHTML = ints.map(i => `
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+        <div style="font-size:18px;flex-shrink:0">${i.tipo.split(' ')[0]}</div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+            <span style="font-size:12px;font-weight:600;color:var(--text)">${i.tipo}</span>
+            <span style="font-size:11px;color:var(--text3)">${new Date(i.fecha).toLocaleDateString('es-AR')} · ${i.usuario||''}</span>
+          </div>
+          <div style="font-size:13px;color:var(--text2)">${i.nota}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  function registrarInteraccion() {
+    const nota = document.getElementById('crm-int-nota').value.trim();
+    if (!nota) { alert('Describí la interacción antes de registrar.'); return; }
+    const tipo = document.getElementById('crm-int-tipo').value;
+    const ahora = new Date().toISOString();
+    const interaccion = { tipo, nota, fecha: ahora, usuario: currentUser?.name || 'Balodi' };
+
+    const idx = crmData.findIndex(p => p.id === crmDetalleActual.id);
+    if (idx !== -1) {
+      if (!crmData[idx].interacciones) crmData[idx].interacciones = [];
+      crmData[idx].interacciones.push(interaccion);
+      crmData[idx].ultimo_contacto = ahora;
+      crmDetalleActual = crmData[idx];
+    }
+    saveCRMData();
+    document.getElementById('crm-int-nota').value = '';
+    renderDetalleHistorial(crmDetalleActual);
+    document.getElementById('crm-det-ultimo').textContent = 'Hace 0 días';
+    renderCRM();
+    checkCRMAlertas();
+  }
+
+  function cambiarEtapaCRM(id, etapa) {
+    const idx = crmData.findIndex(p => p.id === id);
+    if (idx !== -1) {
+      crmData[idx].etapa = etapa;
+      if (etapa === 'Cerrado') crmData[idx].fecha_cierre = new Date().toISOString();
+      if (etapa === 'Sin respuesta') {
+        const ahora = new Date().toISOString();
+        if (!crmData[idx].interacciones) crmData[idx].interacciones = [];
+        crmData[idx].interacciones.push({ tipo: 'Otro', nota: 'Movido a Sin respuesta automáticamente', fecha: ahora, usuario: 'Sistema' });
+      }
+      crmDetalleActual = crmData[idx];
+    }
+    saveCRMData();
+    abrirCRMDetalle(id);
+    renderCRM();
+    checkCRMAlertas();
+  }
+
+  function editCRMProspecto(p) {
+    closeCRMDetalleModal();
+    openCRMModal(p);
+  }
+
+  function closeCRMDetalleModal() {
+    document.getElementById('crm-detalle-modal').classList.remove('open');
+    crmDetalleActual = null;
+  }
+
+  // Auto-actualizar temperatura y mover a Sin respuesta cada vez que se carga
+  function autoCRMCheck() {
+    let cambios = false;
+    crmData.forEach((p, idx) => {
+      if (['Cerrado','Perdido','Sin respuesta'].includes(p.etapa)) return;
+      if (p.etapa === 'Propuesta enviada') {
+        const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
+        if (dias >= 14) {
+          crmData[idx].etapa = 'Sin respuesta';
+          if (!crmData[idx].interacciones) crmData[idx].interacciones = [];
+          crmData[idx].interacciones.push({ tipo: 'Sistema', nota: `Movido a "Sin respuesta" automáticamente (${dias} días sin actividad)`, fecha: new Date().toISOString(), usuario: 'Sistema' });
+          cambios = true;
+        }
+      }
+    });
+    if (cambios) saveCRMData();
   }
 
   function exportMetaGeneralPDF() {
