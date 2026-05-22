@@ -3393,7 +3393,13 @@
       const tareaId = buildTareaId(t);
       const count = allComments.filter(c => c.tareaId === tareaId).length;
       const el = document.querySelector(`.comments-count-${idx}`);
-      if (el) el.textContent = count > 0 ? `${count} comentario${count > 1 ? 's' : ''}` : 'Comentarios';
+      if (el) {
+        if (count > 0) {
+          el.innerHTML = `<span style="background:var(--orange);color:white;border-radius:999px;padding:1px 7px;font-size:11px;font-weight:700;margin-left:2px">${count}</span>`;
+        } else {
+          el.textContent = 'Comentarios';
+        }
+      }
     });
   }
 
