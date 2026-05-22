@@ -3201,6 +3201,7 @@
         <button class="delete-btn" onclick="deleteTask(${globalIdx})" title="Eliminar tarea"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>
       </div>`;
     }).join('') + '</div>';
+    if (typeof updateAllCommentCounts === 'function') updateAllCommentCounts();
   }
 
   async function toggleTask(idx) {
