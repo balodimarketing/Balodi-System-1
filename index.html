@@ -927,6 +927,8 @@
       <div class="nav-item nav-admin-only" id="nav-alianzas" onclick="go('alianzas')"><i class="ti ti-heart-handshake nav-icon" aria-hidden="true"></i> Red de Alianzas</div>
       <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><i class="ti ti-chart-line nav-icon" aria-hidden="true"></i> Finanzas</div>
       <div class="nav-item nav-admin-only" id="nav-seguimiento" onclick="go('seguimiento')"><i class="ti ti-user-check nav-icon" aria-hidden="true"></i> Seguimiento empleados</div>
+      <div class="nav-label nav-videos-only" style="display:none">Producción</div>
+      <div class="nav-item nav-videos-only" id="nav-videos" onclick="go('videos')" style="position:relative;display:none"><i class="ti ti-video nav-icon" aria-hidden="true"></i> Videos <span class="notif-dot hidden" id="notif-videos">0</span></div>
       <div class="nav-label">Operaciones</div>
       <div class="nav-item" id="nav-tareas" onclick="go('tareas')" style="position:relative"><i class="ti ti-checkbox nav-icon" aria-hidden="true"></i> Tareas pendientes<span class="notif-dot hidden" id="notif-tareas">0</span></div>
       <div class="nav-item" id="nav-banco" onclick="go('banco')" style="position:relative"><i class="ti ti-bulb nav-icon" aria-hidden="true"></i> Banco de Ideas<span class="notif-dot hidden" id="notif-banco">0</span></div>
@@ -1472,6 +1474,166 @@
         <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
           <button onclick="editCRMProspecto(crmDetalleActual)" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar</button>
           <button onclick="closeCRMDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEOS PANEL -->
+    <div class="panel" id="panel-videos">
+      <div class="page-header">
+        <div class="page-eyebrow" style="color:var(--orange)"><i class="ti ti-video"></i> Producción</div>
+        <div class="page-title">Videos</div>
+        <div class="page-desc">Nico carga los videos, Enzo los edita y entrega el link por comentarios.</div>
+      </div>
+      <div class="page-content">
+
+        <!-- KPIs -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px">
+          <div class="stat-card"><div class="stat-icon" style="background:#fff4ee"><i class="ti ti-video" style="color:var(--orange)"></i></div><div class="stat-number" id="vid-k-total">0</div><div class="stat-label">Total pendientes</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#eff6ff"><i class="ti ti-clock" style="color:var(--blue)"></i></div><div class="stat-number" id="vid-k-hoy">0</div><div class="stat-label">Para hoy</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4"><i class="ti ti-circle-check" style="color:var(--green)"></i></div><div class="stat-number" id="vid-k-completados">0</div><div class="stat-label">Completados</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fffbeb"><i class="ti ti-calendar-week" style="color:var(--amber)"></i></div><div class="stat-number" id="vid-k-semana">0</div><div class="stat-label">Esta semana</div></div>
+        </div>
+
+        <!-- FILTROS + NUEVO -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+          <div class="est-tabs" style="margin:0;flex-wrap:wrap">
+            <button class="est-tab active" onclick="filterVideos('todos',this)">Todos</button>
+            <button class="est-tab" onclick="filterVideos('Lunes',this)">Lunes</button>
+            <button class="est-tab" onclick="filterVideos('Martes',this)">Martes</button>
+            <button class="est-tab" onclick="filterVideos('Miércoles',this)">Miércoles</button>
+            <button class="est-tab" onclick="filterVideos('Jueves',this)">Jueves</button>
+            <button class="est-tab" onclick="filterVideos('Viernes',this)">Viernes</button>
+            <button class="est-tab" onclick="filterVideos('Sábado',this)">Sábado</button>
+            <button class="est-tab" onclick="filterVideos('Domingo',this)">Domingo</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer">
+              <input type="checkbox" id="vid-show-completados" onchange="renderVideos()" style="accent-color:var(--orange)"> Ver completados
+            </label>
+            <button class="btn-new-task" id="vid-nuevo-btn" onclick="openVideoModal()">+ Nuevo video</button>
+          </div>
+        </div>
+
+        <!-- LISTA DE VIDEOS -->
+        <div id="videos-container"></div>
+
+      </div>
+    </div>
+
+    <!-- VIDEO MODAL NUEVO/EDITAR -->
+    <div class="idea-modal-overlay" id="video-modal">
+      <div class="idea-modal" style="max-width:500px;width:100%">
+        <div class="idea-modal-title" id="video-modal-title"><i class="ti ti-video"></i> Nuevo video</div>
+        <input type="hidden" id="vid-edit-id">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group" style="grid-column:span 2">
+            <label class="form-label">Título del video *</label>
+            <input class="form-input" id="vid-titulo" placeholder="Ej: Reel dia del padre Tarjeta Primicia">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Día de publicación *</label>
+            <select class="form-select" id="vid-dia">
+              <option>Lunes</option><option>Martes</option><option>Miércoles</option>
+              <option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Programa de edición</label>
+            <select class="form-select" id="vid-programa">
+              <option>Exijo Clemencia</option>
+              <option>Mucho + que todo</option>
+              <option>Divino Tesoro</option>
+              <option>Nada es tan grave</option>
+              <option>Extras</option>
+              <option>Parrilla</option>
+              <option>C5N</option>
+              <option>Nuevo programa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Prioridad</label>
+            <select class="form-select" id="vid-prioridad">
+              <option value="Media">Media</option>
+              <option value="Alta">Alta</option>
+              <option value="Baja">Baja</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column:span 2">
+            <label class="form-label">Link de Drive (material crudo)</label>
+            <input class="form-input" id="vid-drive" placeholder="https://drive.google.com/...">
+          </div>
+          <div class="form-group" style="grid-column:span 2">
+            <label class="form-label">Instrucciones / Referencia</label>
+            <textarea class="form-textarea" id="vid-nota" placeholder="Describí qué necesitás, música, efectos, duración, etc." rows="3"></textarea>
+          </div>
+        </div>
+        <div class="task-modal-actions">
+          <button class="btn-cancel-task" onclick="closeVideoModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveVideo()">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO DETALLE MODAL -->
+    <div class="idea-modal-overlay" id="video-detalle-modal">
+      <div class="idea-modal" style="max-width:620px;width:100%;max-height:90vh;overflow-y:auto">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px">
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--orange);margin-bottom:6px"><i class="ti ti-video"></i> Detalle del video</div>
+            <div id="vdet-titulo" style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--text);line-height:1.2"></div>
+          </div>
+          <button onclick="closeVideoDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0"><i class="ti ti-x"></i></button>
+        </div>
+
+        <!-- Info chips -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px" id="vdet-chips"></div>
+
+        <!-- Estado -->
+        <div id="vdet-estado-box" style="margin-bottom:20px"></div>
+
+        <!-- Notas / Instrucciones -->
+        <div id="vdet-nota-box" style="margin-bottom:20px"></div>
+
+        <!-- Link Drive -->
+        <div id="vdet-drive-box" style="margin-bottom:20px"></div>
+
+        <!-- Comentarios -->
+        <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px">Comentarios</div>
+          <div id="vdet-comentarios-lista" style="max-height:220px;overflow-y:auto;margin-bottom:12px"></div>
+          <div style="display:flex;gap:8px">
+            <input id="vdet-comment-input" class="comment-input" placeholder="Comentario o link del video editado..." onkeydown="if(event.key==='Enter')sendVideoDetalleComment()">
+            <button onclick="sendVideoDetalleComment()" class="comment-send">Enviar</button>
+          </div>
+        </div>
+
+        <!-- Acciones admin -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)" id="vdet-acciones">
+          <div style="display:flex;gap:8px" id="vdet-admin-btns"></div>
+          <button onclick="closeVideoDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 16px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO COMENTARIOS MODAL -->
+    <div class="idea-modal-overlay" id="video-comments-modal">
+      <div class="idea-modal" style="max-width:560px;width:100%;max-height:90vh;overflow-y:auto">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--orange);margin-bottom:4px"><i class="ti ti-video"></i> Comentarios</div>
+            <div id="vid-com-titulo" style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--text)"></div>
+            <div id="vid-com-meta" style="font-size:12px;color:var(--text3);margin-top:2px"></div>
+          </div>
+          <button onclick="closeVideoCommentsModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0"><i class="ti ti-x"></i></button>
+        </div>
+        <div id="vid-com-lista" style="margin-bottom:14px;max-height:300px;overflow-y:auto"></div>
+        <div style="display:flex;gap:8px">
+          <input id="vid-com-input" class="comment-input" placeholder="Comentario o link del video editado..." onkeydown="if(event.key==='Enter')sendVideoComment()">
+          <button onclick="sendVideoComment()" class="comment-send">Enviar</button>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:12px">
+          <button onclick="closeVideoCommentsModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 16px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Cerrar</button>
         </div>
       </div>
     </div>
@@ -2746,6 +2908,20 @@
     document.querySelectorAll('.nav-admin-only').forEach(el => {
       el.style.display = isAdmin ? '' : 'none';
     });
+    // Mostrar sección videos a bautista, nicolas y enzo
+    const canSeeVideos = ['bautista', 'nicolas', 'enzo'].includes(currentUser.username);
+    document.querySelectorAll('.nav-videos-only').forEach(el => {
+      el.style.display = canSeeVideos ? '' : 'none';
+    });
+    // Enzo solo ve Videos y Tareas en el menú
+    if (currentUser.username === 'enzo') {
+      document.querySelectorAll('.nav-item:not(#nav-videos):not(#nav-tareas):not(#nav-dashboard)').forEach(el => {
+        if (!el.classList.contains('nav-videos-only')) el.style.display = 'none';
+      });
+      document.querySelectorAll('.nav-label:not(.nav-videos-only)').forEach(el => {
+        if (el.id !== 'label-privado') el.style.display = 'none';
+      });
+    }
   }
 
   // ============ NAVIGATION ============
@@ -2782,6 +2958,7 @@
       creativas: 'Ideas Creativas',
       'c-balodi': 'Balodi Marketing', 'c-tarjeta': 'Tarjeta Primicia',
       crm: 'CRM — Pipeline',
+      videos: 'Videos',
       'c-mutual': 'Mutual Entre Asociados', 'c-capilar': 'Capilar Vibes',
       'c-hielo': 'Hielo Rosario', 'c-donatelli': 'Donatelli',
       'c-mma': 'MMAPantera', 'c-murad': 'Murad'
@@ -2797,6 +2974,7 @@
     if (id === 'alianzas') loadAlianzas();
     if (id === 'crm') initCRM();
     if (id === 'crm') autoCRMCheck();
+    if (id === 'videos') initVideos();
     if (id === 'c-balodi') { loadMetaAds(); loadBalodiIdeas(); loadBalodiObjs(); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
@@ -2868,6 +3046,7 @@
   }
 
   const NOTIFY_URL = 'https://script.google.com/macros/s/AKfycbyYUYroeb7FQo8eYc1L7XdJLs95yQgNgU_pmP62S_i2C1jp6hVUKw124M21sm3-u6T1/exec';
+  const VIDEOS_URL = 'https://script.google.com/macros/s/AKfycbyd4S0ANLJf5QuyMb--gbBE3mMYPFX2kobjZ1Pxv0sHVRjKJLtbWQ_sCUtLZ5IBZ90t/exec';
 
   async function notificarNuevaTarea(data, todosNombres) {
     try {
@@ -2882,8 +3061,7 @@
         nota: data.nota || '—',
         prioridad: data.prioridad || 'Media'
       });
-      const img = new Image();
-      img.src = NOTIFY_URL + '?' + params.toString();
+      fetch(NOTIFY_URL + '?' + params.toString(), { mode: 'no-cors' }).catch(() => {});
     } catch(e) { console.log('Notificación no enviada:', e); }
   }
 
@@ -5751,6 +5929,498 @@
       document.getElementById('cm-pct-label').textContent = pct + '%';
       document.getElementById('cm-pct-label').style.color = color;
     }
+  }
+
+  // ============ VIDEOS ============
+  const DIAS_SEMANA = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+  let allVideos = [];
+  let videosFilter = 'todos';
+  let videosCommentActual = null;
+  let allVideoComments = [];
+  let dragSrcIdx = null;
+
+  function initVideos() {
+    loadVideos();
+    // Ocultar botón nuevo para Enzo
+    const btn = document.getElementById('vid-nuevo-btn');
+    if (btn) btn.style.display = ['bautista','nicolas'].includes(currentUser?.username) ? '' : 'none';
+  }
+
+  function loadVideos() {
+    // Cargar desde localStorage primero para respuesta inmediata
+    const saved = localStorage.getItem('balodi_videos');
+    allVideos = saved ? JSON.parse(saved) : [];
+    const savedComments = localStorage.getItem('balodi_video_comments');
+    allVideoComments = savedComments ? JSON.parse(savedComments) : [];
+    renderVideos();
+    updateVideoKPIs();
+    updateVideoNotif();
+
+    // Luego sincronizar desde Sheets
+    fetch(VIDEOS_URL + '?action=getVideos&t=' + Date.now())
+      .then(r => r.json())
+      .then(raw => {
+        if (raw && raw.length > 1) {
+          allVideos = raw.slice(1).map(r => ({
+            id: r[0], titulo: r[1], dia: r[2], programa: r[3],
+            drive: r[4], nota: r[5], estado: r[6], fecha: r[7], autor: r[8]
+          })).filter(v => v.id);
+          localStorage.setItem('balodi_videos', JSON.stringify(allVideos));
+        }
+      }).catch(() => {}).finally(() => {
+        renderVideos(); updateVideoKPIs(); updateVideoNotif();
+      });
+
+    fetch(VIDEOS_URL + '?action=getVideoComments&t=' + Date.now())
+      .then(r => r.json())
+      .then(raw => {
+        if (raw && raw.length > 1) {
+          allVideoComments = raw.slice(1).map(r => ({
+            videoId: r[0], autor: r[1], avatar: r[2], texto: r[3], fecha: r[4], color: r[5]
+          })).filter(c => c.videoId);
+          localStorage.setItem('balodi_video_comments', JSON.stringify(allVideoComments));
+        }
+      }).catch(() => {});
+  }
+
+  function saveVideos() {
+    localStorage.setItem('balodi_videos', JSON.stringify(allVideos));
+    updateVideoKPIs();
+    updateVideoNotif();
+    // Sync a Sheets en background
+    fetch(VIDEOS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'setAllVideos', videos: allVideos })
+    }).catch(() => {});
+  }
+
+  function saveVideoComments() {
+    localStorage.setItem('balodi_video_comments', JSON.stringify(allVideoComments));
+    // Sync a Sheets en background
+    fetch(VIDEOS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'setAllVideoComments', comments: allVideoComments })
+    }).catch(() => {});
+  }
+
+  function updateVideoKPIs() {
+    const pending = allVideos.filter(v => v.estado !== 'completado');
+    const hoy = DIAS_SEMANA[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1];
+    document.getElementById('vid-k-total').textContent = pending.length;
+    document.getElementById('vid-k-hoy').textContent = pending.filter(v => v.dia === hoy).length;
+    document.getElementById('vid-k-completados').textContent = allVideos.filter(v => v.estado === 'completado').length;
+    document.getElementById('vid-k-semana').textContent = allVideos.filter(v => v.estado !== 'completado').length;
+  }
+
+  function updateVideoNotif() {
+    const pending = allVideos.filter(v => v.estado !== 'completado').length;
+    const notif = document.getElementById('notif-videos');
+    if (notif) {
+      if (pending > 0) { notif.textContent = pending; notif.classList.remove('hidden'); }
+      else notif.classList.add('hidden');
+    }
+  }
+
+  function filterVideos(dia, btn) {
+    videosFilter = dia;
+    document.querySelectorAll('#panel-videos .est-tab').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderVideos();
+  }
+
+  function renderVideos() {
+    const container = document.getElementById('videos-container');
+    if (!container) return;
+    const showCompletados = document.getElementById('vid-show-completados')?.checked;
+    let videos = [...allVideos];
+    if (!showCompletados) videos = videos.filter(v => v.estado !== 'completado');
+    if (videosFilter !== 'todos') videos = videos.filter(v => v.dia === videosFilter);
+
+    if (!videos.length) {
+      container.innerHTML = `<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-video" style="font-size:2rem;color:var(--orange)"></i></div><div>${videosFilter === 'todos' ? 'No hay videos pendientes' : 'No hay videos para el ' + videosFilter}</div></div>`;
+      return;
+    }
+
+    // Agrupar por día si filtro es todos
+    if (videosFilter === 'todos') {
+      let html = '';
+      DIAS_SEMANA.forEach(dia => {
+        const delDia = videos.filter(v => v.dia === dia);
+        if (!delDia.length) return;
+        html += `<div style="margin-bottom:24px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)">${dia} <span style="background:var(--orange);color:white;border-radius:999px;padding:1px 7px;font-size:11px;margin-left:4px">${delDia.length}</span></div>
+          <div id="vid-group-${dia}" data-dia="${dia}">
+            ${delDia.map((v, i) => renderVideoCard(v, allVideos.indexOf(v))).join('')}
+          </div>
+        </div>`;
+      });
+      container.innerHTML = html;
+    } else {
+      container.innerHTML = `<div id="vid-group-${videosFilter}" data-dia="${videosFilter}">
+        ${videos.map((v, i) => renderVideoCard(v, allVideos.indexOf(v))).join('')}
+      </div>`;
+    }
+
+    // Init drag & drop
+    initVideoDragDrop();
+  }
+
+  function renderVideoCard(v, globalIdx) {
+    const isAdmin = ['bautista','nicolas'].includes(currentUser?.username);
+    const isEnzo = currentUser?.username === 'enzo';
+    const completado = v.estado === 'completado';
+    const comentarios = allVideoComments.filter(c => c.videoId === v.id).length;
+    return `<div class="video-card ${completado ? 'video-completado' : ''}" data-idx="${globalIdx}" draggable="${isAdmin ? 'true' : 'false'}"
+      style="background:var(--bg2);border:1.5px solid ${completado ? 'var(--green)' : 'var(--border)'};border-radius:14px;padding:16px 18px;margin-bottom:10px;transition:all 0.2s;cursor:pointer"
+      onclick="openVideoDetalle(${globalIdx})">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        ${isEnzo || isAdmin ? `<input type="checkbox" ${completado ? 'checked' : ''} onchange="toggleVideoCompletado(${globalIdx})"
+          style="margin-top:3px;width:16px;height:16px;accent-color:var(--orange);cursor:pointer;flex-shrink:0">` : ''}
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+            <span style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:${completado ? 'var(--text3)' : 'var(--text)'};${completado ? 'text-decoration:line-through' : ''}">${v.titulo}</span>
+            <span style="background:var(--orange)22;color:var(--orange);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700">${v.dia}</span>
+            <span style="background:var(--bg4);color:var(--text3);border-radius:999px;padding:2px 8px;font-size:11px">${v.programa}</span>
+            ${v.prioridad === 'Alta' ? '<span style="background:#fef2f2;color:#dc2626;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700"><i class="ti ti-arrow-up" style="font-size:11px"></i> Alta</span>' : ''}
+            ${v.prioridad === 'Baja' ? '<span style="background:#f0fdf4;color:#16a34a;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700"><i class="ti ti-arrow-down" style="font-size:11px"></i> Baja</span>' : ''}
+            ${completado ? '<span style="background:var(--green)22;color:var(--green);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700"><i class="ti ti-circle-check"></i> Completado</span>' : ''}
+          </div>
+          ${v.nota ? `<div style="font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.5">${v.nota}</div>` : ''}
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            ${v.drive ? `<a href="${v.drive}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--blue)22;color:var(--blue);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-google-drive"></i> Ver material</a>` : ''}
+            <button onclick="openVideoComments(${globalIdx})" style="display:inline-flex;align-items:center;gap:5px;background:none;border:1px solid var(--border2);border-radius:8px;padding:4px 10px;font-size:12px;color:var(--text3);cursor:pointer">
+              <i class="ti ti-message-circle" style="color:var(--orange)"></i>
+              ${comentarios > 0 ? `<span style="background:var(--orange);color:white;border-radius:999px;padding:0px 6px;font-size:11px;font-weight:700">${comentarios}</span>` : 'Comentarios'}
+            </button>
+            <span style="font-size:11px;color:var(--text3)">Por ${v.autor || 'Nicolás'} · ${v.fecha}</span>
+          </div>
+        </div>
+        ${isAdmin ? `<div style="display:flex;gap:6px;flex-shrink:0">
+          <button onclick="editVideo(${globalIdx})" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--text2);cursor:pointer"><i class="ti ti-pencil"></i></button>
+          <button onclick="deleteVideo(${globalIdx})" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--red);cursor:pointer"><i class="ti ti-trash"></i></button>
+          <i class="ti ti-grip-vertical" style="color:var(--text3);font-size:16px;padding:5px;cursor:grab"></i>
+        </div>` : ''}
+      </div>
+    </div>`;
+  }
+
+  function initVideoDragDrop() {
+    document.querySelectorAll('.video-card[draggable="true"]').forEach(card => {
+      card.addEventListener('dragstart', e => {
+        dragSrcIdx = parseInt(card.dataset.idx);
+        card.style.opacity = '0.5';
+      });
+      card.addEventListener('dragend', e => { card.style.opacity = '1'; });
+      card.addEventListener('dragover', e => { e.preventDefault(); card.style.borderColor = 'var(--orange)'; });
+      card.addEventListener('dragleave', e => { card.style.borderColor = ''; });
+      card.addEventListener('drop', e => {
+        e.preventDefault();
+        card.style.borderColor = '';
+        const targetIdx = parseInt(card.dataset.idx);
+        if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+        const moved = allVideos.splice(dragSrcIdx, 1)[0];
+        allVideos.splice(targetIdx, 0, moved);
+        saveVideos();
+        renderVideos();
+        dragSrcIdx = null;
+      });
+    });
+  }
+
+  function toggleVideoCompletado(idx) {
+    allVideos[idx].estado = allVideos[idx].estado === 'completado' ? 'pendiente' : 'completado';
+    saveVideos();
+    renderVideos();
+  }
+
+  function openVideoModal(video = null) {
+    document.getElementById('video-modal').classList.add('open');
+    if (video) {
+      document.getElementById('video-modal-title').innerHTML = '<i class="ti ti-pencil"></i> Editar video';
+      document.getElementById('vid-edit-id').value = video.id;
+      document.getElementById('vid-titulo').value = video.titulo || '';
+      document.getElementById('vid-dia').value = video.dia || 'Lunes';
+      document.getElementById('vid-programa').value = video.programa || 'Exijo Clemencia';
+      document.getElementById('vid-prioridad').value = video.prioridad || 'Media';
+      document.getElementById('vid-drive').value = video.drive || '';
+      document.getElementById('vid-nota').value = video.nota || '';
+    } else {
+      document.getElementById('video-modal-title').innerHTML = '<i class="ti ti-video"></i> Nuevo video';
+      document.getElementById('vid-edit-id').value = '';
+      ['vid-titulo','vid-drive','vid-nota'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('vid-dia').value = 'Lunes';
+      document.getElementById('vid-programa').value = 'Exijo Clemencia';
+      document.getElementById('vid-prioridad').value = 'Media';
+    }
+    setTimeout(() => document.getElementById('vid-titulo').focus(), 100);
+  }
+
+  function closeVideoModal() { document.getElementById('video-modal').classList.remove('open'); }
+
+  function saveVideo() {
+    const titulo = document.getElementById('vid-titulo').value.trim();
+    if (!titulo) { alert('Ingresá el título del video.'); return; }
+    const editId = document.getElementById('vid-edit-id').value;
+    const video = {
+      id: editId || 'vid_' + Date.now(),
+      titulo,
+      dia: document.getElementById('vid-dia').value,
+      programa: document.getElementById('vid-programa').value,
+      prioridad: document.getElementById('vid-prioridad').value,
+      drive: document.getElementById('vid-drive').value.trim(),
+      nota: document.getElementById('vid-nota').value.trim(),
+      estado: 'pendiente',
+      fecha: new Date().toLocaleDateString('es-AR'),
+      autor: currentUser?.name || 'Nicolás'
+    };
+    if (editId) {
+      const idx = allVideos.findIndex(v => v.id === editId);
+      if (idx !== -1) { allVideos[idx] = { ...allVideos[idx], ...video, id: editId }; }
+    } else {
+      allVideos.push(video);
+      // Notificar a Enzo solo si es video nuevo
+      notificarNuevoVideoEnzo(video);
+    }
+    saveVideos();
+    closeVideoModal();
+    renderVideos();
+  }
+
+  function editVideo(idx) { openVideoModal(allVideos[idx]); }
+
+  function deleteVideo(idx) {
+    if (!confirm('¿Eliminar este video?')) return;
+    allVideos.splice(idx, 1);
+    saveVideos();
+    renderVideos();
+  }
+
+  let videoDetalleActual = null;
+
+  function openVideoDetalle(idx) {
+    videoDetalleActual = idx;
+    const v = allVideos[idx];
+    const isAdmin = ['bautista','nicolas'].includes(currentUser?.username);
+    const completado = v.estado === 'completado';
+
+    document.getElementById('vdet-titulo').textContent = v.titulo;
+
+    document.getElementById('vdet-chips').innerHTML = `
+      <span style="background:var(--orange)22;color:var(--orange);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700"><i class="ti ti-calendar"></i> ${v.dia}</span>
+      <span style="background:var(--bg4);color:var(--text2);border-radius:999px;padding:4px 12px;font-size:12px"><i class="ti ti-device-desktop"></i> ${v.programa}</span>
+      ${v.prioridad === 'Alta' ? '<span style="background:#fef2f2;color:#dc2626;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700"><i class="ti ti-arrow-up"></i> Alta</span>' : ''}
+      ${v.prioridad === 'Baja' ? '<span style="background:#f0fdf4;color:#16a34a;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700"><i class="ti ti-arrow-down"></i> Baja</span>' : ''}
+      ${v.prioridad === 'Media' || !v.prioridad ? '<span style="background:var(--bg4);color:var(--text2);border-radius:999px;padding:4px 12px;font-size:12px"><i class="ti ti-minus"></i> Media</span>' : ''}
+      <span style="background:var(--bg4);color:var(--text3);border-radius:999px;padding:4px 12px;font-size:12px"><i class="ti ti-user"></i> ${v.autor || 'Nicolás'} · ${v.fecha}</span>
+      ${completado ? '<span style="background:var(--green)22;color:var(--green);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700"><i class="ti ti-circle-check"></i> Completado</span>' : ''}
+    `;
+
+    document.getElementById('vdet-estado-box').innerHTML = `
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg4);border-radius:10px;padding:12px 16px">
+        <input type="checkbox" ${completado ? 'checked' : ''} onchange="toggleVideoCompletadoDetalle(${idx})" style="width:18px;height:18px;accent-color:var(--orange);cursor:pointer">
+        <span style="font-size:14px;font-weight:600;color:var(--text)">Marcar como completado</span>
+      </label>
+    `;
+
+    const notaBox = document.getElementById('vdet-nota-box');
+    if (v.nota) {
+      notaBox.innerHTML = `
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:8px">Instrucciones</div>
+        <div style="background:var(--bg4);border-radius:12px;padding:16px;font-size:14px;color:var(--text2);line-height:1.7;white-space:pre-wrap">${v.nota}</div>
+      `;
+    } else {
+      notaBox.innerHTML = '';
+    }
+
+    const driveBox = document.getElementById('vdet-drive-box');
+    if (v.drive) {
+      driveBox.innerHTML = `
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:8px">Material crudo</div>
+        <a href="${v.drive}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--blue)22;color:var(--blue);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;text-decoration:none">
+          <i class="ti ti-brand-google-drive"></i> Ver material en Drive
+        </a>
+      `;
+    } else {
+      driveBox.innerHTML = `<div style="font-size:13px;color:var(--text3);font-style:italic">Sin link de material cargado</div>`;
+    }
+
+    const adminBtns = document.getElementById('vdet-admin-btns');
+    if (isAdmin) {
+      adminBtns.innerHTML = `
+        <button onclick="editVideoFromDetalle(${idx})" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif"><i class="ti ti-pencil"></i> Editar</button>
+        <button onclick="deleteVideoFromDetalle(${idx})" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--red);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif"><i class="ti ti-trash"></i> Eliminar</button>
+      `;
+    } else {
+      adminBtns.innerHTML = '';
+    }
+
+    renderVideoDetalleComments();
+    document.getElementById('video-detalle-modal').classList.add('open');
+    setTimeout(() => document.getElementById('vdet-comment-input').focus(), 200);
+  }
+
+  function closeVideoDetalleModal() {
+    document.getElementById('video-detalle-modal').classList.remove('open');
+    videoDetalleActual = null;
+  }
+
+  function toggleVideoCompletadoDetalle(idx) {
+    allVideos[idx].estado = allVideos[idx].estado === 'completado' ? 'pendiente' : 'completado';
+    saveVideos();
+    renderVideos();
+    openVideoDetalle(idx);
+  }
+
+  function renderVideoDetalleComments() {
+    if (videoDetalleActual === null) return;
+    const v = allVideos[videoDetalleActual];
+    const comments = allVideoComments.filter(c => c.videoId === v.id);
+    const container = document.getElementById('vdet-comentarios-lista');
+    if (!comments.length) {
+      container.innerHTML = '<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Sin comentarios todavía</div>';
+      return;
+    }
+    container.innerHTML = comments.map(c => {
+      const isLink = c.texto.startsWith('http');
+      return `<div class="comment-item">
+        <div class="comment-avatar" style="background:${c.color || 'var(--orange)'}">${c.avatar || '?'}</div>
+        <div class="comment-bubble">
+          <div class="comment-autor">${c.autor}</div>
+          <div class="comment-text" style="white-space:pre-wrap">${isLink ? `<a href="${c.texto}" target="_blank" style="color:var(--blue);text-decoration:underline;word-break:break-all"><i class="ti ti-link"></i> ${c.texto}</a>` : c.texto}</div>
+          <div class="comment-fecha">${c.fecha}</div>
+        </div>
+      </div>`;
+    }).join('');
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function sendVideoDetalleComment() {
+    const input = document.getElementById('vdet-comment-input');
+    const texto = input.value.trim();
+    if (!texto || videoDetalleActual === null) return;
+    const v = allVideos[videoDetalleActual];
+    const comment = {
+      videoId: v.id,
+      autor: currentUser?.name || 'Equipo',
+      avatar: currentUser?.avatar || '?',
+      color: currentUser?.color || 'var(--orange)',
+      texto,
+      fecha: new Date().toLocaleDateString('es-AR')
+    };
+    allVideoComments.push(comment);
+    saveVideoComments();
+    input.value = '';
+    renderVideoDetalleComments();
+    renderVideos();
+    if (currentUser?.username === 'enzo') {
+      notificarVideoComment(v, texto);
+    }
+  }
+
+  function editVideoFromDetalle(idx) {
+    closeVideoDetalleModal();
+    openVideoModal(allVideos[idx]);
+  }
+
+  function deleteVideoFromDetalle(idx) {
+    if (!confirm('¿Eliminar este video?')) return;
+    allVideos.splice(idx, 1);
+    saveVideos();
+    renderVideos();
+    closeVideoDetalleModal();
+  }
+
+  function openVideoComments(idx) {
+    videosCommentActual = idx;
+    const v = allVideos[idx];
+    document.getElementById('vid-com-titulo').textContent = v.titulo;
+    document.getElementById('vid-com-meta').textContent = v.dia + ' · ' + v.programa + (v.drive ? ' · ' : '');
+    renderVideoCommentsList();
+    document.getElementById('video-comments-modal').classList.add('open');
+    setTimeout(() => document.getElementById('vid-com-input').focus(), 100);
+  }
+
+  function closeVideoCommentsModal() {
+    document.getElementById('video-comments-modal').classList.remove('open');
+    videosCommentActual = null;
+  }
+
+  function renderVideoCommentsList() {
+    const v = allVideos[videosCommentActual];
+    const comments = allVideoComments.filter(c => c.videoId === v.id);
+    const container = document.getElementById('vid-com-lista');
+    if (!comments.length) {
+      container.innerHTML = '<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Sin comentarios todavía</div>';
+      return;
+    }
+    container.innerHTML = comments.map(c => {
+      const isLink = c.texto.startsWith('http');
+      return `<div class="comment-item">
+        <div class="comment-avatar" style="background:${c.color || 'var(--orange)'}">${c.avatar || '?'}</div>
+        <div class="comment-bubble">
+          <div class="comment-autor">${c.autor}</div>
+          <div class="comment-text">${isLink ? `<a href="${c.texto}" target="_blank" style="color:var(--blue);text-decoration:underline;word-break:break-all"><i class="ti ti-link"></i> ${c.texto}</a>` : c.texto}</div>
+          <div class="comment-fecha">${c.fecha}</div>
+        </div>
+      </div>`;
+    }).join('');
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function sendVideoComment() {
+    const input = document.getElementById('vid-com-input');
+    const texto = input.value.trim();
+    if (!texto || videosCommentActual === null) return;
+    const v = allVideos[videosCommentActual];
+    const comment = {
+      videoId: v.id,
+      autor: currentUser?.name || 'Equipo',
+      avatar: currentUser?.avatar || '?',
+      color: currentUser?.color || 'var(--orange)',
+      texto,
+      fecha: new Date().toLocaleDateString('es-AR')
+    };
+    allVideoComments.push(comment);
+    saveVideoComments();
+    input.value = '';
+    renderVideoCommentsList();
+    renderVideos();
+
+    // Si es Enzo comentando, notificar a Nicolás
+    if (currentUser?.username === 'enzo') {
+      notificarVideoComment(v, texto);
+    }
+  }
+
+  function notificarNuevoVideoEnzo(video) {
+    try {
+      const params = new URLSearchParams({
+        action: 'nuevo_video',
+        titulo: video.titulo,
+        dia: video.dia,
+        programa: video.programa,
+        prioridad: video.prioridad || 'Media',
+        drive: video.drive || '',
+        nota: video.nota || '',
+        autor: currentUser?.name || 'Nicolás'
+      });
+      fetch(VIDEOS_URL + '?' + params.toString(), { mode: 'no-cors' }).catch(() => {});
+    } catch(e) {}
+  }
+
+  function notificarVideoComment(video, comentario) {
+    try {
+      const params = new URLSearchParams({
+        action: 'video_comment',
+        titulo: video.titulo,
+        dia: video.dia,
+        comentario,
+        link: comentario.startsWith('http') ? comentario : ''
+      });
+      fetch(VIDEOS_URL + '?' + params.toString(), { mode: 'no-cors' }).catch(() => {});
+    } catch(e) {}
   }
 
   // ============ CRM ============
