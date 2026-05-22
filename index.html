@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Balodi — Sistema Operativo</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -34,7 +35,12 @@
   .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 18px; cursor: pointer; color: var(--text2); font-size: 13px; font-weight: 500; transition: all 0.15s; border-left: 3px solid transparent; user-select: none; }
   .nav-item:hover { color: var(--text); background: var(--bg4); }
   .nav-item.active { color: var(--orange); border-left-color: var(--orange); background: var(--orange-light); font-weight: 600; }
-  .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+  .ti { color: var(--orange); }
+  .ti.ti-x, .ti.ti-check, .ti.ti-alert-triangle, .ti.ti-flame,
+  .ti.ti-snowflake, .ti.ti-circle, .ti.ti-trash, .ti.ti-moon { color: inherit; }
+  .nav-item .ti { color: var(--text2); }
+  .nav-item:hover .ti, .nav-item.active .ti { color: var(--orange); }
+  .nav-icon { font-size: 16px; width: 18px; text-align: center; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .nav-sub { padding-left: 40px; font-size: 12.5px; }
   .main { margin-left: 240px; flex: 1; min-height: 100vh; width: calc(100% - 240px); }
   .topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 40px; height: 54px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; box-shadow: var(--shadow-sm); }
@@ -876,7 +882,7 @@
     <div class="jarvis-core"><div class="jarvis-core-icon">⬡</div></div>
   </div>
   <div class="jarvis-content">
-    <div class="jarvis-system-label">Balodi — Sistema Operativo v2.0</div>
+    <div class="jarvis-system-label">Balodi — Sistema Operativo</div>
     <div class="jarvis-welcome">Bienvenido de vuelta,</div>
     <div class="jarvis-name" id="jarvis-name-text"><span class="cursor"></span></div>
     <div class="jarvis-role" id="jarvis-role">Fundador · Estrategia y Crecimiento</div>
@@ -892,8 +898,7 @@
 
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-logo">📊</div>
-    <div class="login-title">Balodi Sistema</div>
+    <div style="margin-bottom:20px"><div style="font-family:'Outfit',sans-serif;font-size:42px;font-weight:800;color:var(--orange);letter-spacing:-0.03em;line-height:1">Balodi</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px">Agencia de Marketing</div></div>
     <div class="login-sub">Panel interno de Balodi Marketing.<br>Ingresá tu usuario y contraseña.</div>
     <input class="login-input" type="text" id="login-user" placeholder="Usuario" style="margin-bottom:10px">
     <input class="login-input" type="password" id="login-input" placeholder="Contraseña">
@@ -906,30 +911,29 @@
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-icon">📊</div>
-      <div><div class="logo-mark">Balodi</div><div class="logo-sub">Sistema Operativo</div></div>
+    <div class="sidebar-logo" style="padding:16px 18px">
+      <div style="line-height:1.1"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--orange);letter-spacing:-0.02em">Balodi</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase">Agencia de Marketing</div></div>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-label">General</div>
-      <div class="nav-item" id="nav-dashboard" onclick="go('dashboard')"><span class="nav-icon">🏠</span> Inicio</div>
+      <div class="nav-item" id="nav-dashboard" onclick="go('dashboard')"><i class="ti ti-home nav-icon" aria-hidden="true"></i> Inicio</div>
       <div class="nav-label">Compartido — Todo el equipo</div>
-      <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><span class="nav-icon">📁</span> Clientes</div>
-      <div class="nav-item nav-sub" id="nav-c-balodi" onclick="go('c-balodi')" style="color:var(--orange);font-weight:700"><span class="nav-icon" style="font-size:10px">★</span> Balodi Marketing</div>
-      <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><span class="nav-icon">📅</span> Calendario mensual</div>
+      <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><i class="ti ti-users nav-icon" aria-hidden="true"></i> Clientes</div>
+      <div class="nav-item nav-sub" id="nav-c-balodi" onclick="go('c-balodi')" style="color:var(--orange);font-weight:700"><i class="ti ti-star nav-icon" aria-hidden="true" style="color:var(--orange)"></i> Balodi Marketing</div>
+      <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><i class="ti ti-calendar nav-icon" aria-hidden="true"></i> Calendario mensual</div>
       <div class="nav-label nav-admin-only" id="label-privado">Privado — Bau y Nico</div>
-      <div class="nav-item nav-admin-only" id="nav-crm" onclick="go('crm')" style="position:relative"><span class="nav-icon">🎯</span> CRM <span class="notif-dot hidden" id="notif-crm">0</span></div>
-      <div class="nav-item nav-admin-only" id="nav-estrategia" onclick="go('estrategia')"><span class="nav-icon">🔒</span> Estrategia Balodi</div>
-      <div class="nav-item nav-admin-only" id="nav-alianzas" onclick="go('alianzas')"><span class="nav-icon">🤝</span> Red de Alianzas</div>
-      <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><span class="nav-icon">🔒</span> Finanzas</div>
-      <div class="nav-item nav-admin-only" id="nav-seguimiento" onclick="go('seguimiento')"><span class="nav-icon">🔒</span> Seguimiento empleados</div>
+      <div class="nav-item nav-admin-only" id="nav-crm" onclick="go('crm')" style="position:relative"><i class="ti ti-target nav-icon" aria-hidden="true"></i> CRM <span class="notif-dot hidden" id="notif-crm">0</span></div>
+      <div class="nav-item nav-admin-only" id="nav-estrategia" onclick="go('estrategia')"><i class="ti ti-chess nav-icon" aria-hidden="true"></i> Estrategia Balodi</div>
+      <div class="nav-item nav-admin-only" id="nav-alianzas" onclick="go('alianzas')"><i class="ti ti-heart-handshake nav-icon" aria-hidden="true"></i> Red de Alianzas</div>
+      <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><i class="ti ti-chart-line nav-icon" aria-hidden="true"></i> Finanzas</div>
+      <div class="nav-item nav-admin-only" id="nav-seguimiento" onclick="go('seguimiento')"><i class="ti ti-user-check nav-icon" aria-hidden="true"></i> Seguimiento empleados</div>
       <div class="nav-label">Operaciones</div>
-      <div class="nav-item" id="nav-tareas" onclick="go('tareas')" style="position:relative"><span class="nav-icon">✅</span> Tareas pendientes<span class="notif-dot hidden" id="notif-tareas">0</span></div>
-      <div class="nav-item" id="nav-banco" onclick="go('banco')" style="position:relative"><span class="nav-icon">💡</span> Banco de Ideas<span class="notif-dot hidden" id="notif-banco">0</span></div>
-      <div class="nav-item" id="nav-creativas" onclick="go('creativas')" style="position:relative"><span class="nav-icon">✨</span> Ideas Creativas<span class="notif-dot hidden" id="notif-creativas">0</span></div>
+      <div class="nav-item" id="nav-tareas" onclick="go('tareas')" style="position:relative"><i class="ti ti-checkbox nav-icon" aria-hidden="true"></i> Tareas pendientes<span class="notif-dot hidden" id="notif-tareas">0</span></div>
+      <div class="nav-item" id="nav-banco" onclick="go('banco')" style="position:relative"><i class="ti ti-bulb nav-icon" aria-hidden="true"></i> Banco de Ideas<span class="notif-dot hidden" id="notif-banco">0</span></div>
+      <div class="nav-item" id="nav-creativas" onclick="go('creativas')" style="position:relative"><i class="ti ti-sparkles nav-icon" aria-hidden="true"></i> Ideas Creativas<span class="notif-dot hidden" id="notif-creativas">0</span></div>
     </nav>
     <div class="dark-toggle" onclick="toggleDarkMode()">
-      <span style="font-size:15px">🌙</span>
+      <span style="font-size:15px"><i class="ti ti-moon" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></span>
       <span class="dark-toggle-label">Modo oscuro</span>
       <div class="toggle-switch" id="dark-switch"><div class="toggle-knob"></div></div>
     </div>
@@ -939,7 +943,7 @@
     <div class="topbar" id="topbar-bar" style="display:none"><div id="topbar-title" class="topbar-title">Inicio</div><div class="topbar-right" style="display:flex;align-items:center;gap:12px"><span class="topbar-badge">Balodi Marketing</span><div class="topbar-user"><div class="topbar-avatar" id="user-avatar">?</div><span class="topbar-username" id="user-display-name"></span><button class="logout-btn" onclick="logout()">Salir</button></div></div></div>
     <div class="mobile-header">
       <div class="logo-mark" style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px">Balodi</div>
-      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <button class="hamburger" onclick="toggleSidebar()"><i class="ti ti-menu-2" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></button>
     </div>
 
     <!-- ESTRUCTURA -->
@@ -952,16 +956,16 @@
       <div class="page-content">
         <div class="section">
           <div class="section-title">Páginas compartidas — todo el equipo</div>
-          <div class="notion-block" onclick="go('equipo')"><div class="notion-block-icon">👥</div><div><div class="notion-block-name">Equipo</div><div class="notion-block-desc">Roles, responsabilidades y entregables de cada integrante</div></div><div class="notion-block-arrow">→</div></div>
-          <div class="notion-block" onclick="go('clientes')"><div class="notion-block-icon">📁</div><div><div class="notion-block-name">Clientes</div><div class="notion-block-desc">Una subpágina por cliente con calendario, ideas y métricas</div></div><div class="notion-block-arrow">→</div></div>
-          <div class="notion-block" onclick="go('banco')"><div class="notion-block-icon">💡</div><div><div class="notion-block-name">Banco de Ideas</div><div class="notion-block-desc">Cualquiera del equipo tira ideas acá. Sin filtro.</div></div><div class="notion-block-arrow">→</div></div>
-          <div class="notion-block" onclick="go('calendario')"><div class="notion-block-icon">📅</div><div><div class="notion-block-name">Calendario de Contenido</div><div class="notion-block-desc">Vista unificada de todo lo que se publica en el mes</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('equipo')"><div class="notion-block-icon"><i class="ti ti-users" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="notion-block-name">Equipo</div><div class="notion-block-desc">Roles, responsabilidades y entregables de cada integrante</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('clientes')"><div class="notion-block-icon"><i class="ti ti-folder" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="notion-block-name">Clientes</div><div class="notion-block-desc">Una subpágina por cliente con calendario, ideas y métricas</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('banco')"><div class="notion-block-icon"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="notion-block-name">Banco de Ideas</div><div class="notion-block-desc">Cualquiera del equipo tira ideas acá. Sin filtro.</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('calendario')"><div class="notion-block-icon"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="notion-block-name">Calendario de Contenido</div><div class="notion-block-desc">Vista unificada de todo lo que se publica en el mes</div></div><div class="notion-block-arrow">→</div></div>
         </div>
         <div class="section">
           <div class="section-title">Páginas privadas — solo Bautista y Nicolás</div>
-          <div class="notion-block" onclick="go('estrategia')"><div class="notion-block-icon">🔒</div><div><div class="notion-block-name">Estrategia Balodi</div><div class="notion-block-desc">Objetivos, pipeline de clientes, métricas de la agencia</div></div><div class="notion-block-arrow">→</div></div>
-          <div class="notion-block" onclick="go('finanzas')"><div class="notion-block-icon">🔒</div><div><div class="notion-block-name">Finanzas</div><div class="notion-block-desc">Ingresos, costos, honorarios</div></div><div class="notion-block-arrow">→</div></div>
-          <div class="notion-block" onclick="go('seguimiento')"><div class="notion-block-icon">🔒</div><div><div class="notion-block-name">Seguimiento de Empleados</div><div class="notion-block-desc">Performance mensual, observaciones y objetivos por persona</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('estrategia')"><div class="notion-block-icon"><i class="ti ti-lock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="notion-block-name">Estrategia Balodi</div><div class="notion-block-desc">Objetivos, pipeline de clientes, métricas de la agencia</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('finanzas')"><div class="notion-block-icon"><i class="ti ti-lock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="notion-block-name">Finanzas</div><div class="notion-block-desc">Ingresos, costos, honorarios</div></div><div class="notion-block-arrow">→</div></div>
+          <div class="notion-block" onclick="go('seguimiento')"><div class="notion-block-icon"><i class="ti ti-lock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="notion-block-name">Seguimiento de Empleados</div><div class="notion-block-desc">Performance mensual, observaciones y objetivos por persona</div></div><div class="notion-block-arrow">→</div></div>
         </div>
       </div>
     </div>
@@ -993,11 +997,11 @@
         <div class="person-card">
           <div class="person-header"><div class="avatar av-gold" style="width:60px;height:60px;font-size:20px">BA</div><div><div class="person-name" style="font-size:22px">Bautista</div><div class="person-role">Fundador · Estrategia y crecimiento</div></div><span class="badge badge-gold" style="margin-left:auto">Fundador</span></div>
           <ul class="checklist">
-            <li><div class="check-dot">✓</div>Estrategia general de la agencia y de los clientes</li>
-            <li><div class="check-dot">✓</div>Campañas de Meta Ads para Balodi y clientes</li>
-            <li><div class="check-dot">✓</div>Primer contacto con leads, búsqueda de alianzas y empleados</li>
-            <li><div class="check-dot">✓</div>Podcast "Detrás del Emprendimiento": invitados, preguntas, entrevistas y edición</li>
-            <li><div class="check-dot">✓</div>Adquisición de nuevos clientes</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Estrategia general de la agencia y de los clientes</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Campañas de Meta Ads para Balodi y clientes</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Primer contacto con leads, búsqueda de alianzas y empleados</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Podcast "Detrás del Emprendimiento": invitados, preguntas, entrevistas y edición</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Adquisición de nuevos clientes</li>
           </ul>
         </div>
       </div>
@@ -1014,10 +1018,10 @@
         <div class="person-card">
           <div class="person-header"><div class="avatar av-blue" style="width:60px;height:60px;font-size:20px">NI</div><div><div class="person-name" style="font-size:22px">Nicolás</div><div class="person-role">Socio · Operaciones y producción</div></div><span class="badge badge-blue" style="margin-left:auto">Socio</span></div>
           <ul class="checklist">
-            <li><div class="check-dot">✓</div>Contacto diario con clientes y gestión de peticiones</li>
-            <li><div class="check-dot">✓</div>Coordinación del equipo y asignación de tareas a Enzo</li>
-            <li><div class="check-dot">✓</div>Edición de videos de alto nivel</li>
-            <li><div class="check-dot">✓</div>Producción de placas de Instagram cuando se requiere</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Contacto diario con clientes y gestión de peticiones</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Coordinación del equipo y asignación de tareas a Enzo</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Edición de videos de alto nivel</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Producción de placas de Instagram cuando se requiere</li>
           </ul>
         </div>
       </div>
@@ -1035,13 +1039,13 @@
           <div class="person-header"><div class="avatar av-green" style="width:60px;height:60px;font-size:20px">LO</div><div><div class="person-name" style="font-size:22px">Lourdes</div><div class="person-role">Community Manager</div></div><span class="badge badge-green" style="margin-left:auto">CM</span></div>
           <div class="card-body" style="margin-bottom:14px"><strong style="color:var(--text)">Cuentas asignadas:</strong> Hielo Rosario · Tarjeta Primicia · Balodi Marketing</div>
           <ul class="checklist">
-            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 1–5:</strong>&nbsp;TODAS las publicaciones del mes listas, aprobadas y programadas</li>
-            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;analizar métricas y traer 3 ideas virales por cliente</li>
-            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;proponer al menos 1 campaña o acción BTL por cliente</li>
-            <li><div class="check-dot">✓</div><strong style="color:var(--text)">Días 16–cierre:</strong>&nbsp;revisar rendimiento, ajustar y pre-armar el mes siguiente</li>
-            <li><div class="check-dot">✓</div>Último día del mes: entregar informe mensual completo</li>
-            <li><div class="check-dot">✓</div>Reunión semanal: presentar al menos 1 referencia o idea nueva</li>
-            <li><div class="check-dot">✓</div>Reunión 1:1 viernes: presentar avance e ideas de la semana a Bautista</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div><strong style="color:var(--text)">Días 1–5:</strong>&nbsp;TODAS las publicaciones del mes listas, aprobadas y programadas</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;analizar métricas y traer 3 ideas virales por cliente</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div><strong style="color:var(--text)">Días 6–15:</strong>&nbsp;proponer al menos 1 campaña o acción BTL por cliente</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div><strong style="color:var(--text)">Días 16–cierre:</strong>&nbsp;revisar rendimiento, ajustar y pre-armar el mes siguiente</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Último día del mes: entregar informe mensual completo</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Reunión semanal: presentar al menos 1 referencia o idea nueva</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Reunión 1:1 viernes: presentar avance e ideas de la semana a Bautista</li>
           </ul>
         </div>
       </div>
@@ -1059,10 +1063,10 @@
           <div class="person-header"><div class="avatar av-amber" style="width:60px;height:60px;font-size:20px">EN</div><div><div class="person-name" style="font-size:22px">Enzo</div><div class="person-role">Editor de Video</div></div><span class="badge badge-amber" style="margin-left:auto">Editor</span></div>
           <div class="card-body" style="margin-bottom:14px"><strong style="color:var(--text)">Trabajo principal:</strong> Edición diaria de 3 a 5 videos. Cliente principal: Murad.</div>
           <ul class="checklist">
-            <li><div class="check-dot">✓</div>Entregar ediciones en tiempo y forma según brief de Nicolás</li>
-            <li><div class="check-dot">✓</div>Último viernes de cada mes: presentar 2 ideas de formato nuevo para Balodi o cualquier cliente</li>
-            <li><div class="check-dot">✓</div>Traer referencias de edición y tendencias de video cada semana</li>
-            <li><div class="check-dot">✓</div>Entregar informe mensual: qué editó, qué funcionó, qué ideas propone</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Entregar ediciones en tiempo y forma según brief de Nicolás</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Último viernes de cada mes: presentar 2 ideas de formato nuevo para Balodi o cualquier cliente</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Traer referencias de edición y tendencias de video cada semana</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Entregar informe mensual: qué editó, qué funcionó, qué ideas propone</li>
           </ul>
         </div>
       </div>
@@ -1080,10 +1084,10 @@
           <div class="person-header"><div class="avatar av-red" style="width:60px;height:60px;font-size:20px">BR</div><div><div class="person-name" style="font-size:22px">Brunela</div><div class="person-role">Community Manager por Proyectos</div></div><span class="badge badge-red" style="margin-left:auto">Proyectos</span></div>
           <div class="highlight" style="margin-bottom:16px"><p>El compromiso en formato proyecto se construye con <strong>estructura clara</strong>. Sin entregables definidos desde el inicio, no se puede pedir más.</p></div>
           <ul class="checklist">
-            <li><div class="check-dot">✓</div>Al inicio de cada proyecto: brief con entregables, fechas y criterio de éxito</li>
-            <li><div class="check-dot">✓</div>Misma lógica de 3 bloques que Lourdes, aplicada al proyecto</li>
-            <li><div class="check-dot">✓</div>Check semanal de 10 minutos con Nicolás para ver avance</li>
-            <li><div class="check-dot">✓</div>Al cierre: informe de resultado + lo que haría diferente</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Al inicio de cada proyecto: brief con entregables, fechas y criterio de éxito</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Misma lógica de 3 bloques que Lourdes, aplicada al proyecto</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Check semanal de 10 minutos con Nicolás para ver avance</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Al cierre: informe de resultado + lo que haría diferente</li>
           </ul>
         </div>
       </div>
@@ -1098,7 +1102,7 @@
       </div>
       <div class="page-content">
         <div class="client-grid">
-          <div class="client-card" onclick="go('c-balodi')" style="border-color:var(--orange-border);background:var(--orange-light);grid-column:span 2"><div style="display:flex;align-items:center;gap:10px;flex:1"><div style="width:32px;height:32px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px">📊</div><div><div class="client-name" style="color:var(--orange)">Balodi Marketing</div><div style="font-size:11px;color:var(--orange);opacity:0.8;margin-top:2px">Cuenta propia · Meta Ads integrado</div></div></div><span class="badge badge-orange" style="margin-right:8px">Interna</span><span class="client-arrow" style="color:var(--orange)">→</span></div>
+          <div class="client-card" onclick="go('c-balodi')" style="border-color:var(--orange-border);background:var(--orange-light);grid-column:span 2"><div style="display:flex;align-items:center;gap:10px;flex:1"><div style="width:32px;height:32px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="client-name" style="color:var(--orange)">Balodi Marketing</div><div style="font-size:11px;color:var(--orange);opacity:0.8;margin-top:2px">Cuenta propia · Meta Ads integrado</div></div></div><span class="badge badge-orange" style="margin-right:8px">Interna</span><span class="client-arrow" style="color:var(--orange)">→</span></div>
           <div class="client-card" onclick="go('c-tarjeta')"><div class="client-name">Tarjeta Primicia</div><span class="client-arrow">→</span></div>
           <div class="client-card" onclick="go('c-mutual')"><div class="client-name">Mutual Entre Asociados</div><span class="client-arrow">→</span></div>
           <div class="client-card" onclick="go('c-capilar')"><div class="client-name">Capilar Vibes</div><span class="client-arrow">→</span></div>
@@ -1114,7 +1118,7 @@
     <div class="panel" id="panel-c-balodi">
       <div class="page-header">
         <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Balodi Marketing</span></div>
-        <div class="page-eyebrow" style="color:var(--orange)">★ Cuenta propia</div>
+        <div class="page-eyebrow" style="color:var(--orange)"><i class="ti ti-star-filled" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--orange)"></i> Cuenta propia</div>
         <div class="page-title">Balodi Marketing</div>
         <div class="page-desc">La cuenta interna de la agencia. Meta Ads, contenido propio y estrategia de marca.</div>
       </div>
@@ -1122,10 +1126,10 @@
 
         <!-- TABS -->
         <div class="est-tabs" style="margin-bottom:24px">
-          <button class="est-tab active" onclick="switchBalodiTab('meta-ads', this)">📊 Meta Ads</button>
-          <button class="est-tab" onclick="switchBalodiTab('contenido', this)">📅 Contenido</button>
-          <button class="est-tab" onclick="switchBalodiTab('ideas-balodi', this)">💡 Ideas</button>
-          <button class="est-tab" onclick="switchBalodiTab('objetivos-balodi', this)">🎯 Objetivos</button>
+          <button class="est-tab active" onclick="switchBalodiTab('meta-ads', this)"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Meta Ads</button>
+          <button class="est-tab" onclick="switchBalodiTab('contenido', this)"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Contenido</button>
+          <button class="est-tab" onclick="switchBalodiTab('ideas-balodi', this)"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Ideas</button>
+          <button class="est-tab" onclick="switchBalodiTab('objetivos-balodi', this)"><i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Objetivos</button>
         </div>
 
         <!-- META ADS TAB -->
@@ -1133,7 +1137,7 @@
 
           <!-- CONFIG BANNER -->
           <div id="meta-config-banner" style="background:linear-gradient(135deg,#fff4ee,#fff);border:1.5px solid var(--orange-border);border-radius:14px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:flex-start;gap:16px">
-            <div style="font-size:28px;flex-shrink:0">🔌</div>
+            <div style="font-size:28px;flex-shrink:0"><i class="ti ti-plug" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
             <div style="flex:1">
               <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px">Conectar con la API de Meta</div>
               <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:12px">Ahora estás viendo datos de ejemplo. Para ver tus campañas reales de Facebook/Instagram, ingresá tu Access Token de Meta. <strong>Solo visible para Bau y Nico.</strong></div>
@@ -1142,38 +1146,38 @@
                 <input id="meta-account-input" type="text" placeholder="ID de Ad Account (act_XXXXXX)" style="flex:1;min-width:200px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'">
                 <button onclick="connectMetaAPI()" style="background:var(--orange);color:white;border:none;border-radius:8px;padding:8px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Conectar</button>
               </div>
-              <div id="meta-connect-status" style="font-size:11px;color:var(--text3);margin-top:8px">💡 Conseguís el token en <strong>developers.facebook.com → Graph API Explorer</strong>. El ID de cuenta lo encontrás en Meta Business Manager → Cuentas publicitarias.</div>
+              <div id="meta-connect-status" style="font-size:11px;color:var(--text3);margin-top:8px"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Conseguís el token en <strong>developers.facebook.com → Graph API Explorer</strong>. El ID de cuenta lo encontrás en Meta Business Manager → Cuentas publicitarias.</div>
             </div>
           </div>
 
           <!-- KPI CARDS -->
           <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px" id="meta-kpi-row">
             <div class="stat-card">
-              <div class="stat-icon" style="background:#fff4ee">💸</div>
+              <div class="stat-icon" style="background:#fff4ee"><i class="ti ti-cash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
               <div class="stat-number" id="meta-kpi-gasto">$0</div>
               <div class="stat-label">Gasto del mes</div>
               <div class="stat-trend" id="meta-kpi-gasto-trend" style="color:var(--text3)">—</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background:#eff6ff">👁️</div>
+              <div class="stat-icon" style="background:#eff6ff"><i class="ti ti-eye" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</div>
               <div class="stat-number" id="meta-kpi-alcance">0</div>
               <div class="stat-label">Alcance total</div>
               <div class="stat-trend" id="meta-kpi-alcance-trend" style="color:var(--text3)">—</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background:#f0fdf4">🖱️</div>
+              <div class="stat-icon" style="background:#f0fdf4"><i class="ti ti-mouse" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</div>
               <div class="stat-number" id="meta-kpi-clicks">0</div>
               <div class="stat-label">Clicks totales</div>
               <div class="stat-trend" id="meta-kpi-ctr" style="color:var(--text3)">CTR —</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background:#f5f0ff">💬</div>
+              <div class="stat-icon" style="background:#f5f0ff"><i class="ti ti-message-circle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
               <div class="stat-number" id="meta-kpi-conversaciones">0</div>
               <div class="stat-label">Conversaciones</div>
               <div class="stat-trend" id="meta-kpi-conv-trend" style="color:var(--text3)">Personas que escribieron</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background:#fffbeb">💰</div>
+              <div class="stat-icon" style="background:#fffbeb"><i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
               <div class="stat-number" id="meta-kpi-cpc">$0</div>
               <div class="stat-label">Costo por conv. iniciada</div>
               <div class="stat-trend" id="meta-kpi-cpm" style="color:var(--text3)">CPM —</div>
@@ -1203,7 +1207,7 @@
         <!-- CONTENIDO TAB -->
         <div class="est-section" id="balodi-contenido">
           <div class="alert alert-info" style="margin-bottom:20px">
-            <div class="alert-icon">📅</div>
+            <div class="alert-icon"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
             <div>El calendario de contenido de Balodi. Para agregar eventos, usá <strong>calendar.google.com</strong> directamente.</div>
           </div>
           <div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden">
@@ -1214,7 +1218,7 @@
         <!-- IDEAS TAB -->
         <div class="est-section" id="balodi-ideas-balodi">
           <div class="alert alert-info" style="margin-bottom:20px">
-            <div class="alert-icon">💡</div>
+            <div class="alert-icon"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
             <div>Ideas específicas para la cuenta de Balodi. Campañas propias, contenido de marca, BTL, lo que sea.</div>
           </div>
           <div class="ideas-toolbar" style="margin-bottom:16px">
@@ -1226,7 +1230,7 @@
               <button class="filter-btn" onclick="filterBalodiIdeas('BTL', this)">BTL</button>
               <button class="filter-btn" onclick="filterBalodiIdeas('Viral', this)">Viral</button>
             </div>
-            <button class="btn-new-task" onclick="openBalodiIdeaModal()">💡 Nueva idea</button>
+            <button class="btn-new-task" onclick="openBalodiIdeaModal()"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nueva idea</button>
           </div>
           <div id="balodi-ideas-container">
             <div class="tasks-loading">⏳ Cargando...</div>
@@ -1237,24 +1241,24 @@
         <div class="est-section" id="balodi-objetivos-balodi">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px" id="balodi-obj-grid">
             <div class="card" style="cursor:pointer" onclick="editBalodiObj('seguidores')">
-              <div class="card-header"><div class="card-icon" style="background:#fff4ee">👥</div><div><div class="card-title">Meta de seguidores</div><div class="card-subtitle">Instagram / Facebook</div></div></div>
+              <div class="card-header"><div class="card-icon" style="background:#fff4ee"><i class="ti ti-users" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="card-title">Meta de seguidores</div><div class="card-subtitle">Instagram / Facebook</div></div></div>
               <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--orange);margin-top:10px" id="bobj-seguidores">—</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Click para editar</div>
             </div>
             <div class="card" style="cursor:pointer" onclick="editBalodiObj('leads')">
-              <div class="card-header"><div class="card-icon" style="background:#eff6ff">🎯</div><div><div class="card-title">Leads del mes</div><div class="card-subtitle">Via campañas propias</div></div></div>
+              <div class="card-header"><div class="card-icon" style="background:#eff6ff"><i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="card-title">Leads del mes</div><div class="card-subtitle">Via campañas propias</div></div></div>
               <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--blue);margin-top:10px" id="bobj-leads">—</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Click para editar</div>
             </div>
             <div class="card" style="cursor:pointer" onclick="editBalodiObj('presupuesto')">
-              <div class="card-header"><div class="card-icon" style="background:#f0fdf4">💸</div><div><div class="card-title">Presupuesto Meta Ads</div><div class="card-subtitle">Inversión mensual propia</div></div></div>
+              <div class="card-header"><div class="card-icon" style="background:#f0fdf4"><i class="ti ti-cash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="card-title">Presupuesto Meta Ads</div><div class="card-subtitle">Inversión mensual propia</div></div></div>
               <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--green);margin-top:10px" id="bobj-presupuesto">—</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Click para editar</div>
             </div>
             <div class="card" style="cursor:pointer" onclick="editBalodiObj('cpa')">
-              <div class="card-header"><div class="card-icon" style="background:#fffbeb">📉</div><div><div class="card-title">CPA objetivo</div><div class="card-subtitle">Costo por adquisición meta</div></div></div>
+              <div class="card-header"><div class="card-icon" style="background:#fffbeb"><i class="ti ti-trending-down" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="card-title">CPA objetivo</div><div class="card-subtitle">Costo por adquisición meta</div></div></div>
               <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--amber);margin-top:10px" id="bobj-cpa">—</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:4px">✏️ Click para editar</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Click para editar</div>
             </div>
           </div>
         </div>
@@ -1265,7 +1269,7 @@
     <!-- BALODI IDEA MODAL -->
     <div class="idea-modal-overlay" id="balodi-idea-modal">
       <div class="idea-modal">
-        <div class="idea-modal-title">💡 Idea para Balodi Marketing</div>
+        <div class="idea-modal-title"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Idea para Balodi Marketing</div>
         <div class="form-group">
           <label class="form-label">La idea *</label>
           <textarea class="form-textarea" id="bi-idea" placeholder="Describí la idea con detalle..."></textarea>
@@ -1291,7 +1295,7 @@
     <!-- BALODI OBJ MODAL -->
     <div class="est-modal-overlay" id="balodi-obj-modal">
       <div class="est-modal">
-        <div class="est-modal-title" id="balodi-obj-modal-title">✏️ Editar objetivo</div>
+        <div class="est-modal-title" id="balodi-obj-modal-title"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar objetivo</div>
         <input type="hidden" id="balodi-obj-clave">
         <div class="form-group">
           <label class="form-label">Valor *</label>
@@ -1307,7 +1311,7 @@
     <!-- CRM PANEL -->
     <div class="panel" id="panel-crm">
       <div class="page-header">
-        <div class="page-eyebrow" style="color:var(--orange)">🎯 Privado — Bau y Nico</div>
+        <div class="page-eyebrow" style="color:var(--orange)"><i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Privado — Bau y Nico</div>
         <div class="page-title">CRM — Pipeline de ventas</div>
         <div class="page-desc">Seguimiento de prospectos, historial de contactos y alertas automáticas.</div>
       </div>
@@ -1315,25 +1319,25 @@
 
         <!-- ALERTAS AUTOMÁTICAS -->
         <div id="crm-alertas-box" style="margin-bottom:20px;display:none">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">⚠️ Requieren atención hoy</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Requieren atención hoy</div>
           <div id="crm-alertas-lista"></div>
         </div>
 
         <!-- KPIs -->
         <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px" id="crm-kpi-row">
-          <div class="stat-card"><div class="stat-icon" style="background:#eff6ff">📋</div><div class="stat-number" id="crm-k-total">0</div><div class="stat-label">Total prospectos</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#eff6ff"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="stat-number" id="crm-k-total">0</div><div class="stat-label">Total prospectos</div></div>
           <div class="stat-card"><div class="stat-icon" style="background:#fff4ee">🔥</div><div class="stat-number" id="crm-k-calientes">0</div><div class="stat-label">Calientes</div></div>
           <div class="stat-card"><div class="stat-icon" style="background:#fffbeb">🟡</div><div class="stat-number" id="crm-k-tibios">0</div><div class="stat-label">Tibios</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4">✅</div><div class="stat-number" id="crm-k-cerrados">0</div><div class="stat-label">Cerrados este mes</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#fef2f2">💰</div><div class="stat-number" id="crm-k-valor">$0</div><div class="stat-label">Valor del pipeline</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4"><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div><div class="stat-number" id="crm-k-cerrados">0</div><div class="stat-label">Cerrados este mes</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fef2f2"><i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="stat-number" id="crm-k-valor">$0</div><div class="stat-label">Valor del pipeline</div></div>
         </div>
 
         <!-- TABS -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
           <div class="est-tabs" style="margin:0">
-            <button class="est-tab active" onclick="switchCRMTab('pipeline',this)">📊 Pipeline</button>
-            <button class="est-tab" onclick="switchCRMTab('lista',this)">📋 Lista completa</button>
-            <button class="est-tab" onclick="switchCRMTab('historial',this)">📝 Historial</button>
+            <button class="est-tab active" onclick="switchCRMTab('pipeline',this)"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Pipeline</button>
+            <button class="est-tab" onclick="switchCRMTab('lista',this)"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Lista completa</button>
+            <button class="est-tab" onclick="switchCRMTab('historial',this)"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Historial</button>
           </div>
           <button class="btn-new-task" onclick="openCRMModal()">+ Nuevo prospecto</button>
         </div>
@@ -1370,7 +1374,7 @@
     <!-- CRM NUEVO PROSPECTO MODAL -->
     <div class="idea-modal-overlay" id="crm-modal">
       <div class="idea-modal" style="max-width:520px;width:100%">
-        <div class="idea-modal-title" id="crm-modal-title">🎯 Nuevo prospecto</div>
+        <div class="idea-modal-title" id="crm-modal-title"><i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nuevo prospecto</div>
         <input type="hidden" id="crm-edit-id">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="form-group" style="grid-column:span 2">
@@ -1422,7 +1426,7 @@
             <div id="crm-det-nombre" style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--text)"></div>
             <div id="crm-det-meta" style="font-size:12px;color:var(--text3);margin-top:2px"></div>
           </div>
-          <button onclick="closeCRMDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0">✕</button>
+          <button onclick="closeCRMDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0"><i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></button>
         </div>
 
         <!-- Info -->
@@ -1449,10 +1453,10 @@
 
         <!-- Registrar interacción -->
         <div style="margin-bottom:16px;background:var(--bg4);border-radius:12px;padding:14px">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:10px">📝 Registrar interacción</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:10px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Registrar interacción</div>
           <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
             <select id="crm-int-tipo" style="background:var(--bg2);border:1.5px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
-              <option>📞 Llamada</option><option>💬 WhatsApp</option><option>📧 Email</option><option>🤝 Reunión</option><option>📋 Propuesta</option><option>Otro</option>
+              <option><i class="ti ti-phone" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Llamada</option><option><i class="ti ti-message-circle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> WhatsApp</option><option><i class="ti ti-mail" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Email</option><option><i class="ti ti-heart-handshake" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Reunión</option><option><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Propuesta</option><option>Otro</option>
             </select>
           </div>
           <textarea id="crm-int-nota" placeholder="¿Qué pasó en esta interacción?" style="width:100%;background:var(--bg2);border:1.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:60px;box-sizing:border-box" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'"></textarea>
@@ -1466,26 +1470,26 @@
         </div>
 
         <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-          <button onclick="editCRMProspecto(crmDetalleActual)" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">✏️ Editar</button>
+          <button onclick="editCRMProspecto(crmDetalleActual)" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar</button>
           <button onclick="closeCRMDetalleModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Cerrar</button>
         </div>
       </div>
     </div>
 
     <!-- CLIENTES INDIVIDUALES -->
-    <div class="panel" id="panel-c-tarjeta"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Tarjeta Primicia</span></div><div class="page-title">Tarjeta Primicia</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-mutual"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Mutual Entre Asociados</span></div><div class="page-title">Mutual Entre Asociados</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-capilar"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Capilar Vibes</span></div><div class="page-title">Capilar Vibes</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-hielo"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Hielo Rosario</span></div><div class="page-title">Hielo Rosario</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-donatelli"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Donatelli Servicios Integrales</span></div><div class="page-title">Donatelli Servicios Integrales</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-mma"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>MMAPantera</span></div><div class="page-title">MMAPantera</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-murad"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Murad</span></div><div class="page-title">Murad</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon">📋</div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-tarjeta"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Tarjeta Primicia</span></div><div class="page-title">Tarjeta Primicia</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-mutual"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Mutual Entre Asociados</span></div><div class="page-title">Mutual Entre Asociados</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-capilar"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Capilar Vibes</span></div><div class="page-title">Capilar Vibes</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-hielo"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Hielo Rosario</span></div><div class="page-title">Hielo Rosario</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-donatelli"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Donatelli Servicios Integrales</span></div><div class="page-title">Donatelli Servicios Integrales</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-mma"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>MMAPantera</span></div><div class="page-title">MMAPantera</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
+    <div class="panel" id="panel-c-murad"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Murad</span></div><div class="page-title">Murad</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
 
     <!-- BANCO DE IDEAS -->
     <div class="panel" id="panel-banco">
       <div class="page-header">
         <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Banco de Ideas</span></div>
-        <div class="page-title">Banco de Ideas 💡</div>
+        <div class="page-title">Banco de Ideas <i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
         <div class="page-desc">Cualquiera tira una idea acá. Virales, campañas, BTL, referencias, lo que sea. Sin filtro, sin jerarquía. Las mejores ideas nacen acá.</div>
       </div>
       <div class="page-content">
@@ -1498,7 +1502,7 @@
             <button class="filter-btn" onclick="filterIdeas('Viral', this)">Viral</button>
             <button class="filter-btn" onclick="filterIdeas('Otro', this)">Otro</button>
           </div>
-          <button class="btn-new-task" onclick="openIdeaModal()">💡 Nueva idea</button>
+          <button class="btn-new-task" onclick="openIdeaModal()"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nueva idea</button>
         </div>
         <div id="ideas-container">
           <div class="tasks-loading">⏳ Cargando ideas...</div>
@@ -1510,7 +1514,7 @@
     <div class="panel" id="panel-creativas">
       <div class="page-header">
         <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Ideas Creativas</span></div>
-        <div class="page-title">Ideas Creativas ✨</div>
+        <div class="page-title">Ideas Creativas <i class="ti ti-sparkles" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
         <div class="page-desc">El espacio para las ideas más creativas del equipo. Campañas, conceptos, referencias, lo que se les ocurra. Solo Bautista y Nicolás pueden eliminar.</div>
       </div>
       <div class="page-content">
@@ -1523,7 +1527,7 @@
             <button class="filter-btn" onclick="filterCreativas('Viral', this)">Viral</button>
             <button class="filter-btn" onclick="filterCreativas('Otro', this)">Otro</button>
           </div>
-          <button class="btn-new-task" onclick="openCreativaModal()">✨ Nueva idea</button>
+          <button class="btn-new-task" onclick="openCreativaModal()"><i class="ti ti-sparkles" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nueva idea</button>
         </div>
         <div id="creativas-container">
           <div class="tasks-loading">⏳ Cargando ideas creativas...</div>
@@ -1534,7 +1538,7 @@
     <!-- CREATIVA FORM MODAL -->
     <div class="idea-modal-overlay" id="creativa-modal">
       <div class="idea-modal">
-        <div class="idea-modal-title">✨ Nueva idea creativa</div>
+        <div class="idea-modal-title"><i class="ti ti-sparkles" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nueva idea creativa</div>
         <div class="form-group">
           <label class="form-label">La idea *</label>
           <textarea class="form-textarea" id="c-idea" placeholder="Describí la idea con todo el detalle..."></textarea>
@@ -1574,7 +1578,7 @@
     <!-- IDEA FORM MODAL -->
     <div class="idea-modal-overlay" id="idea-modal">
       <div class="idea-modal">
-        <div class="idea-modal-title">💡 Tirar una idea</div>
+        <div class="idea-modal-title"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Tirar una idea</div>
         <div class="form-group">
           <label class="form-label">La idea *</label>
           <textarea class="form-textarea" id="i-idea" placeholder="Describí la idea, cuanto más detalle mejor..."></textarea>
@@ -1622,7 +1626,7 @@
 
         <div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px;">
           <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--text)">📅 Balodi Contenido</div>
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--text)"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Balodi Contenido</div>
             <span style="font-size:11px;color:var(--text3)">Se actualiza automáticamente desde Google Calendar</span>
           </div>
           <div style="position:relative;width:100%;padding-bottom:0;">
@@ -1676,15 +1680,15 @@
     <div class="panel" id="panel-estrategia">
   <div class="page-header">
     <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Estrategia Balodi</span></div>
-    <div class="page-title">🔒 Estrategia Balodi</div>
+    <div class="page-title"><i class="ti ti-lock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Estrategia Balodi</div>
     <div class="page-desc">Pipeline de clientes, objetivos anuales y registro de decisiones. Solo Bautista y Nicolás.</div>
   </div>
   <div class="page-content">
 
     <div class="est-tabs">
-      <button class="est-tab active" onclick="switchEstTab('pipeline', this)">🎯 Pipeline</button>
-      <button class="est-tab" onclick="switchEstTab('objetivos', this)">🚀 Objetivos anuales</button>
-      <button class="est-tab" onclick="switchEstTab('decisiones', this)">📌 Decisiones</button>
+      <button class="est-tab active" onclick="switchEstTab('pipeline', this)"><i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Pipeline</button>
+      <button class="est-tab" onclick="switchEstTab('objetivos', this)"><i class="ti ti-rocket" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--orange)"></i> Objetivos anuales</button>
+      <button class="est-tab" onclick="switchEstTab('decisiones', this)"><i class="ti ti-pin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Decisiones</button>
     </div>
 
     <!-- PIPELINE -->
@@ -1695,19 +1699,19 @@
       </div>
       <div class="pipe-kanban">
         <div class="pipe-col pipe-col-contactado">
-          <div class="pipe-col-title" style="color:var(--blue)">📞 Contactado <span class="pipe-col-count" id="count-contactado">0</span></div>
+          <div class="pipe-col-title" style="color:var(--blue)"><i class="ti ti-phone" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Contactado <span class="pipe-col-count" id="count-contactado">0</span></div>
           <div class="pipe-col-inner" id="pipe-col-contactado"></div>
         </div>
         <div class="pipe-col pipe-col-reunion">
-          <div class="pipe-col-title" style="color:var(--amber)">🤝 Reunión <span class="pipe-col-count" id="count-reunion">0</span></div>
+          <div class="pipe-col-title" style="color:var(--amber)"><i class="ti ti-heart-handshake" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Reunión <span class="pipe-col-count" id="count-reunion">0</span></div>
           <div class="pipe-col-inner" id="pipe-col-reunion"></div>
         </div>
         <div class="pipe-col pipe-col-propuesta">
-          <div class="pipe-col-title" style="color:var(--orange)">📄 Propuesta <span class="pipe-col-count" id="count-propuesta">0</span></div>
+          <div class="pipe-col-title" style="color:var(--orange)"><i class="ti ti-file-text" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Propuesta <span class="pipe-col-count" id="count-propuesta">0</span></div>
           <div class="pipe-col-inner" id="pipe-col-propuesta"></div>
         </div>
         <div class="pipe-col pipe-col-cerrado">
-          <div class="pipe-col-title" style="color:var(--green)">✅ Cerrado <span class="pipe-col-count" id="count-cerrado">0</span></div>
+          <div class="pipe-col-title" style="color:var(--green)"><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Cerrado <span class="pipe-col-count" id="count-cerrado">0</span></div>
           <div class="pipe-col-inner" id="pipe-col-cerrado"></div>
         </div>
       </div>
@@ -1728,19 +1732,19 @@
           <div class="obj-anual-num" id="oa-clientes">—</div>
           <div class="obj-anual-label" id="oa-clientes-label">Clientes activos meta</div>
           <div class="obj-anual-desc" id="oa-clientes-desc">Cantidad de clientes que queremos tener a fin de año</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:8px">✏️ Click para editar</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:8px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Click para editar</div>
         </div>
         <div class="obj-anual-card" onclick="editObjetivo('facturacion')" title="Click para editar">
           <div class="obj-anual-num" id="oa-facturacion">—</div>
           <div class="obj-anual-label" id="oa-facturacion-label">Facturación anual meta</div>
           <div class="obj-anual-desc" id="oa-facturacion-desc">Objetivo de facturación total del año</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:8px">✏️ Click para editar</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:8px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Click para editar</div>
         </div>
         <div class="obj-anual-card" onclick="editObjetivo('equipo')" title="Click para editar">
           <div class="obj-anual-num" id="oa-equipo">—</div>
           <div class="obj-anual-label" id="oa-equipo-label">Tamaño del equipo meta</div>
           <div class="obj-anual-desc" id="oa-equipo-desc">Cantidad de personas en el equipo a fin de año</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:8px">✏️ Click para editar</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:8px"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Click para editar</div>
         </div>
       </div>
 
@@ -1766,7 +1770,7 @@
 <!-- EDITAR OBJETIVO MODAL -->
 <div class="est-modal-overlay" id="oa-modal">
   <div class="est-modal">
-    <div class="est-modal-title" id="oa-modal-title">✏️ Editar objetivo</div>
+    <div class="est-modal-title" id="oa-modal-title"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar objetivo</div>
     <input type="hidden" id="oa-clave">
     <div class="form-group">
       <label class="form-label">Valor *</label>
@@ -1786,14 +1790,14 @@
 <!-- PILAR MODAL -->
 <div class="est-modal-overlay" id="pilar-modal">
   <div class="est-modal">
-    <div class="est-modal-title">🏛️ Agregar pilar estratégico</div>
+    <div class="est-modal-title"><i class="ti ti-building" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Agregar pilar estratégico</div>
     <div class="form-group">
       <label class="form-label">Título *</label>
       <input class="form-input" id="pl-titulo" placeholder="Ej: Escalar la facturación">
     </div>
     <div class="form-group">
       <label class="form-label">Ícono</label>
-      <input class="form-input" id="pl-icono" placeholder="Ej: 📈">
+      <input class="form-input" id="pl-icono" placeholder="Ej: <i class="ti ti-chart-line" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>">
     </div>
     <div class="form-group">
       <label class="form-label">Descripción / acciones</label>
@@ -1809,7 +1813,7 @@
 <!-- PIPELINE MODAL -->
 <div class="est-modal-overlay" id="pipe-modal">
   <div class="est-modal">
-    <div class="est-modal-title">🎯 Nuevo lead</div>
+    <div class="est-modal-title"><i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nuevo lead</div>
     <div class="form-group">
       <label class="form-label">Nombre del cliente *</label>
       <input class="form-input" id="pm-nombre" placeholder="Ej: Empresa XYZ">
@@ -1853,7 +1857,7 @@
 <!-- DECISIONES MODAL -->
 <div class="est-modal-overlay" id="dec-modal">
   <div class="est-modal">
-    <div class="est-modal-title">📌 Registrar decisión</div>
+    <div class="est-modal-title"><i class="ti ti-pin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Registrar decisión</div>
     <div class="form-group">
       <label class="form-label">Título *</label>
       <input class="form-input" id="dm-titulo" placeholder="Ej: Cambio de precio de servicios">
@@ -1889,7 +1893,7 @@
     <div class="panel" id="panel-finanzas">
   <div class="page-header">
     <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Finanzas</span></div>
-    <div class="page-title">🔒 Finanzas</div>
+    <div class="page-title"><i class="ti ti-lock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Finanzas</div>
     <div class="page-desc">Ingresos por cliente, gastos fijos y variables. Solo visible para Bautista y Nicolás.</div>
   </div>
   <div class="page-content">
@@ -1897,17 +1901,17 @@
     <!-- RESUMEN -->
     <div class="fin-resumen">
       <div class="fin-stat">
-        <div class="fin-stat-label">💰 Ingresos del mes</div>
+        <div class="fin-stat-label"><i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Ingresos del mes</div>
         <div class="fin-stat-num green" id="fin-total-ingresos">$0</div>
         <div class="fin-stat-sub" id="fin-sub-ingresos">Este mes</div>
       </div>
       <div class="fin-stat">
-        <div class="fin-stat-label">📤 Gastos del mes</div>
+        <div class="fin-stat-label"><i class="ti ti-send" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Gastos del mes</div>
         <div class="fin-stat-num red" id="fin-total-gastos">$0</div>
         <div class="fin-stat-sub" id="fin-sub-gastos">Este mes</div>
       </div>
       <div class="fin-stat">
-        <div class="fin-stat-label">📊 Resultado neto</div>
+        <div class="fin-stat-label"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Resultado neto</div>
         <div class="fin-stat-num blue" id="fin-neto">$0</div>
         <div class="fin-stat-sub" id="fin-sub-neto">Ingresos − Gastos</div>
       </div>
@@ -1916,7 +1920,7 @@
     <!-- GRAFICOS -->
     <div class="fin-charts-row">
       <div class="fin-chart-box">
-        <div class="fin-chart-title">📈 Evolución mensual</div>
+        <div class="fin-chart-title"><i class="ti ti-chart-line" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Evolución mensual</div>
         <div class="fin-bars" id="fin-chart-bars">
           <div style="color:var(--text3);font-size:13px;margin:auto">Cargando datos...</div>
         </div>
@@ -1926,7 +1930,7 @@
         </div>
       </div>
       <div class="fin-pie-box">
-        <div class="fin-chart-title">🥧 Distribución del mes</div>
+        <div class="fin-chart-title"><i class="ti ti-chart-pie" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Distribución del mes</div>
         <div class="fin-pie-wrap" id="fin-pie-wrap">
           <div style="color:var(--text3);font-size:13px;margin:auto">Cargando...</div>
         </div>
@@ -1934,7 +1938,7 @@
     </div>
 
     <!-- POR CLIENTE -->
-    <div class="fin-chart-title" style="margin-bottom:12px">👥 Ingresos por cliente (mes actual)</div>
+    <div class="fin-chart-title" style="margin-bottom:12px"><i class="ti ti-users" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Ingresos por cliente (mes actual)</div>
     <div class="fin-clientes-grid" id="fin-clientes-grid">
       <div style="color:var(--text3);font-size:13px">Cargando...</div>
     </div>
@@ -1983,8 +1987,8 @@
   <div class="fin-modal">
     <div class="fin-modal-title" id="fin-modal-title">+ Nuevo registro</div>
     <div class="fin-tab-row">
-      <button class="fin-tab active-ingreso" id="fin-tab-ingreso" onclick="setFinTipo('ingreso')">💰 Ingreso</button>
-      <button class="fin-tab" id="fin-tab-gasto" onclick="setFinTipo('gasto')">📤 Gasto</button>
+      <button class="fin-tab active-ingreso" id="fin-tab-ingreso" onclick="setFinTipo('ingreso')"><i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Ingreso</button>
+      <button class="fin-tab" id="fin-tab-gasto" onclick="setFinTipo('gasto')"><i class="ti ti-send" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Gasto</button>
     </div>
     <div class="form-group">
       <label class="form-label">Concepto *</label>
@@ -2037,7 +2041,7 @@
     <div class="panel" id="panel-seguimiento">
   <div class="page-header">
     <div class="page-eyebrow">Privado — Bau y Nico</div>
-    <div class="page-title">🔒 Rendimiento de Empleados</div>
+    <div class="page-title"><i class="ti ti-lock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Rendimiento de Empleados</div>
     <div class="page-desc">Calificación semanal y mensual del equipo. Puntajes por categoría del 1 al 5.</div>
   </div>
   <div class="page-content">
@@ -2045,7 +2049,7 @@
     <!-- MÉTRICAS VISUALES -->
     <div class="rend-metrics-section">
       <div class="rend-metrics-header">
-        <div class="section-title" style="margin-bottom:0">📊 Métricas del mes</div>
+        <div class="section-title" style="margin-bottom:0"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Métricas del mes</div>
         <select class="seg-select" id="metrics-mes-filter" onchange="renderMetrics()">
           <option value="">Seleccioná un mes...</option>
         </select>
@@ -2124,11 +2128,11 @@
 
     <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Calificaciones (1 al 5)</div>
 
-    <div class="rend-score-input"><span class="rend-score-label">🚀 Proactividad</span><div class="rend-score-btns" id="rm-btns-proactividad"></div></div>
-    <div class="rend-score-input"><span class="rend-score-label">🎨 Creatividad</span><div class="rend-score-btns" id="rm-btns-creatividad"></div></div>
-    <div class="rend-score-input"><span class="rend-score-label">✅ Responsabilidad</span><div class="rend-score-btns" id="rm-btns-responsabilidad"></div></div>
-    <div class="rend-score-input"><span class="rend-score-label">💬 Comunicación</span><div class="rend-score-btns" id="rm-btns-comunicacion"></div></div>
-    <div class="rend-score-input"><span class="rend-score-label">🔧 Resolución</span><div class="rend-score-btns" id="rm-btns-resolucion"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label"><i class="ti ti-rocket" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--orange)"></i> Proactividad</span><div class="rend-score-btns" id="rm-btns-proactividad"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label"><i class="ti ti-palette" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Creatividad</span><div class="rend-score-btns" id="rm-btns-creatividad"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label"><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Responsabilidad</span><div class="rend-score-btns" id="rm-btns-responsabilidad"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label"><i class="ti ti-message-circle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Comunicación</span><div class="rend-score-btns" id="rm-btns-comunicacion"></div></div>
+    <div class="rend-score-input"><span class="rend-score-label"><i class="ti ti-settings" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Resolución</span><div class="rend-score-btns" id="rm-btns-resolucion"></div></div>
 
     <div class="rend-avg-display" id="rm-avg-display">3.0</div>
     <div class="rend-avg-label">Promedio general</div>
@@ -2166,9 +2170,9 @@
           <div class="meeting-header"><div><div class="meeting-title">Reunión 1:1 Bautista + Lourdes</div><div class="meeting-meta">Viernes · 20 minutos</div></div><span class="badge badge-gold">1:1</span></div>
           <div class="card-body" style="margin-bottom:14px">Ella presenta sus ideas de la semana. No para reportar, sino para que sepa que las ideas se esperan y se discuten.</div>
           <ul class="checklist">
-            <li><div class="check-dot">✓</div>Qué publicó en sus cuentas esta semana</li>
-            <li><div class="check-dot">✓</div>Qué está funcionando y qué no</li>
-            <li><div class="check-dot">✓</div>Al menos 1 idea que propone para la semana siguiente</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Qué publicó en sus cuentas esta semana</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Qué está funcionando y qué no</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Al menos 1 idea que propone para la semana siguiente</li>
           </ul>
         </div>
         <div class="meeting-card">
@@ -2186,7 +2190,7 @@
         <div class="page-desc">Cada empleado completa esta plantilla el último día del mes. Obligatoria. La sección 5 es la más importante.</div>
       </div>
       <div class="page-content">
-        <div class="alert alert-warning"><div class="alert-icon">⚠️</div><div>Un empleado que escribe "haría diferente X" está pensando. Uno que escribe "todo bien" todavía no entendió la dinámica.</div></div>
+        <div class="alert alert-warning"><div class="alert-icon"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️</div><div>Un empleado que escribe "haría diferente X" está pensando. Uno que escribe "todo bien" todavía no entendió la dinámica.</div></div>
         <div class="section-title" style="margin-top:24px">Plantilla — copiar y pegar en Notion</div>
         <div class="code-block" id="informe-code"># Informe Mensual — [Nombre] — [Mes Año]
 
@@ -2212,8 +2216,8 @@
 → [Reflexión personal. Sin filtro.]
         <button class="copy-btn" onclick="copyInforme()">Copiar</button></div>
         <div class="grid2" style="margin-top:24px">
-          <div class="card"><div class="card-header"><div class="card-icon">📋</div><div><div class="card-title">Secciones 1, 2 y 3</div><div class="card-subtitle">Ejecución</div></div></div><div class="card-body" style="margin-top:10px">Muestran si el empleado cumplió y si tiene consciencia de los resultados.</div></div>
-          <div class="card"><div class="card-header"><div class="card-icon">💡</div><div><div class="card-title">Secciones 4 y 5</div><div class="card-subtitle">Pensamiento estratégico</div></div></div><div class="card-body" style="margin-top:10px">Acá se ve quién realmente está pensando en el negocio.</div></div>
+          <div class="card"><div class="card-header"><div class="card-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="card-title">Secciones 1, 2 y 3</div><div class="card-subtitle">Ejecución</div></div></div><div class="card-body" style="margin-top:10px">Muestran si el empleado cumplió y si tiene consciencia de los resultados.</div></div>
+          <div class="card"><div class="card-header"><div class="card-icon"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="card-title">Secciones 4 y 5</div><div class="card-subtitle">Pensamiento estratégico</div></div></div><div class="card-body" style="margin-top:10px">Acá se ve quién realmente está pensando en el negocio.</div></div>
         </div>
       </div>
     </div>
@@ -2246,22 +2250,22 @@
       <div class="page-header">
         <div class="page-eyebrow">Balodi Marketing</div>
         <div class="welcome-msg">Bienvenido de vuelta,</div>
-        <div class="welcome-name" id="dash-welcome-name">👋</div>
+        <div class="welcome-name" id="dash-welcome-name"><i class="ti ti-hand-stop" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
         <div class="page-desc">Tu panel central de operaciones. Todo lo que necesitás saber de un vistazo.</div>
       </div>
       <div class="page-content">
         <div class="dash-buttons-row">
           <button class="dash-task-btn" onclick="go('tareas')">
-            ✅ Ver tareas pendientes <span class="dash-task-count" id="dash-task-count">...</span>
+            <i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Ver tareas pendientes <span class="dash-task-count" id="dash-task-count">...</span>
           </button>
           <button class="dash-ideas-btn" id="dash-ideas-btn" onclick="go('banco')" style="display:none">
-            💡 Ideas nuevas <span class="dash-ideas-count" id="dash-ideas-count">0</span>
+            <i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Ideas nuevas <span class="dash-ideas-count" id="dash-ideas-count">0</span>
           </button>
         </div>
 
         <div class="dash-top">
           <div class="dash-pending-box">
-            <div class="dash-pending-title">⚡ Tareas pendientes del equipo</div>
+            <div class="dash-pending-title"><i class="ti ti-bolt" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i> Tareas pendientes del equipo</div>
             <div class="dash-pending-list" id="dash-pending-list">
               <div class="dash-pending-empty">Cargando...</div>
             </div>
@@ -2270,12 +2274,12 @@
           <div class="dash-quick-box">
             <div class="dash-quick-title">Accesos rápidos</div>
             <div class="quick-grid">
-              <div class="quick-card" onclick="go('tareas')"><div class="quick-icon">✅</div><div class="quick-label">Tareas</div></div>
-              <div class="quick-card" onclick="go('banco')"><div class="quick-icon">💡</div><div class="quick-label">Ideas</div></div>
-              <div class="quick-card" onclick="go('calendario')"><div class="quick-icon">📅</div><div class="quick-label">Calendario</div></div>
-              <div class="quick-card" onclick="go('clientes')"><div class="quick-icon">📁</div><div class="quick-label">Clientes</div></div>
-              <div class="quick-card" onclick="go('reuniones')"><div class="quick-icon">🤝</div><div class="quick-label">Reuniones</div></div>
-              <div class="quick-card" onclick="go('informe')"><div class="quick-icon">📊</div><div class="quick-label">Informe</div></div>
+              <div class="quick-card" onclick="go('tareas')"><div class="quick-icon"><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div><div class="quick-label">Tareas</div></div>
+              <div class="quick-card" onclick="go('banco')"><div class="quick-icon"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="quick-label">Ideas</div></div>
+              <div class="quick-card" onclick="go('calendario')"><div class="quick-icon"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="quick-label">Calendario</div></div>
+              <div class="quick-card" onclick="go('clientes')"><div class="quick-icon"><i class="ti ti-folder" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="quick-label">Clientes</div></div>
+              <div class="quick-card" onclick="go('reuniones')"><div class="quick-icon"><i class="ti ti-heart-handshake" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="quick-label">Reuniones</div></div>
+              <div class="quick-card" onclick="go('informe')"><div class="quick-icon"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="quick-label">Informe</div></div>
             </div>
           </div>
         </div>
@@ -2290,7 +2294,7 @@
 
         <!-- FEED DE ACTIVIDAD -->
         <div class="feed-box">
-          <div class="feed-title">🕐 Actividad reciente</div>
+          <div class="feed-title"><i class="ti ti-clock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Actividad reciente</div>
           <div class="feed-list" id="feed-list">
             <div class="feed-empty">Cargando actividad...</div>
           </div>
@@ -2343,47 +2347,47 @@
         <div class="section-title" style="margin-top:8px">Balodi — Objetivos generales</div>
         <div class="obj-card">
           <div class="obj-header">
-            <div class="obj-icon">🚀</div>
+            <div class="obj-icon"><i class="ti ti-rocket" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--orange)"></i></div>
             <div><div class="obj-title">Escalar la agencia</div><div class="obj-sub">Objetivo permanente</div></div>
             <span class="badge badge-orange">Estratégico</span>
           </div>
           <ul class="checklist" style="margin-top:12px">
-            <li><div class="check-dot">✓</div>Conseguir clientes más grandes y con mayor presupuesto</li>
-            <li><div class="check-dot">✓</div>Construir la marca personal de Bautista en paralelo a Balodi</li>
-            <li><div class="check-dot">✓</div>Generar contenido de Balodi que entretenga y venda indirectamente</li>
-            <li><div class="check-dot">✓</div>Ser reconocidos por creatividad y estrategia, no solo por ejecución</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Conseguir clientes más grandes y con mayor presupuesto</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Construir la marca personal de Bautista en paralelo a Balodi</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Generar contenido de Balodi que entretenga y venda indirectamente</li>
+            <li><div class="check-dot"><i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div>Ser reconocidos por creatividad y estrategia, no solo por ejecución</li>
           </ul>
         </div>
 
         <div class="section-title" style="margin-top:24px">Este mes — Foco del equipo</div>
         <div class="obj-month-grid">
           <div class="obj-month-card">
-            <div class="obj-month-icon">📋</div>
+            <div class="obj-month-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
             <div class="obj-month-title">Lourdes</div>
             <div class="obj-month-desc">Tener TODO el contenido del mes listo antes del día 5 y proponer al menos 1 campaña disruptiva por cliente</div>
             <div class="obj-month-status pending">En curso</div>
           </div>
           <div class="obj-month-card">
-            <div class="obj-month-icon">🎬</div>
+            <div class="obj-month-icon"><i class="ti ti-movie" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
             <div class="obj-month-title">Enzo</div>
             <div class="obj-month-desc">Entregar todas las ediciones en tiempo y presentar 2 ideas de formato nuevo para Balodi o algún cliente</div>
             <div class="obj-month-status pending">En curso</div>
           </div>
           <div class="obj-month-card">
-            <div class="obj-month-icon">✨</div>
+            <div class="obj-month-icon"><i class="ti ti-sparkles" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
             <div class="obj-month-title">Brunela</div>
             <div class="obj-month-desc">Completar el proyecto asignado con brief definido y entregar informe de cierre con aprendizajes</div>
             <div class="obj-month-status pending">En curso</div>
           </div>
           <div class="obj-month-card">
-            <div class="obj-month-icon">📣</div>
+            <div class="obj-month-icon"><i class="ti ti-speakerphone" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
             <div class="obj-month-title">Balodi (cuenta)</div>
             <div class="obj-month-desc">Al menos 1 acción de contenido disruptiva o campaña BTL que genere conversación y nuevos seguidores</div>
             <div class="obj-month-status pending">En curso</div>
           </div>
         </div>
 
-        <div class="alert alert-warning" style="margin-top:24px"><div class="alert-icon">⚠️</div><div>Los objetivos se actualizan al inicio de cada mes en la reunión de equipo. Si algo cambió en el mes, Bautista lo actualiza acá para que todos estén alineados.</div></div>
+        <div class="alert alert-warning" style="margin-top:24px"><div class="alert-icon"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️</div><div>Los objetivos se actualizan al inicio de cada mes en la reunión de equipo. Si algo cambió en el mes, Bautista lo actualiza acá para que todos estén alineados.</div></div>
       </div>
     </div>
 
@@ -2392,7 +2396,7 @@
 <div class="panel" id="panel-alianzas">
   <div class="page-header">
     <div class="page-eyebrow">Privado — Bau y Nico</div>
-    <div class="page-title">🤝 Red de Alianzas</div>
+    <div class="page-title"><i class="ti ti-heart-handshake" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Red de Alianzas</div>
     <div class="page-desc">Estudios contables, jurídicos y otros referentes. Meta Ads gratis 3 meses · 30% comisión por cliente cerrado.</div>
   </div>
   <div class="page-content">
@@ -2418,7 +2422,7 @@
   <div style="background:var(--bg2);border-radius:18px;padding:28px;width:100%;max-width:560px;margin:0 auto;position:relative" onclick="event.stopPropagation()">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--text)" id="alianza-modal-title">Nueva alianza</div>
-      <button onclick="closeAlianzaModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);line-height:1">✕</button>
+      <button onclick="closeAlianzaModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);line-height:1"><i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></button>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div style="grid-column:1/-1">
@@ -2528,7 +2532,7 @@
     <!-- TASK FORM MODAL -->
     <div class="task-modal-overlay" id="task-modal">
       <div class="task-modal">
-        <div class="task-modal-title">➕ Nueva tarea</div>
+        <div class="task-modal-title"><i class="ti ti-plus" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nueva tarea</div>
         <div class="form-group">
           <label class="form-label">Tarea *</label>
           <input class="form-input" id="t-tarea" type="text" placeholder="Ej: Armar 3 reels para Hielo Rosario">
@@ -2538,7 +2542,7 @@
             <label class="form-label">Responsable * <span style="font-size:10px;color:var(--text3);font-weight:400">(podés elegir varios)</span></label>
             <div style="border:1.5px solid var(--border2);border-radius:10px;overflow:hidden;background:var(--bg4)">
               <div onclick="toggleTodosResponsable()" id="t-responsable-todos" style="padding:8px 12px;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;transition:background 0.15s">
-                <span id="t-todos-check" style="font-size:16px">☐</span> Todos
+                <span id="t-todos-check" style="font-size:16px"><i class="ti ti-square" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></span> Todos
               </div>
               <select class="form-select" id="t-responsable" multiple style="border:none;border-radius:0;height:110px;background:var(--bg4);padding:4px 8px">
                 <option>Lourdes</option>
@@ -2593,7 +2597,7 @@
 <!-- PASSWORD MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
-    <div class="modal-icon">🔒</div>
+    <div class="modal-icon"><i class="ti ti-lock" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
     <div class="modal-title">Sección privada</div>
     <div class="modal-desc">Esta sección es solo para Bautista y Nicolás. Ingresá la contraseña para continuar.</div>
     <input class="modal-input" type="password" id="modal-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPassword()">
@@ -2733,7 +2737,7 @@
     const wn = document.getElementById('dash-welcome-name');
     if (av) { av.textContent = currentUser.avatar; av.style.background = currentUser.color; }
     if (nm) nm.textContent = currentUser.name;
-    if (wn) wn.textContent = '¡Hola, ' + currentUser.name + '! 👋';
+    if (wn) wn.innerHTML = '¡Hola, ' + currentUser.name + '! 👋';
     const tb = document.getElementById('topbar-bar');
     if (tb) tb.style.display = 'flex';
 
@@ -2839,7 +2843,7 @@
     const text = document.getElementById('informe-code').innerText.replace('Copiar', '').trim();
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.querySelector('.copy-btn');
-      btn.textContent = '✓ Copiado';
+      btn.textContent = '<i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Copiado';
       setTimeout(() => btn.textContent = 'Copiar', 2000);
     });
   }
@@ -2849,7 +2853,7 @@
     document.getElementById('task-modal').classList.add('open');
     document.getElementById('t-tarea').value = '';
     document.getElementById('t-responsable').selectedIndex = -1;
-    document.getElementById('t-todos-check').textContent = '☐';
+    document.getElementById('t-todos-check').textContent = '<i class="ti ti-square" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>';
     const todosDiv = document.getElementById('t-responsable-todos');
     if (todosDiv) { todosDiv.style.background = ''; todosDiv.style.color = ''; }
     document.getElementById('t-prioridad').value = 'Media';
@@ -2889,7 +2893,7 @@
     const todosDiv = document.getElementById('t-responsable-todos');
     const todosSelected = [...sel.options].every(o => o.selected);
     [...sel.options].forEach(o => o.selected = !todosSelected);
-    check.textContent = todosSelected ? '☐' : '☑';
+    check.textContent = todosSelected ? '<i class="ti ti-square" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>' : '<i class="ti ti-checkbox" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i>';
     todosDiv.style.background = todosSelected ? '' : 'var(--orange-light)';
     todosDiv.style.color = todosSelected ? '' : 'var(--orange)';
   }
@@ -2950,7 +2954,7 @@
       updateResumen();
       buildFeed();
     } catch(e) {
-      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las tareas. Verificá la conexión.</div>';
+      container.innerHTML = '<div class="tasks-error"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudieron cargar las tareas. Verificá la conexión.</div>';
     }
   }
 
@@ -2969,7 +2973,7 @@
     else if (!['todos','pendiente','hecho'].includes(currentFilter)) tasks = tasks.filter(t => t.responsable === currentFilter);
 
     if (!tasks.length) {
-      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">✅</div><div>No hay tareas en esta categoría</div></div>';
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i></div><div>No hay tareas en esta categoría</div></div>';
       return;
     }
 
@@ -2984,27 +2988,27 @@
         const hoy = new Date(); hoy.setHours(0,0,0,0);
         const venc = new Date(t.vencimiento + 'T00:00:00');
         const diff = Math.floor((venc - hoy) / 86400000);
-        if (diff < 0) { vencClass = 'venc-vencida'; vencLabel = '⚠️ Vencida'; cardVencClass = 'vencida'; }
+        if (diff < 0) { vencClass = 'venc-vencida'; vencLabel = '<i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Vencida'; cardVencClass = 'vencida'; }
         else if (diff === 0) { vencClass = 'venc-hoy'; vencLabel = '🔥 Vence hoy'; cardVencClass = 'vence-hoy'; }
         else if (diff === 1) { vencClass = 'venc-hoy'; vencLabel = '⏰ Vence mañana'; cardVencClass = 'vence-hoy'; }
-        else { vencClass = 'venc-ok'; vencLabel = '📅 ' + venc.toLocaleDateString('es-AR'); }
+        else { vencClass = 'venc-ok'; vencLabel = '<i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ' + venc.toLocaleDateString('es-AR'); }
       }
       return `<div class="task-card ${isDone ? 'done' : ''} ${cardVencClass}">
         <div class="task-check ${isDone ? 'checked' : ''}" onclick="toggleTask(${globalIdx})">
-          ${isDone ? '✓' : ''}
+          ${isDone ? '<i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i>' : ''}
         </div>
         <div class="task-body">
           <div class="task-name">${t.tarea}</div>
           <div class="task-meta">
             <span class="badge badge-blue" style="font-size:11px">${t.responsable}</span>
             <span class="task-tag ${prioClass}">${t.prioridad}</span>
-            ${t.cliente && t.cliente !== '—' ? `<span class="task-client">📁 ${t.cliente}</span>` : ''}
-            <span class="task-date">📅 ${t.fecha}</span>
+            ${t.cliente && t.cliente !== '—' ? `<span class="task-client"><i class="ti ti-folder" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${t.cliente}</span>` : ''}
+            <span class="task-date"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${t.fecha}</span>
             ${vencLabel ? `<span class="task-venc ${vencClass}">${vencLabel}</span>` : ''}
           </div>
           ${t.nota && t.nota !== '—' ? `<div class="task-note">${t.nota}</div>` : ''}
           <button class="task-comments-btn" onclick="toggleComments(${globalIdx}, this)">
-            💬 <span class="comments-count-${globalIdx}">Comentarios</span>
+            <i class="ti ti-message-circle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> <span class="comments-count-${globalIdx}">Comentarios</span>
           </button>
           <div class="task-comments-area" id="comments-area-${globalIdx}">
             <div class="comments-loading" id="comments-list-${globalIdx}">Cargando...</div>
@@ -3014,7 +3018,7 @@
             </div>
           </div>
         </div>
-        <button class="delete-btn" onclick="deleteTask(${globalIdx})" title="Eliminar tarea">🗑️</button>
+        <button class="delete-btn" onclick="deleteTask(${globalIdx})" title="Eliminar tarea"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>
       </div>`;
     }).join('') + '</div>';
   }
@@ -3071,7 +3075,7 @@
     if (list) {
       const pendingTasks = allTasks.filter(t => t.estado !== 'hecho').slice(0, 5);
       if (!pendingTasks.length) {
-        list.innerHTML = '<div class="dash-pending-empty">✅ Todo al día</div>';
+        list.innerHTML = '<div class="dash-pending-empty"><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Todo al día</div>';
       } else {
         list.innerHTML = pendingTasks.map(t => `
           <div class="dash-pending-item">
@@ -3177,7 +3181,7 @@
       updateResumen();
       buildFeed();
     } catch(e) {
-      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las ideas.</div>';
+      container.innerHTML = '<div class="tasks-error"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudieron cargar las ideas.</div>';
     }
   }
 
@@ -3204,7 +3208,7 @@
     let ideas = [...allIdeas];
     if (ideasFilter !== 'todos') ideas = ideas.filter(i => i.categoria === ideasFilter);
     if (!ideas.length) {
-      container.innerHTML = '<div class="ideas-empty"><div class="ideas-empty-icon">💡</div><div>No hay ideas todavía. ¡Sé el primero en tirar una!</div></div>';
+      container.innerHTML = '<div class="ideas-empty"><div class="ideas-empty-icon"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div>No hay ideas todavía. ¡Sé el primero en tirar una!</div></div>';
       return;
     }
     container.innerHTML = '<div class="ideas-grid">' + ideas.map((idea, i) => {
@@ -3213,7 +3217,7 @@
         <div class="idea-header">
           <span class="idea-cat ${getCatClass(idea.categoria)}">${idea.categoria}</span>
           <span class="idea-para">${idea.para}</span>
-          <button class="delete-btn" onclick="deleteIdea(${globalIdx})" title="Eliminar idea" style="margin-left:auto">🗑️</button>
+          <button class="delete-btn" onclick="deleteIdea(${globalIdx})" title="Eliminar idea" style="margin-left:auto"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>
         </div>
         <div class="idea-text">${idea.idea}</div>
         <div class="idea-footer">
@@ -3286,7 +3290,7 @@
       updateResumen();
       buildFeed();
     } catch(e) {
-      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las ideas creativas.</div>';
+      container.innerHTML = '<div class="tasks-error"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudieron cargar las ideas creativas.</div>';
     }
   }
 
@@ -3307,13 +3311,13 @@
     let ideas = [...allCreativas];
     if (creativasFilter !== 'todos') ideas = ideas.filter(i => i.categoria === creativasFilter);
     if (!ideas.length) {
-      container.innerHTML = '<div class="ideas-empty"><div class="ideas-empty-icon">✨</div><div>No hay ideas creativas todavía. ¡Tirá la primera!</div></div>';
+      container.innerHTML = '<div class="ideas-empty"><div class="ideas-empty-icon"><i class="ti ti-sparkles" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div>No hay ideas creativas todavía. ¡Tirá la primera!</div></div>';
       return;
     }
     container.innerHTML = '<div class="ideas-grid">' + ideas.map((idea) => {
       const globalIdx = allCreativas.indexOf(idea);
       const deleteBtn = canDelete()
-        ? `<button class="delete-btn" onclick="deleteCreativa(${globalIdx})" title="Eliminar idea">🗑️</button>`
+        ? `<button class="delete-btn" onclick="deleteCreativa(${globalIdx})" title="Eliminar idea"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>`
         : '';
       return `<div class="idea-card">
         <div class="idea-header">
@@ -3505,7 +3509,7 @@
       updateFinResumen();
     } catch(e) {
       document.getElementById('fin-tbody').innerHTML =
-        '<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--red)">⚠️ No se pudo cargar.</td></tr>';
+        '<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--red)"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudo cargar.</td></tr>';
     }
   }
 
@@ -3561,7 +3565,7 @@
         <td>${r.fecha || '—'}</td>
         <td class="${esIngreso ? 'fin-monto-ingreso' : 'fin-monto-gasto'}">${esIngreso ? '+' : '-'}$${r.monto.toLocaleString('es-AR')}</td>
         <td>${estadoBadge}</td>
-        <td><button class="delete-btn" onclick="deleteFinanza(${globalIdx})">🗑️</button></td>
+        <td><button class="delete-btn" onclick="deleteFinanza(${globalIdx})"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button></td>
       </tr>`;
     }).join('');
   }
@@ -3881,9 +3885,9 @@
     container.innerHTML = allPilares.map((p, i) => `
       <div class="obj-card" style="margin-bottom:12px">
         <div class="obj-header">
-          <div class="obj-icon">${p.icono || '🏛️'}</div>
+          <div class="obj-icon">${p.icono || '<i class="ti ti-building" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️'}</div>
           <div><div class="obj-title">${p.titulo}</div></div>
-          <button class="delete-btn" onclick="deletePilar(${i})" style="margin-left:auto">🗑️</button>
+          <button class="delete-btn" onclick="deletePilar(${i})" style="margin-left:auto"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>
         </div>
         ${p.desc ? `<div style="font-size:13px;color:var(--text2);margin-top:10px;line-height:1.6">${p.desc}</div>` : ''}
       </div>`).join('');
@@ -3892,7 +3896,7 @@
   function editObjetivo(clave) {
     const config = oaConfig[clave];
     const data = allObjetivos[clave];
-    document.getElementById('oa-modal-title').textContent = '✏️ ' + config.label;
+    document.getElementById('oa-modal-title').textContent = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ ' + config.label;
     document.getElementById('oa-clave').value = clave;
     document.getElementById('oa-valor').value = data?.valor || '';
     document.getElementById('oa-desc').value = data?.descripcion || config.desc;
@@ -3939,7 +3943,7 @@
     const btn = document.getElementById('pilar-save-btn');
     btn.textContent = 'Guardando...'; btn.disabled = true;
     const clave = 'pilar_' + Date.now();
-    const icono = document.getElementById('pl-icono').value.trim() || '🏛️';
+    const icono = document.getElementById('pl-icono').value.trim() || '<i class="ti ti-building" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️';
     const desc = document.getElementById('pl-desc').value.trim();
     const data = { clave, valor: titulo, descripcion: icono, desc };
     try {
@@ -3978,7 +3982,7 @@
       renderPipeline();
     } catch(e) {
       document.getElementById('pipe-tbody').innerHTML =
-        '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--red)">⚠️ No se pudo cargar.</td></tr>';
+        '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--red)"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudo cargar.</td></tr>';
     }
   }
 
@@ -4004,7 +4008,7 @@
         return `<div class="pipe-card pipe-${colId}">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px">
             <div class="pipe-card-name">${r.nombre}</div>
-            <button class="delete-btn" onclick="deletePipeline(${globalIdx})" style="font-size:12px;flex-shrink:0">🗑️</button>
+            <button class="delete-btn" onclick="deletePipeline(${globalIdx})" style="font-size:12px;flex-shrink:0"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>
           </div>
           <div class="pipe-card-servicio">${r.servicio || '—'}</div>
           <div class="pipe-card-footer">
@@ -4012,10 +4016,10 @@
           </div>
           <div style="margin-top:8px">
             <select class="pipe-estado-select ${selClass}" onchange="updatePipeEstado(${globalIdx}, this.value, this)">
-              <option value="Contactado" ${r.estado==='Contactado'?'selected':''}>📞 Contactado</option>
-              <option value="Reunión" ${r.estado==='Reunión'?'selected':''}>🤝 Reunión</option>
-              <option value="Propuesta" ${r.estado==='Propuesta'?'selected':''}>📄 Propuesta</option>
-              <option value="Cerrado" ${r.estado==='Cerrado'?'selected':''}>✅ Cerrado</option>
+              <option value="Contactado" ${r.estado==='Contactado'?'selected':''}><i class="ti ti-phone" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Contactado</option>
+              <option value="Reunión" ${r.estado==='Reunión'?'selected':''}><i class="ti ti-heart-handshake" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Reunión</option>
+              <option value="Propuesta" ${r.estado==='Propuesta'?'selected':''}><i class="ti ti-file-text" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Propuesta</option>
+              <option value="Cerrado" ${r.estado==='Cerrado'?'selected':''}><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Cerrado</option>
             </select>
           </div>
         </div>`;
@@ -4035,17 +4039,17 @@
         <td>${r.servicio || '—'}</td>
         <td>
           <select class="pipe-estado-select ${getEstadoSelectClass(r.estado)}" onchange="updatePipeEstado(${i}, this.value, this)">
-            <option value="Contactado" ${r.estado==='Contactado'?'selected':''}>📞 Contactado</option>
-            <option value="Reunión" ${r.estado==='Reunión'?'selected':''}>🤝 Reunión</option>
-            <option value="Propuesta" ${r.estado==='Propuesta'?'selected':''}>📄 Propuesta</option>
-            <option value="Cerrado" ${r.estado==='Cerrado'?'selected':''}>✅ Cerrado</option>
+            <option value="Contactado" ${r.estado==='Contactado'?'selected':''}><i class="ti ti-phone" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Contactado</option>
+            <option value="Reunión" ${r.estado==='Reunión'?'selected':''}><i class="ti ti-heart-handshake" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Reunión</option>
+            <option value="Propuesta" ${r.estado==='Propuesta'?'selected':''}><i class="ti ti-file-text" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Propuesta</option>
+            <option value="Cerrado" ${r.estado==='Cerrado'?'selected':''}><i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Cerrado</option>
           </select>
         </td>
         <td style="color:var(--green);font-weight:700">${r.valor ? '$' + r.valor.toLocaleString('es-AR') : '—'}</td>
         <td>${r.contacto || '—'}</td>
         <td>${r.fecha_contacto || '—'}</td>
         <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.notas || '—'}</td>
-        <td><button class="delete-btn" onclick="deletePipeline(${i})">🗑️</button></td>
+        <td><button class="delete-btn" onclick="deletePipeline(${i})"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button></td>
       </tr>`).join('');
   }
 
@@ -4138,7 +4142,7 @@
       })).filter(r => r.titulo).reverse();
       renderDecisiones();
     } catch(e) {
-      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las decisiones.</div>';
+      container.innerHTML = '<div class="tasks-error"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudieron cargar las decisiones.</div>';
     }
   }
 
@@ -4146,7 +4150,7 @@
     const container = document.getElementById('dec-container');
     if (!container) return;
     if (!allDecisiones.length) {
-      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">📌</div><div>No hay decisiones registradas todavía.</div></div>';
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-pin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div>No hay decisiones registradas todavía.</div></div>';
       return;
     }
     container.innerHTML = allDecisiones.map((d, i) => `
@@ -4154,9 +4158,9 @@
         <div class="dec-header">
           <div>
             <div class="dec-titulo">${d.titulo}</div>
-            <div class="dec-meta">📅 ${d.fecha || '—'} · 👤 ${d.quien || '—'}</div>
+            <div class="dec-meta"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${d.fecha || '—'} · <i class="ti ti-user" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${d.quien || '—'}</div>
           </div>
-          <button class="delete-btn" onclick="deleteDecision(${i})">🗑️</button>
+          <button class="delete-btn" onclick="deleteDecision(${i})"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>
         </div>
         <div class="dec-decision">${d.decision}</div>
         ${d.razonamiento ? `<div class="dec-razonamiento">"${d.razonamiento}"</div>` : ''}
@@ -4396,7 +4400,7 @@
       }).join('');
 
       const mensualBadge = mensual
-        ? `<span style="font-size:11px;background:var(--orange-light);color:var(--orange);padding:2px 8px;border-radius:999px;font-weight:700;margin-left:8px">📆 Mensual: ${Math.round((mensual.puntaje_total||((mensual.proactividad+mensual.creatividad+mensual.responsabilidad+mensual.comunicacion+mensual.resolucion)/5))*10)/10}</span>`
+        ? `<span style="font-size:11px;background:var(--orange-light);color:var(--orange);padding:2px 8px;border-radius:999px;font-weight:700;margin-left:8px"><i class="ti ti-calendar-event" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Mensual: ${Math.round((mensual.puntaje_total||((mensual.proactividad+mensual.creatividad+mensual.responsabilidad+mensual.comunicacion+mensual.resolucion)/5))*10)/10}</span>`
         : '';
 
       return `<div class="metrics-ind-card">
@@ -4426,18 +4430,18 @@
     container.innerHTML = `
       <div class="metrics-general">
         <div class="metrics-bars-box">
-          <div class="metrics-box-title">🏆 Promedio del equipo — ${mes}</div>
+          <div class="metrics-box-title"><i class="ti ti-trophy" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i> Promedio del equipo — ${mes}</div>
           <div class="metrics-emp-bars">${barras}</div>
         </div>
         <div class="metrics-pie-box">
-          <div class="metrics-box-title">🥧 Distribución</div>
+          <div class="metrics-box-title"><i class="ti ti-chart-pie" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Distribución</div>
           <div style="display:flex;align-items:center;gap:14px">
             <canvas id="${pieId}" width="100" height="100"></canvas>
             <div class="metrics-pie-legend">${legend}</div>
           </div>
         </div>
       </div>
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">👤 Detalle por empleado</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px"><i class="ti ti-user" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Detalle por empleado</div>
       <div class="metrics-individual">${individuales}</div>`;
 
     // Dibujar tortas después de que el DOM esté listo
@@ -4474,7 +4478,7 @@
       populateRendMesFilter();
       renderRendimiento();
     } catch(e) {
-      container.innerHTML = '<div class="tasks-error">⚠️ No se pudieron cargar las calificaciones.</div>';
+      container.innerHTML = '<div class="tasks-error"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudieron cargar las calificaciones.</div>';
     }
   }
 
@@ -4501,9 +4505,9 @@
       const scoreClass = avg >= 4 ? 'high' : avg >= 3 ? 'mid' : 'low';
       const initials = r.empleado.substring(0,2).toUpperCase();
       const tipoBadge = r.tipo === 'semana'
-        ? `<span class="rend-tipo-badge rend-tipo-semana">📅 ${r.semana || 'Semanal'}</span>`
-        : `<span class="rend-tipo-badge rend-tipo-mes">📆 Mensual</span>`;
-      const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5-Math.round(n));
+        ? `<span class="rend-tipo-badge rend-tipo-semana"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${r.semana || 'Semanal'}</span>`
+        : `<span class="rend-tipo-badge rend-tipo-mes"><i class="ti ti-calendar-event" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Mensual</span>`;
+      const stars = n => '<i class="ti ti-star-filled" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--orange)"></i>'.repeat(Math.round(n)) + '<i class="ti ti-star" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>'.repeat(5-Math.round(n));
       const globalIdx = allRendimiento.indexOf(r);
       return `<div class="rend-card">
         <div class="rend-header">
@@ -4513,7 +4517,7 @@
             <div class="rend-meta">${r.mes || ''} · ${tipoBadge}</div>
           </div>
           <div class="rend-score-pill ${scoreClass}">${avgRound}</div>
-          <button class="delete-btn" onclick="deleteRendimiento(${globalIdx})" title="Eliminar">🗑️</button>
+          <button class="delete-btn" onclick="deleteRendimiento(${globalIdx})" title="Eliminar"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>
         </div>
         <div class="rend-body">
           <div class="rend-cats">
@@ -4635,18 +4639,18 @@
 
     allTasks.forEach(t => {
       if (t.estado === 'hecho') {
-        events.push({ icon: '✅', iconClass: 'tarea-done', text: `<span>${t.responsable}</span> completó "${t.tarea}"`, fecha: t.fecha });
+        events.push({ icon: '<i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i>', iconClass: 'tarea-done', text: `<span>${t.responsable}</span> completó "${t.tarea}"`, fecha: t.fecha });
       } else {
-        events.push({ icon: '📋', iconClass: 'tarea-new', text: `Nueva tarea para <span>${t.responsable}</span>: "${t.tarea}"`, fecha: t.fecha });
+        events.push({ icon: '<i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>', iconClass: 'tarea-new', text: `Nueva tarea para <span>${t.responsable}</span>: "${t.tarea}"`, fecha: t.fecha });
       }
     });
 
     allIdeas.forEach(i => {
-      events.push({ icon: '💡', iconClass: 'idea-new', text: `<span>${i.quien}</span> tiró una idea: "${i.idea.substring(0,55)}${i.idea.length>55?'...':''}"`, fecha: i.fecha });
+      events.push({ icon: '<i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>', iconClass: 'idea-new', text: `<span>${i.quien}</span> tiró una idea: "${i.idea.substring(0,55)}${i.idea.length>55?'...':''}"`, fecha: i.fecha });
     });
 
     allCreativas.forEach(i => {
-      events.push({ icon: '✨', iconClass: 'creativa-new', text: `<span>${i.quien}</span> agregó idea creativa: "${i.idea.substring(0,55)}${i.idea.length>55?'...':''}"`, fecha: i.fecha });
+      events.push({ icon: '<i class="ti ti-sparkles" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>', iconClass: 'creativa-new', text: `<span>${i.quien}</span> agregó idea creativa: "${i.idea.substring(0,55)}${i.idea.length>55?'...':''}"`, fecha: i.fecha });
     });
 
     const parseDate = d => {
@@ -4721,7 +4725,7 @@
       renderAlianzas();
     } catch(e) {
       console.error('Error alianzas:', e);
-      container.innerHTML = '<div class="rend-loading">❌ Error cargando alianzas.</div>';
+      container.innerHTML = '<div class="rend-loading"><i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i> Error cargando alianzas.</div>';
     }
   }
 
@@ -4742,12 +4746,12 @@
     const noInteresado = allAlianzas.filter(a => a.estado === 'No interesado').length;
     const filtroActual = document.getElementById('alianza-filter-estado')?.value || '';
     if (kpisEl) kpisEl.innerHTML = [
-      { val: total, label: 'Total', icon: '🤝', filtro: '' },
-      { val: sinContactar, label: 'Sin contactar', icon: '📋', filtro: 'Sin contactar' },
-      { val: reunion, label: 'Reunión agendada', icon: '📅', filtro: 'Reunión agendada' },
-      { val: propuesta, label: 'Propuesta enviada', icon: '📨', filtro: 'Propuesta enviada' },
-      { val: activos, label: 'Aliado activo', icon: '✅', filtro: 'Aliado activo' },
-      { val: noInteresado, label: 'No interesado', icon: '❌', filtro: 'No interesado' },
+      { val: total, label: 'Total', icon: '<i class="ti ti-heart-handshake" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>', filtro: '' },
+      { val: sinContactar, label: 'Sin contactar', icon: '<i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>', filtro: 'Sin contactar' },
+      { val: reunion, label: 'Reunión agendada', icon: '<i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>', filtro: 'Reunión agendada' },
+      { val: propuesta, label: 'Propuesta enviada', icon: '<i class="ti ti-mail-forward" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>', filtro: 'Propuesta enviada' },
+      { val: activos, label: 'Aliado activo', icon: '<i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i>', filtro: 'Aliado activo' },
+      { val: noInteresado, label: 'No interesado', icon: '<i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i>', filtro: 'No interesado' },
     ].map(k => {
       const isActive = filtroActual === k.filtro;
       return `<div class="alianza-kpi" onclick="filtrarAlianzaKPI('${k.filtro}')" style="cursor:pointer;transition:all 0.15s;${isActive ? 'border-color:var(--orange);box-shadow:0 0 0 2px rgba(245,98,10,0.15)' : ''}">
@@ -4765,8 +4769,8 @@
     container.innerHTML = data.map((a, i) => {
       try {
         const estClass = ALIANZA_ESTADO_CLASS[a.estado] || 'est-sin';
-        const reunionBadge = a.tiene_reunion === 'Sí' ? `<span class="alianza-estado est-reunion">📅 Reunión</span>` : '';
-        const cerradoBadge = a.cerrado === 'Sí' ? `<span class="alianza-estado est-activo">🏆 Cerrado</span>` : '';
+        const reunionBadge = a.tiene_reunion === 'Sí' ? `<span class="alianza-estado est-reunion"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Reunión</span>` : '';
+        const cerradoBadge = a.cerrado === 'Sí' ? `<span class="alianza-estado est-activo"><i class="ti ti-trophy" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i> Cerrado</span>` : '';
         const webLink = a.web ? `<a href="${a.web.startsWith('http')?a.web:'https://'+a.web}" target="_blank" style="color:var(--orange)">${a.web}</a>` : '—';
         return `<div class="alianza-card">
           <div class="alianza-header">
@@ -4780,19 +4784,19 @@
             </div>
           </div>
           <div class="alianza-info">
-            <div class="alianza-field"><span>👤 Contacto</span>${a.contacto||'—'}</div>
-            <div class="alianza-field"><span>📧 Email</span>${a.email||'—'}</div>
-            <div class="alianza-field"><span>📱 Teléfono</span>${a.telefono||'—'}</div>
-            <div class="alianza-field"><span>🌐 Web</span>${webLink}</div>
-            <div class="alianza-field"><span>📍 Dirección</span>${a.direccion||'—'}</div>
-            <div class="alianza-field"><span>📅 Fecha contacto</span>${a.fecha_contacto||'—'}</div>
-            ${a.fecha_reunion ? `<div class="alianza-field"><span>🗓 Fecha reunión</span>${a.fecha_reunion}</div>` : ''}
-            ${a.comision ? `<div class="alianza-field"><span>💰 Comisión</span>$${parseFloat(a.comision||0).toLocaleString('es-AR')}</div>` : ''}
+            <div class="alianza-field"><span><i class="ti ti-user" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Contacto</span>${a.contacto||'—'}</div>
+            <div class="alianza-field"><span><i class="ti ti-mail" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Email</span>${a.email||'—'}</div>
+            <div class="alianza-field"><span><i class="ti ti-device-mobile" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Teléfono</span>${a.telefono||'—'}</div>
+            <div class="alianza-field"><span><i class="ti ti-world" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Web</span>${webLink}</div>
+            <div class="alianza-field"><span><i class="ti ti-map-pin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Dirección</span>${a.direccion||'—'}</div>
+            <div class="alianza-field"><span><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Fecha contacto</span>${a.fecha_contacto||'—'}</div>
+            ${a.fecha_reunion ? `<div class="alianza-field"><span><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Fecha reunión</span>${a.fecha_reunion}</div>` : ''}
+            ${a.comision ? `<div class="alianza-field"><span><i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Comisión</span>$${parseFloat(a.comision||0).toLocaleString('es-AR')}</div>` : ''}
           </div>
           ${a.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-style:italic">"${a.notas}"</div>` : ''}
           <div class="alianza-actions">
-            <button class="alianza-btn" onclick="editAlianza(${allAlianzas.indexOf(a)})">✏️ Editar</button>
-            <button class="alianza-btn danger" onclick="deleteAlianza(${allAlianzas.indexOf(a)})">🗑 Eliminar</button>
+            <button class="alianza-btn" onclick="editAlianza(${allAlianzas.indexOf(a)})"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar</button>
+            <button class="alianza-btn danger" onclick="deleteAlianza(${allAlianzas.indexOf(a)})"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Eliminar</button>
           </div>
         </div>`;
       } catch(err) {
@@ -5040,19 +5044,19 @@
             <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:#141414">Reporte de Finanzas</div>
             <div style="font-size:12px;color:#6b6b65;margin-top:4px">${mes !== '' ? mes : 'Todos los períodos'} · Generado el ${new Date().toLocaleDateString('es-AR')}</div>
           </div>
-          <div style="font-size:32px">📊</div>
+          <div style="font-size:32px"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
           <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 20px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#16a34a;margin-bottom:4px">💰 Ingresos</div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#16a34a;margin-bottom:4px"><i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Ingresos</div>
             <div style="font-size:28px;font-weight:800;color:#16a34a">${ingresos}</div>
           </div>
           <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:16px 20px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#dc2626;margin-bottom:4px">📤 Gastos</div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#dc2626;margin-bottom:4px"><i class="ti ti-send" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Gastos</div>
             <div style="font-size:28px;font-weight:800;color:#dc2626">${gastos}</div>
           </div>
           <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px 20px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#2563eb;margin-bottom:4px">📊 Resultado neto</div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#2563eb;margin-bottom:4px"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Resultado neto</div>
             <div style="font-size:28px;font-weight:800;color:#2563eb">${neto}</div>
           </div>
         </div>
@@ -5087,7 +5091,7 @@
     if (mesF) data = data.filter(r => r.mes === mesF);
     if (!data.length) { alert('No hay calificaciones para mostrar con los filtros actuales.'); return; }
 
-    const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
+    const stars = n => '<i class="ti ti-star-filled" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--orange)"></i>'.repeat(Math.round(n)) + '<i class="ti ti-star" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>'.repeat(5 - Math.round(n));
 
     // ---- Capturar gráficos si hay métricas visibles ----
     let metricsSection = '';
@@ -5145,7 +5149,7 @@
             <div style="color:#6b6b65;font-weight:700">${Math.round(c.val*10)/10} · ${pct}%</div>
           </div>`;
         }).join('');
-        const mensualBadge = mensual ? ` · 📆 ${Math.round((mensual.puntaje_total||((mensual.proactividad+mensual.creatividad+mensual.responsabilidad+mensual.comunicacion+mensual.resolucion)/5))*10)/10}` : '';
+        const mensualBadge = mensual ? ` · <i class="ti ti-calendar-event" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${Math.round((mensual.puntaje_total||((mensual.proactividad+mensual.creatividad+mensual.responsabilidad+mensual.comunicacion+mensual.resolucion)/5))*10)/10}` : '';
         const sc3 = e.avg >= 4 ? '#16a34a' : e.avg >= 3 ? '#d97706' : '#dc2626';
         return `<div style="background:white;border:1px solid #e5e5e5;border-radius:12px;padding:18px;break-inside:avoid;margin-bottom:12px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e5e5e5">
@@ -5163,18 +5167,18 @@
       }).join('');
       metricsSection = `
         <div style="margin-bottom:28px">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:12px">📊 Métricas — ${metricsMes}</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:12px"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Métricas — ${metricsMes}</div>
           <div style="display:grid;grid-template-columns:1fr 200px;gap:16px;margin-bottom:20px">
             <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:18px">
-              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e;margin-bottom:12px">🏆 Promedio del equipo</div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e;margin-bottom:12px"><i class="ti ti-trophy" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i> Promedio del equipo</div>
               ${barrasHtml}
             </div>
             <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px">
-              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e">🥧 Distribución</div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e"><i class="ti ti-chart-pie" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Distribución</div>
               ${pieImg}
             </div>
           </div>
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e;margin-bottom:10px">👤 Detalle por empleado</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#a8a89e;margin-bottom:10px"><i class="ti ti-user" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Detalle por empleado</div>
           ${indCards}
         </div>
         <div style="height:1px;background:#e5e5e5;margin-bottom:24px"></div>`;
@@ -5184,7 +5188,7 @@
       const avg = r.puntaje_total || ((r.proactividad + r.creatividad + r.responsabilidad + r.comunicacion + r.resolucion) / 5);
       const avgRound = Math.round(avg * 10) / 10;
       const sc = avg >= 4 ? '#16a34a' : avg >= 3 ? '#d97706' : '#dc2626';
-      const tipo = r.tipo === 'semana' ? `📅 ${r.semana || 'Semanal'}` : '📆 Mensual';
+      const tipo = r.tipo === 'semana' ? `<i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${r.semana || 'Semanal'}` : '<i class="ti ti-calendar-event" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Mensual';
       const cats = [
         { label: 'Proactividad', val: r.proactividad },
         { label: 'Creatividad', val: r.creatividad },
@@ -5220,7 +5224,7 @@
             <div style="font-size:26px;font-weight:800;color:#141414">Reporte de Rendimiento</div>
             <div style="font-size:12px;color:#6b6b65;margin-top:4px">${empleadoF || 'Todo el equipo'} · ${mesF || 'Todos los períodos'} · Generado el ${new Date().toLocaleDateString('es-AR')}</div>
           </div>
-          <div style="font-size:32px">👥</div>
+          <div style="font-size:32px"><i class="ti ti-users" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
         </div>
         ${metricsSection}
         <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#a8a89e;margin-bottom:16px">Registros detallados</div>
@@ -5281,7 +5285,7 @@
     const statusEl = document.getElementById('meta-connect-status');
 
     if (!token || !account) {
-      statusEl.textContent = '⚠️ Ingresá el token y el ID de la cuenta antes de conectar.';
+      statusEl.textContent = '<i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Ingresá el token y el ID de la cuenta antes de conectar.';
       statusEl.style.color = 'var(--red)';
       return;
     }
@@ -5296,7 +5300,7 @@
       const data = await res.json();
 
       if (data.error) {
-        statusEl.textContent = '❌ Error: ' + (data.error.message || 'Token o ID inválido.');
+        statusEl.textContent = '<i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i> Error: ' + (data.error.message || 'Token o ID inválido.');
         statusEl.style.color = 'var(--red)';
         return;
       }
@@ -5307,7 +5311,7 @@
       metaAccountId = accountId;
       metaConnected = true;
 
-      statusEl.textContent = '✅ Conectado a: ' + (data.name || accountId) + ' (' + (data.currency || '') + ')';
+      statusEl.textContent = '<i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Conectado a: ' + (data.name || accountId) + ' (' + (data.currency || '') + ')';
       statusEl.style.color = 'var(--green)';
 
       document.getElementById('meta-config-banner').style.borderColor = '#bbf7d0';
@@ -5315,7 +5319,7 @@
 
       await loadMetaAdsReal();
     } catch(e) {
-      statusEl.textContent = '❌ No se pudo conectar. Verificá el token y que la cuenta no tenga restricciones de CORS.';
+      statusEl.textContent = '<i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i> No se pudo conectar. Verificá el token y que la cuenta no tenga restricciones de CORS.';
       statusEl.style.color = 'var(--red)';
     }
   }
@@ -5383,7 +5387,7 @@
   function renderMetaCampaignsReal(campaigns) {
     const container = document.getElementById('meta-campaigns-container');
     if (!campaigns.length) {
-      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon">📭</div><div class="placeholder-title">Sin campañas</div><div class="placeholder-desc">No se encontraron campañas en esta cuenta.</div></div>';
+      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-mail-off" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Sin campañas</div><div class="placeholder-desc">No se encontraron campañas en esta cuenta.</div></div>';
       return;
     }
     container.innerHTML = campaigns.map(c => {
@@ -5422,7 +5426,7 @@
     renderMetaGastoChart(d.diario);
     renderMetaObjetivos(d.por_objetivo);
     renderMetaCampaigns(d.campanas);
-    document.getElementById('meta-last-update').textContent = '⚠️ Datos de ejemplo';
+    document.getElementById('meta-last-update').textContent = '<i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Datos de ejemplo';
   }
 
   function renderMetaKPIs(kpi, trendGasto, trendAlcance) {
@@ -5551,23 +5555,23 @@
     if (!container) return;
     let ideas = balodiIdeasFilter === 'todos' ? allBalodiIdeas : allBalodiIdeas.filter(i => i.categoria === balodiIdeasFilter);
     if (!ideas.length) {
-      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">💡</div><div>Sin ideas todavía. ¡Tirá la primera!</div></div>';
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div>Sin ideas todavía. ¡Tirá la primera!</div></div>';
       return;
     }
     const catColors = { 'Meta Ads': 'badge-blue', 'Contenido': 'badge-green', 'Campaña': 'badge-orange', 'BTL': 'badge-amber', 'Viral': 'badge-red', 'Otro': 'badge-blue' };
     container.innerHTML = ideas.map((idea, i) => `
       <div class="card" style="margin-bottom:10px;padding:16px 20px">
         <div style="display:flex;align-items:flex-start;gap:12px">
-          <div style="font-size:20px">💡</div>
+          <div style="font-size:20px"><i class="ti ti-bulb" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
           <div style="flex:1">
             <div style="font-size:13.5px;color:var(--text);line-height:1.6;margin-bottom:8px">${idea.idea}</div>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
               <span class="badge ${catColors[idea.categoria] || 'badge-blue'}">${idea.categoria}</span>
-              <span style="font-size:11px;color:var(--text3)">📅 ${idea.fecha}</span>
-              <span style="font-size:11px;color:var(--text3)">👤 ${idea.autor || currentUser?.name || 'Balodi'}</span>
+              <span style="font-size:11px;color:var(--text3)"><i class="ti ti-calendar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${idea.fecha}</span>
+              <span style="font-size:11px;color:var(--text3)"><i class="ti ti-user" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> ${idea.autor || currentUser?.name || 'Balodi'}</span>
             </div>
           </div>
-          ${['bautista','nicolas'].includes(currentUser?.username) ? `<button class="delete-btn" onclick="deleteBalodiIdea(${i})">🗑️</button>` : ''}
+          ${['bautista','nicolas'].includes(currentUser?.username) ? `<button class="delete-btn" onclick="deleteBalodiIdea(${i})"><i class="ti ti-trash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️</button>` : ''}
         </div>
       </div>`).join('');
   }
@@ -5622,7 +5626,7 @@
 
   function editBalodiObj(clave) {
     const config = BALODI_OBJ_CONFIG[clave];
-    document.getElementById('balodi-obj-modal-title').textContent = '✏️ ' + config.label;
+    document.getElementById('balodi-obj-modal-title').textContent = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ ' + config.label;
     document.getElementById('balodi-obj-clave').value = clave;
     const saved = JSON.parse(localStorage.getItem('balodi_objetivos_internos') || '{}');
     document.getElementById('balodi-obj-valor').value = saved[clave] || '';
@@ -5901,7 +5905,7 @@
     if (filterTemp) data = data.filter(p => getTemperatura(p) === filterTemp);
 
     if (!data.length) {
-      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">🎯</div><div>Sin prospectos que coincidan</div></div>';
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div>Sin prospectos que coincidan</div></div>';
       return;
     }
 
@@ -5947,7 +5951,7 @@
     todasInteracciones.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
     if (!todasInteracciones.length) {
-      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon">📝</div><div>Sin interacciones registradas todavía</div></div>';
+      container.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div>Sin interacciones registradas todavía</div></div>';
       return;
     }
 
@@ -5979,7 +5983,7 @@
   function openCRMModal(prospecto = null) {
     document.getElementById('crm-modal').classList.add('open');
     if (prospecto) {
-      document.getElementById('crm-modal-title').textContent = '✏️ Editar prospecto';
+      document.getElementById('crm-modal-title').textContent = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar prospecto';
       document.getElementById('crm-edit-id').value = prospecto.id;
       document.getElementById('crm-nombre').value = prospecto.nombre || '';
       document.getElementById('crm-contacto').value = prospecto.contacto || '';
@@ -5989,7 +5993,7 @@
       document.getElementById('crm-origen').value = prospecto.origen || 'Instagram';
       document.getElementById('crm-nota').value = prospecto.nota || '';
     } else {
-      document.getElementById('crm-modal-title').textContent = '🎯 Nuevo prospecto';
+      document.getElementById('crm-modal-title').textContent = '<i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nuevo prospecto';
       document.getElementById('crm-edit-id').value = '';
       ['crm-nombre','crm-contacto','crm-whatsapp','crm-valor','crm-nota'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('crm-etapa').value = 'Prospecto';
@@ -6173,15 +6177,15 @@
             <div style="font-size:24px;font-weight:800;color:#141414">Reporte Meta Ads</div>
             <div style="font-size:12px;color:#6b6b65;margin-top:4px">Generado el ${fecha} · Últimos 30 días</div>
           </div>
-          <div style="font-size:32px">📊</div>
+          <div style="font-size:32px"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px">
           ${[
-            {label:'💸 Gasto del mes', val: gasto},
-            {label:'👁️ Alcance', val: alcance},
-            {label:'🖱️ Clicks', val: clicks},
-            {label:'💬 Conversaciones', val: conv},
-            {label:'💰 Costo por conv.', val: costo},
+            {label:'<i class="ti ti-cash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Gasto del mes', val: gasto},
+            {label:'<i class="ti ti-eye" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Alcance', val: alcance},
+            {label:'<i class="ti ti-mouse" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Clicks', val: clicks},
+            {label:'<i class="ti ti-message-circle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Conversaciones', val: conv},
+            {label:'<i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Costo por conv.', val: costo},
           ].map(k => `
             <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:16px;text-align:center">
               <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e;margin-bottom:8px">${k.label}</div>
@@ -6200,11 +6204,11 @@
     const meta = document.getElementById('camp-modal-meta')?.textContent || '';
     const fecha = new Date().toLocaleDateString('es-AR');
     const metricas = [
-      { label: '💸 Gastado', val: document.getElementById('cm-gasto')?.textContent, sub: document.getElementById('cm-presupuesto')?.textContent },
-      { label: '👁️ Alcance', val: document.getElementById('cm-alcance')?.textContent, sub: document.getElementById('cm-impresiones')?.textContent },
-      { label: '🖱️ Clicks', val: document.getElementById('cm-clicks')?.textContent, sub: document.getElementById('cm-ctr')?.textContent },
-      { label: '💬 Conversaciones', val: document.getElementById('cm-conversaciones')?.textContent, sub: 'Personas que escribieron' },
-      { label: '💰 Costo conv.', val: document.getElementById('cm-conv')?.textContent, sub: document.getElementById('cm-conv-total')?.textContent },
+      { label: '<i class="ti ti-cash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Gastado', val: document.getElementById('cm-gasto')?.textContent, sub: document.getElementById('cm-presupuesto')?.textContent },
+      { label: '<i class="ti ti-eye" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Alcance', val: document.getElementById('cm-alcance')?.textContent, sub: document.getElementById('cm-impresiones')?.textContent },
+      { label: '<i class="ti ti-mouse" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Clicks', val: document.getElementById('cm-clicks')?.textContent, sub: document.getElementById('cm-ctr')?.textContent },
+      { label: '<i class="ti ti-message-circle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Conversaciones', val: document.getElementById('cm-conversaciones')?.textContent, sub: 'Personas que escribieron' },
+      { label: '<i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Costo conv.', val: document.getElementById('cm-conv')?.textContent, sub: document.getElementById('cm-conv-total')?.textContent },
     ];
     const secundarias = [
       { label: 'CPM', val: document.getElementById('cm-cpm')?.textContent },
@@ -6221,7 +6225,7 @@
             <div style="font-size:22px;font-weight:800;color:#141414">${nombre}</div>
             <div style="font-size:12px;color:#6b6b65;margin-top:4px">${meta} · Generado el ${fecha}</div>
           </div>
-          <div style="font-size:32px">📣</div>
+          <div style="font-size:32px"><i class="ti ti-speakerphone" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
           ${metricas.map(m => `
@@ -6280,36 +6284,36 @@
   <div style="background:var(--bg2);border-radius:20px;width:100%;max-width:680px;margin:20px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:fadeUp 0.2s ease" onclick="event.stopPropagation()">
     <div style="padding:24px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
       <div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:4px">📊 Detalle de campaña</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:4px"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Detalle de campaña</div>
         <div id="camp-modal-nombre" style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.3"></div>
         <div id="camp-modal-meta" style="font-size:12px;color:var(--text3);margin-top:4px"></div>
       </div>
-      <button onclick="closeCampModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0">✕</button>
+      <button onclick="closeCampModal()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);flex-shrink:0"><i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></button>
     </div>
     <div style="padding:20px 28px;border-bottom:1px solid var(--border)">
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
         <div style="text-align:center;padding:16px 10px">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">💸 Gastado</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px"><i class="ti ti-cash" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Gastado</div>
           <div id="cm-gasto" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text)">—</div>
           <div id="cm-presupuesto" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
         </div>
         <div style="text-align:center;padding:16px 10px">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">👁️ Alcance</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px"><i class="ti ti-eye" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Alcance</div>
           <div id="cm-alcance" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--blue)">—</div>
           <div id="cm-impresiones" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
         </div>
         <div style="text-align:center;padding:16px 10px">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">🖱️ Clicks</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px"><i class="ti ti-mouse" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Clicks</div>
           <div id="cm-clicks" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--green)">—</div>
           <div id="cm-ctr" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
         </div>
         <div style="text-align:center;padding:16px 10px">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">💬 Conversaciones</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px"><i class="ti ti-message-circle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Conversaciones</div>
           <div id="cm-conversaciones" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:#7c3aed">—</div>
           <div id="cm-conv-sub" style="font-size:11px;color:var(--text3);margin-top:2px">Personas que escribieron</div>
         </div>
         <div style="text-align:center;padding:16px 10px">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">💰 Costo conv.</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px"><i class="ti ti-coin" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Costo conv.</div>
           <div id="cm-conv" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--orange)">—</div>
           <div id="cm-conv-total" style="font-size:11px;color:var(--text3);margin-top:2px"></div>
         </div>
@@ -6342,7 +6346,7 @@
     </div>
     <div id="camp-modal-loading" style="padding:32px;text-align:center;color:var(--text3);font-size:13px;display:none">⏳ Cargando datos de la campaña...</div>
     <div id="camp-modal-error" style="padding:20px 28px;display:none">
-      <div class="alert alert-warning"><div class="alert-icon">⚠️</div><div id="camp-modal-error-msg">No se pudieron cargar los datos.</div></div>
+      <div class="alert alert-warning"><div class="alert-icon"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️</div><div id="camp-modal-error-msg">No se pudieron cargar los datos.</div></div>
     </div>
     <div style="padding:16px 28px;display:flex;justify-content:space-between;align-items:center">
       <button onclick="exportCampañaPDF()" style="background:var(--orange);color:white;border:none;border-radius:8px;padding:8px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer">⬇ Descargar PDF</button>
