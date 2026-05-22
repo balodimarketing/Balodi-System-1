@@ -2843,7 +2843,7 @@
     const text = document.getElementById('informe-code').innerText.replace('Copiar', '').trim();
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.querySelector('.copy-btn');
-      btn.textContent = '<i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Copiado';
+      btn.innerHTML = '<i class="ti ti-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Copiado';
       setTimeout(() => btn.textContent = 'Copiar', 2000);
     });
   }
@@ -2853,7 +2853,7 @@
     document.getElementById('task-modal').classList.add('open');
     document.getElementById('t-tarea').value = '';
     document.getElementById('t-responsable').selectedIndex = -1;
-    document.getElementById('t-todos-check').textContent = '<i class="ti ti-square" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>';
+    document.getElementById('t-todos-check').innerHTML = '<i class="ti ti-square" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>';
     const todosDiv = document.getElementById('t-responsable-todos');
     if (todosDiv) { todosDiv.style.background = ''; todosDiv.style.color = ''; }
     document.getElementById('t-prioridad').value = 'Media';
@@ -2893,7 +2893,7 @@
     const todosDiv = document.getElementById('t-responsable-todos');
     const todosSelected = [...sel.options].every(o => o.selected);
     [...sel.options].forEach(o => o.selected = !todosSelected);
-    check.textContent = todosSelected ? '<i class="ti ti-square" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>' : '<i class="ti ti-checkbox" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i>';
+    check.innerHTML = todosSelected ? '<i class="ti ti-square" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>' : '<i class="ti ti-checkbox" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i>';
     todosDiv.style.background = todosSelected ? '' : 'var(--orange-light)';
     todosDiv.style.color = todosSelected ? '' : 'var(--orange)';
   }
@@ -2907,7 +2907,10 @@
     btn.textContent = 'Guardando...';
     btn.disabled = true;
 
-    const base = {
+    const todosNombres = responsables.join(', ');
+    const data = {
+      tarea,
+      responsable: todosNombres,
       cliente: document.getElementById('t-cliente').value || '—',
       prioridad: document.getElementById('t-prioridad').value,
       estado: 'pendiente',
@@ -2917,17 +2920,16 @@
     };
 
     try {
-      const todosNombres = responsables.join(', ');
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      allTasks.push(data);
+      // Mandar notificación a cada responsable por separado
       for (const responsable of responsables) {
-        const data = { tarea, responsable, ...base };
-        await fetch(SHEETS_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        allTasks.push(data);
-        notificarNuevaTarea(data, todosNombres);
+        notificarNuevaTarea({ ...data, responsable }, todosNombres);
       }
       closeTaskModal();
       renderTasks();
@@ -3896,7 +3898,7 @@
   function editObjetivo(clave) {
     const config = oaConfig[clave];
     const data = allObjetivos[clave];
-    document.getElementById('oa-modal-title').textContent = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ ' + config.label;
+    document.getElementById('oa-modal-title').innerHTML = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ ' + config.label;
     document.getElementById('oa-clave').value = clave;
     document.getElementById('oa-valor').value = data?.valor || '';
     document.getElementById('oa-desc').value = data?.descripcion || config.desc;
@@ -5285,7 +5287,7 @@
     const statusEl = document.getElementById('meta-connect-status');
 
     if (!token || !account) {
-      statusEl.textContent = '<i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Ingresá el token y el ID de la cuenta antes de conectar.';
+      statusEl.innerHTML = '<i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Ingresá el token y el ID de la cuenta antes de conectar.';
       statusEl.style.color = 'var(--red)';
       return;
     }
@@ -5300,7 +5302,7 @@
       const data = await res.json();
 
       if (data.error) {
-        statusEl.textContent = '<i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i> Error: ' + (data.error.message || 'Token o ID inválido.');
+        statusEl.innerHTML = '<i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i> Error: ' + (data.error.message || 'Token o ID inválido.');
         statusEl.style.color = 'var(--red)';
         return;
       }
@@ -5311,7 +5313,7 @@
       metaAccountId = accountId;
       metaConnected = true;
 
-      statusEl.textContent = '<i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Conectado a: ' + (data.name || accountId) + ' (' + (data.currency || '') + ')';
+      statusEl.innerHTML = '<i class="ti ti-circle-check" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--green)"></i> Conectado a: ' + (data.name || accountId) + ' (' + (data.currency || '') + ')';
       statusEl.style.color = 'var(--green)';
 
       document.getElementById('meta-config-banner').style.borderColor = '#bbf7d0';
@@ -5319,7 +5321,7 @@
 
       await loadMetaAdsReal();
     } catch(e) {
-      statusEl.textContent = '<i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i> No se pudo conectar. Verificá el token y que la cuenta no tenga restricciones de CORS.';
+      statusEl.innerHTML = '<i class="ti ti-x" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--red)"></i> No se pudo conectar. Verificá el token y que la cuenta no tenga restricciones de CORS.';
       statusEl.style.color = 'var(--red)';
     }
   }
@@ -5426,7 +5428,7 @@
     renderMetaGastoChart(d.diario);
     renderMetaObjetivos(d.por_objetivo);
     renderMetaCampaigns(d.campanas);
-    document.getElementById('meta-last-update').textContent = '<i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Datos de ejemplo';
+    document.getElementById('meta-last-update').innerHTML = '<i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ Datos de ejemplo';
   }
 
   function renderMetaKPIs(kpi, trendGasto, trendAlcance) {
@@ -5626,7 +5628,7 @@
 
   function editBalodiObj(clave) {
     const config = BALODI_OBJ_CONFIG[clave];
-    document.getElementById('balodi-obj-modal-title').textContent = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ ' + config.label;
+    document.getElementById('balodi-obj-modal-title').innerHTML = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ ' + config.label;
     document.getElementById('balodi-obj-clave').value = clave;
     const saved = JSON.parse(localStorage.getItem('balodi_objetivos_internos') || '{}');
     document.getElementById('balodi-obj-valor').value = saved[clave] || '';
@@ -5983,7 +5985,7 @@
   function openCRMModal(prospecto = null) {
     document.getElementById('crm-modal').classList.add('open');
     if (prospecto) {
-      document.getElementById('crm-modal-title').textContent = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar prospecto';
+      document.getElementById('crm-modal-title').innerHTML = '<i class="ti ti-pencil" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i>️ Editar prospecto';
       document.getElementById('crm-edit-id').value = prospecto.id;
       document.getElementById('crm-nombre').value = prospecto.nombre || '';
       document.getElementById('crm-contacto').value = prospecto.contacto || '';
@@ -5993,7 +5995,7 @@
       document.getElementById('crm-origen').value = prospecto.origen || 'Instagram';
       document.getElementById('crm-nota').value = prospecto.nota || '';
     } else {
-      document.getElementById('crm-modal-title').textContent = '<i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nuevo prospecto';
+      document.getElementById('crm-modal-title').innerHTML = '<i class="ti ti-target" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i> Nuevo prospecto';
       document.getElementById('crm-edit-id').value = '';
       ['crm-nombre','crm-contacto','crm-whatsapp','crm-valor','crm-nota'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('crm-etapa').value = 'Prospecto';
