@@ -6077,7 +6077,7 @@
       style="background:var(--bg2);border:1.5px solid ${completado ? 'var(--green)' : 'var(--border)'};border-radius:14px;padding:16px 18px;margin-bottom:10px;transition:all 0.2s;cursor:pointer"
       onclick="openVideoDetalle(${globalIdx})">
       <div style="display:flex;align-items:flex-start;gap:12px">
-        ${isEnzo || isAdmin ? `<input type="checkbox" ${completado ? 'checked' : ''} onchange="toggleVideoCompletado(${globalIdx})"
+        ${isEnzo || isAdmin ? `<input type="checkbox" ${completado ? 'checked' : ''} onchange="toggleVideoCompletado(${globalIdx})" onclick="event.stopPropagation()"
           style="margin-top:3px;width:16px;height:16px;accent-color:var(--orange);cursor:pointer;flex-shrink:0">` : ''}
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
@@ -6098,7 +6098,7 @@
             <span style="font-size:11px;color:var(--text3)">Por ${v.autor || 'Nicolás'} · ${v.fecha}</span>
           </div>
         </div>
-        ${isAdmin ? `<div style="display:flex;gap:6px;flex-shrink:0">
+        ${isAdmin ? `<div style="display:flex;gap:6px;flex-shrink:0" onclick="event.stopPropagation()">
           <button onclick="editVideo(${globalIdx})" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--text2);cursor:pointer"><i class="ti ti-pencil"></i></button>
           <button onclick="deleteVideo(${globalIdx})" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--red);cursor:pointer"><i class="ti ti-trash"></i></button>
           <i class="ti ti-grip-vertical" style="color:var(--text3);font-size:16px;padding:5px;cursor:grab"></i>
@@ -6133,7 +6133,16 @@
   function toggleVideoCompletado(idx) {
     allVideos[idx].estado = allVideos[idx].estado === 'completado' ? 'pendiente' : 'completado';
     saveVideos();
-    renderVideos();
+    // Pequeña animación antes de re-renderizar
+    const card = document.querySelector(`.video-card[data-idx="${idx}"]`);
+    if (card) {
+      card.style.transition = 'opacity 0.4s ease, transform 0.3s ease';
+      card.style.opacity = '0.4';
+      card.style.transform = 'scale(0.98)';
+      setTimeout(() => { renderVideos(); }, 350);
+    } else {
+      renderVideos();
+    }
   }
 
   function openVideoModal(video = null) {
@@ -6220,7 +6229,7 @@
 
     document.getElementById('vdet-estado-box').innerHTML = `
       <label style="display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg4);border-radius:10px;padding:12px 16px">
-        <input type="checkbox" ${completado ? 'checked' : ''} onchange="toggleVideoCompletadoDetalle(${idx})" style="width:18px;height:18px;accent-color:var(--orange);cursor:pointer">
+        <input type="checkbox" ${completado ? 'checked' : ''} onchange="toggleVideoCompletadoDetalle(${idx})" onclick="event.stopPropagation()" style="width:18px;height:18px;accent-color:var(--orange);cursor:pointer">
         <span style="font-size:14px;font-weight:600;color:var(--text)">Marcar como completado</span>
       </label>
     `;
@@ -6270,8 +6279,16 @@
   function toggleVideoCompletadoDetalle(idx) {
     allVideos[idx].estado = allVideos[idx].estado === 'completado' ? 'pendiente' : 'completado';
     saveVideos();
-    renderVideos();
-    openVideoDetalle(idx);
+    const card = document.querySelector(`.video-card[data-idx="${idx}"]`);
+    if (card) {
+      card.style.transition = 'opacity 0.4s ease, transform 0.3s ease';
+      card.style.opacity = '0.4';
+      card.style.transform = 'scale(0.98)';
+    }
+    setTimeout(() => {
+      renderVideos();
+      openVideoDetalle(idx);
+    }, 350);
   }
 
   function renderVideoDetalleComments() {
