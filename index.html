@@ -732,6 +732,21 @@
 
   /* DARK MODE TOGGLE */
   .dark-toggle { display: flex; align-items: center; gap: 8px; padding: 10px 18px; cursor: pointer; margin-top: auto; border-top: 1px solid var(--border); }
+
+  /* REPORTE MENSUAL */
+  .formato-btn { background: var(--bg4); border: 1.5px solid var(--border2); border-radius: 8px; padding: 6px 14px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .formato-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .formato-selected { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
+  .pub-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s; }
+  .pub-card:hover { box-shadow: var(--shadow); }
+  .pub-red-badge { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; font-size: 11px; font-weight: 700; padding: 3px 10px; }
+  .pub-metricas { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 12px; }
+  .pub-metrica-box { background: var(--bg4); border-radius: 8px; padding: 8px 10px; text-align: center; }
+  .pub-metrica-num { font-family: "Outfit", sans-serif; font-size: 18px; font-weight: 800; color: var(--text); line-height: 1; }
+  .pub-metrica-label { font-size: 10px; color: var(--text3); font-weight: 600; margin-top: 2px; }
+  .reporte-kpi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow-sm); }
+  .reporte-kpi-num { font-family: "Outfit", sans-serif; font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 4px; }
+  .reporte-kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
   .dark-toggle-label { font-size: 12px; font-weight: 600; color: var(--text3); }
   .toggle-switch { width: 34px; height: 19px; background: var(--border2); border-radius: 999px; position: relative; transition: background 0.2s; margin-left: auto; }
   .toggle-switch.on { background: var(--orange); }
@@ -927,6 +942,7 @@
       <div class="nav-item nav-admin-only" id="nav-alianzas" onclick="go('alianzas')"><i class="ti ti-heart-handshake nav-icon" aria-hidden="true"></i> Red de Alianzas</div>
       <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><i class="ti ti-chart-line nav-icon" aria-hidden="true"></i> Finanzas</div>
       <div class="nav-item nav-admin-only" id="nav-seguimiento" onclick="go('seguimiento')"><i class="ti ti-user-check nav-icon" aria-hidden="true"></i> Seguimiento empleados</div>
+      <div class="nav-item nav-admin-only" id="nav-admin" onclick="go('admin')" style="position:relative"><i class="ti ti-settings nav-icon" aria-hidden="true"></i> Administración</div>
       <div class="nav-label nav-videos-only" style="display:none">Producción</div>
       <div class="nav-item nav-videos-only" id="nav-videos" onclick="go('videos')" style="position:relative;display:none"><i class="ti ti-video nav-icon" aria-hidden="true"></i> Videos <span class="notif-dot hidden" id="notif-videos">0</span></div>
       <div class="nav-label">Operaciones</div>
@@ -1100,19 +1116,168 @@
       <div class="page-header">
         <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Clientes</span></div>
         <div class="page-title">Clientes</div>
-        <div class="page-desc">Hacé click en cualquier cliente para ver su sección. El contenido de cada uno se va a ir armando próximamente.</div>
+        <div class="page-desc">Todos los clientes activos de la agencia. Hacé click para ver el perfil completo con pauta e ideas.</div>
       </div>
       <div class="page-content">
-        <div class="client-grid">
-          <div class="client-card" onclick="go('c-balodi')" style="border-color:var(--orange-border);background:var(--orange-light);grid-column:span 2"><div style="display:flex;align-items:center;gap:10px;flex:1"><div style="width:32px;height:32px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div><div class="client-name" style="color:var(--orange)">Balodi Marketing</div><div style="font-size:11px;color:var(--orange);opacity:0.8;margin-top:2px">Cuenta propia · Meta Ads integrado</div></div></div><span class="badge badge-orange" style="margin-right:8px">Interna</span><span class="client-arrow" style="color:var(--orange)">→</span></div>
-          <div class="client-card" onclick="go('c-tarjeta')"><div class="client-name">Tarjeta Primicia</div><span class="client-arrow">→</span></div>
-          <div class="client-card" onclick="go('c-mutual')"><div class="client-name">Mutual Entre Asociados</div><span class="client-arrow">→</span></div>
-          <div class="client-card" onclick="go('c-capilar')"><div class="client-name">Capilar Vibes</div><span class="client-arrow">→</span></div>
-          <div class="client-card" onclick="go('c-hielo')"><div class="client-name">Hielo Rosario</div><span class="client-arrow">→</span></div>
-          <div class="client-card" onclick="go('c-donatelli')"><div class="client-name">Donatelli Servicios Integrales</div><span class="client-arrow">→</span></div>
-          <div class="client-card" onclick="go('c-mma')"><div class="client-name">MMAPantera</div><span class="client-arrow">→</span></div>
-          <div class="client-card" onclick="go('c-murad')" style="grid-column: span 1"><div class="client-name">Murad</div><span class="client-arrow">→</span></div>
+        <div id="clientes-grid-container">
+          <div class="tasks-loading">Cargando clientes...</div>
         </div>
+      </div>
+    </div>
+
+    <!-- CLIENTE INDIVIDUAL DINÁMICO -->
+    <div class="panel" id="panel-cliente-detalle">
+      <div class="page-header" id="cliente-detalle-header">
+        <div class="breadcrumb" id="cliente-detalle-breadcrumb"></div>
+        <div class="page-eyebrow" id="cliente-detalle-eyebrow"></div>
+        <div class="page-title" id="cliente-detalle-title"></div>
+        <div class="page-desc" id="cliente-detalle-desc"></div>
+      </div>
+      <div class="page-content">
+        <!-- TABS -->
+        <div class="est-tabs" style="margin-bottom:24px" id="cliente-tabs-row">
+          <button class="est-tab active" onclick="switchClienteTab('resumen',this)"><i class="ti ti-layout-dashboard"></i> Resumen</button>
+          <button class="est-tab" onclick="switchClienteTab('pauta',this)"><i class="ti ti-speakerphone"></i> Pauta</button>
+          <button class="est-tab" onclick="switchClienteTab('ideas-cliente',this)"><i class="ti ti-bulb"></i> Ideas</button>
+          <button class="est-tab" onclick="switchClienteTab('reporte',this)"><i class="ti ti-calendar-stats"></i> Reporte Mensual</button>
+        </div>
+
+        <!-- TAB RESUMEN -->
+        <div class="est-section active" id="cliente-tab-resumen">
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+            <div>
+              <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
+                <div class="section-title" style="margin-bottom:14px">Datos del cliente</div>
+                <div id="cliente-resumen-datos" style="display:flex;flex-direction:column;gap:8px"></div>
+              </div>
+              <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow-sm)">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <div class="section-title" style="margin-bottom:0">Últimas ideas</div>
+                  <button onclick="switchClienteTab('ideas-cliente',null)" style="font-size:12px;color:var(--orange);background:none;border:none;cursor:pointer;font-weight:600">Ver todas →</button>
+                </div>
+                <div id="cliente-resumen-ideas"></div>
+              </div>
+            </div>
+            <div>
+              <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
+                <div class="section-title" style="margin-bottom:14px">Estado de pauta</div>
+                <div id="cliente-resumen-pauta"></div>
+              </div>
+              <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow-sm)">
+                <div class="section-title" style="margin-bottom:14px">Tareas recientes</div>
+                <div id="cliente-resumen-tareas"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB PAUTA -->
+        <div class="est-section" id="cliente-tab-pauta">
+
+          <!-- META ADS BLOQUE -->
+          <div style="background:linear-gradient(135deg,#fff4ee,#fff);border:1.5px solid var(--orange-border);border-radius:14px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:flex-start;gap:16px" id="cx-meta-banner">
+            <div style="font-size:26px;flex-shrink:0"><i class="ti ti-brand-meta"></i></div>
+            <div style="flex:1">
+              <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px">Conectar Meta Ads de este cliente</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:12px">Ingresá el Access Token y el Ad Account ID de este cliente para ver sus campañas reales en tiempo real.</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                <input id="cx-meta-token" type="password" placeholder="Access Token de Meta..." style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'">
+                <input id="cx-meta-account" type="text" placeholder="ID Ad Account (act_XXXXXX)" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'">
+                <button onclick="connectMetaCliente()" style="background:var(--orange);color:white;border:none;border-radius:8px;padding:8px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Conectar</button>
+              </div>
+              <div id="cx-meta-status" style="font-size:11px;color:var(--text3);margin-top:8px"><i class="ti ti-bulb"></i> Token en <strong>developers.facebook.com → Graph API Explorer</strong>. ID en Meta Business Manager → Cuentas publicitarias.</div>
+            </div>
+          </div>
+
+          <!-- KPIs META CLIENTE -->
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px" id="cx-meta-kpi-row">
+            <div class="stat-card"><div class="stat-icon" style="background:#fff4ee"><i class="ti ti-cash"></i></div><div class="stat-number" id="cx-kpi-gasto">—</div><div class="stat-label">Gasto del mes</div><div class="stat-trend" id="cx-kpi-gasto-trend" style="color:var(--text3)">—</div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:#eff6ff"><i class="ti ti-eye"></i></div><div class="stat-number" id="cx-kpi-alcance">—</div><div class="stat-label">Alcance total</div><div class="stat-trend" style="color:var(--text3)">—</div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4"><i class="ti ti-mouse"></i></div><div class="stat-number" id="cx-kpi-clicks">—</div><div class="stat-label">Clicks totales</div><div class="stat-trend" id="cx-kpi-ctr" style="color:var(--text3)">CTR —</div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:#f5f0ff"><i class="ti ti-message-circle"></i></div><div class="stat-number" id="cx-kpi-conv">—</div><div class="stat-label">Conversaciones</div><div class="stat-trend" id="cx-kpi-conv-trend" style="color:var(--text3)">—</div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:#fffbeb"><i class="ti ti-coin"></i></div><div class="stat-number" id="cx-kpi-cpc">—</div><div class="stat-label">Costo por conv.</div><div class="stat-trend" id="cx-kpi-cpm" style="color:var(--text3)">CPM —</div></div>
+          </div>
+
+          <!-- CAMPAÑAS CLIENTE -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div class="section-title" style="margin-bottom:0">Campañas activas</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span id="cx-last-update" style="font-size:11px;color:var(--text3)"></span>
+              <button onclick="loadMetaCliente()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:7px;padding:5px 12px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;color:var(--text2)">↻ Actualizar</button>
+            </div>
+          </div>
+          <div id="cx-campaigns-container" style="margin-bottom:28px">
+            <div style="background:var(--bg4);border-radius:12px;padding:20px;text-align:center;font-size:13px;color:var(--text3)">Conectá la cuenta de Meta para ver las campañas.</div>
+          </div>
+
+          <!-- DIVIDER -->
+          <div style="height:1px;background:var(--border);margin:28px 0"></div>
+
+          <!-- PAUTA MANUAL -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div>
+              <div class="section-title" style="margin-bottom:2px">Pauta manual</div>
+              <div style="font-size:12px;color:var(--text3)" id="pauta-cliente-name">Campañas cargadas manualmente</div>
+            </div>
+            <button onclick="openPautaModal()" style="background:var(--bg2);color:var(--text2);border:1.5px solid var(--border2);border-radius:10px;padding:8px 16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-plus"></i> Agregar</button>
+          </div>
+          <div id="pauta-lista-container"></div>
+
+        </div>
+
+        <!-- TAB IDEAS DEL CLIENTE -->
+        <div class="est-section" id="cliente-tab-ideas-cliente">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <div>
+              <div class="section-title" style="margin-bottom:2px">Ideas del cliente</div>
+              <div style="font-size:12px;color:var(--text3)" id="ideas-cliente-name-label"></div>
+            </div>
+            <button onclick="openIdeaClienteModal()" style="background:var(--orange);color:white;border:none;border-radius:10px;padding:9px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-plus"></i> Nueva idea</button>
+          </div>
+          <div id="ideas-cliente-container"></div>
+        </div>
+
+        <!-- TAB REPORTE MENSUAL -->
+        <div class="est-section" id="cliente-tab-reporte">
+
+          <!-- TOOLBAR: selector de mes + botones -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <div style="display:flex;align-items:center;gap:0;background:var(--bg2);border:1.5px solid var(--border2);border-radius:10px;overflow:hidden">
+                <button onclick="cambiarMesReporte(-1)" style="background:none;border:none;padding:8px 14px;cursor:pointer;color:var(--text2);font-size:16px;transition:background 0.15s" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='none'">‹</button>
+                <div id="reporte-mes-label" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);padding:8px 12px;min-width:130px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)">Mayo 2026</div>
+                <button onclick="cambiarMesReporte(1)" style="background:none;border:none;padding:8px 14px;cursor:pointer;color:var(--text2);font-size:16px;transition:background 0.15s" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='none'">›</button>
+              </div>
+              <div style="font-size:12px;color:var(--text3)" id="reporte-total-label"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button onclick="openPublicacionModal()" style="background:var(--orange);color:white;border:none;border-radius:10px;padding:9px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-plus"></i> Nueva publicación</button>
+              <button onclick="generarReportePDF()" style="background:var(--bg2);color:var(--text2);border:1.5px solid var(--border2);border-radius:10px;padding:9px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-download"></i> Descargar reporte</button>
+            </div>
+          </div>
+
+          <!-- LINK DE DRIVE DEL MES -->
+          <div style="background:var(--blue-light);border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+            <i class="ti ti-brand-google-drive" style="color:var(--blue);font-size:20px;flex-shrink:0"></i>
+            <div style="flex:1">
+              <div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Carpeta de Drive del mes</div>
+              <input id="reporte-drive-link" type="url" placeholder="Pegá acá el link de la carpeta de Drive con las imágenes del mes..."
+                style="width:100%;background:transparent;border:none;outline:none;font-size:13px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif"
+                onchange="saveDriveLinkMes()" onblur="saveDriveLinkMes()">
+            </div>
+          </div>
+
+          <!-- RESUMEN MÉTRICAS DEL MES -->
+          <div id="reporte-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px"></div>
+
+          <!-- PAUTA DEL MES -->
+          <div id="reporte-pauta-block" style="margin-bottom:20px"></div>
+
+          <!-- LISTA DE PUBLICACIONES -->
+          <div id="reporte-publicaciones-container"></div>
+
+        </div>
+
       </div>
     </div>
 
@@ -1638,15 +1803,6 @@
       </div>
     </div>
 
-    <!-- CLIENTES INDIVIDUALES -->
-    <div class="panel" id="panel-c-tarjeta"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Tarjeta Primicia</span></div><div class="page-title">Tarjeta Primicia</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-mutual"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Mutual Entre Asociados</span></div><div class="page-title">Mutual Entre Asociados</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-capilar"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Capilar Vibes</span></div><div class="page-title">Capilar Vibes</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-hielo"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Hielo Rosario</span></div><div class="page-title">Hielo Rosario</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-donatelli"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Donatelli Servicios Integrales</span></div><div class="page-title">Donatelli Servicios Integrales</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-mma"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>MMAPantera</span></div><div class="page-title">MMAPantera</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-    <div class="panel" id="panel-c-murad"><div class="page-header"><div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>Murad</span></div><div class="page-title">Murad</div></div><div class="page-content"><div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clipboard-list" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></div><div class="placeholder-title">Próximamente</div><div class="placeholder-desc">El contenido de este cliente se va a armar en la próxima actualización.</div></div></div></div>
-
     <!-- BANCO DE IDEAS -->
     <div class="panel" id="panel-banco">
       <div class="page-header">
@@ -1709,14 +1865,7 @@
           <div class="form-group">
             <label class="form-label">Para quién</label>
             <select class="form-select" id="c-para">
-              <option value="Balodi">Balodi</option>
-              <option value="Tarjeta Primicia">Tarjeta Primicia</option>
-              <option value="Mutual Entre Asociados">Mutual Entre Asociados</option>
-              <option value="Capilar Vibes">Capilar Vibes</option>
-              <option value="Hielo Rosario">Hielo Rosario</option>
-              <option value="Donatelli">Donatelli</option>
-              <option value="MMAPantera">MMAPantera</option>
-              <option value="Murad">Murad</option>
+              <option value="">Seleccioná un cliente...</option>
             </select>
           </div>
           <div class="form-group">
@@ -1749,14 +1898,7 @@
           <div class="form-group">
             <label class="form-label">Para quién</label>
             <select class="form-select" id="i-para">
-              <option value="Balodi">Balodi</option>
-              <option value="Tarjeta Primicia">Tarjeta Primicia</option>
-              <option value="Mutual Entre Asociados">Mutual Entre Asociados</option>
-              <option value="Capilar Vibes">Capilar Vibes</option>
-              <option value="Hielo Rosario">Hielo Rosario</option>
-              <option value="Donatelli">Donatelli</option>
-              <option value="MMAPantera">MMAPantera</option>
-              <option value="Murad">Murad</option>
+              <option value="">Seleccioná un cliente...</option>
             </select>
           </div>
           <div class="form-group">
@@ -2728,14 +2870,6 @@
           <label class="form-label">Cliente (opcional)</label>
           <select class="form-select" id="t-cliente">
             <option value="">Sin cliente específico</option>
-            <option>Balodi</option>
-            <option>Tarjeta Primicia</option>
-            <option>Mutual Entre Asociados</option>
-            <option>Capilar Vibes</option>
-            <option>Hielo Rosario</option>
-            <option>Donatelli Servicios Integrales</option>
-            <option>MMAPantera</option>
-            <option>Murad</option>
           </select>
         </div>
         <div class="form-group">
@@ -2753,7 +2887,321 @@
       </div>
     </div>
 
+  <!-- ADMINISTRACIÓN -->
+    <div class="panel" id="panel-admin">
+      <div class="page-header">
+        <div class="page-eyebrow">Privado — Solo admins</div>
+        <div class="page-title">Administración</div>
+        <div class="page-desc">Gestioná usuarios del sistema y clientes de la agencia. Solo Bautista y Nicolás pueden acceder y modificar esta sección.</div>
+      </div>
+      <div class="page-content">
+
+        <!-- KPIs rápidos -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
+          <div class="fin-stat">
+            <div class="fin-stat-label">Usuarios del sistema</div>
+            <div class="fin-stat-num blue" id="admin-count-users">—</div>
+            <div class="fin-stat-sub">Con acceso al sistema</div>
+          </div>
+          <div class="fin-stat">
+            <div class="fin-stat-label">Clientes activos</div>
+            <div class="fin-stat-num green" id="admin-count-clientes">—</div>
+            <div class="fin-stat-sub">Cargados en el sistema</div>
+          </div>
+          <div class="fin-stat">
+            <div class="fin-stat-label">Administradores</div>
+            <div class="fin-stat-num" style="color:var(--orange)" id="admin-count-admins">2</div>
+            <div class="fin-stat-sub">Bautista y Nicolás</div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN USUARIOS -->
+        <div style="margin-bottom:32px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div>
+              <div class="section-title" style="margin-bottom:2px">Usuarios del sistema</div>
+              <div style="font-size:12px;color:var(--text3)">Personas con acceso a Balodi SO</div>
+            </div>
+            <button onclick="openUserModal()" style="background:var(--orange);color:white;border:none;border-radius:10px;padding:9px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-plus"></i> Nuevo usuario</button>
+          </div>
+          <div id="admin-users-list" style="display:flex;flex-direction:column;gap:10px">
+            <!-- se renderiza con JS -->
+          </div>
+        </div>
+
+        <!-- SECCIÓN CLIENTES -->
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div>
+              <div class="section-title" style="margin-bottom:2px">Clientes de la agencia</div>
+              <div style="font-size:12px;color:var(--text3)">Clientes que aparecen en tareas, finanzas y seguimiento</div>
+            </div>
+            <button onclick="openClienteModal()" style="background:var(--orange);color:white;border:none;border-radius:10px;padding:9px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-plus"></i> Nuevo cliente</button>
+          </div>
+          <div id="admin-clientes-list" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <!-- se renderiza con JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </main>
+</div>
+
+<!-- MODAL NUEVO USUARIO -->
+<div class="modal-overlay" id="user-modal" style="z-index:350">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-icon"><i class="ti ti-user-plus"></i></div>
+    <div class="modal-title" id="user-modal-title">Nuevo usuario</div>
+    <div style="text-align:left;margin-bottom:16px">
+      <input id="um-edit-username" type="hidden" value="">
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Nombre completo *</label>
+        <input class="modal-input" id="um-name" type="text" placeholder="Ej: Valentina" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Usuario (para login) *</label>
+        <input class="modal-input" id="um-username" type="text" placeholder="Ej: valentina" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Contraseña *</label>
+        <input class="modal-input" id="um-pass" type="password" placeholder="Contraseña de acceso" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Rol / Cargo</label>
+        <input class="modal-input" id="um-role" type="text" placeholder="Ej: Community Manager" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:4px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Iniciales (avatar, 2 letras)</label>
+        <input class="modal-input" id="um-avatar" type="text" maxlength="2" placeholder="Ej: VA" style="margin-bottom:0;text-transform:uppercase">
+      </div>
+    </div>
+    <div class="modal-error" id="um-error" style="display:none;margin-bottom:10px"></div>
+    <button class="modal-btn" onclick="saveUser()">Guardar usuario</button>
+    <button class="modal-cancel" onclick="closeUserModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL NUEVO CLIENTE -->
+<div class="modal-overlay" id="cliente-modal" style="z-index:350">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-icon"><i class="ti ti-building-store"></i></div>
+    <div class="modal-title" id="cliente-modal-title">Nuevo cliente</div>
+    <div style="text-align:left;margin-bottom:16px">
+      <input id="cm-edit-id" type="hidden" value="">
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Nombre del cliente / marca *</label>
+        <input class="modal-input" id="cm-nombre" type="text" placeholder="Ej: Capilar Vibes" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Rubro / industria</label>
+        <input class="modal-input" id="cm-rubro" type="text" placeholder="Ej: Peluquería, Gastronomía..." style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Contacto principal</label>
+        <input class="modal-input" id="cm-contacto" type="text" placeholder="Nombre del responsable" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Teléfono / WhatsApp</label>
+        <input class="modal-input" id="cm-telefono" type="text" placeholder="+54 341 ..." style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Responsable interno</label>
+        <input class="modal-input" id="cm-responsable" type="text" placeholder="Ej: Bautista" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Descripción breve</label>
+        <textarea class="modal-input" id="cm-descripcion" placeholder="Ej: Cliente de redes sociales y Meta Ads" style="margin-bottom:0;resize:vertical;min-height:55px"></textarea>
+      </div>
+      <div style="margin-bottom:4px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Estado</label>
+        <select class="modal-input" id="cm-estado" style="margin-bottom:0;cursor:pointer">
+          <option value="Activo">Activo</option>
+          <option value="Pausado">Pausado</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-error" id="cm-error" style="display:none;margin-bottom:10px"></div>
+    <button class="modal-btn" onclick="saveCliente()">Guardar cliente</button>
+    <button class="modal-cancel" onclick="closeClienteModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL NUEVA PUBLICACIÓN -->
+<div class="modal-overlay" id="publicacion-modal" style="z-index:350">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-icon"><i class="ti ti-photo"></i></div>
+    <div class="modal-title" id="pub-modal-title">Nueva publicación</div>
+    <div style="text-align:left;margin-bottom:16px">
+      <input type="hidden" id="pub-edit-id">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Fecha *</label>
+          <input class="modal-input" id="pub-fecha" type="date" style="margin-bottom:0">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Red social *</label>
+          <select class="modal-input" id="pub-red" style="margin-bottom:0;cursor:pointer">
+            <option>Instagram</option>
+            <option>Facebook</option>
+            <option>TikTok</option>
+            <option>YouTube</option>
+            <option>LinkedIn</option>
+            <option>Otra</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Formato *</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap" id="pub-formato-btns">
+          <button type="button" onclick="selFormatoReporte(this,'Reel')" class="formato-btn formato-selected">Reel</button>
+          <button type="button" onclick="selFormatoReporte(this,'Carrusel')" class="formato-btn">Carrusel</button>
+          <button type="button" onclick="selFormatoReporte(this,'Historia')" class="formato-btn">Historia</button>
+          <button type="button" onclick="selFormatoReporte(this,'Post estático')" class="formato-btn">Post estático</button>
+          <button type="button" onclick="selFormatoReporte(this,'Video')" class="formato-btn">Video</button>
+        </div>
+        <input type="hidden" id="pub-formato" value="Reel">
+      </div>
+
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Título *</label>
+        <input class="modal-input" id="pub-titulo" type="text" placeholder="Ej: Reel día del padre" style="margin-bottom:0">
+      </div>
+
+      <div style="margin-bottom:14px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Descripción breve</label>
+        <textarea class="modal-input" id="pub-descripcion" placeholder="De qué trata la publicación..." style="margin-bottom:0;resize:vertical;min-height:55px"></textarea>
+      </div>
+
+      <!-- MÉTRICAS -->
+      <div style="background:var(--bg4);border-radius:10px;padding:14px;margin-bottom:4px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px">Métricas</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label style="font-size:11px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">❤️ Likes</label>
+            <input class="modal-input" id="pub-likes" type="number" min="0" placeholder="0" style="margin-bottom:0;background:var(--bg2)">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">💬 Comentarios</label>
+            <input class="modal-input" id="pub-comentarios" type="number" min="0" placeholder="0" style="margin-bottom:0;background:var(--bg2)">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">▶️ Reproducciones</label>
+            <input class="modal-input" id="pub-reproducciones" type="number" min="0" placeholder="0" style="margin-bottom:0;background:var(--bg2)">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">🔁 Compartidos</label>
+            <input class="modal-input" id="pub-compartidos" type="number" min="0" placeholder="0" style="margin-bottom:0;background:var(--bg2)">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button class="modal-btn" onclick="savePublicacion()">Guardar publicación</button>
+    <button class="modal-cancel" onclick="closePublicacionModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL NUEVA PAUTA -->
+<div class="modal-overlay" id="pauta-modal" style="z-index:350">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-icon"><i class="ti ti-speakerphone"></i></div>
+    <div class="modal-title" id="pauta-modal-title">Nueva campaña</div>
+    <div style="text-align:left;margin-bottom:16px">
+      <input type="hidden" id="pm-edit-id">
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Nombre de campaña *</label>
+        <input class="modal-input" id="pm-nombre" type="text" placeholder="Ej: Campaña consultas WhatsApp" style="margin-bottom:0">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Plataforma</label>
+          <select class="modal-input" id="pm-plataforma" style="margin-bottom:0;cursor:pointer">
+            <option>Meta Ads</option><option>Google Ads</option><option>TikTok Ads</option><option>Email</option><option>Orgánico</option><option>Otra</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Objetivo</label>
+          <select class="modal-input" id="pm-objetivo" style="margin-bottom:0;cursor:pointer">
+            <option>Mensajes</option><option>Leads</option><option>Alcance</option><option>Conversiones</option><option>Tráfico</option><option>Reconocimiento</option><option>Otro</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Presupuesto ($)</label>
+          <input class="modal-input" id="pm-presupuesto" type="number" placeholder="0" style="margin-bottom:0">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Estado</label>
+          <select class="modal-input" id="pm-estado" style="margin-bottom:0;cursor:pointer">
+            <option value="activa">Activa</option><option value="pausada">Pausada</option><option value="finalizada">Finalizada</option><option value="planificada">Planificada</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Fecha inicio</label>
+          <input class="modal-input" id="pm-inicio" type="date" style="margin-bottom:0">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Fecha fin</label>
+          <input class="modal-input" id="pm-fin" type="date" style="margin-bottom:0">
+        </div>
+      </div>
+      <div style="margin-bottom:4px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Notas</label>
+        <textarea class="modal-input" id="pm-notas" placeholder="Observaciones, resultados, próximos pasos..." style="margin-bottom:0;resize:vertical;min-height:60px"></textarea>
+      </div>
+    </div>
+    <button class="modal-btn" onclick="savePauta()">Guardar campaña</button>
+    <button class="modal-cancel" onclick="closePautaModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL IDEA DEL CLIENTE -->
+<div class="modal-overlay" id="idea-cliente-modal" style="z-index:350">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-icon"><i class="ti ti-bulb"></i></div>
+    <div class="modal-title" id="idea-cliente-modal-title">Nueva idea</div>
+    <div style="text-align:left;margin-bottom:16px">
+      <input type="hidden" id="icm-edit-id">
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Título de la idea *</label>
+        <input class="modal-input" id="icm-titulo" type="text" placeholder="Ej: Reel del día del padre" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Descripción</label>
+        <textarea class="modal-input" id="icm-descripcion" placeholder="Detallá la idea..." style="margin-bottom:0;resize:vertical;min-height:70px"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Formato</label>
+          <select class="modal-input" id="icm-formato" style="margin-bottom:0;cursor:pointer">
+            <option>Reel</option><option>Carrusel</option><option>Historia</option><option>Campaña</option><option>Post</option><option>Otro</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Prioridad</label>
+          <select class="modal-input" id="icm-prioridad" style="margin-bottom:0;cursor:pointer">
+            <option value="media">Media</option><option value="alta">Alta</option><option value="baja">Baja</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:4px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Estado</label>
+        <select class="modal-input" id="icm-estado" style="margin-bottom:0;cursor:pointer">
+          <option value="pendiente">Pendiente</option><option value="en proceso">En proceso</option><option value="aprobada">Aprobada</option><option value="publicada">Publicada</option><option value="descartada">Descartada</option>
+        </select>
+      </div>
+    </div>
+    <button class="modal-btn" onclick="saveIdeaCliente()">Guardar idea</button>
+    <button class="modal-cancel" onclick="closeIdeaClienteModal()">Cancelar</button>
+  </div>
 </div>
 
 <!-- PASSWORD MODAL -->
@@ -2773,6 +3221,7 @@
   const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec";
   const IDEAS_URL = "https://script.google.com/macros/s/AKfycbzM9XggTQifgrkKAteCU1Eef4QYtzLW5ChF7KnN-RXAujyzChFoKOisZsGjkKE6xSnm/exec";
   const CREATIVAS_URL = "https://script.google.com/macros/s/AKfycbzxwscKqu_szWb_2SLodmfvzhUB_mTSOsk4cWv8hIfn3uE4nXo3YGwut9Zr1WHL3Tu7/exec";
+  const SO_URL = "https://script.google.com/macros/s/AKfycbwd_BluDlvBO7Diy1tjxImdz8vl_mSgVPkRCdpC7FaTGrwJtRNg1OdWDB3sj3oufM12vA/exec";
   const COMMENTS_URL = "https://script.google.com/macros/s/AKfycby-rqh_W3pA5WV9ReACRyeforaUkGTn73KtkAynO2GOtsJJM-XQgpkK9SAFuKjmHpsJ/exec";
   const SEGUIMIENTO_URL = "https://script.google.com/macros/s/AKfycbyvy0OSK-8dxf3iWZzz2IX5bBI1o90ki1vE2hzgh-HsR--14d1oJxyCcbBySj4H8Mg/exec";
   const FINANZAS_URL = "https://script.google.com/macros/s/AKfycbzLydN6tfUoVBhtxIGibzsfvZ1JxYx5FuMhelzOo3B64zK1NCHs-m9SKDHjvbtjtOAe/exec";
@@ -2782,7 +3231,8 @@
   const OBJETIVOS_URL = "https://script.google.com/macros/s/AKfycbzd2WYi_wGcqBBYNTF5juT-xHG3yIM2q6xY4H9yR9iCWkPoUdha3vtcRlLLw0d-vl4LRw/exec";
   const CRM_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec"; // Reemplazar con tu URL de CRM
   const PRIVATE_PASSWORD = 'balodi2024';
-  const PRIVATE_PANELS = ['estrategia', 'alianzas', 'finanzas', 'seguimiento'];
+  const PRIVATE_PANELS = ['estrategia', 'alianzas', 'finanzas', 'seguimiento', 'admin'];
+  const ADMIN_ONLY_PANELS = ['admin']; // Solo para bautista y nicolas
 
   const USERS = {
     'bautista':  { pass: 'bautista28',  name: 'Bautista',  role: 'Fundador',   avatar: 'BA', color: '#b45309' },
@@ -2961,7 +3411,10 @@
       videos: 'Videos',
       'c-mutual': 'Mutual Entre Asociados', 'c-capilar': 'Capilar Vibes',
       'c-hielo': 'Hielo Rosario', 'c-donatelli': 'Donatelli',
-      'c-mma': 'MMAPantera', 'c-murad': 'Murad'
+      'c-mma': 'MMAPantera', 'c-murad': 'Murad',
+      admin: 'Administración',
+      clientes: 'Clientes',
+      'cliente-detalle': 'Cliente'
     };
     const tb = document.getElementById('topbar-title');
     if (tb && titles[id]) tb.textContent = titles[id];
@@ -2976,6 +3429,8 @@
     if (id === 'crm') autoCRMCheck();
     if (id === 'videos') initVideos();
     if (id === 'c-balodi') { loadMetaAds(); loadBalodiIdeas(); loadBalodiObjs(); }
+    if (id === 'admin') { checkAdminAccess(); renderAdminPanel(); }
+    if (id === 'clientes') renderClientesPanel();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
   }
@@ -3035,9 +3490,10 @@
     const todosDiv = document.getElementById('t-responsable-todos');
     if (todosDiv) { todosDiv.style.background = ''; todosDiv.style.color = ''; }
     document.getElementById('t-prioridad').value = 'Media';
-    document.getElementById('t-cliente').value = '';
     document.getElementById('t-nota').value = '';
     document.getElementById('t-vencimiento').value = '';
+    // Populate clients dynamically
+    populateClienteSelect('t-cliente', true);
     setTimeout(() => document.getElementById('t-tarea').focus(), 100);
   }
 
@@ -3308,8 +3764,8 @@
   function openIdeaModal() {
     document.getElementById('idea-modal').classList.add('open');
     document.getElementById('i-idea').value = '';
-    document.getElementById('i-para').value = 'Balodi';
     document.getElementById('i-categoria').value = 'Contenido';
+    populateClienteSelect('i-para', false);
     setTimeout(() => document.getElementById('i-idea').focus(), 100);
   }
 
@@ -3416,8 +3872,8 @@
   function openCreativaModal() {
     document.getElementById('creativa-modal').classList.add('open');
     document.getElementById('c-idea').value = '';
-    document.getElementById('c-para').value = 'Balodi';
     document.getElementById('c-categoria').value = 'Contenido';
+    populateClienteSelect('c-para', false);
     setTimeout(() => document.getElementById('c-idea').focus(), 100);
   }
 
@@ -4874,6 +5330,8 @@
     loadIdeas();
     loadCreativas();
     loadAllComments();
+    // Cargar clientes desde Sheets en background
+    loadClientesFromSheets();
     if (currentUser && currentUser.username === 'bautista') {
       initClapDetection();
     }
@@ -5599,8 +6057,13 @@
     // Si hay token guardado, intentar conectar automáticamente
     if (metaToken && metaAccountId) {
       metaConnected = true;
-      document.getElementById('meta-token-input').value = metaToken;
-      document.getElementById('meta-account-input').value = metaAccountId;
+      // Defer DOM writes until panel is visible
+      setTimeout(() => {
+        const ti = document.getElementById('meta-token-input');
+        const ai = document.getElementById('meta-account-input');
+        if (ti) ti.value = metaToken;
+        if (ai) ai.value = metaAccountId;
+      }, 50);
       loadMetaAdsReal().catch(() => renderMetaMock());
     } else {
       renderMetaMock();
@@ -6973,6 +7436,1517 @@
       if (e.key === 'Enter') checkPassword();
     });
   });
+
+  // ============ ADMINISTRACIÓN ============
+
+  // USERS runtime store (starts from USERS const, can be extended in localStorage)
+  function getAdminUsers() {
+    const extra = JSON.parse(localStorage.getItem('balodi_extra_users') || '{}');
+    return { ...USERS, ...extra };
+  }
+
+  function saveExtraUsers(extra) {
+    localStorage.setItem('balodi_extra_users', JSON.stringify(extra));
+  }
+
+  // ---- Cache local + Sheets sync ----
+  let _clientesCache = null;
+
+  function getAdminClientes() {
+    // Siempre leer desde cache en memoria si existe (se carga al init)
+    if (_clientesCache) return _clientesCache;
+    // Fallback a localStorage mientras carga
+    const saved = JSON.parse(localStorage.getItem('balodi_clientes_admin') || 'null');
+    if (saved && saved.length) return saved;
+    // Defaults si no hay nada aún
+    return [
+      { id:'cl_balodi',    nombre:'Balodi',                      rubro:'Agencia de Marketing',   contacto:'', telefono:'', estado:'Activo' },
+      { id:'cl_tarjeta',   nombre:'Tarjeta Primicia',            rubro:'Finanzas',               contacto:'', telefono:'', estado:'Activo' },
+      { id:'cl_mutual',    nombre:'Mutual Entre Asociados',      rubro:'Mutuales',               contacto:'', telefono:'', estado:'Activo' },
+      { id:'cl_capilar',   nombre:'Capilar Vibes',               rubro:'Peluquería',             contacto:'', telefono:'', estado:'Activo' },
+      { id:'cl_hielo',     nombre:'Hielo Rosario',               rubro:'Distribución',           contacto:'', telefono:'', estado:'Activo' },
+      { id:'cl_donatelli', nombre:'Donatelli Servicios Integrales', rubro:'Servicios',           contacto:'', telefono:'', estado:'Activo' },
+      { id:'cl_mma',       nombre:'MMAPantera',                  rubro:'Deportes',               contacto:'', telefono:'', estado:'Activo' },
+      { id:'cl_murad',     nombre:'Murad',                       rubro:'',                       contacto:'', telefono:'', estado:'Activo' },
+    ];
+  }
+
+  async function loadClientesFromSheets() {
+    try {
+      const res = await fetch(SO_URL + '?action=getClientes&t=' + Date.now());
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        _clientesCache = data;
+        localStorage.setItem('balodi_clientes_admin', JSON.stringify(data));
+      }
+    } catch(e) {
+      // Si falla, usar localStorage
+      const saved = JSON.parse(localStorage.getItem('balodi_clientes_admin') || 'null');
+      if (saved) _clientesCache = saved;
+    }
+  }
+
+  function saveAdminClientes(clientes) {
+    _clientesCache = clientes;
+    localStorage.setItem('balodi_clientes_admin', JSON.stringify(clientes));
+    if (typeof renderClientesPanel === 'function' && document.getElementById('panel-clientes')?.classList.contains('active')) {
+      renderClientesPanel();
+    }
+  }
+
+  // Sincronizar un cliente individual a Sheets (llamar después de saveAdminClientes)
+  function syncClienteToSheets(cliente) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveCliente', data: cliente })
+    }).catch(() => {});
+  }
+
+  function syncDeleteClienteToSheets(id) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'deleteCliente', id })
+    }).catch(() => {});
+  }
+
+  function isAdmin() {
+    return currentUser && ['bautista', 'nicolas'].includes(currentUser.username);
+  }
+
+  function checkAdminAccess() {
+    if (!isAdmin()) {
+      // Si por alguna razón un no-admin llega acá, lo mandamos al inicio
+      go('dashboard');
+      alert('Esta sección es solo para administradores.');
+    }
+  }
+
+  function renderAdminPanel() {
+    if (!isAdmin()) return;
+    const allUsers = getAdminUsers();
+    const clientes = getAdminClientes();
+
+    // KPIs
+    document.getElementById('admin-count-users').textContent = Object.keys(allUsers).length;
+    document.getElementById('admin-count-clientes').textContent = clientes.filter(c => c.estado === 'Activo').length;
+
+    // Render usuarios
+    const usersList = document.getElementById('admin-users-list');
+    const AVATAR_COLORS = ['#b45309','#2563eb','#16a34a','#d97706','#dc2626','#7c3aed','#0891b2','#be185d'];
+    const extraUsers = JSON.parse(localStorage.getItem('balodi_extra_users') || '{}');
+    usersList.innerHTML = Object.entries(allUsers).map(([username, u]) => {
+      const isBuiltin = ['bautista','nicolas','lourdes','enzo','brunela'].includes(username);
+      const isAdminUser = ['bautista','nicolas'].includes(username);
+      return `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)">
+        <div style="width:42px;height:42px;border-radius:50%;background:${u.color || '#f5620a'};display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;color:white;flex-shrink:0">${u.avatar || u.name?.[0] || '?'}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text)">${u.name}</div>
+          <div style="font-size:12px;color:var(--text3)">@${username} · ${u.role || 'Sin rol'}</div>
+        </div>
+        ${isAdminUser ? '<span style="background:var(--orange-light);color:var(--orange);border:1px solid var(--orange-border);border-radius:999px;font-size:11px;font-weight:700;padding:3px 10px">Admin</span>' : ''}
+        ${!isBuiltin ? `<button onclick="deleteUser('${username}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-trash"></i> Eliminar</button>` : ''}
+        ${isBuiltin && !isAdminUser ? `<button onclick="openUserModal('${username}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-pencil"></i> Editar</button>` : ''}
+      </div>`;
+    }).join('');
+
+    // Render clientes
+    const clientesList = document.getElementById('admin-clientes-list');
+    clientesList.innerHTML = clientes.map((c, i) => {
+      const estadoColor = c.estado === 'Activo' ? 'var(--green)' : c.estado === 'Pausado' ? 'var(--amber)' : 'var(--text3)';
+      const estadoBg = c.estado === 'Activo' ? 'var(--green-light)' : c.estado === 'Pausado' ? 'var(--amber-light)' : 'var(--bg4)';
+      return `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px">
+          <div>
+            <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text)">${c.nombre}</div>
+            ${c.rubro ? `<div style="font-size:12px;color:var(--text3);margin-top:2px">${c.rubro}</div>` : ''}
+          </div>
+          <span style="background:${estadoBg};color:${estadoColor};border-radius:999px;font-size:11px;font-weight:700;padding:3px 10px;white-space:nowrap">${c.estado}</span>
+        </div>
+        ${c.contacto ? `<div style="font-size:12px;color:var(--text2);margin-bottom:4px"><i class="ti ti-user" style="color:var(--orange)"></i> ${c.contacto}</div>` : ''}
+        ${c.telefono ? `<div style="font-size:12px;color:var(--text2);margin-bottom:10px"><i class="ti ti-phone" style="color:var(--orange)"></i> ${c.telefono}</div>` : '<div style="margin-bottom:10px"></div>'}
+        <div style="display:flex;gap:8px">
+          <button onclick="openClienteModal(${i})" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 12px;color:var(--text2);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-pencil"></i> Editar</button>
+          <button onclick="deleteCliente(${i})" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 12px;color:var(--red);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ---- USUARIOS ----
+  function openUserModal(editUsername) {
+    document.getElementById('um-edit-username').value = editUsername || '';
+    document.getElementById('um-name').value = '';
+    document.getElementById('um-username').value = '';
+    document.getElementById('um-pass').value = '';
+    document.getElementById('um-role').value = '';
+    document.getElementById('um-avatar').value = '';
+    document.getElementById('um-error').style.display = 'none';
+
+    if (editUsername) {
+      const allUsers = getAdminUsers();
+      const u = allUsers[editUsername];
+      if (u) {
+        document.getElementById('user-modal-title').textContent = 'Editar usuario';
+        document.getElementById('um-name').value = u.name || '';
+        document.getElementById('um-username').value = editUsername;
+        document.getElementById('um-username').readOnly = true;
+        document.getElementById('um-pass').value = u.pass || '';
+        document.getElementById('um-role').value = u.role || '';
+        document.getElementById('um-avatar').value = u.avatar || '';
+      }
+    } else {
+      document.getElementById('user-modal-title').textContent = 'Nuevo usuario';
+      document.getElementById('um-username').readOnly = false;
+    }
+    document.getElementById('user-modal').classList.add('open');
+    setTimeout(() => document.getElementById('um-name').focus(), 100);
+  }
+
+  function closeUserModal() {
+    document.getElementById('user-modal').classList.remove('open');
+    document.getElementById('um-username').readOnly = false;
+  }
+
+  function saveUser() {
+    const name = document.getElementById('um-name').value.trim();
+    const username = document.getElementById('um-username').value.trim().toLowerCase();
+    const pass = document.getElementById('um-pass').value.trim();
+    const role = document.getElementById('um-role').value.trim();
+    const avatar = document.getElementById('um-avatar').value.trim().toUpperCase().substring(0, 2);
+    const editUsername = document.getElementById('um-edit-username').value;
+    const errEl = document.getElementById('um-error');
+
+    if (!name || !username || !pass) {
+      errEl.textContent = 'Nombre, usuario y contraseña son obligatorios.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    // Validar que no exista si es nuevo
+    if (!editUsername) {
+      const existing = getAdminUsers();
+      if (existing[username]) {
+        errEl.textContent = 'Ya existe un usuario con ese nombre. Elegí otro.';
+        errEl.style.display = 'block';
+        return;
+      }
+    }
+
+    // Colores disponibles para nuevos usuarios
+    const COLORS = ['#7c3aed','#0891b2','#be185d','#065f46','#92400e'];
+    const extra = JSON.parse(localStorage.getItem('balodi_extra_users') || '{}');
+    const builtinCount = Object.keys(USERS).length;
+    const colorIdx = (Object.keys(extra).length) % COLORS.length;
+
+    const target = editUsername || username;
+    const isBuiltin = ['bautista','nicolas','lourdes','enzo','brunela'].includes(target);
+
+    if (isBuiltin) {
+      // Editar usuario built-in: solo actualizar en USERS (imposible sin reload, así que guardamos en extra con override)
+      extra[target] = { ...USERS[target], pass, role, avatar: avatar || USERS[target].avatar };
+    } else {
+      extra[username] = {
+        pass, name,
+        role: role || 'Staff',
+        avatar: avatar || name.substring(0, 2).toUpperCase(),
+        color: COLORS[colorIdx]
+      };
+    }
+    saveExtraUsers(extra);
+
+    // También actualizar USERS en runtime para la sesión actual
+    USERS[username] = extra[username] || { pass, name, role: role || 'Staff', avatar: avatar || name.substring(0,2).toUpperCase(), color: COLORS[colorIdx] };
+
+    closeUserModal();
+    renderAdminPanel();
+    alert('✅ Usuario guardado correctamente.');
+  }
+
+  function deleteUser(username) {
+    if (['bautista','nicolas','lourdes','enzo','brunela'].includes(username)) {
+      alert('No podés eliminar los usuarios base del sistema.');
+      return;
+    }
+    if (!confirm(`¿Eliminar el usuario "${username}"? Esta acción no se puede deshacer.`)) return;
+    const extra = JSON.parse(localStorage.getItem('balodi_extra_users') || '{}');
+    delete extra[username];
+    saveExtraUsers(extra);
+    renderAdminPanel();
+  }
+
+  // ---- CLIENTES ----
+  let editClienteIdx = null;
+
+  function openClienteModal(idx) {
+    editClienteIdx = (idx !== undefined) ? idx : null;
+    const clientes = getAdminClientes();
+
+    if (editClienteIdx !== null && clientes[editClienteIdx]) {
+      const c = clientes[editClienteIdx];
+      document.getElementById('cliente-modal-title').textContent = 'Editar cliente';
+      document.getElementById('cm-nombre').value = c.nombre || '';
+      document.getElementById('cm-rubro').value = c.rubro || '';
+      document.getElementById('cm-contacto').value = c.contacto || '';
+      document.getElementById('cm-telefono').value = c.telefono || '';
+      document.getElementById('cm-responsable').value = c.responsable || '';
+      document.getElementById('cm-descripcion').value = c.descripcion || '';
+      document.getElementById('cm-estado').value = c.estado || 'Activo';
+    } else {
+      document.getElementById('cliente-modal-title').textContent = 'Nuevo cliente';
+      document.getElementById('cm-nombre').value = '';
+      document.getElementById('cm-rubro').value = '';
+      document.getElementById('cm-contacto').value = '';
+      document.getElementById('cm-telefono').value = '';
+      document.getElementById('cm-responsable').value = '';
+      document.getElementById('cm-descripcion').value = '';
+      document.getElementById('cm-estado').value = 'Activo';
+    }
+    document.getElementById('cm-error').style.display = 'none';
+    document.getElementById('cliente-modal').classList.add('open');
+    setTimeout(() => document.getElementById('cm-nombre').focus(), 100);
+  }
+
+  function closeClienteModal() {
+    document.getElementById('cliente-modal').classList.remove('open');
+    editClienteIdx = null;
+  }
+
+  function saveCliente() {
+    const nombre = document.getElementById('cm-nombre').value.trim();
+    if (!nombre) {
+      const e = document.getElementById('cm-error');
+      e.textContent = 'El nombre del cliente es obligatorio.';
+      e.style.display = 'block';
+      return;
+    }
+    const clientes = getAdminClientes();
+    const entry = {
+      id: editClienteIdx !== null ? clientes[editClienteIdx].id : 'cl_' + Date.now(),
+      nombre,
+      rubro: document.getElementById('cm-rubro').value.trim(),
+      contacto: document.getElementById('cm-contacto').value.trim(),
+      telefono: document.getElementById('cm-telefono').value.trim(),
+      responsable: document.getElementById('cm-responsable').value.trim(),
+      descripcion: document.getElementById('cm-descripcion').value.trim(),
+      estado: document.getElementById('cm-estado').value,
+      createdAt: editClienteIdx !== null ? (clientes[editClienteIdx].createdAt || new Date().toISOString()) : new Date().toISOString()
+    };
+
+    if (editClienteIdx !== null) {
+      clientes[editClienteIdx] = entry;
+    } else {
+      clientes.push(entry);
+    }
+    saveAdminClientes(clientes);
+    syncClienteToSheets(entry);
+    closeClienteModal();
+    renderAdminPanel();
+    alert('✅ Cliente guardado correctamente.');
+  }
+
+  function deleteCliente(idx) {
+    const clientes = getAdminClientes();
+    if (!confirm(`¿Eliminar el cliente "${clientes[idx]?.nombre}"?`)) return;
+    const deletedId = clientes[idx].id;
+    clientes.splice(idx, 1);
+    saveAdminClientes(clientes);
+    syncDeleteClienteToSheets(deletedId);
+    renderAdminPanel();
+    if (document.getElementById('panel-clientes').classList.contains('active')) renderClientesPanel();
+  }
+
+  // ============ ARQUITECTURA CENTRAL DE CLIENTES ============
+
+  // Populate a <select> with active clients
+  function populateClienteSelect(selectId, withEmpty = true) {
+    const sel = document.getElementById(selectId);
+    if (!sel) return;
+    const clientes = getAdminClientes().filter(c => c.estado !== 'Inactivo');
+    const currentVal = sel.value;
+    sel.innerHTML = '';
+    if (withEmpty) sel.innerHTML += '<option value="">Sin cliente específico</option>';
+    clientes.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = c.nombre;
+      if (c.id === currentVal || c.nombre === currentVal) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    // Fallback: set by name if no match by id
+    if (currentVal && !sel.value) {
+      [...sel.options].forEach(o => { if (o.textContent === currentVal) o.selected = true; });
+    }
+  }
+
+  function getClienteById(id) {
+    return getAdminClientes().find(c => c.id === id);
+  }
+
+  function getClienteNombre(id) {
+    const c = getClienteById(id);
+    return c ? c.nombre : (id || '—');
+  }
+
+  // ============ PANEL CLIENTES (GRID DINÁMICO) ============
+
+  function renderClientesPanel() {
+    const container = document.getElementById('clientes-grid-container');
+    if (!container) return;
+    const clientes = getAdminClientes().filter(c => c.estado !== 'Inactivo');
+    if (!clientes.length) {
+      container.innerHTML = `<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-users"></i></div><div class="placeholder-title">Sin clientes cargados</div><div class="placeholder-desc">Creá clientes desde Administración para que aparezcan acá.</div></div>`;
+      return;
+    }
+    // Balodi goes first, spanning full width
+    const balodi = clientes.find(c => c.nombre.toLowerCase().includes('balodi'));
+    const rest = clientes.filter(c => c !== balodi);
+
+    let html = '<div class="client-grid">';
+    if (balodi) {
+      html += `<div class="client-card" onclick="goCliente('${balodi.id}')" style="border-color:var(--orange-border);background:var(--orange-light);grid-column:span 2">
+        <div style="display:flex;align-items:center;gap:10px;flex:1">
+          <div style="width:32px;height:32px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px"><i class="ti ti-chart-bar"></i></div>
+          <div>
+            <div class="client-name" style="color:var(--orange)">${balodi.nombre}</div>
+            <div style="font-size:11px;color:var(--orange);opacity:0.8;margin-top:2px">${balodi.rubro || 'Cuenta propia'} · Meta Ads integrado</div>
+          </div>
+        </div>
+        <span class="badge badge-orange" style="margin-right:8px">Interna</span>
+        <span class="client-arrow" style="color:var(--orange)">→</span>
+      </div>`;
+    }
+    rest.forEach(c => {
+      const estadoColor = c.estado === 'Activo' ? '' : 'opacity:0.6';
+      html += `<div class="client-card" onclick="goCliente('${c.id}')" style="${estadoColor}">
+        <div style="flex:1">
+          <div class="client-name">${c.nombre}</div>
+          ${c.rubro ? `<div style="font-size:11px;color:var(--text3);margin-top:2px">${c.rubro}</div>` : ''}
+        </div>
+        ${c.estado === 'Pausado' ? '<span class="badge badge-amber" style="margin-right:8px">Pausado</span>' : ''}
+        <span class="client-arrow">→</span>
+      </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  // ============ NAVEGACIÓN A CLIENTE INDIVIDUAL ============
+
+  let currentClienteId = null;
+
+  function goCliente(clienteId) {
+    const c = getClienteById(clienteId);
+    // Balodi still uses its special panel
+    if (!c) return;
+    if (c.nombre.toLowerCase().includes('balodi')) { go('c-balodi'); return; }
+
+    currentClienteId = clienteId;
+
+    // Set header
+    document.getElementById('cliente-detalle-breadcrumb').innerHTML = `<span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span onclick="go('clientes')">Clientes</span><span class="breadcrumb-sep">/</span><span>${c.nombre}</span>`;
+    document.getElementById('cliente-detalle-eyebrow').textContent = c.rubro || 'Cliente';
+    document.getElementById('cliente-detalle-title').textContent = c.nombre;
+    document.getElementById('cliente-detalle-desc').textContent = c.descripcion || `Perfil completo de ${c.nombre}.`;
+
+    // Reset tabs
+    document.querySelectorAll('.est-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('cliente-tab-resumen').classList.add('active');
+    document.querySelectorAll('#cliente-tabs-row .est-tab').forEach((b,i) => { b.classList.toggle('active', i === 0); });
+
+    // Navigate to panel
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('panel-cliente-detalle').classList.add('active');
+    document.getElementById('nav-clientes').classList.add('active');
+    const tb = document.getElementById('topbar-title');
+    if (tb) tb.textContent = c.nombre;
+
+    // Render content
+    renderClienteResumen(clienteId);
+    // Load fresh data from Sheets in background
+    loadPautaFromSheets(clienteId).then(() => {
+      if (document.getElementById('cliente-tab-resumen').classList.contains('active')) renderClienteResumen(clienteId);
+      if (document.getElementById('cliente-tab-pauta').classList.contains('active')) renderPautaCliente(clienteId);
+    });
+    loadIdeasClienteFromSheets(clienteId).then(() => {
+      if (document.getElementById('cliente-tab-resumen').classList.contains('active')) renderClienteResumen(clienteId);
+      if (document.getElementById('cliente-tab-ideas-cliente').classList.contains('active')) renderIdeasCliente(clienteId);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeSidebar();
+  }
+
+  function switchClienteTab(tab, btn) {
+    document.querySelectorAll('#cliente-tab-resumen, #cliente-tab-pauta, #cliente-tab-ideas-cliente, #cliente-tab-reporte').forEach(s => s.classList.remove('active'));
+    document.getElementById('cliente-tab-' + tab).classList.add('active');
+    document.querySelectorAll('#cliente-tabs-row .est-tab').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+      const idx = ['resumen','pauta','ideas-cliente','reporte'].indexOf(tab);
+      const tabs = document.querySelectorAll('#cliente-tabs-row .est-tab');
+      if (tabs[idx]) tabs[idx].classList.add('active');
+    }
+    if (tab === 'resumen') renderClienteResumen(currentClienteId);
+    if (tab === 'pauta') { loadMetaClienteCredentials(currentClienteId); renderPautaCliente(currentClienteId); }
+    if (tab === 'ideas-cliente') renderIdeasCliente(currentClienteId);
+    if (tab === 'reporte') initReporteMensual(currentClienteId);
+  }
+
+  // ============ RESUMEN DEL CLIENTE ============
+
+  function renderClienteResumen(clienteId) {
+    const c = getClienteById(clienteId);
+    if (!c) return;
+
+    // Datos
+    const estadoColor = c.estado === 'Activo' ? 'var(--green)' : c.estado === 'Pausado' ? 'var(--amber)' : 'var(--text3)';
+    document.getElementById('cliente-resumen-datos').innerHTML = `
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:12px;color:var(--text3);font-weight:600">Estado</span>
+        <span style="font-size:13px;font-weight:700;color:${estadoColor}">${c.estado || 'Activo'}</span>
+      </div>
+      ${c.rubro ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Rubro</span><span style="font-size:13px;color:var(--text2)">${c.rubro}</span></div>` : ''}
+      ${c.responsable ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Responsable</span><span style="font-size:13px;color:var(--text2)">${c.responsable}</span></div>` : ''}
+      ${c.contacto ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Contacto</span><span style="font-size:13px;color:var(--text2)">${c.contacto}</span></div>` : ''}
+      ${c.telefono ? `<div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:12px;color:var(--text3);font-weight:600">Teléfono</span><span style="font-size:13px;color:var(--text2)">${c.telefono}</span></div>` : ''}
+    `;
+
+    // Últimas ideas
+    const allClienteIdeas = getIdeasCliente(clienteId).slice(0, 3);
+    const ideasEl = document.getElementById('cliente-resumen-ideas');
+    if (!allClienteIdeas.length) {
+      ideasEl.innerHTML = `<div style="font-size:13px;color:var(--text3);text-align:center;padding:16px">No hay ideas para este cliente.</div>`;
+    } else {
+      ideasEl.innerHTML = allClienteIdeas.map(i => `
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="width:28px;height:28px;background:var(--orange-light);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-bulb" style="color:var(--orange);font-size:13px"></i></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600;color:var(--text)">${i.titulo}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">${i.formato || ''} · ${i.estado || 'pendiente'}</div>
+          </div>
+        </div>`).join('');
+    }
+
+    // Pauta (resumen) — muestra meta KPIs guardados + pauta manual
+    const pautas = getPautaCliente(clienteId);
+    const pautaEl = document.getElementById('cliente-resumen-pauta');
+    const activas = pautas.filter(p => p.estado === 'activa').length;
+
+    // Intentar leer KPIs de Meta guardados en cache
+    const metaCache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + clienteId) || 'null');
+    const hasMetaData = metaCache && (metaCache.gasto || metaCache.alcance);
+
+    let pautaHtml = '';
+
+    if (hasMetaData) {
+      const fmt = n => n >= 1000 ? (n/1000).toFixed(1)+'K' : String(n);
+      pautaHtml += `
+        <div style="background:var(--orange-light);border:1px solid var(--orange-border);border-radius:10px;padding:12px 14px;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px"><i class="ti ti-brand-meta"></i> Meta Ads — últimos 30 días</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div><div style="font-size:18px;font-weight:800;color:var(--text);font-family:'Outfit',sans-serif">$${Math.round(metaCache.gasto||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3)">Gasto</div></div>
+            <div><div style="font-size:18px;font-weight:800;color:var(--blue);font-family:'Outfit',sans-serif">${fmt(metaCache.alcance||0)}</div><div style="font-size:10px;color:var(--text3)">Alcance</div></div>
+            <div><div style="font-size:18px;font-weight:800;color:var(--green);font-family:'Outfit',sans-serif">${fmt(metaCache.clicks||0)}</div><div style="font-size:10px;color:var(--text3)">Clicks</div></div>
+            <div><div style="font-size:18px;font-weight:800;color:#7c3aed;font-family:'Outfit',sans-serif">${metaCache.conversaciones||'—'}</div><div style="font-size:10px;color:var(--text3)">Conversaciones</div></div>
+          </div>
+        </div>`;
+    }
+
+    if (pautas.length) {
+      pautaHtml += `
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Campañas manuales</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:800;color:var(--orange)">${activas} <span style="font-size:13px;font-weight:600;color:var(--text3)">activa${activas!==1?'s':''}</span></div>
+        ${pautas.slice(0,3).map(p => `
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border)">
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px">${p.nombre}</span>
+            <span style="font-weight:700;color:${p.estado==='activa'?'var(--green)':p.estado==='pausada'?'var(--amber)':'var(--text3)'};white-space:nowrap">${p.estado}</span>
+          </div>`).join('')}`;
+    }
+
+    if (!hasMetaData && !pautas.length) {
+      pautaHtml = `<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Sin pauta cargada.<br><span style="font-size:11px">Andá a Pauta para conectar Meta Ads.</span></div>`;
+    }
+
+    pautaEl.innerHTML = pautaHtml;
+
+    // Tareas recientes
+    const tareasEl = document.getElementById('cliente-resumen-tareas');
+    const tareasDelCliente = allTasks.filter(t => {
+      const clienteNombre = getClienteNombre(clienteId);
+      return t.cliente === clienteNombre || t.cliente === c.nombre || t.clienteId === clienteId;
+    }).slice(0, 3);
+    if (!tareasDelCliente.length) {
+      tareasEl.innerHTML = `<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px">Sin tareas recientes.</div>`;
+    } else {
+      tareasEl.innerHTML = tareasDelCliente.map(t => `
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:${t.estado==='hecho'?'var(--green)':'var(--orange)'};flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--text2);flex:1">${t.tarea}</div>
+          <span style="font-size:10px;font-weight:700;color:${t.prioridad==='Alta'?'var(--red)':t.prioridad==='Baja'?'var(--green)':'var(--amber)'}">${t.prioridad}</span>
+        </div>`).join('');
+    }
+  }
+
+  // ============ PAUTA DEL CLIENTE ============
+
+  let _pautaCache = {}; // { clienteId: [...] }
+
+  function getPautaKey(clienteId) { return 'balodi_pauta_' + clienteId; }
+
+  function getPautaCliente(clienteId) {
+    if (_pautaCache[clienteId]) return _pautaCache[clienteId];
+    return JSON.parse(localStorage.getItem(getPautaKey(clienteId)) || '[]');
+  }
+
+  function savePautaCliente(clienteId, pauta) {
+    _pautaCache[clienteId] = pauta;
+    localStorage.setItem(getPautaKey(clienteId), JSON.stringify(pauta));
+  }
+
+  async function loadPautaFromSheets(clienteId) {
+    try {
+      const res = await fetch(`${SO_URL}?action=getPauta&clienteId=${encodeURIComponent(clienteId)}&t=${Date.now()}`);
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        _pautaCache[clienteId] = data;
+        localStorage.setItem(getPautaKey(clienteId), JSON.stringify(data));
+      }
+    } catch(e) {}
+  }
+
+  function syncPautaToSheets(pauta) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'savePauta', data: pauta })
+    }).catch(() => {});
+  }
+
+  function syncDeletePautaToSheets(id) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'deletePauta', id })
+    }).catch(() => {});
+  }
+
+  let currentPautaEditId = null;
+
+  function openPautaModal(pautaId) {
+    currentPautaEditId = pautaId || null;
+    const pautas = getPautaCliente(currentClienteId);
+    const p = pautaId ? pautas.find(x => x.id === pautaId) : null;
+
+    document.getElementById('pauta-modal-title').textContent = p ? 'Editar campaña' : 'Nueva campaña';
+    document.getElementById('pm-edit-id').value = pautaId || '';
+    document.getElementById('pm-nombre').value = p?.nombre || '';
+    document.getElementById('pm-plataforma').value = p?.plataforma || 'Meta Ads';
+    document.getElementById('pm-objetivo').value = p?.objetivo || 'Mensajes';
+    document.getElementById('pm-presupuesto').value = p?.presupuesto || '';
+    document.getElementById('pm-estado').value = p?.estado || 'activa';
+    document.getElementById('pm-inicio').value = p?.inicio || '';
+    document.getElementById('pm-fin').value = p?.fin || '';
+    document.getElementById('pm-notas').value = p?.notas || '';
+    document.getElementById('pauta-modal').classList.add('open');
+    setTimeout(() => document.getElementById('pm-nombre').focus(), 100);
+  }
+
+  function closePautaModal() {
+    document.getElementById('pauta-modal').classList.remove('open');
+    currentPautaEditId = null;
+  }
+
+  function savePauta() {
+    const nombre = document.getElementById('pm-nombre').value.trim();
+    if (!nombre) { alert('El nombre de la campaña es obligatorio.'); return; }
+    const pautas = getPautaCliente(currentClienteId);
+    const editId = document.getElementById('pm-edit-id').value;
+    const entry = {
+      id: editId || 'p_' + Date.now(),
+      nombre,
+      plataforma: document.getElementById('pm-plataforma').value,
+      objetivo: document.getElementById('pm-objetivo').value,
+      presupuesto: document.getElementById('pm-presupuesto').value,
+      estado: document.getElementById('pm-estado').value,
+      inicio: document.getElementById('pm-inicio').value,
+      fin: document.getElementById('pm-fin').value,
+      notas: document.getElementById('pm-notas').value,
+      createdAt: new Date().toISOString()
+    };
+    if (editId) {
+      const idx = pautas.findIndex(p => p.id === editId);
+      if (idx !== -1) pautas[idx] = entry; else pautas.push(entry);
+    } else {
+      pautas.push(entry);
+    }
+    // Agregar clienteId para que Sheets pueda filtrar
+    entry.clienteId = currentClienteId;
+    savePautaCliente(currentClienteId, pautas);
+    syncPautaToSheets(entry);
+    closePautaModal();
+    renderPautaCliente(currentClienteId);
+  }
+
+  function deletePauta(pautaId) {
+    if (!confirm('¿Eliminar esta campaña?')) return;
+    const pautas = getPautaCliente(currentClienteId).filter(p => p.id !== pautaId);
+    savePautaCliente(currentClienteId, pautas);
+    syncDeletePautaToSheets(pautaId);
+    renderPautaCliente(currentClienteId);
+  }
+
+  function renderPautaCliente(clienteId) {
+    const c = getClienteById(clienteId);
+    const pautas = getPautaCliente(clienteId);
+    const nameEl = document.getElementById('pauta-cliente-name');
+    if (nameEl && c) nameEl.textContent = 'Campañas de ' + c.nombre;
+
+    const container = document.getElementById('pauta-lista-container');
+    if (!pautas.length) {
+      container.innerHTML = `<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-speakerphone"></i></div><div class="placeholder-title">Sin campañas</div><div class="placeholder-desc">Cargá la primera campaña publicitaria de este cliente.</div></div>`;
+      return;
+    }
+    const estadoColors = { activa: 'var(--green)', pausada: 'var(--amber)', finalizada: 'var(--text3)', planificada: 'var(--blue)' };
+    container.innerHTML = pautas.map(p => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
+          <div>
+            <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text)">${p.nombre}</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px">${p.plataforma} · ${p.objetivo}</div>
+          </div>
+          <span style="background:${estadoColors[p.estado]}22;color:${estadoColors[p.estado]};border-radius:999px;font-size:11px;font-weight:700;padding:3px 10px;white-space:nowrap">${p.estado}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+          ${p.presupuesto ? `<div style="background:var(--bg4);border-radius:8px;padding:8px 10px"><div style="font-size:10px;color:var(--text3);font-weight:600">Presupuesto</div><div style="font-size:14px;font-weight:700;color:var(--text)">$${parseFloat(p.presupuesto).toLocaleString('es-AR')}</div></div>` : ''}
+          ${p.inicio ? `<div style="background:var(--bg4);border-radius:8px;padding:8px 10px"><div style="font-size:10px;color:var(--text3);font-weight:600">Inicio</div><div style="font-size:13px;font-weight:600;color:var(--text)">${new Date(p.inicio+'T00:00:00').toLocaleDateString('es-AR')}</div></div>` : ''}
+          ${p.fin ? `<div style="background:var(--bg4);border-radius:8px;padding:8px 10px"><div style="font-size:10px;color:var(--text3);font-weight:600">Fin</div><div style="font-size:13px;font-weight:600;color:var(--text)">${new Date(p.fin+'T00:00:00').toLocaleDateString('es-AR')}</div></div>` : ''}
+        </div>
+        ${p.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg4);border-radius:8px;padding:8px 12px;margin-bottom:10px">${p.notas}</div>` : ''}
+        <div style="display:flex;gap:8px">
+          <button onclick="openPautaModal('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 12px;color:var(--text2);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-pencil"></i> Editar</button>
+          <button onclick="deletePauta('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 12px;color:var(--red);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>`).join('');
+  }
+
+  // ============ IDEAS DEL CLIENTE ============
+
+  let _ideasClienteCache = {}; // { clienteId: [...] }
+
+  function getIdeasClienteKey(clienteId) { return 'balodi_ideas_cliente_' + clienteId; }
+
+  function getIdeasCliente(clienteId) {
+    if (_ideasClienteCache[clienteId]) return _ideasClienteCache[clienteId];
+    return JSON.parse(localStorage.getItem(getIdeasClienteKey(clienteId)) || '[]');
+  }
+
+  function saveIdeasCliente(clienteId, ideas) {
+    _ideasClienteCache[clienteId] = ideas;
+    localStorage.setItem(getIdeasClienteKey(clienteId), JSON.stringify(ideas));
+  }
+
+  async function loadIdeasClienteFromSheets(clienteId) {
+    try {
+      const res = await fetch(`${SO_URL}?action=getIdeasCliente&clienteId=${encodeURIComponent(clienteId)}&t=${Date.now()}`);
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        _ideasClienteCache[clienteId] = data;
+        localStorage.setItem(getIdeasClienteKey(clienteId), JSON.stringify(data));
+      }
+    } catch(e) {}
+  }
+
+  function syncIdeaClienteToSheets(idea) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveIdeaCliente', data: idea })
+    }).catch(() => {});
+  }
+
+  function syncDeleteIdeaClienteToSheets(id) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'deleteIdeaCliente', id })
+    }).catch(() => {});
+  }
+
+  let currentIdeaClienteEditId = null;
+
+  function openIdeaClienteModal(ideaId) {
+    currentIdeaClienteEditId = ideaId || null;
+    const ideas = getIdeasCliente(currentClienteId);
+    const idea = ideaId ? ideas.find(x => x.id === ideaId) : null;
+    const c = getClienteById(currentClienteId);
+
+    document.getElementById('idea-cliente-modal-title').textContent = (idea ? 'Editar idea' : 'Nueva idea') + (c ? ' — ' + c.nombre : '');
+    document.getElementById('icm-edit-id').value = ideaId || '';
+    document.getElementById('icm-titulo').value = idea?.titulo || '';
+    document.getElementById('icm-descripcion').value = idea?.descripcion || '';
+    document.getElementById('icm-formato').value = idea?.formato || 'Reel';
+    document.getElementById('icm-prioridad').value = idea?.prioridad || 'media';
+    document.getElementById('icm-estado').value = idea?.estado || 'pendiente';
+    document.getElementById('idea-cliente-modal').classList.add('open');
+    setTimeout(() => document.getElementById('icm-titulo').focus(), 100);
+  }
+
+  function closeIdeaClienteModal() {
+    document.getElementById('idea-cliente-modal').classList.remove('open');
+    currentIdeaClienteEditId = null;
+  }
+
+  function saveIdeaCliente() {
+    const titulo = document.getElementById('icm-titulo').value.trim();
+    if (!titulo) { alert('El título de la idea es obligatorio.'); return; }
+    const ideas = getIdeasCliente(currentClienteId);
+    const editId = document.getElementById('icm-edit-id').value;
+    const entry = {
+      id: editId || 'ic_' + Date.now(),
+      titulo,
+      descripcion: document.getElementById('icm-descripcion').value,
+      formato: document.getElementById('icm-formato').value,
+      prioridad: document.getElementById('icm-prioridad').value,
+      estado: document.getElementById('icm-estado').value,
+      responsable: currentUser?.name || 'Equipo',
+      createdAt: new Date().toISOString(),
+      fecha: new Date().toLocaleDateString('es-AR')
+    };
+    if (editId) {
+      const idx = ideas.findIndex(i => i.id === editId);
+      if (idx !== -1) ideas[idx] = entry; else ideas.unshift(entry);
+    } else {
+      ideas.unshift(entry);
+    }
+    entry.clienteId = currentClienteId;
+    saveIdeasCliente(currentClienteId, ideas);
+    syncIdeaClienteToSheets(entry);
+    closeIdeaClienteModal();
+    renderIdeasCliente(currentClienteId);
+    if (document.getElementById('cliente-tab-resumen').classList.contains('active')) renderClienteResumen(currentClienteId);
+  }
+
+  function deleteIdeaCliente(ideaId) {
+    if (!confirm('¿Eliminar esta idea?')) return;
+    const ideas = getIdeasCliente(currentClienteId).filter(i => i.id !== ideaId);
+    saveIdeasCliente(currentClienteId, ideas);
+    syncDeleteIdeaClienteToSheets(ideaId);
+    renderIdeasCliente(currentClienteId);
+  }
+
+  function renderIdeasCliente(clienteId) {
+    const c = getClienteById(clienteId);
+    const ideas = getIdeasCliente(clienteId);
+    const nameEl = document.getElementById('ideas-cliente-name-label');
+    if (nameEl && c) nameEl.textContent = 'Ideas para ' + c.nombre;
+
+    const container = document.getElementById('ideas-cliente-container');
+    if (!ideas.length) {
+      container.innerHTML = `<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-bulb"></i></div><div class="placeholder-title">Sin ideas todavía</div><div class="placeholder-desc">Cargá la primera idea para este cliente.</div></div>`;
+      return;
+    }
+    const estadoColors = { pendiente: 'var(--amber)', 'en proceso': 'var(--blue)', aprobada: 'var(--green)', publicada: '#7c3aed', descartada: 'var(--text3)' };
+    const prioColors = { alta: 'var(--red)', media: 'var(--amber)', baja: 'var(--green)' };
+    container.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px">` + ideas.map(i => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px">
+          <div style="flex:1">
+            <div style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text)">${i.titulo}</div>
+            ${i.descripcion ? `<div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5">${i.descripcion}</div>` : ''}
+          </div>
+          <span style="background:${estadoColors[i.estado]||'var(--bg4)'}22;color:${estadoColors[i.estado]||'var(--text3)'};border-radius:999px;font-size:11px;font-weight:700;padding:3px 10px;white-space:nowrap">${i.estado}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:var(--bg4);color:var(--text3);border-radius:999px;font-size:11px;padding:2px 8px">${i.formato}</span>
+          <span style="background:${prioColors[i.prioridad]||'var(--amber)'}22;color:${prioColors[i.prioridad]||'var(--amber)'};border-radius:999px;font-size:11px;font-weight:700;padding:2px 8px">${i.prioridad}</span>
+          <span style="font-size:11px;color:var(--text3)">${i.responsable} · ${i.fecha}</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="openIdeaClienteModal('${i.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 12px;color:var(--text2);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-pencil"></i> Editar</button>
+          <button onclick="deleteIdeaCliente('${i.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 12px;color:var(--red);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>`).join('') + '</div>';
+  }
+
+  // Auto-refresh sidebar clientes nav when admin saves a client
+  // (saveAdminClientes triggers renderClientesPanel if panel is visible)
+
+  // ============ REPORTE MENSUAL ============
+
+  // State
+  let reporteMesActual = { year: new Date().getFullYear(), month: new Date().getMonth() }; // 0-indexed month
+
+  const MESES_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const RED_COLORS = { Instagram: '#e1306c', Facebook: '#1877f2', TikTok: '#000000', YouTube: '#ff0000', LinkedIn: '#0a66c2', Otra: '#6b6b65' };
+  const RED_ICONS = { Instagram: 'ti-brand-instagram', Facebook: 'ti-brand-facebook', TikTok: 'ti-brand-tiktok', YouTube: 'ti-brand-youtube', LinkedIn: 'ti-brand-linkedin', Otra: 'ti-world' };
+
+  function getReporteKey(clienteId, year, month) {
+    return `balodi_reporte_${clienteId}_${year}_${month}`;
+  }
+
+  function getDriveLinkKey(clienteId, year, month) {
+    return `balodi_drive_${clienteId}_${year}_${month}`;
+  }
+
+  let _pubsCache = {}; // { key: [...] }
+  let _driveCache = {}; // { key: link }
+
+  function getPublicaciones(clienteId, year, month) {
+    const key = getReporteKey(clienteId, year, month);
+    if (_pubsCache[key]) return _pubsCache[key];
+    return JSON.parse(localStorage.getItem(key) || '[]');
+  }
+
+  function savePublicaciones(clienteId, year, month, pubs) {
+    const key = getReporteKey(clienteId, year, month);
+    _pubsCache[key] = pubs;
+    localStorage.setItem(key, JSON.stringify(pubs));
+  }
+
+  function getDriveLink(clienteId, year, month) {
+    const key = getDriveLinkKey(clienteId, year, month);
+    if (_driveCache[key] !== undefined) return _driveCache[key];
+    return localStorage.getItem(key) || '';
+  }
+
+  function saveDriveLinkMes() {
+    const val = document.getElementById('reporte-drive-link').value.trim();
+    const { year, month } = reporteMesActual;
+    const key = getDriveLinkKey(currentClienteId, year, month);
+    _driveCache[key] = val;
+    localStorage.setItem(key, val);
+    // Sync to Sheets
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveDriveLink', data: { clienteId: currentClienteId, year, month, link: val } })
+    }).catch(() => {});
+  }
+
+  async function loadPublicacionesFromSheets(clienteId, year, month) {
+    try {
+      const res = await fetch(`${SO_URL}?action=getPublicaciones&clienteId=${encodeURIComponent(clienteId)}&year=${year}&month=${month}&t=${Date.now()}`);
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        const key = getReporteKey(clienteId, year, month);
+        _pubsCache[key] = data;
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+    } catch(e) {}
+  }
+
+  async function loadDriveLinkFromSheets(clienteId, year, month) {
+    try {
+      const res = await fetch(`${SO_URL}?action=getDriveLink&clienteId=${encodeURIComponent(clienteId)}&year=${year}&month=${month}&t=${Date.now()}`);
+      const data = await res.json();
+      if (data && data.link) {
+        const key = getDriveLinkKey(clienteId, year, month);
+        _driveCache[key] = data.link;
+        localStorage.setItem(key, data.link);
+      }
+    } catch(e) {}
+  }
+
+  function syncPublicacionToSheets(pub) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'savePublicacion', data: pub })
+    }).catch(() => {});
+  }
+
+  function syncDeletePublicacionToSheets(id) {
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'deletePublicacion', id })
+    }).catch(() => {});
+  }
+
+  function cambiarMesReporte(delta) {
+    reporteMesActual.month += delta;
+    if (reporteMesActual.month > 11) { reporteMesActual.month = 0; reporteMesActual.year++; }
+    if (reporteMesActual.month < 0) { reporteMesActual.month = 11; reporteMesActual.year--; }
+    initReporteMensual(currentClienteId);
+  }
+
+  function initReporteMensual(clienteId) {
+    const { year, month } = reporteMesActual;
+    document.getElementById('reporte-mes-label').textContent = MESES_ES[month] + ' ' + year;
+    document.getElementById('reporte-drive-link').value = getDriveLink(clienteId, year, month);
+    // Render con datos locales primero (rápido)
+    renderReportePublicaciones(clienteId, year, month);
+    // Luego traer desde Sheets y re-renderizar si hay diferencias
+    loadPublicacionesFromSheets(clienteId, year, month).then(() => {
+      renderReportePublicaciones(clienteId, year, month);
+    });
+    loadDriveLinkFromSheets(clienteId, year, month).then(() => {
+      document.getElementById('reporte-drive-link').value = getDriveLink(clienteId, year, month);
+    });
+  }
+
+  function renderReportePublicaciones(clienteId, year, month) {
+    const pubs = getPublicaciones(clienteId, year, month);
+    pubs.sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''));
+
+    // KPIs contenido
+    const totalLikes = pubs.reduce((s, p) => s + (parseInt(p.likes) || 0), 0);
+    const totalComentarios = pubs.reduce((s, p) => s + (parseInt(p.comentarios) || 0), 0);
+    const totalRepros = pubs.reduce((s, p) => s + (parseInt(p.reproducciones) || 0), 0);
+    const totalCompartidos = pubs.reduce((s, p) => s + (parseInt(p.compartidos) || 0), 0);
+
+    document.getElementById('reporte-total-label').textContent = pubs.length + ' publicación' + (pubs.length !== 1 ? 'es' : '');
+
+    document.getElementById('reporte-kpis').innerHTML = [
+      { label: 'Publicaciones', num: pubs.length, color: 'var(--orange)' },
+      { label: '❤️ Likes', num: totalLikes.toLocaleString('es-AR'), color: '#e1306c' },
+      { label: '💬 Comentarios', num: totalComentarios.toLocaleString('es-AR'), color: 'var(--blue)' },
+      { label: '▶️ Reproducciones', num: totalRepros.toLocaleString('es-AR'), color: '#7c3aed' },
+    ].map(k => `
+      <div class="reporte-kpi-card">
+        <div class="reporte-kpi-num" style="color:${k.color}">${k.num}</div>
+        <div class="reporte-kpi-label">${k.label}</div>
+      </div>`).join('');
+
+    // --- BLOQUE PAUTA ---
+    const pautas = getPautaCliente(clienteId);
+    const metaCache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + clienteId) || 'null');
+    const pautaBlock = document.getElementById('reporte-pauta-block');
+
+    if (pautas.length || metaCache) {
+      const estadoColors = { activa: 'var(--green)', pausada: 'var(--amber)', finalizada: 'var(--text3)', planificada: 'var(--blue)' };
+      let pautaHtml = `
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-sm)">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:14px"><i class="ti ti-speakerphone" style="color:var(--orange)"></i> Pauta del mes</div>`;
+
+      if (metaCache) {
+        const fmt = n => n >= 1000 ? (n/1000).toFixed(1)+'K' : n.toLocaleString('es-AR');
+        pautaHtml += `
+          <div style="background:var(--orange-light);border:1px solid var(--orange-border);border-radius:10px;padding:12px 16px;margin-bottom:14px">
+            <div style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px"><i class="ti ti-brand-meta"></i> Meta Ads — últimos 30 días</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+              <div style="text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:var(--text)">$${Math.round(metaCache.gasto||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3);margin-top:2px">Gasto</div></div>
+              <div style="text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:var(--blue)">${fmt(metaCache.alcance||0)}</div><div style="font-size:10px;color:var(--text3);margin-top:2px">Alcance</div></div>
+              <div style="text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:var(--green)">${fmt(metaCache.clicks||0)}</div><div style="font-size:10px;color:var(--text3);margin-top:2px">Clicks</div></div>
+              <div style="text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#7c3aed">${metaCache.conversaciones||'—'}</div><div style="font-size:10px;color:var(--text3);margin-top:2px">Conversaciones</div></div>
+            </div>
+          </div>`;
+      }
+
+      if (pautas.length) {
+        pautaHtml += `<div style="display:flex;flex-direction:column;gap:8px">` +
+          pautas.map(p => `
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--bg4);border-radius:10px;flex-wrap:wrap">
+              <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:${estadoColors[p.estado]||'var(--text3)'}22;color:${estadoColors[p.estado]||'var(--text3)'}">${p.estado}</span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:13px;font-weight:700;color:var(--text)">${p.nombre}</div>
+                <div style="font-size:11px;color:var(--text3)">${p.plataforma} · ${p.objetivo}${p.presupuesto ? ' · $' + parseFloat(p.presupuesto).toLocaleString('es-AR') : ''}</div>
+              </div>
+              ${p.inicio ? `<span style="font-size:11px;color:var(--text3)">${new Date(p.inicio+'T00:00:00').toLocaleDateString('es-AR',{day:'numeric',month:'short'})}${p.fin?' → '+new Date(p.fin+'T00:00:00').toLocaleDateString('es-AR',{day:'numeric',month:'short'}):''}</span>` : ''}
+            </div>`).join('') + `</div>`;
+      }
+
+      pautaHtml += `</div>`;
+      pautaBlock.innerHTML = pautaHtml;
+    } else {
+      pautaBlock.innerHTML = '';
+    }
+
+    // Publicaciones list
+    const container = document.getElementById('reporte-publicaciones-container');
+    if (!pubs.length) {
+      container.innerHTML = `<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-photo"></i></div><div class="placeholder-title">Sin publicaciones en ${MESES_ES[month]} ${year}</div><div class="placeholder-desc">Cargá las publicaciones del mes una por una con el botón de arriba.</div></div>`;
+      return;
+    }
+
+    container.innerHTML = pubs.map((p, i) => {
+      const redColor = RED_COLORS[p.red] || '#6b6b65';
+      const fechaStr = p.fecha ? new Date(p.fecha + 'T00:00:00').toLocaleDateString('es-AR', { day:'numeric', month:'long' }) : '—';
+      return `<div class="pub-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px">
+              <span class="pub-red-badge" style="background:${redColor}18;color:${redColor}"><i class="ti ${RED_ICONS[p.red]||'ti-world'}" style="font-size:12px"></i>${p.red}</span>
+              <span style="background:var(--bg4);color:var(--text3);border-radius:999px;font-size:11px;padding:2px 9px;font-weight:600">${p.formato}</span>
+              <span style="font-size:11px;color:var(--text3)"><i class="ti ti-calendar" style="font-size:11px"></i> ${fechaStr}</span>
+            </div>
+            <div style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text)">${p.titulo}</div>
+            ${p.descripcion ? `<div style="font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5">${p.descripcion}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button onclick="editPublicacion('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-pencil"></i></button>
+            <button onclick="deletePublicacion('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px;font-weight:700"><i class="ti ti-trash"></i></button>
+          </div>
+        </div>
+        <div class="pub-metricas">
+          <div class="pub-metrica-box"><div class="pub-metrica-num" style="color:#e1306c">${(parseInt(p.likes)||0).toLocaleString('es-AR')}</div><div class="pub-metrica-label">❤️ Likes</div></div>
+          <div class="pub-metrica-box"><div class="pub-metrica-num" style="color:var(--blue)">${(parseInt(p.comentarios)||0).toLocaleString('es-AR')}</div><div class="pub-metrica-label">💬 Comentarios</div></div>
+          <div class="pub-metrica-box"><div class="pub-metrica-num" style="color:#7c3aed">${(parseInt(p.reproducciones)||0).toLocaleString('es-AR')}</div><div class="pub-metrica-label">▶️ Reproducciones</div></div>
+          <div class="pub-metrica-box"><div class="pub-metrica-num" style="color:var(--green)">${(parseInt(p.compartidos)||0).toLocaleString('es-AR')}</div><div class="pub-metrica-label">🔁 Compartidos</div></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ---- MODAL NUEVA PUBLICACIÓN ----
+  function selFormatoReporte(btn, formato) {
+    document.querySelectorAll('#pub-formato-btns .formato-btn').forEach(b => b.classList.remove('formato-selected'));
+    btn.classList.add('formato-selected');
+    document.getElementById('pub-formato').value = formato;
+  }
+
+  function openPublicacionModal(editId) {
+    const { year, month } = reporteMesActual;
+    const pubs = getPublicaciones(currentClienteId, year, month);
+    const p = editId ? pubs.find(x => x.id === editId) : null;
+
+    document.getElementById('pub-modal-title').textContent = p ? 'Editar publicación' : 'Nueva publicación';
+    document.getElementById('pub-edit-id').value = editId || '';
+    document.getElementById('pub-fecha').value = p?.fecha || new Date().toISOString().split('T')[0];
+    document.getElementById('pub-red').value = p?.red || 'Instagram';
+    document.getElementById('pub-titulo').value = p?.titulo || '';
+    document.getElementById('pub-descripcion').value = p?.descripcion || '';
+    document.getElementById('pub-likes').value = p?.likes || '';
+    document.getElementById('pub-comentarios').value = p?.comentarios || '';
+    document.getElementById('pub-reproducciones').value = p?.reproducciones || '';
+    document.getElementById('pub-compartidos').value = p?.compartidos || '';
+    // Reset formato buttons
+    const fmt = p?.formato || 'Reel';
+    document.getElementById('pub-formato').value = fmt;
+    document.querySelectorAll('#pub-formato-btns .formato-btn').forEach(b => {
+      b.classList.toggle('formato-selected', b.textContent.trim() === fmt);
+    });
+    document.getElementById('publicacion-modal').classList.add('open');
+    setTimeout(() => document.getElementById('pub-titulo').focus(), 100);
+  }
+
+  function closePublicacionModal() {
+    document.getElementById('publicacion-modal').classList.remove('open');
+  }
+
+  function savePublicacion() {
+    const titulo = document.getElementById('pub-titulo').value.trim();
+    const fecha = document.getElementById('pub-fecha').value;
+    if (!titulo || !fecha) { alert('Completá el título y la fecha.'); return; }
+
+    const { year, month } = reporteMesActual;
+    const pubs = getPublicaciones(currentClienteId, year, month);
+    const editId = document.getElementById('pub-edit-id').value;
+
+    const entry = {
+      id: editId || 'pub_' + Date.now(),
+      fecha,
+      red: document.getElementById('pub-red').value,
+      formato: document.getElementById('pub-formato').value,
+      titulo,
+      descripcion: document.getElementById('pub-descripcion').value.trim(),
+      likes: document.getElementById('pub-likes').value,
+      comentarios: document.getElementById('pub-comentarios').value,
+      reproducciones: document.getElementById('pub-reproducciones').value,
+      compartidos: document.getElementById('pub-compartidos').value,
+    };
+
+    if (editId) {
+      const idx = pubs.findIndex(p => p.id === editId);
+      if (idx !== -1) pubs[idx] = entry; else pubs.push(entry);
+    } else {
+      pubs.push(entry);
+    }
+
+    // Agregar campos de contexto para Sheets
+    entry.clienteId = currentClienteId;
+    entry.year = year;
+    entry.month = month;
+
+    savePublicaciones(currentClienteId, year, month, pubs);
+    syncPublicacionToSheets(entry);
+    closePublicacionModal();
+    renderReportePublicaciones(currentClienteId, year, month);
+  }
+
+  function editPublicacion(id) {
+    openPublicacionModal(id);
+  }
+
+  function deletePublicacion(id) {
+    if (!confirm('¿Eliminar esta publicación?')) return;
+    const { year, month } = reporteMesActual;
+    const pubs = getPublicaciones(currentClienteId, year, month).filter(p => p.id !== id);
+    savePublicaciones(currentClienteId, year, month, pubs);
+    syncDeletePublicacionToSheets(id);
+    renderReportePublicaciones(currentClienteId, year, month);
+  }
+
+  function generarReportePDF() {
+    const { year, month } = reporteMesActual;
+    const pubs = getPublicaciones(currentClienteId, year, month);
+    const c = getClienteById(currentClienteId);
+    const driveLink = getDriveLink(currentClienteId, year, month);
+    const mesLabel = MESES_ES[month] + ' ' + year;
+    const fechaGen = new Date().toLocaleDateString('es-AR');
+    const pautas = getPautaCliente(currentClienteId);
+    const metaCache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + currentClienteId) || 'null');
+
+    if (!pubs.length && !pautas.length && !metaCache) { alert('No hay datos cargados para este mes.'); return; }
+
+    pubs.sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''));
+
+    const totalLikes = pubs.reduce((s,p) => s + (parseInt(p.likes)||0), 0);
+    const totalComentarios = pubs.reduce((s,p) => s + (parseInt(p.comentarios)||0), 0);
+    const totalRepros = pubs.reduce((s,p) => s + (parseInt(p.reproducciones)||0), 0);
+    const totalCompartidos = pubs.reduce((s,p) => s + (parseInt(p.compartidos)||0), 0);
+
+    const estadoPautaColors = { activa:'#16a34a', pausada:'#d97706', finalizada:'#6b6b65', planificada:'#2563eb' };
+
+    // Bloque de pauta en PDF
+    const pautaPdfBlock = (pautas.length || metaCache) ? `
+      <div style="margin-bottom:28px;page-break-inside:avoid">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#a8a89e;margin-bottom:14px">Pauta del mes</div>
+
+        ${metaCache ? `
+        <div style="background:#fff4ee;border:1.5px solid rgba(245,98,10,0.2);border-radius:12px;padding:16px 20px;margin-bottom:12px">
+          <div style="font-size:10px;font-weight:700;color:#f5620a;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px">Meta Ads — últimos 30 días</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+            ${[
+              { label:'Gasto', val:'$'+Math.round(metaCache.gasto||0).toLocaleString('es-AR'), color:'#141414' },
+              { label:'Alcance', val:(metaCache.alcance||0)>=1000?((metaCache.alcance||0)/1000).toFixed(1)+'K':(metaCache.alcance||0).toLocaleString('es-AR'), color:'#2563eb' },
+              { label:'Clicks', val:(metaCache.clicks||0).toLocaleString('es-AR'), color:'#16a34a' },
+              { label:'Conversaciones', val:(metaCache.conversaciones||0)||'—', color:'#7c3aed' },
+            ].map(m => `
+              <div style="background:white;border:1px solid #f0efe9;border-radius:8px;padding:10px;text-align:center">
+                <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:${m.color}">${m.val}</div>
+                <div style="font-size:10px;color:#a8a89e;margin-top:3px;font-weight:600">${m.label}</div>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+
+        ${pautas.length ? pautas.map(p => `
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fafaf8;border:1px solid #e5e5e5;border-radius:10px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:${estadoPautaColors[p.estado]||'#6b6b65'}22;color:${estadoPautaColors[p.estado]||'#6b6b65'}">${p.estado}</span>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:700;color:#141414">${p.nombre}</div>
+              <div style="font-size:11px;color:#a8a89e">${p.plataforma} · ${p.objetivo}${p.presupuesto?' · $'+parseFloat(p.presupuesto).toLocaleString('es-AR'):''}</div>
+            </div>
+            ${p.inicio?`<span style="font-size:11px;color:#a8a89e">${new Date(p.inicio+'T00:00:00').toLocaleDateString('es-AR',{day:'numeric',month:'short'})}${p.fin?' → '+new Date(p.fin+'T00:00:00').toLocaleDateString('es-AR',{day:'numeric',month:'short'}):''}</span>`:''}
+          </div>`).join('') : ''}
+      </div>` : '';
+
+    const html = `
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;padding:40px;max-width:860px;margin:0 auto;color:#141414">
+
+        <!-- HEADER -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:3px solid #f5620a">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f5620a;margin-bottom:6px">Balodi Marketing · Reporte de Contenido</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#141414;line-height:1.1;margin-bottom:4px">${c?.nombre || 'Cliente'}</div>
+            <div style="font-size:13px;color:#6b6b65">${mesLabel} · Generado el ${fechaGen}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:'Outfit',sans-serif;font-size:36px;font-weight:800;color:#f5620a;line-height:1">${pubs.length}</div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e">Publicaciones</div>
+          </div>
+        </div>
+
+        <!-- RESUMEN MÉTRICAS CONTENIDO -->
+        ${pubs.length ? `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px">
+          ${[
+            { label: '❤️ Likes', val: totalLikes.toLocaleString('es-AR'), color: '#e1306c' },
+            { label: '💬 Comentarios', val: totalComentarios.toLocaleString('es-AR'), color: '#2563eb' },
+            { label: '▶️ Reproducciones', val: totalRepros.toLocaleString('es-AR'), color: '#7c3aed' },
+            { label: '🔁 Compartidos', val: totalCompartidos.toLocaleString('es-AR'), color: '#16a34a' },
+          ].map(k => `
+            <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:16px;text-align:center">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a8a89e;margin-bottom:8px">${k.label}</div>
+              <div style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:800;color:${k.color}">${k.val}</div>
+            </div>`).join('')}
+        </div>` : ''}
+
+        ${driveLink ? `
+        <!-- LINK DRIVE -->
+        <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;margin-bottom:28px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:20px">📁</div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#2563eb;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Carpeta de Drive — Imágenes del mes</div>
+            <a href="${driveLink}" style="font-size:13px;color:#2563eb;word-break:break-all">${driveLink}</a>
+          </div>
+        </div>` : ''}
+
+        <!-- PAUTA -->
+        ${pautaPdfBlock}
+
+        ${pubs.length ? `
+        <!-- PUBLICACIONES -->
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#a8a89e;margin-bottom:16px">Detalle de publicaciones</div>
+        ${pubs.map((p, i) => {
+          const fechaStr = p.fecha ? new Date(p.fecha + 'T00:00:00').toLocaleDateString('es-AR', { day:'numeric', month:'long', year:'numeric' }) : '—';
+          const redColor = RED_COLORS[p.red] || '#6b6b65';
+          return `
+          <div style="background:#fafaf8;border:1px solid #e5e5e5;border-radius:12px;padding:18px 20px;margin-bottom:10px;page-break-inside:avoid">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
+              <div style="flex:1">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+                  <span style="background:${redColor}18;color:${redColor};border-radius:999px;font-size:11px;font-weight:700;padding:3px 10px">${p.red}</span>
+                  <span style="background:#f0efe9;color:#6b6b65;border-radius:999px;font-size:11px;padding:3px 9px;font-weight:600">${p.formato}</span>
+                  <span style="font-size:11px;color:#a8a89e">${fechaStr}</span>
+                </div>
+                <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#141414;margin-bottom:${p.descripcion?'4px':'0'}">${p.titulo}</div>
+                ${p.descripcion ? `<div style="font-size:12px;color:#6b6b65;line-height:1.5">${p.descripcion}</div>` : ''}
+              </div>
+              <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#a8a89e;flex-shrink:0">${String(i+1).padStart(2,'0')}</div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+              ${[
+                { label:'❤️ Likes', val: parseInt(p.likes)||0, color:'#e1306c' },
+                { label:'💬 Comentarios', val: parseInt(p.comentarios)||0, color:'#2563eb' },
+                { label:'▶️ Reproducciones', val: parseInt(p.reproducciones)||0, color:'#7c3aed' },
+                { label:'🔁 Compartidos', val: parseInt(p.compartidos)||0, color:'#16a34a' },
+              ].map(m => `
+                <div style="background:white;border:1px solid #e5e5e5;border-radius:8px;padding:8px;text-align:center">
+                  <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:${m.color}">${m.val.toLocaleString('es-AR')}</div>
+                  <div style="font-size:10px;color:#a8a89e;font-weight:600;margin-top:2px">${m.label}</div>
+                </div>`).join('')}
+            </div>
+          </div>`;
+        }).join('')}` : ''}
+
+        <!-- FOOTER -->
+        <div style="margin-top:36px;padding-top:16px;border-top:1px solid #e5e5e5;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:11px;color:#a8a89e">Balodi Marketing · Documento confidencial · Solo para uso interno</div>
+          <div style="font-size:11px;color:#a8a89e">${mesLabel}</div>
+        </div>
+
+      </div>`;
+
+    abrirVentanaPDF(html, `Reporte_${c?.nombre.replace(/\s+/g,'_')}_${MESES_ES[month]}_${year}`);
+  }
+
+  // ============ META ADS POR CLIENTE ============
+
+  // Estado Meta del cliente actual
+  let cxMetaToken = '';
+  let cxMetaAccountId = '';
+  let cxMetaConnected = false;
+
+  function getMetaClienteKey(clienteId, field) {
+    return `balodi_meta_cx_${clienteId}_${field}`;
+  }
+
+  // Cuando se navega a un cliente, cargar sus credenciales de Meta
+  function loadMetaClienteCredentials(clienteId) {
+    cxMetaToken = localStorage.getItem(getMetaClienteKey(clienteId, 'token')) || '';
+    cxMetaAccountId = localStorage.getItem(getMetaClienteKey(clienteId, 'account')) || '';
+    cxMetaConnected = false;
+
+    const tokenInput = document.getElementById('cx-meta-token');
+    const accountInput = document.getElementById('cx-meta-account');
+    const statusEl = document.getElementById('cx-meta-status');
+
+    if (tokenInput) tokenInput.value = cxMetaToken ? '••••••••••••' : '';
+    if (accountInput) accountInput.value = cxMetaAccountId || '';
+
+    // Reset KPIs
+    ['cx-kpi-gasto','cx-kpi-alcance','cx-kpi-clicks','cx-kpi-conv','cx-kpi-cpc'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '—';
+    });
+    document.getElementById('cx-campaigns-container').innerHTML = '<div style="background:var(--bg4);border-radius:12px;padding:20px;text-align:center;font-size:13px;color:var(--text3)">Conectá la cuenta de Meta para ver las campañas.</div>';
+
+    if (cxMetaToken && cxMetaAccountId) {
+      cxMetaConnected = true;
+      if (statusEl) {
+        statusEl.innerHTML = '<i class="ti ti-circle-check" style="color:var(--green)"></i> Cuenta guardada. <span style="cursor:pointer;color:var(--orange);font-weight:600" onclick="loadMetaCliente()">Actualizar datos →</span>';
+        statusEl.style.color = 'var(--green)';
+      }
+      const banner = document.getElementById('cx-meta-banner');
+      if (banner) { banner.style.borderColor = '#bbf7d0'; banner.style.background = 'linear-gradient(135deg,#f0fdf4,#fff)'; }
+
+      // Restaurar KPIs desde cache si existen
+      const cache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + clienteId) || 'null');
+      if (cache) {
+        const fmt = n => n >= 1000 ? (n/1000).toFixed(1)+'K' : String(n);
+        const gEl = document.getElementById('cx-kpi-gasto');
+        const aEl = document.getElementById('cx-kpi-alcance');
+        const clEl = document.getElementById('cx-kpi-clicks');
+        const ctrEl = document.getElementById('cx-kpi-ctr');
+        const cvEl = document.getElementById('cx-kpi-conv');
+        const cvtEl = document.getElementById('cx-kpi-conv-trend');
+        const cpcEl = document.getElementById('cx-kpi-cpc');
+        const cpmEl = document.getElementById('cx-kpi-cpm');
+        const luEl = document.getElementById('cx-last-update');
+        if (gEl) gEl.textContent = '$' + Math.round(cache.gasto||0).toLocaleString('es-AR');
+        if (aEl) aEl.textContent = fmt(cache.alcance||0);
+        if (clEl) clEl.textContent = fmt(cache.clicks||0);
+        if (ctrEl) ctrEl.textContent = 'CTR ' + (cache.ctr||0).toFixed(2) + '%';
+        if (cvEl) cvEl.textContent = (cache.conversaciones||0) > 0 ? cache.conversaciones.toLocaleString('es-AR') : '—';
+        if (cvtEl) { cvtEl.textContent = (cache.conversaciones||0) > 0 ? 'Personas que escribieron' : 'Sin datos aún'; cvtEl.style.color = (cache.conversaciones||0) > 0 ? 'var(--green)' : 'var(--text3)'; }
+        if (cpcEl) cpcEl.textContent = (cache.cpc||0) > 0 ? '$' + Math.round(cache.cpc).toLocaleString('es-AR') : '—';
+        if (cpmEl) cpmEl.textContent = (cache.cpm||0) > 0 ? 'CPM $' + (cache.cpm).toFixed(0) : '—';
+        if (luEl && cache.updatedAt) luEl.textContent = 'Cache: ' + new Date(cache.updatedAt).toLocaleDateString('es-AR');
+
+        // Intentar recargar campañas desde cache también
+        const campCache = JSON.parse(localStorage.getItem('balodi_meta_cx_camps_' + clienteId) || 'null');
+        if (campCache && container) {
+          container.innerHTML = campCache;
+        }
+      }
+    } else {
+      if (statusEl) {
+        statusEl.innerHTML = '<i class="ti ti-bulb"></i> Token en <strong>developers.facebook.com → Graph API Explorer</strong>. ID en Meta Business Manager → Cuentas publicitarias.';
+        statusEl.style.color = 'var(--text3)';
+      }
+      const banner = document.getElementById('cx-meta-banner');
+      if (banner) { banner.style.borderColor = 'var(--orange-border)'; banner.style.background = 'linear-gradient(135deg,#fff4ee,#fff)'; }
+    }
+  }
+
+  async function connectMetaCliente() {
+    const tokenInputEl = document.getElementById('cx-meta-token');
+    const accountInputEl = document.getElementById('cx-meta-account');
+    const statusEl = document.getElementById('cx-meta-status');
+
+    // Si el token muestra bullets (ya estaba guardado), usar el guardado
+    const rawToken = tokenInputEl.value.trim();
+    const token = rawToken === '••••••••••••' ? cxMetaToken : rawToken;
+    const account = accountInputEl.value.trim();
+
+    if (!token || !account) {
+      statusEl.innerHTML = '<i class="ti ti-alert-triangle" style="color:var(--amber)"></i> Ingresá el token y el ID de la cuenta.';
+      statusEl.style.color = 'var(--red)';
+      return;
+    }
+
+    statusEl.textContent = '⏳ Verificando conexión con Meta...';
+    statusEl.style.color = 'var(--text3)';
+
+    try {
+      const accountId = account.startsWith('act_') ? account : 'act_' + account;
+      const url = `https://graph.facebook.com/v19.0/${accountId}?fields=name,currency,account_status&access_token=${token}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.error) {
+        statusEl.innerHTML = '<i class="ti ti-x" style="color:var(--red)"></i> Error: ' + (data.error.message || 'Token o ID inválido.');
+        statusEl.style.color = 'var(--red)';
+        return;
+      }
+
+      // Guardar por cliente
+      localStorage.setItem(getMetaClienteKey(currentClienteId, 'token'), token);
+      localStorage.setItem(getMetaClienteKey(currentClienteId, 'account'), accountId);
+      cxMetaToken = token;
+      cxMetaAccountId = accountId;
+      cxMetaConnected = true;
+
+      statusEl.innerHTML = '<i class="ti ti-circle-check" style="color:var(--green)"></i> Conectado a: <strong>' + (data.name || accountId) + '</strong> (' + (data.currency || '') + ')';
+      statusEl.style.color = 'var(--green)';
+      const banner = document.getElementById('cx-meta-banner');
+      if (banner) { banner.style.borderColor = '#bbf7d0'; banner.style.background = 'linear-gradient(135deg,#f0fdf4,#fff)'; }
+
+      tokenInputEl.value = '••••••••••••';
+      await loadMetaClienteReal();
+    } catch(e) {
+      statusEl.innerHTML = '<i class="ti ti-x" style="color:var(--red)"></i> No se pudo conectar. Verificá el token.';
+      statusEl.style.color = 'var(--red)';
+    }
+  }
+
+  async function loadMetaCliente() {
+    if (!cxMetaToken || !cxMetaAccountId) {
+      document.getElementById('cx-meta-status').innerHTML = '<i class="ti ti-alert-triangle" style="color:var(--amber)"></i> Primero conectá la cuenta.';
+      return;
+    }
+    await loadMetaClienteReal();
+  }
+
+  async function loadMetaClienteReal() {
+    const since = new Date(); since.setDate(since.getDate() - 30);
+    const sinceStr = since.toISOString().split('T')[0];
+    const todayStr = new Date().toISOString().split('T')[0];
+    const lastUpdate = document.getElementById('cx-last-update');
+    const container = document.getElementById('cx-campaigns-container');
+
+    if (container) container.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:var(--text3)">⏳ Cargando campañas...</div>';
+
+    try {
+      // KPIs
+      const insUrl = `https://graph.facebook.com/v19.0/${cxMetaAccountId}/insights?fields=spend,reach,clicks,ctr,cpc,cpm,impressions,actions,cost_per_action_type&time_range={"since":"${sinceStr}","until":"${todayStr}"}&access_token=${cxMetaToken}`;
+      const insRes = await fetch(insUrl);
+      const insData = await insRes.json();
+
+      if (insData.data && insData.data[0]) {
+        const d = insData.data[0];
+        let costPerConv = 0, conversaciones = 0;
+        const convTypes = ['onsite_conversion.messaging_conversation_started_7d','onsite_conversion.total_messaging_connection','onsite_conversion.messaging_first_reply'];
+        if (d.cost_per_action_type) { const a = d.cost_per_action_type.find(x => convTypes.includes(x.action_type)); if (a) costPerConv = parseFloat(a.value || 0); }
+        if (d.actions) { const a = d.actions.find(x => convTypes.includes(x.action_type)); if (a) conversaciones = parseInt(a.value || 0); }
+
+        const kpiCache = {
+          gasto: parseFloat(d.spend||0),
+          alcance: parseInt(d.reach||0),
+          clicks: parseInt(d.clicks||0),
+          ctr: parseFloat(d.ctr||0),
+          cpc: costPerConv,
+          cpm: parseFloat(d.cpm||0),
+          conversaciones,
+          updatedAt: new Date().toISOString()
+        };
+        // Guardar cache para que el resumen lo pueda leer
+        localStorage.setItem('balodi_meta_cx_cache_' + currentClienteId, JSON.stringify(kpiCache));
+
+        const fmt = n => n >= 1000 ? (n/1000).toFixed(1)+'K' : String(n);
+        document.getElementById('cx-kpi-gasto').textContent = '$' + Math.round(kpiCache.gasto).toLocaleString('es-AR');
+        document.getElementById('cx-kpi-alcance').textContent = fmt(kpiCache.alcance);
+        document.getElementById('cx-kpi-clicks').textContent = fmt(kpiCache.clicks);
+        document.getElementById('cx-kpi-ctr').textContent = 'CTR ' + kpiCache.ctr.toFixed(2) + '%';
+        document.getElementById('cx-kpi-conv').textContent = conversaciones > 0 ? conversaciones.toLocaleString('es-AR') : '—';
+        document.getElementById('cx-kpi-conv-trend').textContent = conversaciones > 0 ? 'Personas que escribieron' : 'Sin datos aún';
+        document.getElementById('cx-kpi-conv-trend').style.color = conversaciones > 0 ? 'var(--green)' : 'var(--text3)';
+        document.getElementById('cx-kpi-cpc').textContent = costPerConv > 0 ? '$' + Math.round(costPerConv).toLocaleString('es-AR') : '—';
+        document.getElementById('cx-kpi-cpm').textContent = d.cpm ? 'CPM $' + parseFloat(d.cpm).toFixed(0) : '—';
+      }
+
+      // Campañas
+      const campUrl = `https://graph.facebook.com/v19.0/${cxMetaAccountId}/campaigns?fields=name,status,objective,daily_budget,lifetime_budget&access_token=${cxMetaToken}&limit=20`;
+      const campRes = await fetch(campUrl);
+      const campData = await campRes.json();
+
+      if (campData.data && campData.data.length) {
+        const campHtml = campData.data.map(c => {
+          const isActive = c.status === 'ACTIVE';
+          const budget = c.daily_budget ? '$' + (c.daily_budget/100).toLocaleString('es-AR') + '/día' : c.lifetime_budget ? '$' + (c.lifetime_budget/100).toLocaleString('es-AR') + ' total' : '—';
+          const presup = c.daily_budget ? c.daily_budget/100*30 : c.lifetime_budget ? c.lifetime_budget/100 : 0;
+          return `<div class="card" style="margin-bottom:10px;padding:16px 20px;cursor:pointer;transition:all 0.15s"
+            onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
+            onmouseout="this.style.borderColor='';this.style.background=''"
+            onclick="openCampModal('${c.id}','${(c.name||'').replace(/'/g,"\\'")}','${c.status}','${c.objective||''}',0,${presup})">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <div style="width:10px;height:10px;border-radius:50%;background:${isActive?'var(--green)':'#d1d5db'};flex-shrink:0"></div>
+              <div style="flex:1;min-width:160px">
+                <div style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:var(--text)">${c.name}</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:2px">${c.objective||'—'} · Presupuesto: ${budget}</div>
+              </div>
+              <span class="badge ${isActive?'badge-green':'badge-amber'}">${isActive?'● Activa':'⏸ Pausada'}</span>
+              <span style="color:var(--text3);font-size:13px">→</span>
+            </div>
+          </div>`;
+        }).join('');
+        container.innerHTML = campHtml;
+        // Guardar cache de campañas
+        localStorage.setItem('balodi_meta_cx_camps_' + currentClienteId, campHtml);
+      } else if (campData.error) {
+        container.innerHTML = `<div class="alert alert-warning"><div class="alert-icon"><i class="ti ti-alert-triangle"></i></div><div>${campData.error.message || 'Error al cargar campañas.'}</div></div>`;
+      } else {
+        container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-mail-off"></i></div><div class="placeholder-title">Sin campañas</div><div class="placeholder-desc">No se encontraron campañas activas en esta cuenta.</div></div>';
+      }
+
+      if (lastUpdate) lastUpdate.textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-AR');
+    } catch(e) {
+      if (container) container.innerHTML = `<div class="alert alert-warning"><div class="alert-icon"><i class="ti ti-alert-triangle"></i></div><div>No se pudo conectar con Meta. Verificá el token y el ID de cuenta.</div></div>`;
+    }
+  }
+
 </script>
 
 <!-- CAMPAIGN DETAIL MODAL -->
