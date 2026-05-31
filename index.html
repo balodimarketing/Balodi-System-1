@@ -9365,15 +9365,33 @@
             <i class="ti ti-download"></i> Descargar reporte PDF
           </button>
           <!-- Stats del mes -->
-          <div id="mob-reporte-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"></div>
-          <!-- Publicaciones -->
+          <div id="mob-reporte-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"></div>          <!-- Publicaciones -->
           <div id="mob-reporte-pubs" style="display:flex;flex-direction:column;gap:10px"></div>
         </div>
       </div>
 
-    </div>
+      <!-- ── PANTALLA VIDEOS ── -->
+      <div id="mob-screen-videos" style="display:none;padding:20px 16px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin-bottom:4px">PRODUCCIÓN</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text);margin-bottom:6px">Videos</div>
 
-    <!-- BOTTOM NAV -->
+        <!-- KPIs -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px" id="mob-video-kpis"></div>
+
+        <!-- Filtros días -->
+        <div id="mob-video-filters" style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:16px;-webkit-overflow-scrolling:touch"></div>
+
+        <!-- Toggle completados -->
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-bottom:16px;cursor:pointer">
+          <input type="checkbox" id="mob-vid-completados" onchange="mobRenderVideos()" style="accent-color:var(--orange);width:16px;height:16px">
+          Ver completados
+        </label>
+
+        <!-- Lista -->
+        <div id="mob-video-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+
+    </div>
     <div style="display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);z-index:10;padding-bottom:env(safe-area-inset-bottom)">
       <button class="mob-nav-btn active" id="mob-nav-tareas" onclick="mobGoScreen('tareas')"
         style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--orange)">
@@ -9384,6 +9402,11 @@
         style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--text3)">
         <i class="ti ti-users" style="font-size:22px"></i>
         <span style="font-size:10px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">Clientes</span>
+      </button>
+      <button class="mob-nav-btn" id="mob-nav-videos" onclick="mobGoScreen('videos')"
+        style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--text3)">
+        <i class="ti ti-video" style="font-size:22px"></i>
+        <span style="font-size:10px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">Videos</span>
       </button>
     </div>
 
@@ -9456,34 +9479,186 @@ function mobLogout() {
 
 // ── NAVEGACIÓN ──
 function mobGoScreen(screen) {
-  // Ocultar todas las pantallas
-  ['tareas','clientes','cliente-detalle'].forEach(s => {
+  ['tareas','clientes','cliente-detalle','videos'].forEach(s => {
     const el = document.getElementById('mob-screen-' + s);
     if (el) el.style.display = 'none';
   });
-
-  // Mostrar la correcta
   const target = document.getElementById('mob-screen-' + screen);
   if (target) target.style.display = 'block';
 
-  // Títulos
-  const titles = { tareas: 'Tareas', clientes: 'Clientes', 'cliente-detalle': mobCurrentClienteId ? '' : 'Cliente' };
+  const titles = { tareas: 'Tareas', clientes: 'Clientes', 'cliente-detalle': '', videos: 'Videos' };
   const titleEl = document.getElementById('mob-page-title');
-  if (titleEl) titleEl.textContent = titles[screen] || '';
+  if (titleEl && titles[screen] !== undefined) titleEl.textContent = titles[screen];
 
-  // Nav buttons
-  document.querySelectorAll('.mob-nav-btn').forEach(b => {
-    b.style.color = 'var(--text3)';
-    b.querySelector('span') && (b.querySelector('span').style.color = 'var(--text3)');
-  });
-  const activeNav = document.getElementById('mob-nav-' + (screen === 'cliente-detalle' ? 'clientes' : screen));
-  if (activeNav) {
-    activeNav.style.color = 'var(--orange)';
-  }
+  // Nav highlight
+  document.querySelectorAll('.mob-nav-btn').forEach(b => b.style.color = 'var(--text3)');
+  const navMap = { 'cliente-detalle': 'clientes' };
+  const activeNav = document.getElementById('mob-nav-' + (navMap[screen] || screen));
+  if (activeNav) activeNav.style.color = 'var(--orange)';
 
-  // Cargar datos según pantalla
   if (screen === 'clientes') mobLoadClientes();
   if (screen === 'tareas') mobLoadTareas();
+  if (screen === 'videos') mobLoadVideos();
+}
+
+// ── VIDEOS ──
+const MOB_DIAS = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+let mobVideosFilter = 'todos';
+let mobAllVideos = [];
+
+async function mobLoadVideos() {
+  const listEl = document.getElementById('mob-video-list');
+  listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Cargando videos...</div>';
+
+  // Usar datos del desktop si ya están cargados
+  if (typeof allVideos !== 'undefined' && allVideos.length) {
+    mobAllVideos = allVideos;
+    mobRenderVideos();
+    mobRenderVideoKPIs();
+    mobRenderVideoFilters();
+    return;
+  }
+
+  // Intentar localStorage primero
+  const saved = localStorage.getItem('balodi_videos');
+  if (saved) {
+    mobAllVideos = JSON.parse(saved);
+    mobRenderVideos();
+    mobRenderVideoKPIs();
+    mobRenderVideoFilters();
+  }
+
+  // Luego Sheets
+  try {
+    const VIDEOS_URL = 'https://script.google.com/macros/s/AKfycbyd4S0ANLJf5QuyMb--gbBE3mMYPFX2kobjZ1Pxv0sHVRjKJLtbWQ_sCUtLZ5IBZ90t/exec';
+    const res = await fetch(VIDEOS_URL + '?action=getVideos&t=' + Date.now());
+    const raw = await res.json();
+    if (raw && raw.length > 1) {
+      mobAllVideos = raw.slice(1).map(r => ({
+        id: r[0], titulo: r[1], dia: r[2], programa: r[3],
+        drive: r[4], nota: r[5], estado: r[6], fecha: r[7], autor: r[8]
+      })).filter(v => v.id);
+      localStorage.setItem('balodi_videos', JSON.stringify(mobAllVideos));
+    }
+    mobRenderVideos();
+    mobRenderVideoKPIs();
+    mobRenderVideoFilters();
+  } catch(e) {
+    if (!mobAllVideos.length) {
+      listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No se pudieron cargar los videos.</div>';
+    }
+  }
+}
+
+function mobRenderVideoKPIs() {
+  const pending = mobAllVideos.filter(v => v.estado !== 'completado');
+  const hoy = MOB_DIAS[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1];
+  const completados = mobAllVideos.filter(v => v.estado === 'completado').length;
+  document.getElementById('mob-video-kpis').innerHTML = [
+    { label: 'Pendientes', val: pending.length, color: 'var(--orange)' },
+    { label: 'Para hoy', val: pending.filter(v => v.dia === hoy).length, color: 'var(--blue)' },
+    { label: 'Completados', val: completados, color: 'var(--green)' },
+    { label: 'Esta semana', val: pending.length, color: '#7c3aed' },
+  ].map(k => `
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:${k.color};line-height:1;margin-bottom:4px">${k.val}</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">${k.label}</div>
+    </div>`).join('');
+}
+
+function mobRenderVideoFilters() {
+  const filtersEl = document.getElementById('mob-video-filters');
+  const allFilters = ['Todos', ...MOB_DIAS];
+  const activeStyle = 'padding:8px 18px;border-radius:999px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:"Plus Jakarta Sans",sans-serif';
+  const inactiveStyle = 'padding:8px 18px;border-radius:999px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:"Plus Jakarta Sans",sans-serif';
+  filtersEl.innerHTML = allFilters.map((f, i) => `
+    <button onclick="
+      document.getElementById('mob-video-filters').querySelectorAll('button').forEach(b=>b.style.cssText='${inactiveStyle}');
+      this.style.cssText='${activeStyle}';
+      mobVideosFilter='${f === 'Todos' ? 'todos' : f}';
+      mobRenderVideos()"
+      style="${i === 0 ? activeStyle : inactiveStyle}">${f}</button>`).join('');
+}
+
+function mobRenderVideos() {
+  const listEl = document.getElementById('mob-video-list');
+  const showCompletados = document.getElementById('mob-vid-completados')?.checked;
+  let videos = [...mobAllVideos];
+  if (!showCompletados) videos = videos.filter(v => v.estado !== 'completado');
+  if (mobVideosFilter !== 'todos') videos = videos.filter(v => v.dia === mobVideosFilter);
+
+  if (!videos.length) {
+    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">${mobVideosFilter === 'todos' ? 'No hay videos pendientes' : 'No hay videos para el ' + mobVideosFilter}</div>`;
+    return;
+  }
+
+  // Agrupar por día si filtro es todos
+  let html = '';
+  if (mobVideosFilter === 'todos') {
+    MOB_DIAS.forEach(dia => {
+      const delDia = videos.filter(v => v.dia === dia);
+      if (!delDia.length) return;
+      html += `
+        <div style="margin-bottom:24px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+            ${dia}
+            <span style="background:var(--orange);color:white;border-radius:999px;padding:1px 8px;font-size:11px">${delDia.length}</span>
+          </div>
+          ${delDia.map(v => mobVideoCard(v)).join('')}
+        </div>`;
+    });
+  } else {
+    html = videos.map(v => mobVideoCard(v)).join('');
+  }
+
+  listEl.innerHTML = html;
+}
+
+function mobVideoCard(v) {
+  const completado = v.estado === 'completado';
+  const canToggle = mobCurrentUser && ['bautista','nicolas','enzo'].includes(mobCurrentUser.username);
+  return `
+    <div style="background:var(--bg2);border:1.5px solid ${completado ? 'var(--green)' : 'var(--border)'};border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        ${canToggle ? `<input type="checkbox" ${completado ? 'checked' : ''} onchange="mobToggleVideo('${v.id}',this)"
+          style="margin-top:3px;width:18px;height:18px;accent-color:var(--orange);cursor:pointer;flex-shrink:0">` : ''}
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:700;color:${completado ? 'var(--text3)' : 'var(--text)'};${completado ? 'text-decoration:line-through' : ''};margin-bottom:8px;line-height:1.3">${v.titulo}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${v.nota ? '8px' : '0'}">
+            <span style="background:var(--orange)22;color:var(--orange);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700">${v.dia}</span>
+            ${v.programa ? `<span style="background:var(--bg4);color:var(--text3);border-radius:999px;padding:3px 9px;font-size:11px">${v.programa}</span>` : ''}
+            ${completado ? '<span style="background:var(--green)22;color:var(--green);border-radius:999px;padding:3px 9px;font-size:11px;font-weight:700">✓ Completado</span>' : ''}
+          </div>
+          ${v.nota ? `<div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">${v.nota}</div>` : ''}
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            ${v.drive ? `<a href="${v.drive}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--blue)22;color:var(--blue);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-google-drive"></i> Ver material</a>` : ''}
+            <span style="font-size:11px;color:var(--text3)">Por ${v.autor || 'Equipo'} · ${v.fecha || ''}</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function mobToggleVideo(videoId, checkbox) {
+  const idx = mobAllVideos.findIndex(v => v.id === videoId);
+  if (idx === -1) return;
+  mobAllVideos[idx].estado = checkbox.checked ? 'completado' : 'pendiente';
+  // Sync al sistema desktop si está cargado
+  if (typeof allVideos !== 'undefined') {
+    const deskIdx = allVideos.findIndex(v => v.id === videoId);
+    if (deskIdx !== -1) allVideos[deskIdx].estado = mobAllVideos[idx].estado;
+    if (typeof saveVideos === 'function') saveVideos();
+  } else {
+    localStorage.setItem('balodi_videos', JSON.stringify(mobAllVideos));
+    // Sync a Sheets
+    const VIDEOS_URL = 'https://script.google.com/macros/s/AKfycbyd4S0ANLJf5QuyMb--gbBE3mMYPFX2kobjZ1Pxv0sHVRjKJLtbWQ_sCUtLZ5IBZ90t/exec';
+    fetch(VIDEOS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'setAllVideos', videos: mobAllVideos })
+    }).catch(() => {});
+  }
+  mobRenderVideoKPIs();
 }
 
 // ── TAREAS ──
@@ -9493,74 +9668,96 @@ async function mobLoadTareas() {
   listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Cargando...</div>';
 
   try {
-    const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec";
-    const res = await fetch(SHEETS_URL + '?t=' + Date.now());
-    const tasks = await res.json();
+    // Si ya están cargadas en el sistema desktop, usarlas directo
+    let tasks = [];
+    if (typeof allTasks !== 'undefined' && allTasks.length) {
+      tasks = allTasks;
+    } else {
+      // Traer desde Sheets con el mismo formato que el desktop
+      const TASKS_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec";
+      const res = await fetch(TASKS_URL + '?t=' + Date.now());
+      const raw = await res.json();
+      tasks = raw.slice(1).map(r => ({
+        tarea: r[0], responsable: r[1], cliente: r[2],
+        prioridad: r[3], estado: r[4], fecha: r[5], nota: r[6], vencimiento: r[7] || ''
+      })).filter(t => t.tarea);
+    }
+
     const pending = tasks.filter(t => t.estado !== 'hecho' && t.estado !== 'Completada');
 
-    // Filtros de responsable
-    const responsables = [...new Set(pending.flatMap(t => (t.responsables || t.responsable || '').split(',').map(r => r.trim()).filter(Boolean)))];
-    let activeFilter = 'Todos';
+    // Responsables únicos
+    const responsables = [...new Set(pending.map(t => t.responsable).filter(Boolean))];
 
-    function renderTasks(filter) {
-      const filtered = filter === 'Todos' ? pending : pending.filter(t => (t.responsables || t.responsable || '').includes(filter));
+    function renderMobTasks(filter) {
+      const filtered = filter === 'Todos' ? pending : pending.filter(t => t.responsable === filter);
       if (!filtered.length) {
-        listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No hay tareas pendientes</div>';
+        listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Sin tareas para este filtro</div>';
         return;
       }
       const prioColors = { Alta: '#ef4444', Media: '#f59e0b', Baja: '#22c55e' };
       listEl.innerHTML = filtered.map(t => `
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
-            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-              <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:3px"></div>
-              <div style="font-size:14px;font-weight:700;color:var(--text);line-height:1.3">${t.tarea || t.titulo || '—'}</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px">
+            <div style="display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:4px"></div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);line-height:1.3">${t.tarea}</div>
             </div>
-            <span style="background:${prioColors[t.prioridad]||'#f59e0b'}18;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:3px 8px;white-space:nowrap;flex-shrink:0">${t.prioridad||'—'}</span>
+            ${t.prioridad ? `<span style="background:${prioColors[t.prioridad]||'#f59e0b'}20;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:3px 9px;white-space:nowrap;flex-shrink:0">${t.prioridad}</span>` : ''}
           </div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
-            ${(t.responsables || t.responsable || '').split(',').filter(Boolean).map(r => `<span style="background:var(--bg4);color:var(--text2);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${r.trim()}</span>`).join('')}
-            ${t.cliente ? `<span style="background:var(--orange-light);color:var(--orange);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${t.cliente}</span>` : ''}
-            ${t.vencimiento ? `<span style="font-size:11px;color:var(--text3);padding:3px 0"><i class="ti ti-calendar" style="font-size:11px"></i> ${t.vencimiento}</span>` : ''}
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            ${t.responsable ? `<span style="background:var(--bg4);color:var(--text2);border-radius:999px;font-size:11px;font-weight:600;padding:3px 10px">${t.responsable}</span>` : ''}
+            ${t.cliente ? `<span style="background:var(--orange-light);color:var(--orange);border-radius:999px;font-size:11px;font-weight:600;padding:3px 10px">${t.cliente}</span>` : ''}
+            ${t.vencimiento && t.vencimiento !== '—' ? `<span style="font-size:11px;color:var(--text3);padding:3px 0"><i class="ti ti-calendar" style="font-size:10px"></i> ${t.vencimiento}</span>` : ''}
           </div>
-          ${t.nota ? `<div style="font-size:12px;color:var(--text3);margin-top:8px;font-style:italic;line-height:1.4">${t.nota}</div>` : ''}
+          ${t.nota ? `<div style="font-size:12px;color:var(--text3);margin-top:8px;font-style:italic;line-height:1.4;padding-top:8px;border-top:1px solid var(--border)">${t.nota}</div>` : ''}
         </div>`).join('');
     }
 
     // Render filtros
-    filtersEl.innerHTML = ['Todos', ...responsables].map(r => `
-      <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.style.cssText=b.dataset.inactive);this.style.cssText=this.dataset.active;mobRenderTaskFilter('${r}',${JSON.stringify(pending)})"
-        data-inactive="padding:8px 16px;border-radius:999px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif"
-        data-active="padding:8px 16px;border-radius:999px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif"
-        style="${r === 'Todos' ? 'padding:8px 16px;border-radius:999px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:\'Plus Jakarta Sans\',sans-serif' : 'padding:8px 16px;border-radius:999px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:\'Plus Jakarta Sans\',sans-serif'}">${r}</button>`).join('');
+    const allFilters = ['Todos', ...responsables];
+    filtersEl.innerHTML = allFilters.map((r, i) => {
+      const isActive = i === 0;
+      const activeStyle = 'padding:8px 18px;border-radius:999px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:"Plus Jakarta Sans",sans-serif';
+      const inactiveStyle = 'padding:8px 18px;border-radius:999px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:"Plus Jakarta Sans",sans-serif';
+      return `<button onclick="
+        document.getElementById('mob-task-filters').querySelectorAll('button').forEach(b => b.style.cssText='${inactiveStyle}');
+        this.style.cssText='${activeStyle}';
+        mobRenderTasksByName('${r}')
+      " style="${isActive ? activeStyle : inactiveStyle}">${r}</button>`;
+    }).join('');
 
-    renderTasks('Todos');
-    window._mobTasksData = pending;
+    window._mobAllPending = pending;
+    renderMobTasks('Todos');
 
   } catch(e) {
     listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No se pudieron cargar las tareas.<br>Verificá la conexión.</div>';
+    console.error('Mobile tasks error:', e);
   }
 }
 
-function mobRenderTaskFilter(filter, tasks) {
+function mobRenderTasksByName(filter) {
+  const pending = window._mobAllPending || [];
+  const filtered = filter === 'Todos' ? pending : pending.filter(t => t.responsable === filter);
   const listEl = document.getElementById('mob-task-list');
-  const pending = tasks || window._mobTasksData || [];
-  const filtered = filter === 'Todos' ? pending : pending.filter(t => (t.responsables || t.responsable || '').includes(filter));
+  if (!filtered.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Sin tareas para este filtro</div>';
+    return;
+  }
   const prioColors = { Alta: '#ef4444', Media: '#f59e0b', Baja: '#22c55e' };
-  if (!filtered.length) { listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Sin tareas para este filtro</div>'; return; }
   listEl.innerHTML = filtered.map(t => `
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
-        <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:3px"></div>
-          <div style="font-size:14px;font-weight:700;color:var(--text);line-height:1.3">${t.tarea || t.titulo || '—'}</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px">
+        <div style="display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:4px"></div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);line-height:1.3">${t.tarea}</div>
         </div>
-        <span style="background:${prioColors[t.prioridad]||'#f59e0b'}18;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:3px 8px;white-space:nowrap;flex-shrink:0">${t.prioridad||'—'}</span>
+        ${t.prioridad ? `<span style="background:${prioColors[t.prioridad]||'#f59e0b'}20;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:3px 9px;white-space:nowrap;flex-shrink:0">${t.prioridad}</span>` : ''}
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
-        ${(t.responsables || t.responsable || '').split(',').filter(Boolean).map(r => `<span style="background:var(--bg4);color:var(--text2);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${r.trim()}</span>`).join('')}
-        ${t.cliente ? `<span style="background:var(--orange-light);color:var(--orange);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${t.cliente}</span>` : ''}
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        ${t.responsable ? `<span style="background:var(--bg4);color:var(--text2);border-radius:999px;font-size:11px;font-weight:600;padding:3px 10px">${t.responsable}</span>` : ''}
+        ${t.cliente ? `<span style="background:var(--orange-light);color:var(--orange);border-radius:999px;font-size:11px;font-weight:600;padding:3px 10px">${t.cliente}</span>` : ''}
       </div>
+      ${t.nota ? `<div style="font-size:12px;color:var(--text3);margin-top:8px;font-style:italic;line-height:1.4;padding-top:8px;border-top:1px solid var(--border)">${t.nota}</div>` : ''}
     </div>`).join('');
 }
 
