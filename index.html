@@ -159,20 +159,255 @@
   .modal-btn:hover { background: var(--orange2); }
   .modal-cancel { width: 100%; background: none; border: 1px solid var(--border2); border-radius: 10px; padding: 10px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 13px; color: var(--text3); cursor: pointer; transition: all 0.15s; }
   .modal-cancel:hover { color: var(--text); }
-  .mobile-header { display: none; padding: 12px 18px; background: white; border-bottom: 1px solid var(--border); align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow-sm); }
-  .hamburger { background: none; border: 1px solid var(--border2); border-radius: 8px; color: var(--text2); padding: 6px 10px; cursor: pointer; font-size: 18px; }
-  .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.25); z-index: 99; }
+  .mobile-header { display: none; padding: 0 16px; height: 52px; background: var(--bg2); border-bottom: 1px solid var(--border); align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: 0 1px 8px rgba(0,0,0,0.08); }
+  .hamburger { background: none; border: none; border-radius: 10px; color: var(--text); padding: 8px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+  .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 199; backdrop-filter: blur(3px); }
+
   @media (max-width: 768px) {
+
+    /* ─── LAYOUT ─── */
     .mobile-header { display: flex; }
-    .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
-    .sidebar.open { transform: translateX(0); }
+    .topbar { display: none !important; }
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+      z-index: 200;
+      width: 280px !important;
+      min-width: 280px !important;
+    }
+    .sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(0,0,0,0.25); }
     .sidebar-overlay.open { display: block; }
-    .main { margin-left: 0; width: 100%; }
-    .page-header { padding: 22px 18px 16px; }
-    .page-content { padding: 18px 18px 50px; }
-    .topbar { padding: 0 18px; }
-    .page-title { font-size: 21px; }
-    .grid2, .client-grid { grid-template-columns: 1fr; }
+    .main { margin-left: 0 !important; width: 100% !important; overflow-x: hidden; }
+
+    /* ─── PÁGINA BASE ─── */
+    .page-header { padding: 20px 16px 12px !important; }
+    .page-content { padding: 12px 16px 80px !important; }
+    .page-eyebrow { font-size: 10px !important; letter-spacing: 0.12em !important; margin-bottom: 4px !important; }
+    .page-title { font-size: 24px !important; font-weight: 800 !important; margin-bottom: 6px !important; line-height: 1.15 !important; }
+    .page-desc { font-size: 13px !important; line-height: 1.5 !important; color: var(--text2) !important; }
+
+    /* ─── REGLA DE ORO: todo 1 columna ─── */
+    [style*="grid-template-columns"],
+    .grid2, .client-grid, .dash-grid,
+    .fin-resumen, .fin-stats-row, .fin-charts-row,
+    #reporte-kpis, #cx-meta-kpi-row,
+    #admin-clientes-list {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* ─── KPI CARDS — diseño app, 2 por fila ─── */
+    .dash-grid,
+    #reporte-kpis,
+    #cx-meta-kpi-row {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px !important;
+    }
+    .stat-card {
+      padding: 16px !important;
+      border-radius: 14px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
+    }
+    .stat-icon { width: 32px !important; height: 32px !important; font-size: 14px !important; margin-bottom: 10px !important; border-radius: 8px !important; }
+    .stat-number { font-size: 24px !important; font-weight: 800 !important; line-height: 1 !important; margin-bottom: 3px !important; }
+    .stat-label { font-size: 11px !important; font-weight: 600 !important; color: var(--text3) !important; }
+    .stat-trend { font-size: 10px !important; margin-top: 4px !important; }
+    .reporte-kpi-card { padding: 14px !important; border-radius: 12px !important; }
+    .reporte-kpi-num { font-size: 22px !important; }
+    .reporte-kpi-label { font-size: 10px !important; }
+
+    /* ─── CARDS GENÉRICAS — altura y estructura uniforme ─── */
+    .card, .pub-card,
+    [style*="border-radius:14px"],
+    [style*="border-radius: 14px"] {
+      border-radius: 14px !important;
+      padding: 16px !important;
+      margin-bottom: 10px !important;
+    }
+
+    /* ─── CLIENTES GRID ─── */
+    .client-grid { display: flex !important; flex-direction: column !important; gap: 10px !important; }
+    .client-card {
+      padding: 16px 18px !important;
+      border-radius: 14px !important;
+      grid-column: span 1 !important;
+      min-height: 64px !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .client-name { font-size: 15px !important; font-weight: 700 !important; }
+
+    /* ─── TABS — scroll limpio ─── */
+    .est-tabs, #cliente-tabs-row {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+      gap: 6px !important;
+      padding-bottom: 2px !important;
+      margin-bottom: 18px !important;
+    }
+    .est-tabs::-webkit-scrollbar,
+    #cliente-tabs-row::-webkit-scrollbar { display: none; }
+    .est-tab {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      padding: 8px 14px !important;
+      border-radius: 10px !important;
+    }
+
+    /* ─── BOTONES — táctiles, grandes ─── */
+    button[style*="border-radius:10px"],
+    button[style*="border-radius: 10px"],
+    .modal-btn, .modal-cancel {
+      min-height: 44px !important;
+      font-size: 14px !important;
+    }
+    .modal-btn { padding: 14px !important; }
+
+    /* ─── FILTROS DE TAREAS — scroll horizontal ─── */
+    #task-filters {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+      gap: 6px !important;
+      padding-bottom: 4px !important;
+    }
+    #task-filters::-webkit-scrollbar { display: none; }
+    #task-filters button, #task-filters .filter-btn {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      font-size: 12px !important;
+      padding: 7px 14px !important;
+    }
+
+    /* ─── TAREAS — cards limpias ─── */
+    .task-card {
+      padding: 14px 16px !important;
+      border-radius: 14px !important;
+      margin-bottom: 8px !important;
+    }
+    .task-meta { flex-wrap: wrap !important; gap: 4px !important; }
+
+    /* ─── VIDEOS — días scroll ─── */
+    #video-day-filters, .video-days {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+      gap: 6px !important;
+      padding-bottom: 4px !important;
+    }
+    #video-day-filters::-webkit-scrollbar { display: none; }
+    #video-day-filters button {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      font-size: 12px !important;
+      padding: 7px 14px !important;
+    }
+
+    /* ─── KANBAN — scroll horizontal ─── */
+    .pipe-kanban, .crm-kanban {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      gap: 12px !important;
+      padding-bottom: 12px !important;
+    }
+    .pipe-kanban > *, .crm-kanban > * {
+      min-width: 72vw !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* ─── MÉTRICAS DE PUBLICACIÓN — 2x2 ─── */
+    .pub-metricas {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 8px !important;
+    }
+    .pub-metrica-box { border-radius: 10px !important; padding: 10px !important; }
+    .pub-metrica-num { font-size: 20px !important; }
+
+    /* ─── META ADS INPUTS ─── */
+    #cx-meta-banner { flex-direction: column !important; gap: 12px !important; }
+    #cx-meta-banner > div:last-child > div:first-child { flex-direction: column !important; }
+    #cx-meta-token, #cx-meta-account { width: 100% !important; min-width: 0 !important; }
+    #cx-meta-banner button { width: 100% !important; padding: 12px !important; }
+
+    /* ─── REPORTE MENSUAL toolbar ─── */
+    #cliente-tab-reporte > div:first-child {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 10px !important;
+    }
+    #cliente-tab-reporte > div:first-child > div:last-child {
+      display: flex !important;
+      gap: 8px !important;
+    }
+    #cliente-tab-reporte > div:first-child > div:last-child button {
+      flex: 1 !important;
+      justify-content: center !important;
+    }
+
+    /* ─── MODAL — bottom sheet ─── */
+    .modal-overlay {
+      align-items: flex-end !important;
+      padding: 0 !important;
+    }
+    .modal {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      border-radius: 24px 24px 0 0 !important;
+      max-height: 92vh !important;
+      overflow-y: auto !important;
+      padding: 24px 20px 32px !important;
+    }
+    .modal-icon { width: 44px !important; height: 44px !important; font-size: 20px !important; }
+    .modal-title { font-size: 18px !important; margin-bottom: 16px !important; }
+    .modal-input { font-size: 15px !important; padding: 12px 14px !important; }
+
+    /* ─── RESUMEN CLIENTE — 1 columna ─── */
+    #cliente-tab-resumen > div { display: flex !important; flex-direction: column !important; gap: 12px !important; }
+    #cliente-tab-resumen > div > div { display: flex !important; flex-direction: column !important; gap: 12px !important; }
+
+    /* ─── FINANZAS ─── */
+    .fin-charts-row { display: flex !important; flex-direction: column !important; gap: 12px !important; }
+    .fin-bars { height: 80px !important; }
+    .fin-stat { padding: 16px !important; border-radius: 14px !important; }
+    .fin-stat-num { font-size: 26px !important; }
+
+    /* ─── SEGUIMIENTO ─── */
+    .rend-cats { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+
+    /* ─── ADMIN ─── */
+    #admin-users-list > div { flex-wrap: wrap !important; gap: 8px !important; }
+    #admin-clientes-list { grid-template-columns: 1fr !important; }
+
+    /* ─── SECCIÓN TITLE jerarquía ─── */
+    .section-title { font-size: 14px !important; font-weight: 700 !important; margin-bottom: 12px !important; }
+
+    /* ─── BREADCRUMB ─── */
+    .breadcrumb { font-size: 11px !important; }
+
+    /* ─── OVERFLOW GLOBAL ─── */
+    .panel { overflow-x: hidden !important; }
+    * { box-sizing: border-box !important; }
+    body { overflow-x: hidden !important; }
+  }
+
+  /* ─── TABLET ─── */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .dash-grid { grid-template-columns: repeat(2,1fr); }
+    #cx-meta-kpi-row { grid-template-columns: repeat(3,1fr); }
+    .pipe-kanban { grid-template-columns: repeat(2,1fr); }
   }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .panel.active { animation: fadeUp 0.2s ease; }
@@ -960,8 +1195,11 @@
   <main class="main">
     <div class="topbar" id="topbar-bar" style="display:none"><div id="topbar-title" class="topbar-title">Inicio</div><div class="topbar-right" style="display:flex;align-items:center;gap:12px"><span class="topbar-badge">Balodi Marketing</span><div class="topbar-user"><div class="topbar-avatar" id="user-avatar">?</div><span class="topbar-username" id="user-display-name"></span><button class="logout-btn" onclick="logout()">Salir</button></div></div></div>
     <div class="mobile-header">
-      <div class="logo-mark" style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px">Balodi</div>
-      <button class="hamburger" onclick="toggleSidebar()"><i class="ti ti-menu-2" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></button>
+      <button class="hamburger" onclick="toggleSidebar()"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
+      <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;color:var(--text)" id="mobile-page-title">Inicio</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="topbar-avatar" id="user-avatar-mobile" style="width:32px;height:32px;border-radius:50%;background:var(--orange);color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">?</div>
+      </div>
     </div>
 
     <!-- ESTRUCTURA -->
@@ -3345,9 +3583,11 @@
   function updateUserUI() {
     if (!currentUser) return;
     const av = document.getElementById('user-avatar');
+    const avMobile = document.getElementById('user-avatar-mobile');
     const nm = document.getElementById('user-display-name');
     const wn = document.getElementById('dash-welcome-name');
     if (av) { av.textContent = currentUser.avatar; av.style.background = currentUser.color; }
+    if (avMobile) { avMobile.textContent = currentUser.avatar; avMobile.style.background = currentUser.color; }
     if (nm) nm.textContent = currentUser.name;
     if (wn) wn.innerHTML = '¡Hola, ' + currentUser.name + '! 👋';
     const tb = document.getElementById('topbar-bar');
@@ -3418,6 +3658,8 @@
     };
     const tb = document.getElementById('topbar-title');
     if (tb && titles[id]) tb.textContent = titles[id];
+    const mbt = document.getElementById('mobile-page-title');
+    if (mbt && titles[id]) mbt.textContent = titles[id];
     if (id === 'tareas') loadTasks();
     if (id === 'banco') { sessionStorage.setItem('balodi_ideas_seen', allIdeas.length); loadIdeas(); updateIdeasBadge(); }
     if (id === 'creativas') { sessionStorage.setItem('balodi_creativas_seen', allCreativas.length); loadCreativas(); updateCreativasBadge(); }
@@ -7862,6 +8104,8 @@
     document.getElementById('nav-clientes').classList.add('active');
     const tb = document.getElementById('topbar-title');
     if (tb) tb.textContent = c.nombre;
+    const mbt = document.getElementById('mobile-page-title');
+    if (mbt) mbt.textContent = c.nombre;
 
     // Render content
     renderClienteResumen(clienteId);
@@ -9024,6 +9268,516 @@
     </div>
   </div>
 </div>
+
+<!-- ============================================================
+     MOBILE APP — solo se muestra en pantallas < 768px
+     ============================================================ -->
+<div id="mobile-app" style="display:none;position:fixed;inset:0;background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden;flex-direction:column;z-index:9000">
+
+  <!-- LOGIN MOBILE -->
+  <div id="mob-login" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px 24px;gap:0">
+    <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--orange);margin-bottom:4px">Balodi</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:48px">Sistema Operativo</div>
+    <div style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:12px">
+      <input id="mob-user-input" type="text" placeholder="Usuario" autocomplete="username"
+        style="width:100%;padding:16px 18px;border-radius:14px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text);font-size:16px;font-family:'Plus Jakarta Sans',sans-serif;outline:none"
+        onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'">
+      <input id="mob-pass-input" type="password" placeholder="Contraseña" autocomplete="current-password"
+        style="width:100%;padding:16px 18px;border-radius:14px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text);font-size:16px;font-family:'Plus Jakarta Sans',sans-serif;outline:none"
+        onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'"
+        onkeydown="if(event.key==='Enter')mobLogin()">
+      <div id="mob-login-error" style="display:none;color:var(--red);font-size:13px;text-align:center;font-weight:600"></div>
+      <button onclick="mobLogin()" style="width:100%;padding:16px;border-radius:14px;background:var(--orange);color:white;border:none;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;cursor:pointer;margin-top:4px">Entrar</button>
+    </div>
+  </div>
+
+  <!-- APP MOBILE (post-login) -->
+  <div id="mob-main" style="display:none;flex-direction:column;height:100%">
+
+    <!-- TOPBAR MOBILE -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;position:relative;z-index:10">
+      <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--orange)">Balodi</div>
+      <div id="mob-page-title" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);position:absolute;left:50%;transform:translateX(-50%)">Tareas</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div id="mob-avatar" style="width:32px;height:32px;border-radius:50%;background:var(--orange);color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">?</div>
+        <button onclick="mobLogout()" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--text3);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Salir</button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO SCROLLABLE -->
+    <div id="mob-content" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:80px">
+
+      <!-- ── PANTALLA TAREAS ── -->
+      <div id="mob-screen-tareas" style="display:block;padding:20px 16px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin-bottom:4px">OPERACIONES</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text);margin-bottom:6px">Tareas pendientes</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Solo lectura — editá desde la compu</div>
+
+        <!-- Filtros -->
+        <div id="mob-task-filters" style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:16px;-webkit-overflow-scrolling:touch"></div>
+
+        <!-- Lista -->
+        <div id="mob-task-list" style="display:flex;flex-direction:column;gap:10px">
+          <div style="text-align:center;padding:40px 20px;color:var(--text3);font-size:13px">Cargando tareas...</div>
+        </div>
+      </div>
+
+      <!-- ── PANTALLA CLIENTES ── -->
+      <div id="mob-screen-clientes" style="display:none;padding:20px 16px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin-bottom:4px">CLIENTES</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text);margin-bottom:6px">Clientes</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Tocá para ver estadísticas y descargar reportes</div>
+        <div id="mob-clientes-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+
+      <!-- ── PANTALLA CLIENTE DETALLE ── -->
+      <div id="mob-screen-cliente-detalle" style="display:none;padding:0">
+        <!-- Header con back -->
+        <div style="padding:16px 16px 0">
+          <button onclick="mobGoScreen('clientes')" style="background:none;border:none;color:var(--orange);font-size:13px;font-weight:700;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px;margin-bottom:16px">
+            ← Volver a clientes
+          </button>
+          <div id="mob-cliente-eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin-bottom:4px"></div>
+          <div id="mob-cliente-nombre" style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text);margin-bottom:16px"></div>
+        </div>
+
+        <!-- Tabs -->
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+          <button class="mob-tab active" onclick="mobClienteTab('resumen',this)" style="padding:12px 16px;border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--orange);border-bottom:2px solid var(--orange);cursor:pointer;white-space:nowrap;flex-shrink:0">Resumen</button>
+          <button class="mob-tab" onclick="mobClienteTab('reporte',this)" style="padding:12px 16px;border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text3);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;flex-shrink:0">Reporte</button>
+        </div>
+
+        <!-- Tab resumen -->
+        <div id="mob-cliente-tab-resumen" style="padding:16px">
+          <div id="mob-cliente-resumen-content"></div>
+        </div>
+
+        <!-- Tab reporte -->
+        <div id="mob-cliente-tab-reporte" style="display:none;padding:16px">
+          <!-- Selector mes -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:4px">
+            <button onclick="mobCambiarMes(-1)" style="background:none;border:none;padding:10px 18px;font-size:20px;color:var(--text2);cursor:pointer">‹</button>
+            <div id="mob-mes-label" style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text)">Mayo 2026</div>
+            <button onclick="mobCambiarMes(1)" style="background:none;border:none;padding:10px 18px;font-size:20px;color:var(--text2);cursor:pointer">›</button>
+          </div>
+          <!-- Botón descargar -->
+          <button onclick="mobDescargarReporte()" style="width:100%;padding:16px;border-radius:14px;background:var(--orange);color:white;border:none;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px">
+            <i class="ti ti-download"></i> Descargar reporte PDF
+          </button>
+          <!-- Stats del mes -->
+          <div id="mob-reporte-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"></div>
+          <!-- Publicaciones -->
+          <div id="mob-reporte-pubs" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div style="display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);z-index:10;padding-bottom:env(safe-area-inset-bottom)">
+      <button class="mob-nav-btn active" id="mob-nav-tareas" onclick="mobGoScreen('tareas')"
+        style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--orange)">
+        <i class="ti ti-check" style="font-size:22px"></i>
+        <span style="font-size:10px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">Tareas</span>
+      </button>
+      <button class="mob-nav-btn" id="mob-nav-clientes" onclick="mobGoScreen('clientes')"
+        style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--text3)">
+        <i class="ti ti-users" style="font-size:22px"></i>
+        <span style="font-size:10px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">Clientes</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ============================================================
+// MOBILE APP LOGIC
+// ============================================================
+
+const IS_MOBILE = window.innerWidth <= 768;
+let mobCurrentUser = null;
+let mobCurrentClienteId = null;
+let mobMesActual = { year: new Date().getFullYear(), month: new Date().getMonth() };
+const MOB_MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const MOB_SO_URL = "https://script.google.com/macros/s/AKfycbwd_BluDlvBO7Diy1tjxImdz8vl_mSgVPkRCdpC7FaTGrwJtRNg1OdWDB3sj3oufM12vA/exec";
+
+// Detectar mobile y mostrar app correspondiente
+if (IS_MOBILE) {
+  document.getElementById('jarvis-intro') && (document.getElementById('jarvis-intro').style.display = 'none');
+  document.getElementById('login-screen') && (document.getElementById('login-screen').style.display = 'none');
+  document.getElementById('app-wrapper') && (document.getElementById('app-wrapper').style.display = 'none');
+  document.getElementById('mobile-app').style.display = 'flex';
+
+  // Dark mode sync
+  const savedTheme = localStorage.getItem('balodi_theme');
+  if (savedTheme === 'dark') document.body.classList.add('dark');
+}
+
+// ── LOGIN ──
+function mobLogin() {
+  const username = document.getElementById('mob-user-input').value.trim().toLowerCase();
+  const pass = document.getElementById('mob-pass-input').value;
+  const errEl = document.getElementById('mob-login-error');
+
+  // Usar el mismo objeto USERS del sistema principal
+  const allUsers = typeof USERS !== 'undefined' ? USERS : {};
+  // También checar extra users de localStorage
+  const extraUsers = JSON.parse(localStorage.getItem('balodi_extra_users') || '{}');
+  const users = { ...allUsers, ...extraUsers };
+
+  if (users[username] && users[username].pass === pass) {
+    mobCurrentUser = { username, ...users[username] };
+    errEl.style.display = 'none';
+    document.getElementById('mob-login').style.display = 'none';
+    document.getElementById('mob-main').style.display = 'flex';
+    document.getElementById('mob-avatar').textContent = mobCurrentUser.avatar || username[0].toUpperCase();
+    document.getElementById('mob-avatar').style.background = mobCurrentUser.color || 'var(--orange)';
+    mobGoScreen('tareas');
+    mobLoadTareas();
+  } else {
+    errEl.textContent = 'Usuario o contraseña incorrectos';
+    errEl.style.display = 'block';
+    document.getElementById('mob-pass-input').value = '';
+  }
+}
+
+document.getElementById('mob-pass-input') && document.getElementById('mob-pass-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') mobLogin();
+});
+
+function mobLogout() {
+  mobCurrentUser = null;
+  document.getElementById('mob-main').style.display = 'none';
+  document.getElementById('mob-login').style.display = 'flex';
+  document.getElementById('mob-user-input').value = '';
+  document.getElementById('mob-pass-input').value = '';
+}
+
+// ── NAVEGACIÓN ──
+function mobGoScreen(screen) {
+  // Ocultar todas las pantallas
+  ['tareas','clientes','cliente-detalle'].forEach(s => {
+    const el = document.getElementById('mob-screen-' + s);
+    if (el) el.style.display = 'none';
+  });
+
+  // Mostrar la correcta
+  const target = document.getElementById('mob-screen-' + screen);
+  if (target) target.style.display = 'block';
+
+  // Títulos
+  const titles = { tareas: 'Tareas', clientes: 'Clientes', 'cliente-detalle': mobCurrentClienteId ? '' : 'Cliente' };
+  const titleEl = document.getElementById('mob-page-title');
+  if (titleEl) titleEl.textContent = titles[screen] || '';
+
+  // Nav buttons
+  document.querySelectorAll('.mob-nav-btn').forEach(b => {
+    b.style.color = 'var(--text3)';
+    b.querySelector('span') && (b.querySelector('span').style.color = 'var(--text3)');
+  });
+  const activeNav = document.getElementById('mob-nav-' + (screen === 'cliente-detalle' ? 'clientes' : screen));
+  if (activeNav) {
+    activeNav.style.color = 'var(--orange)';
+  }
+
+  // Cargar datos según pantalla
+  if (screen === 'clientes') mobLoadClientes();
+  if (screen === 'tareas') mobLoadTareas();
+}
+
+// ── TAREAS ──
+async function mobLoadTareas() {
+  const listEl = document.getElementById('mob-task-list');
+  const filtersEl = document.getElementById('mob-task-filters');
+  listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Cargando...</div>';
+
+  try {
+    const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzR5iuWwWEJj1QPHfSe697Zj4vwxC06xaeP0WiMWEhabhLWj0m-8inq9PH8g1zxKcqi/exec";
+    const res = await fetch(SHEETS_URL + '?t=' + Date.now());
+    const tasks = await res.json();
+    const pending = tasks.filter(t => t.estado !== 'hecho' && t.estado !== 'Completada');
+
+    // Filtros de responsable
+    const responsables = [...new Set(pending.flatMap(t => (t.responsables || t.responsable || '').split(',').map(r => r.trim()).filter(Boolean)))];
+    let activeFilter = 'Todos';
+
+    function renderTasks(filter) {
+      const filtered = filter === 'Todos' ? pending : pending.filter(t => (t.responsables || t.responsable || '').includes(filter));
+      if (!filtered.length) {
+        listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No hay tareas pendientes</div>';
+        return;
+      }
+      const prioColors = { Alta: '#ef4444', Media: '#f59e0b', Baja: '#22c55e' };
+      listEl.innerHTML = filtered.map(t => `
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:3px"></div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);line-height:1.3">${t.tarea || t.titulo || '—'}</div>
+            </div>
+            <span style="background:${prioColors[t.prioridad]||'#f59e0b'}18;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:3px 8px;white-space:nowrap;flex-shrink:0">${t.prioridad||'—'}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+            ${(t.responsables || t.responsable || '').split(',').filter(Boolean).map(r => `<span style="background:var(--bg4);color:var(--text2);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${r.trim()}</span>`).join('')}
+            ${t.cliente ? `<span style="background:var(--orange-light);color:var(--orange);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${t.cliente}</span>` : ''}
+            ${t.vencimiento ? `<span style="font-size:11px;color:var(--text3);padding:3px 0"><i class="ti ti-calendar" style="font-size:11px"></i> ${t.vencimiento}</span>` : ''}
+          </div>
+          ${t.nota ? `<div style="font-size:12px;color:var(--text3);margin-top:8px;font-style:italic;line-height:1.4">${t.nota}</div>` : ''}
+        </div>`).join('');
+    }
+
+    // Render filtros
+    filtersEl.innerHTML = ['Todos', ...responsables].map(r => `
+      <button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.style.cssText=b.dataset.inactive);this.style.cssText=this.dataset.active;mobRenderTaskFilter('${r}',${JSON.stringify(pending)})"
+        data-inactive="padding:8px 16px;border-radius:999px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif"
+        data-active="padding:8px 16px;border-radius:999px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif"
+        style="${r === 'Todos' ? 'padding:8px 16px;border-radius:999px;border:1.5px solid var(--orange);background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:\'Plus Jakarta Sans\',sans-serif' : 'padding:8px 16px;border-radius:999px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:\'Plus Jakarta Sans\',sans-serif'}">${r}</button>`).join('');
+
+    renderTasks('Todos');
+    window._mobTasksData = pending;
+
+  } catch(e) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No se pudieron cargar las tareas.<br>Verificá la conexión.</div>';
+  }
+}
+
+function mobRenderTaskFilter(filter, tasks) {
+  const listEl = document.getElementById('mob-task-list');
+  const pending = tasks || window._mobTasksData || [];
+  const filtered = filter === 'Todos' ? pending : pending.filter(t => (t.responsables || t.responsable || '').includes(filter));
+  const prioColors = { Alta: '#ef4444', Media: '#f59e0b', Baja: '#22c55e' };
+  if (!filtered.length) { listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Sin tareas para este filtro</div>'; return; }
+  listEl.innerHTML = filtered.map(t => `
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:3px"></div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);line-height:1.3">${t.tarea || t.titulo || '—'}</div>
+        </div>
+        <span style="background:${prioColors[t.prioridad]||'#f59e0b'}18;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:3px 8px;white-space:nowrap;flex-shrink:0">${t.prioridad||'—'}</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        ${(t.responsables || t.responsable || '').split(',').filter(Boolean).map(r => `<span style="background:var(--bg4);color:var(--text2);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${r.trim()}</span>`).join('')}
+        ${t.cliente ? `<span style="background:var(--orange-light);color:var(--orange);border-radius:999px;font-size:11px;font-weight:600;padding:3px 9px">${t.cliente}</span>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+// ── CLIENTES ──
+function mobLoadClientes() {
+  const listEl = document.getElementById('mob-clientes-list');
+  // Usar datos del sistema desktop si están disponibles
+  const clientes = (typeof getAdminClientes === 'function' ? getAdminClientes() : []).filter(c => c.estado !== 'Inactivo');
+  if (!clientes.length) {
+    // Intentar desde localStorage
+    const saved = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
+    if (saved.length) {
+      renderMobClientes(saved.filter(c => c.estado !== 'Inactivo'));
+    } else {
+      listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Cargando clientes...</div>';
+      fetch(MOB_SO_URL + '?action=getClientes&t=' + Date.now())
+        .then(r => r.json()).then(data => renderMobClientes(data.filter(c => c.estado !== 'Inactivo')))
+        .catch(() => { listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No se pudieron cargar los clientes.</div>'; });
+    }
+  } else {
+    renderMobClientes(clientes);
+  }
+}
+
+function renderMobClientes(clientes) {
+  const listEl = document.getElementById('mob-clientes-list');
+  listEl.innerHTML = clientes.map(c => `
+    <div onclick="mobGoCliente('${c.id}')"
+      style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:all 0.15s"
+      onmousedown="this.style.background='var(--bg4)'" ontouchstart="this.style.background='var(--bg4)'"
+      onmouseup="this.style.background='var(--bg2)'" ontouchend="this.style.background='var(--bg2)'">
+      <div>
+        <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:3px">${c.nombre}</div>
+        ${c.rubro ? `<div style="font-size:12px;color:var(--text3)">${c.rubro}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        ${c.estado === 'Pausado' ? '<span style="background:var(--amber-light);color:var(--amber);border-radius:999px;font-size:10px;font-weight:700;padding:3px 8px">Pausado</span>' : ''}
+        <span style="color:var(--orange);font-size:18px;font-weight:300">›</span>
+      </div>
+    </div>`).join('');
+}
+
+function mobGoCliente(clienteId) {
+  mobCurrentClienteId = clienteId;
+  const clientes = typeof getAdminClientes === 'function' ? getAdminClientes() : JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
+  const c = clientes.find(x => x.id === clienteId);
+  if (!c) return;
+
+  document.getElementById('mob-cliente-eyebrow').textContent = c.rubro || 'Cliente';
+  document.getElementById('mob-cliente-nombre').textContent = c.nombre;
+  document.getElementById('mob-page-title').textContent = c.nombre;
+
+  // Reset tabs
+  mobClienteTab('resumen', document.querySelector('.mob-tab'));
+  mobGoScreen('cliente-detalle');
+  mobRenderClienteResumen(clienteId);
+}
+
+function mobClienteTab(tab, btn) {
+  document.getElementById('mob-cliente-tab-resumen').style.display = tab === 'resumen' ? 'block' : 'none';
+  document.getElementById('mob-cliente-tab-reporte').style.display = tab === 'reporte' ? 'block' : 'none';
+  document.querySelectorAll('.mob-tab').forEach(b => {
+    b.style.color = 'var(--text3)';
+    b.style.borderBottomColor = 'transparent';
+    b.style.fontWeight = '600';
+  });
+  if (btn) { btn.style.color = 'var(--orange)'; btn.style.borderBottomColor = 'var(--orange)'; btn.style.fontWeight = '700'; }
+  if (tab === 'reporte') mobInitReporte(mobCurrentClienteId);
+}
+
+// ── RESUMEN CLIENTE ──
+function mobRenderClienteResumen(clienteId) {
+  const container = document.getElementById('mob-cliente-resumen-content');
+  const clientes = typeof getAdminClientes === 'function' ? getAdminClientes() : JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
+  const c = clientes.find(x => x.id === clienteId);
+
+  // Meta cache
+  const metaCache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + clienteId) || 'null');
+  // Pauta manual
+  const pautas = JSON.parse(localStorage.getItem('balodi_pauta_' + clienteId) || '[]');
+  // Ideas
+  const ideas = JSON.parse(localStorage.getItem('balodi_ideas_cliente_' + clienteId) || '[]').slice(0,3);
+
+  const fmt = n => n >= 1000 ? (n/1000).toFixed(1)+'K' : (n||0).toLocaleString('es-AR');
+
+  container.innerHTML = `
+    <!-- Datos -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Datos del cliente</div>
+      ${c?.responsable ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Responsable</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.responsable}</span></div>` : ''}
+      ${c?.contacto ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Contacto</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.contacto}</span></div>` : ''}
+      ${c?.telefono ? `<div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:12px;color:var(--text3);font-weight:600">Teléfono</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.telefono}</span></div>` : ''}
+      ${!c?.responsable && !c?.contacto && !c?.telefono ? '<div style="font-size:13px;color:var(--text3);text-align:center;padding:8px">Sin datos de contacto</div>' : ''}
+    </div>
+
+    ${metaCache ? `
+    <!-- Meta KPIs -->
+    <div style="background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:14px;padding:18px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);margin-bottom:14px"><i class="ti ti-brand-meta"></i> Meta Ads — últimos 30 días</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--text)">$${Math.round(metaCache.gasto||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Gasto</div></div>
+        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--blue)">${fmt(metaCache.alcance)}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Alcance</div></div>
+        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--green)">${fmt(metaCache.clicks)}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Clicks</div></div>
+        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:#7c3aed">${metaCache.conversaciones||'—'}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Conversaciones</div></div>
+      </div>
+    </div>` : ''}
+
+    ${pautas.length ? `
+    <!-- Pauta manual -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Campañas</div>
+      ${pautas.slice(0,3).map(p => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:${p.estado==='activa'?'var(--green)':p.estado==='pausada'?'var(--amber)':'var(--text3)'};flex-shrink:0"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">${p.nombre}</div>
+            <div style="font-size:11px;color:var(--text3)">${p.plataforma} · ${p.objetivo}</div>
+          </div>
+          ${p.presupuesto ? `<div style="font-size:13px;font-weight:700;color:var(--text)">$${parseFloat(p.presupuesto).toLocaleString('es-AR')}</div>` : ''}
+        </div>`).join('')}
+    </div>` : ''}
+
+    ${ideas.length ? `
+    <!-- Ideas recientes -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Últimas ideas</div>
+      ${ideas.map(i => `
+        <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">${i.titulo}</div>
+          <div style="font-size:11px;color:var(--text3)">${i.formato} · ${i.estado}</div>
+        </div>`).join('')}
+    </div>` : ''}
+  `;
+}
+
+// ── REPORTE MOBILE ──
+function mobInitReporte(clienteId) {
+  document.getElementById('mob-mes-label').textContent = MOB_MESES[mobMesActual.month] + ' ' + mobMesActual.year;
+  mobRenderReporte(clienteId);
+}
+
+function mobCambiarMes(delta) {
+  mobMesActual.month += delta;
+  if (mobMesActual.month > 11) { mobMesActual.month = 0; mobMesActual.year++; }
+  if (mobMesActual.month < 0) { mobMesActual.month = 11; mobMesActual.year--; }
+  document.getElementById('mob-mes-label').textContent = MOB_MESES[mobMesActual.month] + ' ' + mobMesActual.year;
+  mobRenderReporte(mobCurrentClienteId);
+}
+
+function mobRenderReporte(clienteId) {
+  const { year, month } = mobMesActual;
+  const key = `balodi_reporte_${clienteId}_${year}_${month}`;
+  const pubs = JSON.parse(localStorage.getItem(key) || '[]');
+  pubs.sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
+
+  const totalLikes = pubs.reduce((s,p) => s+(parseInt(p.likes)||0), 0);
+  const totalComentarios = pubs.reduce((s,p) => s+(parseInt(p.comentarios)||0), 0);
+  const totalRepros = pubs.reduce((s,p) => s+(parseInt(p.reproducciones)||0), 0);
+  const totalCompartidos = pubs.reduce((s,p) => s+(parseInt(p.compartidos)||0), 0);
+
+  document.getElementById('mob-reporte-stats').innerHTML = [
+    { label:'Publicaciones', val: pubs.length, color:'var(--orange)' },
+    { label:'❤️ Likes', val: totalLikes.toLocaleString('es-AR'), color:'#e1306c' },
+    { label:'💬 Comentarios', val: totalComentarios.toLocaleString('es-AR'), color:'var(--blue)' },
+    { label:'▶️ Reproducciones', val: totalRepros.toLocaleString('es-AR'), color:'#7c3aed' },
+  ].map(k => `
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center">
+      <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:${k.color};line-height:1;margin-bottom:4px">${k.val}</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)">${k.label}</div>
+    </div>`).join('');
+
+  const RED_COLORS_MOB = { Instagram:'#e1306c',Facebook:'#1877f2',TikTok:'#000',YouTube:'#ff0000',LinkedIn:'#0a66c2',Otra:'#6b6b65' };
+
+  document.getElementById('mob-reporte-pubs').innerHTML = !pubs.length
+    ? '<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">Sin publicaciones este mes</div>'
+    : pubs.map(p => {
+        const redColor = RED_COLORS_MOB[p.red] || '#6b6b65';
+        const fechaStr = p.fecha ? new Date(p.fecha+'T00:00:00').toLocaleDateString('es-AR',{day:'numeric',month:'short'}) : '—';
+        return `
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:2px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            <span style="background:${redColor}18;color:${redColor};border-radius:999px;font-size:11px;font-weight:700;padding:3px 10px">${p.red}</span>
+            <span style="background:var(--bg4);color:var(--text3);border-radius:999px;font-size:11px;padding:2px 8px">${p.formato}</span>
+            <span style="font-size:11px;color:var(--text3)">${fechaStr}</span>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:${p.descripcion?'4px':'0'}">${p.titulo}</div>
+          ${p.descripcion ? `<div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.4">${p.descripcion}</div>` : '<div style="margin-bottom:10px"></div>'}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#e1306c">${(parseInt(p.likes)||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3)">❤️ Likes</div></div>
+            <div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--blue)">${(parseInt(p.comentarios)||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3)">💬 Comentarios</div></div>
+            <div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#7c3aed">${(parseInt(p.reproducciones)||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3)">▶️ Repros</div></div>
+            <div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--green)">${(parseInt(p.compartidos)||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3)">🔁 Compartidos</div></div>
+          </div>
+        </div>`;
+      }).join('');
+}
+
+function mobDescargarReporte() {
+  // Reusar la función del sistema desktop si está disponible
+  if (typeof generarReportePDF === 'function') {
+    // Sincronizar el estado del mes
+    if (typeof reporteMesActual !== 'undefined') {
+      reporteMesActual.year = mobMesActual.year;
+      reporteMesActual.month = mobMesActual.month;
+    }
+    if (typeof currentClienteId !== 'undefined') {
+      window._mobClienteIdBackup = window.currentClienteId;
+      window.currentClienteId = mobCurrentClienteId;
+    }
+    generarReportePDF();
+    if (window._mobClienteIdBackup !== undefined) window.currentClienteId = window._mobClienteIdBackup;
+  } else {
+    alert('El reporte se genera desde el sistema principal. Abrí la app desde la computadora para descargarlo.');
+  }
+}
+
+</script>
 
 </body>
 </html>
