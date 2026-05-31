@@ -9764,22 +9764,54 @@ function mobRenderTasksByName(filter) {
 // ── CLIENTES ──
 function mobLoadClientes() {
   const listEl = document.getElementById('mob-clientes-list');
-  // Usar datos del sistema desktop si están disponibles
-  const clientes = (typeof getAdminClientes === 'function' ? getAdminClientes() : []).filter(c => c.estado !== 'Inactivo');
-  if (!clientes.length) {
-    // Intentar desde localStorage
-    const saved = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
-    if (saved.length) {
-      renderMobClientes(saved.filter(c => c.estado !== 'Inactivo'));
-    } else {
-      listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Cargando clientes...</div>';
-      fetch(MOB_SO_URL + '?action=getClientes&t=' + Date.now())
-        .then(r => r.json()).then(data => renderMobClientes(data.filter(c => c.estado !== 'Inactivo')))
-        .catch(() => { listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No se pudieron cargar los clientes.</div>'; });
-    }
-  } else {
-    renderMobClientes(clientes);
+  listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Cargando clientes...</div>';
+
+  // 1. Mostrar desde localStorage inmediatamente si hay datos
+  const saved = localStorage.getItem('balodi_clientes_admin');
+  if (saved) {
+    const local = JSON.parse(saved).filter(c => c.estado !== 'Inactivo');
+    if (local.length) renderMobClientes(local);
   }
+
+  // 2. Traer frescos desde Sheets siempre
+  fetch(MOB_SO_URL + '?action=getClientes&t=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      if (Array.isArray(data) && data.length) {
+        // Guardar en localStorage para próxima vez
+        localStorage.setItem('balodi_clientes_admin', JSON.stringify(data));
+        const activos = data.filter(c => c.estado !== 'Inactivo' && c.estado !== 'eliminado');
+        if (activos.length) renderMobClientes(activos);
+        else listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No hay clientes activos.</div>';
+      } else if (!saved) {
+        // Sin datos locales ni remotos — mostrar defaults
+        renderMobClientes([
+          { id:'cl_balodi',    nombre:'Balodi',                       rubro:'Agencia de Marketing',  estado:'Activo' },
+          { id:'cl_tarjeta',   nombre:'Tarjeta Primicia',             rubro:'Finanzas',              estado:'Activo' },
+          { id:'cl_mutual',    nombre:'Mutual Entre Asociados',       rubro:'Mutuales',              estado:'Activo' },
+          { id:'cl_capilar',   nombre:'Capilar Vibes',                rubro:'Peluquería',            estado:'Activo' },
+          { id:'cl_hielo',     nombre:'Hielo Rosario',                rubro:'Distribución',          estado:'Activo' },
+          { id:'cl_donatelli', nombre:'Donatelli Servicios Integrales', rubro:'Servicios',           estado:'Activo' },
+          { id:'cl_mma',       nombre:'MMAPantera',                   rubro:'Deportes',              estado:'Activo' },
+          { id:'cl_murad',     nombre:'Murad',                        rubro:'',                      estado:'Activo' },
+        ]);
+      }
+    })
+    .catch(() => {
+      // Si falla Sheets, quedarse con lo local o los defaults
+      if (!saved) {
+        renderMobClientes([
+          { id:'cl_balodi',    nombre:'Balodi',                       rubro:'Agencia de Marketing',  estado:'Activo' },
+          { id:'cl_tarjeta',   nombre:'Tarjeta Primicia',             rubro:'Finanzas',              estado:'Activo' },
+          { id:'cl_mutual',    nombre:'Mutual Entre Asociados',       rubro:'Mutuales',              estado:'Activo' },
+          { id:'cl_capilar',   nombre:'Capilar Vibes',                rubro:'Peluquería',            estado:'Activo' },
+          { id:'cl_hielo',     nombre:'Hielo Rosario',                rubro:'Distribución',          estado:'Activo' },
+          { id:'cl_donatelli', nombre:'Donatelli Servicios Integrales', rubro:'Servicios',           estado:'Activo' },
+          { id:'cl_mma',       nombre:'MMAPantera',                   rubro:'Deportes',              estado:'Activo' },
+          { id:'cl_murad',     nombre:'Murad',                        rubro:'',                      estado:'Activo' },
+        ]);
+      }
+    });
 }
 
 function renderMobClientes(clientes) {
@@ -9802,7 +9834,7 @@ function renderMobClientes(clientes) {
 
 function mobGoCliente(clienteId) {
   mobCurrentClienteId = clienteId;
-  const clientes = typeof getAdminClientes === 'function' ? getAdminClientes() : JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
+  const clientes = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
   const c = clientes.find(x => x.id === clienteId);
   if (!c) return;
 
@@ -9810,8 +9842,17 @@ function mobGoCliente(clienteId) {
   document.getElementById('mob-cliente-nombre').textContent = c.nombre;
   document.getElementById('mob-page-title').textContent = c.nombre;
 
-  // Reset tabs
-  mobClienteTab('resumen', document.querySelector('.mob-tab'));
+  // Reset tabs — activar resumen
+  document.querySelectorAll('.mob-tab').forEach(b => {
+    b.style.color = 'var(--text3)';
+    b.style.borderBottomColor = 'transparent';
+    b.style.fontWeight = '600';
+  });
+  const firstTab = document.querySelector('.mob-tab');
+  if (firstTab) { firstTab.style.color = 'var(--orange)'; firstTab.style.borderBottomColor = 'var(--orange)'; firstTab.style.fontWeight = '700'; }
+  document.getElementById('mob-cliente-tab-resumen').style.display = 'block';
+  document.getElementById('mob-cliente-tab-reporte').style.display = 'none';
+
   mobGoScreen('cliente-detalle');
   mobRenderClienteResumen(clienteId);
 }
@@ -9831,7 +9872,7 @@ function mobClienteTab(tab, btn) {
 // ── RESUMEN CLIENTE ──
 function mobRenderClienteResumen(clienteId) {
   const container = document.getElementById('mob-cliente-resumen-content');
-  const clientes = typeof getAdminClientes === 'function' ? getAdminClientes() : JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
+  const clientes = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
   const c = clientes.find(x => x.id === clienteId);
 
   // Meta cache
