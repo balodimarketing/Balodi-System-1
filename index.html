@@ -9814,42 +9814,66 @@ function mobLoadClientes() {
     });
 }
 
+// Store en memoria para clientes mobile
+let mobClientesStore = [];
+
 function renderMobClientes(clientes) {
+  mobClientesStore = clientes; // guardar en memoria
   const listEl = document.getElementById('mob-clientes-list');
-  listEl.innerHTML = clientes.map(c => `
-    <div onclick="mobGoCliente('${c.id}')"
-      style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:all 0.15s"
-      onmousedown="this.style.background='var(--bg4)'" ontouchstart="this.style.background='var(--bg4)'"
-      onmouseup="this.style.background='var(--bg2)'" ontouchend="this.style.background='var(--bg2)'">
+  if (!clientes.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No hay clientes activos.</div>';
+    return;
+  }
+  listEl.innerHTML = '';
+  clientes.forEach(c => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-bottom:10px';
+    div.innerHTML = `
       <div>
         <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:3px">${c.nombre}</div>
         ${c.rubro ? `<div style="font-size:12px;color:var(--text3)">${c.rubro}</div>` : ''}
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         ${c.estado === 'Pausado' ? '<span style="background:var(--amber-light);color:var(--amber);border-radius:999px;font-size:10px;font-weight:700;padding:3px 8px">Pausado</span>' : ''}
-        <span style="color:var(--orange);font-size:18px;font-weight:300">›</span>
-      </div>
-    </div>`).join('');
+        <span style="color:var(--orange);font-size:20px">›</span>
+      </div>`;
+    div.addEventListener('touchstart', () => div.style.background = 'var(--bg4)');
+    div.addEventListener('touchend', () => { div.style.background = 'var(--bg2)'; mobGoCliente(c.id); });
+    div.addEventListener('click', () => mobGoCliente(c.id));
+    listEl.appendChild(div);
+  });
 }
 
 function mobGoCliente(clienteId) {
   mobCurrentClienteId = clienteId;
-  const clientes = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
-  const c = clientes.find(x => x.id === clienteId);
-  if (!c) return;
+
+  // Buscar primero en memoria, después en localStorage
+  let c = mobClientesStore.find(x => x.id === clienteId);
+  if (!c) {
+    const saved = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
+    c = saved.find(x => x.id === clienteId);
+  }
+  if (!c) {
+    // Si aún no lo encuentra, crear un objeto mínimo con el ID
+    c = { id: clienteId, nombre: clienteId, rubro: '' };
+  }
 
   document.getElementById('mob-cliente-eyebrow').textContent = c.rubro || 'Cliente';
   document.getElementById('mob-cliente-nombre').textContent = c.nombre;
   document.getElementById('mob-page-title').textContent = c.nombre;
 
-  // Reset tabs — activar resumen
+  // Reset tabs
   document.querySelectorAll('.mob-tab').forEach(b => {
     b.style.color = 'var(--text3)';
     b.style.borderBottomColor = 'transparent';
     b.style.fontWeight = '600';
   });
   const firstTab = document.querySelector('.mob-tab');
-  if (firstTab) { firstTab.style.color = 'var(--orange)'; firstTab.style.borderBottomColor = 'var(--orange)'; firstTab.style.fontWeight = '700'; }
+  if (firstTab) {
+    firstTab.style.color = 'var(--orange)';
+    firstTab.style.borderBottomColor = 'var(--orange)';
+    firstTab.style.fontWeight = '700';
+  }
   document.getElementById('mob-cliente-tab-resumen').style.display = 'block';
   document.getElementById('mob-cliente-tab-reporte').style.display = 'none';
 
@@ -9872,8 +9896,11 @@ function mobClienteTab(tab, btn) {
 // ── RESUMEN CLIENTE ──
 function mobRenderClienteResumen(clienteId) {
   const container = document.getElementById('mob-cliente-resumen-content');
-  const clientes = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
-  const c = clientes.find(x => x.id === clienteId);
+  let c = mobClientesStore.find(x => x.id === clienteId);
+  if (!c) {
+    const saved = JSON.parse(localStorage.getItem('balodi_clientes_admin') || '[]');
+    c = saved.find(x => x.id === clienteId) || { id: clienteId, nombre: clienteId, rubro: '' };
+  }
 
   // Meta cache
   const metaCache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + clienteId) || 'null');
