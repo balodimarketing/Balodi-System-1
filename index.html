@@ -9902,69 +9902,99 @@ function mobRenderClienteResumen(clienteId) {
     c = saved.find(x => x.id === clienteId) || { id: clienteId, nombre: clienteId, rubro: '' };
   }
 
-  // Meta cache
-  const metaCache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + clienteId) || 'null');
-  // Pauta manual
-  const pautas = JSON.parse(localStorage.getItem('balodi_pauta_' + clienteId) || '[]');
-  // Ideas
-  const ideas = JSON.parse(localStorage.getItem('balodi_ideas_cliente_' + clienteId) || '[]').slice(0,3);
+  container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Cargando datos...</div>';
 
-  const fmt = n => n >= 1000 ? (n/1000).toFixed(1)+'K' : (n||0).toLocaleString('es-AR');
+  const pautaPromise = fetch(`${MOB_SO_URL}?action=getPauta&clienteId=${encodeURIComponent(clienteId)}&t=${Date.now()}`).then(r => r.json()).catch(() => []);
+  const ideasPromise = fetch(`${MOB_SO_URL}?action=getIdeasCliente&clienteId=${encodeURIComponent(clienteId)}&t=${Date.now()}`).then(r => r.json()).catch(() => []);
 
-  container.innerHTML = `
-    <!-- Datos -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Datos del cliente</div>
-      ${c?.responsable ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Responsable</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.responsable}</span></div>` : ''}
-      ${c?.contacto ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Contacto</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.contacto}</span></div>` : ''}
-      ${c?.telefono ? `<div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:12px;color:var(--text3);font-weight:600">Teléfono</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.telefono}</span></div>` : ''}
-      ${!c?.responsable && !c?.contacto && !c?.telefono ? '<div style="font-size:13px;color:var(--text3);text-align:center;padding:8px">Sin datos de contacto</div>' : ''}
-    </div>
+  Promise.all([pautaPromise, ideasPromise]).then(([pautas, ideas]) => {
+    if (!Array.isArray(pautas)) pautas = [];
+    if (!Array.isArray(ideas)) ideas = [];
+    const metaCache = JSON.parse(localStorage.getItem('balodi_meta_cx_cache_' + clienteId) || 'null');
+    const fmt = n => (n >= 1000 ? (n/1000).toFixed(1)+'K' : (n||0).toLocaleString('es-AR'));
 
-    ${metaCache ? `
-    <!-- Meta KPIs -->
-    <div style="background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:14px;padding:18px;margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);margin-bottom:14px"><i class="ti ti-brand-meta"></i> Meta Ads — últimos 30 días</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--text)">$${Math.round(metaCache.gasto||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Gasto</div></div>
-        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--blue)">${fmt(metaCache.alcance)}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Alcance</div></div>
-        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--green)">${fmt(metaCache.clicks)}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Clicks</div></div>
-        <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:#7c3aed">${metaCache.conversaciones||'—'}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Conversaciones</div></div>
+    container.innerHTML = `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Datos del cliente</div>
+        ${c?.responsable ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Responsable</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.responsable}</span></div>` : ''}
+        ${c?.contacto ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text3);font-weight:600">Contacto</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.contacto}</span></div>` : ''}
+        ${c?.telefono ? `<div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:12px;color:var(--text3);font-weight:600">Teléfono</span><span style="font-size:13px;color:var(--text);font-weight:600">${c.telefono}</span></div>` : ''}
+        ${!c?.responsable && !c?.contacto && !c?.telefono ? '<div style="font-size:13px;color:var(--text3);text-align:center;padding:8px">Sin datos de contacto cargados</div>' : ''}
       </div>
-    </div>` : ''}
 
-    ${pautas.length ? `
-    <!-- Pauta manual -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Campañas</div>
-      ${pautas.slice(0,3).map(p => `
-        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
-          <div style="width:8px;height:8px;border-radius:50%;background:${p.estado==='activa'?'var(--green)':p.estado==='pausada'?'var(--amber)':'var(--text3)'};flex-shrink:0"></div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:13px;font-weight:700;color:var(--text)">${p.nombre}</div>
-            <div style="font-size:11px;color:var(--text3)">${p.plataforma} · ${p.objetivo}</div>
-          </div>
-          ${p.presupuesto ? `<div style="font-size:13px;font-weight:700;color:var(--text)">$${parseFloat(p.presupuesto).toLocaleString('es-AR')}</div>` : ''}
-        </div>`).join('')}
-    </div>` : ''}
+      ${metaCache ? `
+      <div style="background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:14px;padding:18px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);margin-bottom:14px"><i class="ti ti-brand-meta"></i> Meta Ads — últimos 30 días</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--text)">$${Math.round(metaCache.gasto||0).toLocaleString('es-AR')}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Gasto</div></div>
+          <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--blue)">${fmt(metaCache.alcance||0)}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Alcance</div></div>
+          <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--green)">${fmt(metaCache.clicks||0)}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Clicks</div></div>
+          <div style="background:var(--bg2);border-radius:10px;padding:12px;text-align:center"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:#7c3aed">${metaCache.conversaciones||'—'}</div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-top:3px">Conversaciones</div></div>
+        </div>
+      </div>` : ''}
 
-    ${ideas.length ? `
-    <!-- Ideas recientes -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Últimas ideas</div>
-      ${ideas.map(i => `
-        <div style="padding:10px 0;border-bottom:1px solid var(--border)">
-          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">${i.titulo}</div>
-          <div style="font-size:11px;color:var(--text3)">${i.formato} · ${i.estado}</div>
-        </div>`).join('')}
-    </div>` : ''}
-  `;
+      ${pautas.length ? `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Campañas</div>
+        ${pautas.slice(0,5).map(p => `
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <div style="width:8px;height:8px;border-radius:50%;background:${p.estado==='activa'?'var(--green)':p.estado==='pausada'?'var(--amber)':'var(--text3)'};flex-shrink:0"></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:700;color:var(--text)">${p.nombre||''}</div>
+              <div style="font-size:11px;color:var(--text3)">${p.plataforma||''} · ${p.objetivo||''}</div>
+            </div>
+            ${p.presupuesto ? `<div style="font-size:13px;font-weight:700;color:var(--text)">$${parseFloat(p.presupuesto).toLocaleString('es-AR')}</div>` : ''}
+          </div>`).join('')}
+      </div>` : ''}
+
+      ${ideas.length ? `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px">Últimas ideas</div>
+        ${ideas.slice(0,4).map(i => `
+          <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">${i.titulo||''}</div>
+            <div style="font-size:11px;color:var(--text3)">${i.formato||''} · ${i.estado||''}</div>
+          </div>`).join('')}
+      </div>` : ''}
+
+      ${!pautas.length && !ideas.length && !metaCache ? `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;text-align:center">
+        <div style="font-size:32px;margin-bottom:8px">📊</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">Sin datos cargados</div>
+        <div style="font-size:12px;color:var(--text3)">Cargá pauta e ideas desde la computadora</div>
+      </div>` : ''}
+    `;
+  });
 }
 
 // ── REPORTE MOBILE ──
 function mobInitReporte(clienteId) {
   document.getElementById('mob-mes-label').textContent = MOB_MESES[mobMesActual.month] + ' ' + mobMesActual.year;
   mobRenderReporte(clienteId);
+
+  // Traer publicaciones frescas desde Sheets
+  const { year, month } = mobMesActual;
+  fetch(`${MOB_SO_URL}?action=getPublicaciones&clienteId=${encodeURIComponent(clienteId)}&year=${year}&month=${month}&t=${Date.now()}`)
+    .then(r => r.json())
+    .then(data => {
+      if (Array.isArray(data) && data.length) {
+        // Guardar en localStorage para uso local
+        const key = `balodi_reporte_${clienteId}_${year}_${month}`;
+        localStorage.setItem(key, JSON.stringify(data));
+        mobRenderReporte(clienteId);
+      }
+    })
+    .catch(() => {});
+
+  // Traer drive link
+  fetch(`${MOB_SO_URL}?action=getDriveLink&clienteId=${encodeURIComponent(clienteId)}&year=${year}&month=${month}&t=${Date.now()}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.link) {
+        localStorage.setItem(`balodi_drive_${clienteId}_${year}_${month}`, data.link);
+      }
+    })
+    .catch(() => {});
 }
 
 function mobCambiarMes(delta) {
@@ -9972,7 +10002,7 @@ function mobCambiarMes(delta) {
   if (mobMesActual.month > 11) { mobMesActual.month = 0; mobMesActual.year++; }
   if (mobMesActual.month < 0) { mobMesActual.month = 11; mobMesActual.year--; }
   document.getElementById('mob-mes-label').textContent = MOB_MESES[mobMesActual.month] + ' ' + mobMesActual.year;
-  mobRenderReporte(mobCurrentClienteId);
+  mobInitReporte(mobCurrentClienteId);
 }
 
 function mobRenderReporte(clienteId) {
