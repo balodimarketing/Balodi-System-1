@@ -3719,6 +3719,7 @@
   const IDEAS_URL = "https://script.google.com/macros/s/AKfycbzM9XggTQifgrkKAteCU1Eef4QYtzLW5ChF7KnN-RXAujyzChFoKOisZsGjkKE6xSnm/exec";
   const CREATIVAS_URL = "https://script.google.com/macros/s/AKfycbzxwscKqu_szWb_2SLodmfvzhUB_mTSOsk4cWv8hIfn3uE4nXo3YGwut9Zr1WHL3Tu7/exec";
   const SO_URL = "https://script.google.com/macros/s/AKfycbwd_BluDlvBO7Diy1tjxImdz8vl_mSgVPkRCdpC7FaTGrwJtRNg1OdWDB3sj3oufM12vA/exec";
+  const CRM_FACUNDO_URL = "https://script.google.com/macros/s/AKfycby2KveH7LFxlbd4Hkg8JvzUMgM99d7w-PFXOLj3Add_OtVrlPufbFWsghB2C-9ZMVMJYQ/exec";
   const COMMENTS_URL = "https://script.google.com/macros/s/AKfycby-rqh_W3pA5WV9ReACRyeforaUkGTn73KtkAynO2GOtsJJM-XQgpkK9SAFuKjmHpsJ/exec";
   const SEGUIMIENTO_URL = "https://script.google.com/macros/s/AKfycbyvy0OSK-8dxf3iWZzz2IX5bBI1o90ki1vE2hzgh-HsR--14d1oJxyCcbBySj4H8Mg/exec";
   const FINANZAS_URL = "https://script.google.com/macros/s/AKfycbzLydN6tfUoVBhtxIGibzsfvZ1JxYx5FuMhelzOo3B64zK1NCHs-m9SKDHjvbtjtOAe/exec";
@@ -9568,12 +9569,16 @@
       else vCRMData = [];
     } catch(e) { vCRMData = []; }
 
-    // Intentar traer desde Sheets
     try {
-      const res = await fetch(`${SO_URL}?action=getVCRM&vendedor=${encodeURIComponent(currentUser?.username)}&t=${Date.now()}`);
+      const vendedor = currentUser?.username || '';
+      const res = await fetch(`${CRM_FACUNDO_URL}?action=getProspectos&vendedor=${encodeURIComponent(vendedor)}&t=${Date.now()}`);
       const data = await res.json();
       if (Array.isArray(data) && data.length) {
-        vCRMData = data;
+        // Parsear historial que viene como string JSON desde Sheets
+        vCRMData = data.map(p => ({
+          ...p,
+          historial: typeof p.historial === 'string' ? JSON.parse(p.historial || '[]') : (p.historial || [])
+        }));
         localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
       }
     } catch(e) {}
@@ -9584,12 +9589,20 @@
 
   function saveVCRMData() {
     localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
-    // Sync a Sheets
-    fetch(SO_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'saveVCRM', vendedor: currentUser?.username, data: vCRMData })
-    }).catch(() => {});
+    const payload = JSON.stringify({ action: 'saveProspectos', vendedor: currentUser?.username, data: vCRMData });
+    fetch(CRM_FACUNDO_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: payload
+    }).catch(() => {
+      setTimeout(() => {
+        fetch(CRM_FACUNDO_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: payload
+        }).catch(() => {});
+      }, 3000);
+    });
   }
 
   function renderVCRM() {
