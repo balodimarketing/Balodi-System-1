@@ -1178,6 +1178,9 @@
       <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><i class="ti ti-chart-line nav-icon" aria-hidden="true"></i> Finanzas</div>
       <div class="nav-item nav-admin-only" id="nav-seguimiento" onclick="go('seguimiento')"><i class="ti ti-user-check nav-icon" aria-hidden="true"></i> Seguimiento empleados</div>
       <div class="nav-item nav-admin-only" id="nav-admin" onclick="go('admin')" style="position:relative"><i class="ti ti-settings nav-icon" aria-hidden="true"></i> Administración</div>
+
+      <div class="nav-label nav-vendedor-only" id="label-vendedores">Ventas</div>
+      <div class="nav-item nav-vendedor-only" id="nav-crm-vendedores" onclick="go('crm-vendedores')" style="position:relative"><i class="ti ti-target nav-icon" aria-hidden="true"></i> CRM Vendedores <span class="notif-dot hidden" id="notif-crm-vendedores">0</span></div>
       <div class="nav-label nav-videos-only" style="display:none">Producción</div>
       <div class="nav-item nav-videos-only" id="nav-videos" onclick="go('videos')" style="position:relative;display:none"><i class="ti ti-video nav-icon" aria-hidden="true"></i> Videos <span class="notif-dot hidden" id="notif-videos">0</span></div>
       <div class="nav-label">Operaciones</div>
@@ -3125,6 +3128,53 @@
       </div>
     </div>
 
+  <!-- CRM VENDEDORES -->
+    <div class="panel" id="panel-crm-vendedores">
+      <div class="page-header">
+        <div class="page-eyebrow" style="color:var(--blue)"><i class="ti ti-target"></i> Ventas</div>
+        <div class="page-title">CRM — Pipeline de ventas</div>
+        <div class="page-desc">Tu pipeline personal. Solo vos ves tus prospectos.</div>
+      </div>
+      <div class="page-content">
+        <div id="v-crm-alertas-box" style="margin-bottom:20px;display:none">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px"><i class="ti ti-alert-triangle" style="color:var(--amber)"></i> Requieren atención hoy</div>
+          <div id="v-crm-alertas-lista"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px">
+          <div class="stat-card"><div class="stat-icon" style="background:#eff6ff"><i class="ti ti-clipboard-list"></i></div><div class="stat-number" id="v-crm-k-total">0</div><div class="stat-label">Total prospectos</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fff4ee">🔥</div><div class="stat-number" id="v-crm-k-calientes">0</div><div class="stat-label">Calientes</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fffbeb">🟡</div><div class="stat-number" id="v-crm-k-tibios">0</div><div class="stat-label">Tibios</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4"><i class="ti ti-circle-check" style="color:var(--green)"></i></div><div class="stat-number" id="v-crm-k-cerrados">0</div><div class="stat-label">Cerrados este mes</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fef2f2"><i class="ti ti-coin"></i></div><div class="stat-number" id="v-crm-k-valor">$0</div><div class="stat-label">Valor del pipeline</div></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <div class="est-tabs" style="margin:0">
+            <button class="est-tab active" onclick="switchVCRMTab('pipeline',this)"><i class="ti ti-chart-bar"></i> Pipeline</button>
+            <button class="est-tab" onclick="switchVCRMTab('lista',this)"><i class="ti ti-clipboard-list"></i> Lista completa</button>
+            <button class="est-tab" onclick="switchVCRMTab('historial',this)"><i class="ti ti-pencil"></i> Historial</button>
+          </div>
+          <button class="btn-new-task" onclick="openVCRMModal()">+ Nuevo prospecto</button>
+        </div>
+        <div class="est-section active" id="v-crm-tab-pipeline">
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));gap:10px;overflow-x:auto;padding-bottom:8px" id="v-crm-kanban"></div>
+        </div>
+        <div class="est-section" id="v-crm-tab-lista">
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <input id="v-crm-search" type="text" placeholder="Buscar prospecto..." oninput="renderVCRMLista()" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+            <select id="v-crm-filter-etapa" onchange="renderVCRMLista()" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+              <option value="">Todas las etapas</option>
+              <option>Contactado</option><option>Reunión agendada</option><option>Propuesta enviada</option>
+              <option>Negociación</option><option>Cerrado</option><option>Perdido</option>
+            </select>
+          </div>
+          <div id="v-crm-lista-container"></div>
+        </div>
+        <div class="est-section" id="v-crm-tab-historial">
+          <div id="v-crm-historial-container"></div>
+        </div>
+      </div>
+    </div>
+
   <!-- ADMINISTRACIÓN -->
     <div class="panel" id="panel-admin">
       <div class="page-header">
@@ -3442,6 +3492,52 @@
   </div>
 </div>
 
+<!-- MODAL CRM VENDEDORES -->
+<div class="modal-overlay" id="v-crm-modal" style="z-index:350">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-icon"><i class="ti ti-target"></i></div>
+    <div class="modal-title" id="v-crm-modal-title">Nuevo prospecto</div>
+    <div style="text-align:left;margin-bottom:16px">
+      <input type="hidden" id="v-crm-edit-id">
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Nombre / Empresa *</label>
+        <input class="modal-input" id="v-crm-nombre" type="text" placeholder="Ej: Empresa XYZ" style="margin-bottom:0">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Etapa</label>
+          <select class="modal-input" id="v-crm-etapa" style="margin-bottom:0;cursor:pointer">
+            <option>Contactado</option><option>Reunión agendada</option><option>Propuesta enviada</option>
+            <option>Negociación</option><option>Cerrado</option><option>Perdido</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Valor estimado ($)</label>
+          <input class="modal-input" id="v-crm-valor" type="number" placeholder="0" style="margin-bottom:0">
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Contacto</label>
+        <input class="modal-input" id="v-crm-contacto" type="text" placeholder="Nombre del responsable" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Teléfono / WhatsApp</label>
+        <input class="modal-input" id="v-crm-telefono" type="text" placeholder="+54 341..." style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Seguimiento (fecha)</label>
+        <input class="modal-input" id="v-crm-seguimiento" type="date" style="margin-bottom:0">
+      </div>
+      <div style="margin-bottom:4px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Notas</label>
+        <textarea class="modal-input" id="v-crm-notas" placeholder="Detalles, contexto, próximos pasos..." style="margin-bottom:0;resize:vertical;min-height:70px"></textarea>
+      </div>
+    </div>
+    <button class="modal-btn" onclick="saveVCRM()">Guardar prospecto</button>
+    <button class="modal-cancel" onclick="closeVCRMModal()">Cancelar</button>
+  </div>
+</div>
+
 <!-- PASSWORD MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
@@ -3478,6 +3574,7 @@
     'lourdes':   { pass: 'lourdes28',   name: 'Lourdes',   role: 'CM',         avatar: 'LO', color: '#16a34a' },
     'enzo':      { pass: 'enzo28',      name: 'Enzo',      role: 'Editor',     avatar: 'EN', color: '#d97706' },
     'brunela':   { pass: 'brunela28',   name: 'Brunela',   role: 'Proyectos',  avatar: 'BR', color: '#dc2626' },
+    'facundo':   { pass: 'facundo28',   name: 'Facundo',   role: 'Vendedor',   avatar: 'FA', color: '#0891b2', type: 'vendedor' },
   };
 
   let currentUser = null;
@@ -3593,17 +3690,26 @@
     const tb = document.getElementById('topbar-bar');
     if (tb) tb.style.display = 'flex';
 
-    // Mostrar secciones admin solo a bautista y nicolas
     const isAdmin = ['bautista', 'nicolas'].includes(currentUser.username);
+    const isVendedor = currentUser.type === 'vendedor';
+    const canSeeVideos = ['bautista', 'nicolas', 'enzo'].includes(currentUser.username);
+
+    // Admin sections
     document.querySelectorAll('.nav-admin-only').forEach(el => {
       el.style.display = isAdmin ? '' : 'none';
     });
-    // Mostrar sección videos a bautista, nicolas y enzo
-    const canSeeVideos = ['bautista', 'nicolas', 'enzo'].includes(currentUser.username);
+
+    // Videos section
     document.querySelectorAll('.nav-videos-only').forEach(el => {
       el.style.display = canSeeVideos ? '' : 'none';
     });
-    // Enzo solo ve Videos y Tareas en el menú
+
+    // Vendor section
+    document.querySelectorAll('.nav-vendedor-only').forEach(el => {
+      el.style.display = isVendedor ? '' : 'none';
+    });
+
+    // Enzo: solo Videos y Tareas
     if (currentUser.username === 'enzo') {
       document.querySelectorAll('.nav-item:not(#nav-videos):not(#nav-tareas):not(#nav-dashboard)').forEach(el => {
         if (!el.classList.contains('nav-videos-only')) el.style.display = 'none';
@@ -3611,6 +3717,21 @@
       document.querySelectorAll('.nav-label:not(.nav-videos-only)').forEach(el => {
         if (el.id !== 'label-privado') el.style.display = 'none';
       });
+    }
+
+    // Vendedor: solo Tareas, Ideas y CRM Vendedores
+    if (isVendedor) {
+      // Ocultar todo
+      document.querySelectorAll('.nav-item, .nav-label').forEach(el => {
+        el.style.display = 'none';
+      });
+      // Mostrar solo lo permitido
+      ['nav-dashboard','nav-tareas','nav-banco','nav-crm-vendedores'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = '';
+      });
+      document.getElementById('label-operaciones') && (document.getElementById('label-operaciones').style.display = '');
+      document.getElementById('label-vendedores') && (document.getElementById('label-vendedores').style.display = '');
     }
   }
 
@@ -3652,6 +3773,7 @@
       'c-mutual': 'Mutual Entre Asociados', 'c-capilar': 'Capilar Vibes',
       'c-hielo': 'Hielo Rosario', 'c-donatelli': 'Donatelli',
       'c-mma': 'MMAPantera', 'c-murad': 'Murad',
+      'crm-vendedores': 'CRM Vendedores',
       admin: 'Administración',
       clientes: 'Clientes',
       'cliente-detalle': 'Cliente'
@@ -3672,6 +3794,7 @@
     if (id === 'videos') initVideos();
     if (id === 'c-balodi') { loadMetaAds(); loadBalodiIdeas(); loadBalodiObjs(); }
     if (id === 'admin') { checkAdminAccess(); renderAdminPanel(); }
+    if (id === 'crm-vendedores') initVCRM();
     if (id === 'clientes') renderClientesPanel();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
@@ -9190,10 +9313,253 @@
       if (container) container.innerHTML = `<div class="alert alert-warning"><div class="alert-icon"><i class="ti ti-alert-triangle"></i></div><div>No se pudo conectar con Meta. Verificá el token y el ID de cuenta.</div></div>`;
     }
   }
+  // ============ CRM VENDEDORES ============
+
+  let vCRMData = [];
+  let vCRMTabActual = 'pipeline';
+
+  // Clave por usuario — cada vendedor tiene sus propios datos
+  function getVCRMKey() {
+    return 'crm_vendedores_' + (currentUser?.username || 'guest');
+  }
+
+  function getVCRMSheetsKey() {
+    return 'crm_vendedores_' + (currentUser?.username || 'guest');
+  }
+
+  function initVCRM() {
+    loadVCRMData();
+  }
+
+  async function loadVCRMData() {
+    try {
+      const saved = localStorage.getItem(getVCRMKey());
+      if (saved) vCRMData = JSON.parse(saved);
+      else vCRMData = [];
+    } catch(e) { vCRMData = []; }
+
+    // Intentar traer desde Sheets
+    try {
+      const res = await fetch(`${SO_URL}?action=getVCRM&vendedor=${encodeURIComponent(currentUser?.username)}&t=${Date.now()}`);
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        vCRMData = data;
+        localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
+      }
+    } catch(e) {}
+
+    renderVCRM();
+    checkVCRMAlertas();
+  }
+
+  function saveVCRMData() {
+    localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
+    // Sync a Sheets
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveVCRM', vendedor: currentUser?.username, data: vCRMData })
+    }).catch(() => {});
+  }
+
+  function renderVCRM() {
+    renderVCRMKPIs();
+    if (vCRMTabActual === 'pipeline') renderVCRMKanban();
+    else if (vCRMTabActual === 'lista') renderVCRMLista();
+    else renderVCRMHistorial();
+  }
+
+  function renderVCRMKPIs() {
+    const activos = vCRMData.filter(p => !['Cerrado','Perdido'].includes(p.etapa));
+    const calientes = activos.filter(p => getVTemperatura(p) === '🔥').length;
+    const tibios = activos.filter(p => getVTemperatura(p) === '🟡').length;
+    const ahora = new Date();
+    const cerradosMes = vCRMData.filter(p => p.etapa === 'Cerrado' && p.fecha_cierre &&
+      new Date(p.fecha_cierre).getMonth() === ahora.getMonth() &&
+      new Date(p.fecha_cierre).getFullYear() === ahora.getFullYear()).length;
+    const valorPipeline = activos.reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
+    document.getElementById('v-crm-k-total').textContent = vCRMData.length;
+    document.getElementById('v-crm-k-calientes').textContent = calientes;
+    document.getElementById('v-crm-k-tibios').textContent = tibios;
+    document.getElementById('v-crm-k-cerrados').textContent = cerradosMes;
+    document.getElementById('v-crm-k-valor').textContent = '$' + Math.round(valorPipeline).toLocaleString('es-AR');
+  }
+
+  function getVTemperatura(p) {
+    const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
+    if (['Cerrado','Perdido'].includes(p.etapa)) return '✅';
+    if (dias >= 14) return '❄️';
+    if (dias >= 7) return '🟡';
+    return '🔥';
+  }
+
+  function switchVCRMTab(tab, btn) {
+    vCRMTabActual = tab;
+    document.querySelectorAll('#panel-crm-vendedores .est-tab').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('#panel-crm-vendedores .est-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('v-crm-tab-' + tab)?.classList.add('active');
+    renderVCRM();
+  }
+
+  function renderVCRMKanban() {
+    const etapas = ['Contactado','Reunión agendada','Propuesta enviada','Negociación','Cerrado','Perdido','Sin respuesta'];
+    const etapaColors = {
+      'Contactado': 'var(--blue)', 'Reunión agendada': 'var(--orange)', 'Propuesta enviada': '#7c3aed',
+      'Negociación': 'var(--amber)', 'Cerrado': 'var(--green)', 'Perdido': 'var(--red)', 'Sin respuesta': 'var(--text3)'
+    };
+    const kanban = document.getElementById('v-crm-kanban');
+    kanban.innerHTML = etapas.map(etapa => {
+      const prospectos = vCRMData.filter(p => p.etapa === etapa);
+      return `
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;min-height:120px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${etapaColors[etapa]||'var(--text3)'}">${etapa}</div>
+            <span style="background:${etapaColors[etapa]||'var(--text3)'}22;color:${etapaColors[etapa]||'var(--text3)'};border-radius:999px;font-size:11px;font-weight:700;padding:2px 8px">${prospectos.length}</span>
+          </div>
+          ${prospectos.map(p => `
+            <div onclick="abrirVCRMDetalle('${p.id}')" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s"
+              onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
+              onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">${p.nombre}</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:18px">${getVTemperatura(p)}</span>
+                ${p.valor ? `<span style="font-size:11px;font-weight:700;color:var(--green)">$${parseFloat(p.valor).toLocaleString('es-AR')}</span>` : ''}
+              </div>
+              ${p.seguimiento_fecha ? `<div style="font-size:10px;color:var(--orange);margin-top:4px;font-weight:600">📅 Seguimiento: ${p.seguimiento_fecha}</div>` : ''}
+            </div>`).join('')}
+          ${prospectos.length === 0 ? `<div style="text-align:center;padding:16px 0;font-size:12px;color:var(--text3)">Vacío</div>` : ''}
+        </div>`;
+    }).join('');
+  }
+
+  function renderVCRMLista() {
+    const search = document.getElementById('v-crm-search')?.value?.toLowerCase() || '';
+    const etapaF = document.getElementById('v-crm-filter-etapa')?.value || '';
+    let lista = vCRMData.filter(p => {
+      if (etapaF && p.etapa !== etapaF) return false;
+      if (search && !p.nombre.toLowerCase().includes(search)) return false;
+      return true;
+    });
+    const container = document.getElementById('v-crm-lista-container');
+    if (!lista.length) { container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-users"></i></div><div class="placeholder-title">Sin prospectos</div><div class="placeholder-desc">Cargá tu primer prospecto con el botón de arriba.</div></div>'; return; }
+    container.innerHTML = lista.map(p => `
+      <div onclick="abrirVCRMDetalle('${p.id}')" style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px"
+        onmouseover="this.style.borderColor='var(--orange-border)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:22px">${getVTemperatura(p)}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:700;color:var(--text)">${p.nombre}</div>
+          <div style="font-size:12px;color:var(--text3)">${p.etapa}${p.contacto?' · '+p.contacto:''}${p.telefono?' · '+p.telefono:''}</div>
+        </div>
+        ${p.valor ? `<div style="font-size:14px;font-weight:700;color:var(--green)">$${parseFloat(p.valor).toLocaleString('es-AR')}</div>` : ''}
+        <button onclick="event.stopPropagation();openVCRMModal('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px"><i class="ti ti-pencil"></i></button>
+        <button onclick="event.stopPropagation();deleteVCRM('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px"><i class="ti ti-trash"></i></button>
+      </div>`).join('');
+  }
+
+  function renderVCRMHistorial() {
+    const container = document.getElementById('v-crm-historial-container');
+    const historial = vCRMData.flatMap(p => (p.historial||[]).map(h => ({ ...h, prospecto: p.nombre, prospectoId: p.id })))
+      .sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).slice(0,30);
+    if (!historial.length) { container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clock"></i></div><div class="placeholder-title">Sin historial</div></div>'; return; }
+    container.innerHTML = historial.map(h => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">${h.prospecto}</div>
+            <div style="font-size:12px;color:var(--text2)">${h.nota}</div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);white-space:nowrap">${h.fecha}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  function checkVCRMAlertas() {
+    const alertas = [];
+    vCRMData.forEach(p => {
+      if (['Cerrado','Perdido'].includes(p.etapa)) return;
+      const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
+      if (dias >= 14) alertas.push({ msg: `<strong>${p.nombre}</strong> — Sin contacto hace ${dias} días`, id: p.id });
+      if (p.seguimiento_fecha && getDiasDesde(p.seguimiento_fecha) >= 0) alertas.push({ msg: `<strong>${p.nombre}</strong> — Seguimiento programado para hoy`, id: p.id });
+    });
+    const box = document.getElementById('v-crm-alertas-box');
+    const lista = document.getElementById('v-crm-alertas-lista');
+    const notif = document.getElementById('notif-crm-vendedores');
+    if (alertas.length) {
+      box.style.display = 'block';
+      lista.innerHTML = alertas.map(a => `<div onclick="abrirVCRMDetalle('${a.id}')" style="background:#fffbeb;border-left:3px solid var(--amber);border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--text)">${a.msg}</div>`).join('');
+      if (notif) { notif.textContent = alertas.length; notif.classList.remove('hidden'); }
+    } else {
+      box.style.display = 'none';
+      if (notif) notif.classList.add('hidden');
+    }
+  }
+
+  function abrirVCRMDetalle(id) {
+    openVCRMModal(id);
+  }
+
+  function openVCRMModal(editId) {
+    const p = editId ? vCRMData.find(x => x.id === editId) : null;
+    document.getElementById('v-crm-modal-title').textContent = p ? 'Editar prospecto' : 'Nuevo prospecto';
+    document.getElementById('v-crm-edit-id').value = editId || '';
+    document.getElementById('v-crm-nombre').value = p?.nombre || '';
+    document.getElementById('v-crm-etapa').value = p?.etapa || 'Contactado';
+    document.getElementById('v-crm-valor').value = p?.valor || '';
+    document.getElementById('v-crm-contacto').value = p?.contacto || '';
+    document.getElementById('v-crm-telefono').value = p?.telefono || '';
+    document.getElementById('v-crm-seguimiento').value = p?.seguimiento_fecha || '';
+    document.getElementById('v-crm-notas').value = p?.notas || '';
+    document.getElementById('v-crm-modal').classList.add('open');
+    setTimeout(() => document.getElementById('v-crm-nombre').focus(), 100);
+  }
+
+  function closeVCRMModal() {
+    document.getElementById('v-crm-modal').classList.remove('open');
+  }
+
+  function saveVCRM() {
+    const nombre = document.getElementById('v-crm-nombre').value.trim();
+    if (!nombre) { alert('El nombre es obligatorio.'); return; }
+    const editId = document.getElementById('v-crm-edit-id').value;
+    const existing = editId ? vCRMData.find(x => x.id === editId) : null;
+    const entry = {
+      id: editId || 'vcrm_' + Date.now(),
+      nombre,
+      etapa: document.getElementById('v-crm-etapa').value,
+      valor: document.getElementById('v-crm-valor').value,
+      contacto: document.getElementById('v-crm-contacto').value,
+      telefono: document.getElementById('v-crm-telefono').value,
+      seguimiento_fecha: document.getElementById('v-crm-seguimiento').value,
+      notas: document.getElementById('v-crm-notas').value,
+      fecha_creacion: existing?.fecha_creacion || new Date().toISOString().split('T')[0],
+      ultimo_contacto: new Date().toISOString().split('T')[0],
+      vendedor: currentUser?.username,
+      historial: existing?.historial || []
+    };
+    if (document.getElementById('v-crm-notas').value && (!existing || existing.notas !== entry.notas)) {
+      entry.historial.unshift({ fecha: new Date().toLocaleDateString('es-AR'), nota: document.getElementById('v-crm-notas').value });
+    }
+    if (editId) {
+      const idx = vCRMData.findIndex(x => x.id === editId);
+      if (idx !== -1) vCRMData[idx] = entry; else vCRMData.push(entry);
+    } else {
+      vCRMData.unshift(entry);
+    }
+    saveVCRMData();
+    closeVCRMModal();
+    renderVCRM();
+    checkVCRMAlertas();
+  }
+
+  function deleteVCRM(id) {
+    if (!confirm('¿Eliminar este prospecto?')) return;
+    vCRMData = vCRMData.filter(x => x.id !== id);
+    saveVCRMData();
+    renderVCRM();
+  }
 
 </script>
-
-<!-- CAMPAIGN DETAIL MODAL -->
 <div id="camp-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)" onclick="closeCampModal()">
   <div style="background:var(--bg2);border-radius:20px;width:100%;max-width:680px;margin:20px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:fadeUp 0.2s ease" onclick="event.stopPropagation()">
     <div style="padding:24px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
