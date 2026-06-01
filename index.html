@@ -3294,16 +3294,17 @@
           <div style="display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));gap:10px;overflow-x:auto;padding-bottom:8px" id="v-crm-kanban"></div>
         </div>
         <div class="est-section" id="v-crm-tab-lista">
-          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-            <input id="v-crm-search" type="text" placeholder="Buscar por nombre..." oninput="listaFiltrar()" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
-            <select id="v-crm-filter-etapa" onchange="listaFiltrar()" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <input id="v-crm-search" type="text" placeholder="Buscar prospecto..." oninput="renderVCRMLista(true)" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+            <select id="v-crm-filter-etapa" onchange="renderVCRMLista(true)" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
               <option value="">Todas las etapas</option>
               <option>Contactado</option><option>Reunión agendada</option><option>Propuesta enviada</option>
               <option>Negociación</option><option>Cerrado</option><option>Perdido</option>
             </select>
           </div>
-          <div id="lista-prospectos-wrap"></div>
-          <div id="lista-prospectos-pag" style="margin-top:12px"></div>
+          <div id="v-crm-lista-info" style="font-size:12px;color:var(--text3);margin-bottom:12px"></div>
+          <div id="v-crm-lista-container" style="max-height:55vh;overflow-y:auto;padding-right:4px"></div>
+          <div id="v-crm-lista-paginacion" style="margin-top:12px"></div>
         </div>
         <div class="est-section" id="v-crm-tab-historial">
           <div id="v-crm-historial-info" style="font-size:12px;color:var(--text3);margin-bottom:12px"></div>
@@ -3718,7 +3719,6 @@
   const IDEAS_URL = "https://script.google.com/macros/s/AKfycbzM9XggTQifgrkKAteCU1Eef4QYtzLW5ChF7KnN-RXAujyzChFoKOisZsGjkKE6xSnm/exec";
   const CREATIVAS_URL = "https://script.google.com/macros/s/AKfycbzxwscKqu_szWb_2SLodmfvzhUB_mTSOsk4cWv8hIfn3uE4nXo3YGwut9Zr1WHL3Tu7/exec";
   const SO_URL = "https://script.google.com/macros/s/AKfycbwd_BluDlvBO7Diy1tjxImdz8vl_mSgVPkRCdpC7FaTGrwJtRNg1OdWDB3sj3oufM12vA/exec";
-  const CRM_FACUNDO_URL = "https://script.google.com/macros/s/AKfycby2KveH7LFxlbd4Hkg8JvzUMgM99d7w-PFXOLj3Add_OtVrlPufbFWsghB2C-9ZMVMJYQ/exec";
   const COMMENTS_URL = "https://script.google.com/macros/s/AKfycby-rqh_W3pA5WV9ReACRyeforaUkGTn73KtkAynO2GOtsJJM-XQgpkK9SAFuKjmHpsJ/exec";
   const SEGUIMIENTO_URL = "https://script.google.com/macros/s/AKfycbyvy0OSK-8dxf3iWZzz2IX5bBI1o90ki1vE2hzgh-HsR--14d1oJxyCcbBySj4H8Mg/exec";
   const FINANZAS_URL = "https://script.google.com/macros/s/AKfycbzLydN6tfUoVBhtxIGibzsfvZ1JxYx5FuMhelzOo3B64zK1NCHs-m9SKDHjvbtjtOAe/exec";
@@ -9534,7 +9534,7 @@
     if (vCRMMesActual.month > 11) { vCRMMesActual.month = 0; vCRMMesActual.year++; }
     if (vCRMMesActual.month < 0) { vCRMMesActual.month = 11; vCRMMesActual.year--; }
     vCRMPaginas = {}; // reset paginación kanban al cambiar de mes
-    _listaPag = 0; // reset paginación lista
+    vCRMListaPagina = 0; // reset paginación lista
     vCRMHistorialPagina = 0; // reset paginación historial
     const el = document.getElementById('v-crm-mes-label');
     if (el) el.textContent = VCRM_MESES[vCRMMesActual.month] + ' ' + vCRMMesActual.year;
@@ -9568,34 +9568,15 @@
       else vCRMData = [];
     } catch(e) { vCRMData = []; }
 
+    // Intentar traer desde Sheets
     try {
-      const vendedor = currentUser?.username || '';
-      const res = await fetch(`${CRM_FACUNDO_URL}?action=getProspectos&vendedor=${encodeURIComponent(vendedor)}&t=${Date.now()}`);
+      const res = await fetch(`${SO_URL}?action=getVCRM&vendedor=${encodeURIComponent(currentUser?.username)}&t=${Date.now()}`);
       const data = await res.json();
       if (Array.isArray(data) && data.length) {
-        // Parsear historial y normalizar campos que pueden venir vacíos de Sheets
-        vCRMData = data.map(p => ({
-          id: p.id || 'vcrm_' + Date.now() + Math.random(),
-          nombre: p.nombre || '',
-          telefono: p.telefono || '',
-          mail: p.mail || '',
-          ubicacion: p.ubicacion || '',
-          rubro: p.rubro || '',
-          web: p.web || '',
-          instagram: p.instagram || '',
-          etapa: p.etapa || 'Contactado',
-          seguimiento_fecha: p.seguimiento_fecha || '',
-          notas: p.notas || '',
-          fecha_creacion: p.fecha_creacion || '',
-          ultimo_contacto: p.ultimo_contacto || '',
-          vendedor: p.vendedor || vendedor,
-          historial: typeof p.historial === 'string'
-            ? (() => { try { return JSON.parse(p.historial || '[]'); } catch(e) { return []; } })()
-            : (Array.isArray(p.historial) ? p.historial : [])
-        })).filter(p => p.nombre); // ignorar filas vacías
+        vCRMData = data;
         localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
       }
-    } catch(e) { console.error('Error cargando CRM:', e); }
+    } catch(e) {}
 
     renderVCRM();
     checkVCRMAlertas();
@@ -9603,20 +9584,12 @@
 
   function saveVCRMData() {
     localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
-    const payload = JSON.stringify({ action: 'saveProspectos', vendedor: currentUser?.username, data: vCRMData });
-    fetch(CRM_FACUNDO_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: payload
-    }).catch(() => {
-      setTimeout(() => {
-        fetch(CRM_FACUNDO_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: payload
-        }).catch(() => {});
-      }, 3000);
-    });
+    // Sync a Sheets
+    fetch(SO_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'saveVCRM', vendedor: currentUser?.username, data: vCRMData })
+    }).catch(() => {});
   }
 
   function renderVCRM() {
@@ -9655,10 +9628,7 @@
     if (btn) btn.classList.add('active');
     document.querySelectorAll('#panel-crm-vendedores .est-section').forEach(s => s.classList.remove('active'));
     document.getElementById('v-crm-tab-' + tab)?.classList.add('active');
-    // Mostrar datos locales inmediatamente
     renderVCRM();
-    // Traer frescos de Sheets y re-renderizar cuando lleguen
-    loadVCRMData();
   }
 
   const VCRM_POR_PAGINA = 5;
@@ -9723,86 +9693,73 @@
     renderVCRMKanban();
   }
 
-  // ── LISTA COMPLETA (reescrita) ──
-  let _listaPag = 0;
-  const _listaPorPag = 5;
-  let _listaFiltrada = [];
+  let vCRMListaPagina = 0;
+  const VCRM_LISTA_POR_PAGINA = 5;
 
-  function listaFiltrar() {
-    _listaPag = 0;
-    renderVCRMLista();
-  }
-
-  function renderVCRMLista() {
-    const wrap = document.getElementById('lista-prospectos-wrap');
-    const pagDiv = document.getElementById('lista-prospectos-pag');
-    if (!wrap) return;
-
-    const search = (document.getElementById('v-crm-search')?.value || '').toLowerCase().trim();
+  function renderVCRMLista(resetPagina = false) {
+    const search = document.getElementById('v-crm-search')?.value?.toLowerCase() || '';
     const etapaF = document.getElementById('v-crm-filter-etapa')?.value || '';
-
-    _listaFiltrada = vCRMGetDataDelMes().filter(p => {
+    if (resetPagina) vCRMListaPagina = 0;
+    const lista = vCRMGetDataDelMes().filter(p => {
       if (etapaF && p.etapa !== etapaF) return false;
-      if (search && !(p.nombre || '').toLowerCase().includes(search)) return false;
+      if (search && !p.nombre.toLowerCase().includes(search)) return false;
       return true;
     });
-
-    if (!_listaFiltrada.length) {
-      wrap.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">
-        <div style="font-size:32px;margin-bottom:8px">🔍</div>
-        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">Sin prospectos</div>
-        <div style="font-size:12px">Creá uno con el botón "+ Nuevo prospecto"</div>
-      </div>`;
-      if (pagDiv) pagDiv.innerHTML = '';
+    const container = document.getElementById('v-crm-lista-container');
+    if (!lista.length) {
+      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-users"></i></div><div class="placeholder-title">Sin prospectos</div><div class="placeholder-desc">Cargá tu primer prospecto con el botón de arriba.</div></div>';
       return;
     }
 
-    const total = _listaFiltrada.length;
-    const totalPags = Math.ceil(total / _listaPorPag);
-    if (_listaPag >= totalPags) _listaPag = totalPags - 1;
-    const desde = _listaPag * _listaPorPag;
-    const items = _listaFiltrada.slice(desde, desde + _listaPorPag);
+    const totalPags = Math.ceil(lista.length / VCRM_LISTA_POR_PAGINA);
+    vCRMListaPagina = Math.min(vCRMListaPagina, totalPags - 1);
+    const desde = vCRMListaPagina * VCRM_LISTA_POR_PAGINA;
+    const pagina = lista.slice(desde, desde + VCRM_LISTA_POR_PAGINA);
 
-    wrap.innerHTML = `
-      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">${total} prospecto${total!==1?'s':''} · Página ${_listaPag+1} de ${totalPags}</div>
-      ${items.map(p => `
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;box-shadow:var(--shadow-sm)">
-          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
-            <div style="font-size:22px;flex-shrink:0">${getVTemperatura(p)}</div>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px">${p.nombre}</div>
-              <div style="font-size:12px;color:var(--text3)">${p.etapa}${p.rubro?' · '+p.rubro:''}</div>
-            </div>
-            <div style="display:flex;gap:6px;flex-shrink:0">
-              <button onclick="openVCRMModal('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px"><i class="ti ti-pencil"></i></button>
-              <button onclick="deleteVCRM('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px"><i class="ti ti-trash"></i></button>
-            </div>
+    const tarjetas = pagina.map(p => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:8px;box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+          <div style="font-size:22px;flex-shrink:0">${getVTemperatura(p)}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px">${p.nombre}</div>
+            <div style="font-size:12px;color:var(--text3)">${p.etapa}${p.rubro?' · '+p.rubro:''}</div>
           </div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
-            ${p.telefono ? `<a href="https://wa.me/${(p.telefono||'').replace(/\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--green)18;color:var(--green);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-whatsapp"></i>${p.telefono}</a>` : ''}
-            ${p.mail ? `<a href="mailto:${p.mail}" style="display:inline-flex;align-items:center;gap:4px;background:var(--blue)18;color:var(--blue);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-mail"></i>${p.mail}</a>` : ''}
-            ${p.instagram ? `<a href="https://instagram.com/${(p.instagram||'').replace('@','')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:#e1306c18;color:#e1306c;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-instagram"></i>${p.instagram}</a>` : ''}
-            ${p.web ? `<a href="${p.web}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--bg4);color:var(--text2);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-world"></i>Web</a>` : ''}
-            ${p.ubicacion ? `<span style="font-size:12px;color:var(--text3)"><i class="ti ti-map-pin"></i> ${p.ubicacion}</span>` : ''}
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button onclick="openVCRMModal('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px"><i class="ti ti-pencil"></i></button>
+            <button onclick="deleteVCRM('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px"><i class="ti ti-trash"></i></button>
           </div>
-          ${p.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg4);border-radius:8px;padding:8px 10px;margin-top:10px;line-height:1.5">${p.notas}</div>` : ''}
-          ${p.seguimiento_fecha ? `<div style="font-size:11px;color:var(--orange);font-weight:600;margin-top:8px">📅 Seguimiento: ${p.seguimiento_fecha}</div>` : ''}
-        </div>`).join('')}`;
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          ${p.telefono ? `<a href="https://wa.me/${p.telefono.replace(/\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--green)18;color:var(--green);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-whatsapp" style="font-size:13px"></i>${p.telefono}</a>` : ''}
+          ${p.mail ? `<a href="mailto:${p.mail}" style="display:inline-flex;align-items:center;gap:4px;background:var(--blue)18;color:var(--blue);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-mail" style="font-size:13px"></i>${p.mail}</a>` : ''}
+          ${p.instagram ? `<a href="https://instagram.com/${p.instagram.replace('@','')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:#e1306c18;color:#e1306c;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-instagram" style="font-size:13px"></i>${p.instagram}</a>` : ''}
+          ${p.web ? `<a href="${p.web}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--bg4);color:var(--text2);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-world" style="font-size:13px"></i>Web</a>` : ''}
+          ${p.ubicacion ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text3)"><i class="ti ti-map-pin" style="font-size:12px"></i>${p.ubicacion}</span>` : ''}
+        </div>
+        ${p.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg4);border-radius:8px;padding:8px 10px;margin-top:10px;line-height:1.5">${p.notas}</div>` : ''}
+        ${p.seguimiento_fecha ? `<div style="font-size:11px;color:var(--orange);font-weight:600;margin-top:8px">📅 Seguimiento: ${p.seguimiento_fecha}</div>` : ''}
+      </div>`).join('');
 
-    // Paginación fuera del scroll
-    if (pagDiv) {
-      if (totalPags <= 1) { pagDiv.innerHTML = ''; return; }
-      let btns = '';
-      for (let i = 0; i < totalPags; i++) {
-        btns += `<button onclick="_listaPag=${i};renderVCRMLista()" style="width:34px;height:34px;border-radius:8px;border:1.5px solid ${i===_listaPag?'var(--orange)':'var(--border2)'};background:${i===_listaPag?'var(--orange)':'none'};color:${i===_listaPag?'white':'var(--text2)'};font-size:13px;font-weight:${i===_listaPag?'700':'400'};cursor:pointer">${i+1}</button>`;
-      }
-      pagDiv.innerHTML = `
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px">
-          <button onclick="if(_listaPag>0){_listaPag--;renderVCRMLista()}" ${_listaPag===0?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 16px;font-size:13px;color:${_listaPag===0?'var(--text3)':'var(--text2)'};cursor:${_listaPag===0?'default':'pointer'}">‹ Anterior</button>
-          <div style="display:flex;gap:6px">${btns}</div>
-          <button onclick="if(_listaPag<${totalPags-1}){_listaPag++;renderVCRMLista()}" ${_listaPag===totalPags-1?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 16px;font-size:13px;color:${_listaPag===totalPags-1?'var(--text3)':'var(--text2)'};cursor:${_listaPag===totalPags-1?'default':'pointer'}">Siguiente ›</button>
-        </div>`;
-    }
+    const infoEl = document.getElementById('v-crm-lista-info');
+    const pagEl = document.getElementById('v-crm-lista-paginacion');
+    if (infoEl) infoEl.textContent = `${lista.length} prospecto${lista.length !== 1 ? 's' : ''} · Mostrando ${desde + 1}–${Math.min(desde + VCRM_LISTA_POR_PAGINA, lista.length)}`;
+    container.innerHTML = tarjetas;
+    if (pagEl) pagEl.innerHTML = totalPags > 1 ? `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px">
+        <button onclick="vCRMListaIrPag(${vCRMListaPagina - 1})" ${vCRMListaPagina === 0 ? 'disabled' : ''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMListaPagina === 0 ? 'var(--text3)' : 'var(--text2)'};cursor:${vCRMListaPagina === 0 ? 'default' : 'pointer'}">‹ Anterior</button>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${Array.from({length: totalPags}, (_,i) => `<button onclick="vCRMListaIrPag(${i})" style="width:32px;height:32px;border-radius:8px;border:1px solid ${i === vCRMListaPagina ? 'var(--orange)' : 'var(--border2)'};background:${i === vCRMListaPagina ? 'var(--orange)' : 'none'};color:${i === vCRMListaPagina ? 'white' : 'var(--text2)'};font-size:13px;font-weight:${i === vCRMListaPagina ? '700' : '400'};cursor:pointer">${i+1}</button>`).join('')}
+        </div>
+        <button onclick="vCRMListaIrPag(${vCRMListaPagina + 1})" ${vCRMListaPagina === totalPags - 1 ? 'disabled' : ''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMListaPagina === totalPags - 1 ? 'var(--text3)' : 'var(--text2)'};cursor:${vCRMListaPagina === totalPags - 1 ? 'default' : 'pointer'}">Siguiente ›</button>
+      </div>` : '';
+  }
+
+  function vCRMListaIrPag(pag) {
+    const lista = vCRMGetDataDelMes();
+    const totalPags = Math.ceil(lista.length / VCRM_LISTA_POR_PAGINA);
+    vCRMListaPagina = Math.max(0, Math.min(totalPags - 1, pag));
+    renderVCRMLista(false);
+    document.getElementById('v-crm-lista-container')?.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   let vCRMHistorialPagina = 0;
@@ -9966,18 +9923,17 @@
     const wn = document.getElementById('vend-welcome-name');
     if (wn) wn.innerHTML = '¡Hola, ' + (currentUser?.name || '') + '! 👋';
 
-    // Mostrar con datos locales primero (rápido)
+    // Load tasks if not loaded
     if (!allTasks.length) loadTasks().then(() => renderVendorTareas());
     else renderVendorTareas();
 
-    updateVendorKPIs();
-    renderVendorSeguimientos();
-
-    // Traer datos frescos de Sheets siempre
-    loadVCRMData().then(() => {
+    // Load CRM then update KPIs
+    if (!vCRMData.length) {
+      loadVCRMData().then(() => { updateVendorKPIs(); renderVendorSeguimientos(); });
+    } else {
       updateVendorKPIs();
       renderVendorSeguimientos();
-    });
+    }
   }
 
   function updateVendorKPIs() {
