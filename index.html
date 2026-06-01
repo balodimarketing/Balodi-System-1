@@ -1181,6 +1181,16 @@
 
       <div class="nav-label nav-vendedor-only" id="label-vendedores">Ventas</div>
       <div class="nav-item nav-vendedor-only" id="nav-crm-vendedores" onclick="go('crm-vendedores')" style="position:relative"><i class="ti ti-target nav-icon" aria-hidden="true"></i> CRM Vendedores <span class="notif-dot hidden" id="notif-crm-vendedores">0</span></div>
+      <div class="nav-item nav-vendedor-only" id="nav-calendario-vendedor" onclick="go('calendario')"><i class="ti ti-calendar nav-icon" aria-hidden="true"></i> Calendario</div>
+      <div class="nav-vendedor-only" id="nav-meet-wrapper" style="padding:8px 12px 0">
+        <a href="https://meet.google.com/landing" target="_blank"
+          style="display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:10px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:white;text-decoration:none;font-size:13px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 2px 8px rgba(26,115,232,0.35);transition:all 0.2s"
+          onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 16px rgba(26,115,232,0.45)'"
+          onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(26,115,232,0.35)'">
+          <i class="ti ti-video" style="font-size:16px"></i>
+          <span>Iniciar Google Meet</span>
+        </a>
+      </div>
       <div class="nav-label nav-videos-only" style="display:none">Producción</div>
       <div class="nav-item nav-videos-only" id="nav-videos" onclick="go('videos')" style="position:relative;display:none"><i class="ti ti-video nav-icon" aria-hidden="true"></i> Videos <span class="notif-dot hidden" id="notif-videos">0</span></div>
       <div class="nav-label">Operaciones</div>
@@ -2164,8 +2174,20 @@
     <div class="panel" id="panel-calendario">
       <div class="page-header">
         <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Calendario mensual</span></div>
-        <div class="page-title">Calendario mensual</div>
-        <div class="page-desc">Calendario de contenido en vivo. Todo lo que agregues en Google Calendar aparece acá automáticamente.</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div>
+            <div class="page-title">Calendario mensual</div>
+            <div class="page-desc">Calendario de contenido en vivo. Todo lo que agregues en Google Calendar aparece acá automáticamente.</div>
+          </div>
+          <a href="https://meet.google.com/landing" target="_blank"
+            style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:white;text-decoration:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;box-shadow:0 2px 12px rgba(26,115,232,0.35);transition:all 0.2s;white-space:nowrap;flex-shrink:0;margin-top:4px"
+            onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(26,115,232,0.45)'"
+            onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(26,115,232,0.35)'">
+            <i class="ti ti-video" style="font-size:16px"></i>
+            Iniciar Google Meet
+            <i class="ti ti-external-link" style="font-size:13px;opacity:0.8"></i>
+          </a>
+        </div>
       </div>
       <div class="page-content">
 
@@ -2879,6 +2901,106 @@
 
     </div>
 
+    <!-- DASHBOARD VENDEDOR (solo para Facundo y vendedores) -->
+    <div class="panel" id="panel-dashboard-vendedor" style="padding:0">
+
+      <!-- HEADER VENDEDOR -->
+      <div style="padding:28px 32px 20px;border-bottom:1px solid var(--border);background:var(--bg2)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:13px;color:var(--text3);font-weight:500;margin-bottom:4px">Buenos días,</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--text);line-height:1.1;margin-bottom:4px"><span id="vend-welcome-name" style="color:var(--orange)"></span> <span style="color:var(--text)">.</span></div>
+            <div style="font-size:13px;color:var(--text2)">Esto es lo más importante hoy.</div>
+          </div>
+          <a href="https://meet.google.com/landing" target="_blank"
+            style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:white;text-decoration:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;box-shadow:0 2px 12px rgba(26,115,232,0.35);transition:all 0.2s;white-space:nowrap"
+            onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(26,115,232,0.45)'"
+            onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(26,115,232,0.35)'">
+            <i class="ti ti-video" style="font-size:16px"></i>
+            Google Meet
+            <i class="ti ti-external-link" style="font-size:13px;opacity:0.8"></i>
+          </a>
+        </div>
+
+        <!-- KPI CARDS HORIZONTALES -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px" id="vend-kpi-row">
+          <div onclick="go('crm-vendedores')" style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all 0.15s"
+            onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
+            onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--text);line-height:1" id="vend-k-total">0</div>
+              <div style="font-size:12px;color:var(--text3);font-weight:600;margin-top:4px">Prospectos activos</div>
+            </div>
+            <div style="width:44px;height:44px;background:var(--orange-light);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ti-users" style="font-size:20px;color:var(--orange)"></i>
+            </div>
+            <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px"></i>
+          </div>
+
+          <div onclick="go('crm-vendedores')" style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all 0.15s"
+            onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
+            onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:#ef4444;line-height:1" id="vend-k-calientes">0</div>
+              <div style="font-size:12px;color:var(--text3);font-weight:600;margin-top:4px">Calientes 🔥</div>
+            </div>
+            <div style="width:44px;height:44px;background:#fef2f2;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ti-flame" style="font-size:20px;color:#ef4444"></i>
+            </div>
+            <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px"></i>
+          </div>
+
+          <div onclick="go('crm-vendedores')" style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all 0.15s"
+            onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
+            onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--green);line-height:1" id="vend-k-cerrados">0</div>
+              <div style="font-size:12px;color:var(--text3);font-weight:600;margin-top:4px">Cerrados este mes</div>
+            </div>
+            <div style="width:44px;height:44px;background:#f0fdf4;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ti-circle-check" style="font-size:20px;color:var(--green)"></i>
+            </div>
+            <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- CUERPO: dos columnas -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;height:calc(100vh - 260px);overflow:hidden">
+
+        <!-- COLUMNA IZQUIERDA: Tareas -->
+        <div style="border-right:1px solid var(--border);overflow-y:auto;padding:24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--text)">Mis tareas</div>
+            <button onclick="go('tareas')" style="display:flex;align-items:center;gap:6px;background:var(--orange);color:white;border:none;border-radius:8px;padding:7px 14px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer">
+              <i class="ti ti-plus" style="font-size:13px"></i> Nueva tarea
+            </button>
+          </div>
+          <!-- Filtros -->
+          <div style="display:flex;gap:6px;margin-bottom:16px" id="vend-task-filter-btns">
+            <button onclick="vendSetTaskFilter('pendientes',this)" style="padding:6px 14px;border-radius:999px;border:none;background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Pendientes</button>
+            <button onclick="vendSetTaskFilter('completadas',this)" style="padding:6px 14px;border-radius:999px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Completadas</button>
+          </div>
+          <div id="vend-tareas-list">
+            <div style="font-size:13px;color:var(--text3);text-align:center;padding:32px">Cargando...</div>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: Seguimientos -->
+        <div style="overflow-y:auto;padding:24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--text)">Próximos seguimientos</div>
+            <button onclick="go('crm-vendedores')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Ver CRM →</button>
+          </div>
+          <div id="vend-seguimientos-list">
+            <div style="font-size:13px;color:var(--text3);text-align:center;padding:32px">Cargando...</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
     <!-- OBJETIVOS -->
     <div class="panel" id="panel-objetivos">
       <div class="page-header">
@@ -3063,6 +3185,7 @@
             <button class="filter-btn" onclick="filterTasks('Enzo', this)">Enzo</button>
             <button class="filter-btn" onclick="filterTasks('Brunela', this)">Brunela</button>
             <button class="filter-btn" onclick="filterTasks('Nicolás', this)">Nicolás</button>
+            <button class="filter-btn" onclick="filterTasks('Facundo', this)">Facundo</button>
             <button class="filter-btn" onclick="filterTasks('pendiente', this)">Pendientes</button>
             <button class="filter-btn" onclick="filterTasks('hecho', this)">Completadas</button>
           </div>
@@ -3095,6 +3218,7 @@
                 <option>Brunela</option>
                 <option>Nicolás</option>
                 <option>Bautista</option>
+                <option>Facundo</option>
               </select>
             </div>
           </div>
@@ -3136,6 +3260,17 @@
         <div class="page-desc">Tu pipeline personal. Solo vos ves tus prospectos.</div>
       </div>
       <div class="page-content">
+
+        <!-- SELECTOR DE MES -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:0;background:var(--bg2);border:1.5px solid var(--border2);border-radius:10px;overflow:hidden">
+            <button onclick="vCRMCambiarMes(-1)" style="background:none;border:none;padding:9px 16px;cursor:pointer;color:var(--text2);font-size:18px;transition:background 0.15s" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='none'">‹</button>
+            <div id="v-crm-mes-label" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);padding:9px 16px;min-width:140px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)">Mayo 2026</div>
+            <button onclick="vCRMCambiarMes(1)" style="background:none;border:none;padding:9px 16px;cursor:pointer;color:var(--text2);font-size:18px;transition:background 0.15s" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='none'">›</button>
+          </div>
+          <div style="font-size:12px;color:var(--text3)" id="v-crm-mes-desc">Prospectos activos + cerrados/descartados este mes</div>
+        </div>
+
         <div id="v-crm-alertas-box" style="margin-bottom:20px;display:none">
           <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px"><i class="ti ti-alert-triangle" style="color:var(--amber)"></i> Requieren atención hoy</div>
           <div id="v-crm-alertas-lista"></div>
@@ -3160,17 +3295,21 @@
         </div>
         <div class="est-section" id="v-crm-tab-lista">
           <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
-            <input id="v-crm-search" type="text" placeholder="Buscar prospecto..." oninput="renderVCRMLista()" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
-            <select id="v-crm-filter-etapa" onchange="renderVCRMLista()" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+            <input id="v-crm-search" type="text" placeholder="Buscar prospecto..." oninput="renderVCRMLista(true)" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
+            <select id="v-crm-filter-etapa" onchange="renderVCRMLista(true)" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
               <option value="">Todas las etapas</option>
               <option>Contactado</option><option>Reunión agendada</option><option>Propuesta enviada</option>
               <option>Negociación</option><option>Cerrado</option><option>Perdido</option>
             </select>
           </div>
-          <div id="v-crm-lista-container"></div>
+          <div id="v-crm-lista-info" style="font-size:12px;color:var(--text3);margin-bottom:12px"></div>
+          <div id="v-crm-lista-container" style="max-height:55vh;overflow-y:auto;padding-right:4px"></div>
+          <div id="v-crm-lista-paginacion" style="margin-top:12px"></div>
         </div>
         <div class="est-section" id="v-crm-tab-historial">
-          <div id="v-crm-historial-container"></div>
+          <div id="v-crm-historial-info" style="font-size:12px;color:var(--text3);margin-bottom:12px"></div>
+          <div id="v-crm-historial-container" style="max-height:55vh;overflow-y:auto;padding-right:4px"></div>
+          <div id="v-crm-historial-paginacion" style="margin-top:12px"></div>
         </div>
       </div>
     </div>
@@ -3499,10 +3638,44 @@
     <div class="modal-title" id="v-crm-modal-title">Nuevo prospecto</div>
     <div style="text-align:left;margin-bottom:16px">
       <input type="hidden" id="v-crm-edit-id">
+
       <div style="margin-bottom:12px">
         <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Nombre / Empresa *</label>
-        <input class="modal-input" id="v-crm-nombre" type="text" placeholder="Ej: Empresa XYZ" style="margin-bottom:0">
+        <input class="modal-input" id="v-crm-nombre" type="text" placeholder="Ej: Capilar Vibes" style="margin-bottom:0">
       </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Teléfono / WhatsApp *</label>
+          <input class="modal-input" id="v-crm-telefono" type="tel" placeholder="+54 341..." style="margin-bottom:0">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Mail</label>
+          <input class="modal-input" id="v-crm-mail" type="email" placeholder="ejemplo@mail.com" style="margin-bottom:0">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Ubicación</label>
+          <input class="modal-input" id="v-crm-ubicacion" type="text" placeholder="Ej: Rosario, Santa Fe" style="margin-bottom:0">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Rubro</label>
+          <input class="modal-input" id="v-crm-rubro" type="text" placeholder="Ej: Peluquería" style="margin-bottom:0">
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Sitio web</label>
+        <input class="modal-input" id="v-crm-web" type="url" placeholder="https://..." style="margin-bottom:0">
+      </div>
+
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Instagram</label>
+        <input class="modal-input" id="v-crm-instagram" type="text" placeholder="@usuario" style="margin-bottom:0">
+      </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
         <div>
           <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Etapa</label>
@@ -3512,27 +3685,17 @@
           </select>
         </div>
         <div>
-          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Valor estimado ($)</label>
-          <input class="modal-input" id="v-crm-valor" type="number" placeholder="0" style="margin-bottom:0">
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Seguimiento</label>
+          <input class="modal-input" id="v-crm-seguimiento" type="date" style="margin-bottom:0">
         </div>
       </div>
-      <div style="margin-bottom:12px">
-        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Contacto</label>
-        <input class="modal-input" id="v-crm-contacto" type="text" placeholder="Nombre del responsable" style="margin-bottom:0">
-      </div>
-      <div style="margin-bottom:12px">
-        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Teléfono / WhatsApp</label>
-        <input class="modal-input" id="v-crm-telefono" type="text" placeholder="+54 341..." style="margin-bottom:0">
-      </div>
-      <div style="margin-bottom:12px">
-        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Seguimiento (fecha)</label>
-        <input class="modal-input" id="v-crm-seguimiento" type="date" style="margin-bottom:0">
-      </div>
+
       <div style="margin-bottom:4px">
         <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Notas</label>
-        <textarea class="modal-input" id="v-crm-notas" placeholder="Detalles, contexto, próximos pasos..." style="margin-bottom:0;resize:vertical;min-height:70px"></textarea>
+        <textarea class="modal-input" id="v-crm-notas" placeholder="Contexto, próximos pasos, detalles..." style="margin-bottom:0;resize:vertical;min-height:65px"></textarea>
       </div>
     </div>
+    <div id="v-crm-modal-error" style="display:none;color:var(--red);font-size:13px;font-weight:600;margin-bottom:10px;text-align:center"></div>
     <button class="modal-btn" onclick="saveVCRM()">Guardar prospecto</button>
     <button class="modal-cancel" onclick="closeVCRMModal()">Cancelar</button>
   </div>
@@ -3726,10 +3889,13 @@
         el.style.display = 'none';
       });
       // Mostrar solo lo permitido
-      ['nav-dashboard','nav-tareas','nav-banco','nav-crm-vendedores'].forEach(id => {
+      ['nav-dashboard','nav-tareas','nav-banco','nav-crm-vendedores','nav-calendario-vendedor'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = '';
       });
+      // Mostrar el botón de Meet
+      const meetWrapper = document.getElementById('nav-meet-wrapper');
+      if (meetWrapper) meetWrapper.style.display = '';
       document.getElementById('label-operaciones') && (document.getElementById('label-operaciones').style.display = '');
       document.getElementById('label-vendedores') && (document.getElementById('label-vendedores').style.display = '');
     }
@@ -3738,6 +3904,15 @@
   // ============ NAVIGATION ============
   function go(id) {
     if (!currentUser) { showLoginScreen(); return; }
+
+    // Vendors see their own dashboard
+    if (id === 'dashboard' && currentUser.type === 'vendedor') {
+      id = 'dashboard-vendedor';
+    }
+    // Vendors can't access other panels
+    if (currentUser.type === 'vendedor' && !['dashboard','dashboard-vendedor','tareas','banco','crm-vendedores','calendario'].includes(id)) {
+      return;
+    }
     if (PRIVATE_PANELS.includes(id) && !privateUnlocked) {
       pendingPanel = id; openModal(); return;
     }
@@ -3774,6 +3949,7 @@
       'c-hielo': 'Hielo Rosario', 'c-donatelli': 'Donatelli',
       'c-mma': 'MMAPantera', 'c-murad': 'Murad',
       'crm-vendedores': 'CRM Vendedores',
+      'dashboard-vendedor': 'Inicio',
       admin: 'Administración',
       clientes: 'Clientes',
       'cliente-detalle': 'Cliente'
@@ -3795,6 +3971,7 @@
     if (id === 'c-balodi') { loadMetaAds(); loadBalodiIdeas(); loadBalodiObjs(); }
     if (id === 'admin') { checkAdminAccess(); renderAdminPanel(); }
     if (id === 'crm-vendedores') initVCRM();
+    if (id === 'dashboard-vendedor') initVendorDashboard();
     if (id === 'clientes') renderClientesPanel();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
@@ -5689,14 +5866,21 @@
     updateUserUI();
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('panel-dashboard').classList.add('active');
-    document.getElementById('nav-dashboard').classList.add('active');
-    loadTasks();
-    loadIdeas();
-    loadCreativas();
-    loadAllComments();
-    // Cargar clientes desde Sheets en background
-    loadClientesFromSheets();
+
+    if (currentUser?.type === 'vendedor') {
+      document.getElementById('panel-dashboard-vendedor').classList.add('active');
+      document.getElementById('nav-dashboard').classList.add('active');
+      initVendorDashboard();
+    } else {
+      document.getElementById('panel-dashboard').classList.add('active');
+      document.getElementById('nav-dashboard').classList.add('active');
+      loadTasks();
+      loadIdeas();
+      loadCreativas();
+      loadAllComments();
+      loadClientesFromSheets();
+    }
+
     if (currentUser && currentUser.username === 'bautista') {
       initClapDetection();
     }
@@ -9317,6 +9501,49 @@
 
   let vCRMData = [];
   let vCRMTabActual = 'pipeline';
+  const VCRM_MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  let vCRMMesActual = { year: new Date().getFullYear(), month: new Date().getMonth() };
+
+  // ── Lógica de mes por prospecto ──
+  // Un prospecto "pertenece" al mes de su última interacción si está cerrado/perdido/no-interesado
+  // Si está activo, pertenece al mes actual siempre
+  function getVCRMMesProspecto(p) {
+    const etapasFinal = ['Cerrado', 'Perdido'];
+    if (etapasFinal.includes(p.etapa)) {
+      // Usar fecha de última interacción
+      const ref = p.ultimo_contacto || p.fecha_creacion || '';
+      if (ref) {
+        const d = new Date(ref + (ref.length === 10 ? 'T00:00:00' : ''));
+        return { year: d.getFullYear(), month: d.getMonth() };
+      }
+    }
+    // Activo → mes actual
+    return { year: new Date().getFullYear(), month: new Date().getMonth() };
+  }
+
+  function vCRMGetDataDelMes() {
+    const { year, month } = vCRMMesActual;
+    return vCRMData.filter(p => {
+      const m = getVCRMMesProspecto(p);
+      return m.year === year && m.month === month;
+    });
+  }
+
+  function vCRMCambiarMes(delta) {
+    vCRMMesActual.month += delta;
+    if (vCRMMesActual.month > 11) { vCRMMesActual.month = 0; vCRMMesActual.year++; }
+    if (vCRMMesActual.month < 0) { vCRMMesActual.month = 11; vCRMMesActual.year--; }
+    vCRMPaginas = {}; // reset paginación kanban al cambiar de mes
+    vCRMListaPagina = 0; // reset paginación lista
+    vCRMHistorialPagina = 0; // reset paginación historial
+    const el = document.getElementById('v-crm-mes-label');
+    if (el) el.textContent = VCRM_MESES[vCRMMesActual.month] + ' ' + vCRMMesActual.year;
+    const isCurrentMonth = vCRMMesActual.year === new Date().getFullYear() && vCRMMesActual.month === new Date().getMonth();
+    const desc = document.getElementById('v-crm-mes-desc');
+    if (desc) desc.textContent = isCurrentMonth ? 'Prospectos activos + cerrados/descartados este mes' : 'Prospectos cerrados o descartados en ' + VCRM_MESES[vCRMMesActual.month];
+    renderVCRM();
+    checkVCRMAlertas();
+  }
 
   // Clave por usuario — cada vendedor tiene sus propios datos
   function getVCRMKey() {
@@ -9328,6 +9555,9 @@
   }
 
   function initVCRM() {
+    // Set month label
+    const el = document.getElementById('v-crm-mes-label');
+    if (el) el.textContent = VCRM_MESES[vCRMMesActual.month] + ' ' + vCRMMesActual.year;
     loadVCRMData();
   }
 
@@ -9370,15 +9600,14 @@
   }
 
   function renderVCRMKPIs() {
-    const activos = vCRMData.filter(p => !['Cerrado','Perdido'].includes(p.etapa));
+    const data = vCRMGetDataDelMes();
+    const activos = data.filter(p => !['Cerrado','Perdido'].includes(p.etapa));
     const calientes = activos.filter(p => getVTemperatura(p) === '🔥').length;
     const tibios = activos.filter(p => getVTemperatura(p) === '🟡').length;
     const ahora = new Date();
-    const cerradosMes = vCRMData.filter(p => p.etapa === 'Cerrado' && p.fecha_cierre &&
-      new Date(p.fecha_cierre).getMonth() === ahora.getMonth() &&
-      new Date(p.fecha_cierre).getFullYear() === ahora.getFullYear()).length;
+    const cerradosMes = data.filter(p => p.etapa === 'Cerrado').length;
     const valorPipeline = activos.reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
-    document.getElementById('v-crm-k-total').textContent = vCRMData.length;
+    document.getElementById('v-crm-k-total').textContent = data.length;
     document.getElementById('v-crm-k-calientes').textContent = calientes;
     document.getElementById('v-crm-k-tibios').textContent = tibios;
     document.getElementById('v-crm-k-cerrados').textContent = cerradosMes;
@@ -9402,7 +9631,11 @@
     renderVCRM();
   }
 
+  const VCRM_POR_PAGINA = 5;
+  let vCRMPaginas = {}; // { etapa: paginaActual }
+
   function renderVCRMKanban() {
+    const data = vCRMGetDataDelMes();
     const etapas = ['Contactado','Reunión agendada','Propuesta enviada','Negociación','Cerrado','Perdido','Sin respuesta'];
     const etapaColors = {
       'Contactado': 'var(--blue)', 'Reunión agendada': 'var(--orange)', 'Propuesta enviada': '#7c3aed',
@@ -9410,59 +9643,144 @@
     };
     const kanban = document.getElementById('v-crm-kanban');
     kanban.innerHTML = etapas.map(etapa => {
-      const prospectos = vCRMData.filter(p => p.etapa === etapa);
+      const prospectos = data.filter(p => p.etapa === etapa);
+      const pagina = vCRMPaginas[etapa] || 0;
+      const desde = pagina * VCRM_POR_PAGINA;
+      const hasta = desde + VCRM_POR_PAGINA;
+      const visibles = prospectos.slice(desde, hasta);
+      const hayMas = hasta < prospectos.length;
+      const hayAntes = pagina > 0;
+      const totalPags = Math.ceil(prospectos.length / VCRM_POR_PAGINA);
+
       return `
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;min-height:120px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;min-height:120px;max-height:70vh">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0">
             <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${etapaColors[etapa]||'var(--text3)'}">${etapa}</div>
             <span style="background:${etapaColors[etapa]||'var(--text3)'}22;color:${etapaColors[etapa]||'var(--text3)'};border-radius:999px;font-size:11px;font-weight:700;padding:2px 8px">${prospectos.length}</span>
           </div>
-          ${prospectos.map(p => `
-            <div onclick="abrirVCRMDetalle('${p.id}')" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s"
-              onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
-              onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
-              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">${p.nombre}</div>
-              <div style="display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:18px">${getVTemperatura(p)}</span>
-                ${p.valor ? `<span style="font-size:11px;font-weight:700;color:var(--green)">$${parseFloat(p.valor).toLocaleString('es-AR')}</span>` : ''}
-              </div>
-              ${p.seguimiento_fecha ? `<div style="font-size:10px;color:var(--orange);margin-top:4px;font-weight:600">📅 Seguimiento: ${p.seguimiento_fecha}</div>` : ''}
-            </div>`).join('')}
-          ${prospectos.length === 0 ? `<div style="text-align:center;padding:16px 0;font-size:12px;color:var(--text3)">Vacío</div>` : ''}
+
+          <div style="flex:1;overflow-y:auto;scrollbar-width:thin">
+            ${visibles.map(p => `
+              <div onclick="abrirVCRMDetalle('${p.id}')" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s"
+                onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
+                onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
+                <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">${p.nombre}</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px">
+                  <span style="font-size:18px">${getVTemperatura(p)}</span>
+                  ${p.rubro ? `<span style="font-size:10px;color:var(--text3)">${p.rubro}</span>` : ''}
+                </div>
+                ${p.telefono ? `<div style="font-size:11px;color:var(--text2);margin-top:4px"><i class="ti ti-phone" style="color:var(--orange);font-size:10px"></i> ${p.telefono}</div>` : ''}
+                ${p.seguimiento_fecha ? `<div style="font-size:10px;color:var(--orange);margin-top:4px;font-weight:600">📅 ${p.seguimiento_fecha}</div>` : ''}
+              </div>`).join('')}
+            ${prospectos.length === 0 ? `<div style="text-align:center;padding:16px 0;font-size:12px;color:var(--text3)">Vacío</div>` : ''}
+          </div>
+
+          ${prospectos.length > VCRM_POR_PAGINA ? `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-shrink:0;border-top:1px solid var(--border);padding-top:10px">
+            <button onclick="vCRMKanbanPag('${etapa}',-1)" ${!hayAntes?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:7px;padding:4px 10px;font-size:12px;color:${hayAntes?'var(--text2)':'var(--text3)'};cursor:${hayAntes?'pointer':'default'}">‹</button>
+            <span style="font-size:11px;color:var(--text3);font-weight:600">${pagina+1} / ${totalPags}</span>
+            <button onclick="vCRMKanbanPag('${etapa}',1)" ${!hayMas?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:7px;padding:4px 10px;font-size:12px;color:${hayMas?'var(--text2)':'var(--text3)'};cursor:${hayMas?'pointer':'default'}">›</button>
+          </div>` : ''}
         </div>`;
     }).join('');
   }
 
-  function renderVCRMLista() {
+  function vCRMKanbanPag(etapa, delta) {
+    if (!vCRMPaginas[etapa]) vCRMPaginas[etapa] = 0;
+    const data = vCRMGetDataDelMes().filter(p => p.etapa === etapa);
+    const totalPags = Math.ceil(data.length / VCRM_POR_PAGINA);
+    vCRMPaginas[etapa] = Math.max(0, Math.min(totalPags - 1, vCRMPaginas[etapa] + delta));
+    renderVCRMKanban();
+  }
+
+  let vCRMListaPagina = 0;
+  const VCRM_LISTA_POR_PAGINA = 5;
+
+  function renderVCRMLista(resetPagina = false) {
     const search = document.getElementById('v-crm-search')?.value?.toLowerCase() || '';
     const etapaF = document.getElementById('v-crm-filter-etapa')?.value || '';
-    let lista = vCRMData.filter(p => {
+    if (resetPagina) vCRMListaPagina = 0;
+    const lista = vCRMGetDataDelMes().filter(p => {
       if (etapaF && p.etapa !== etapaF) return false;
       if (search && !p.nombre.toLowerCase().includes(search)) return false;
       return true;
     });
     const container = document.getElementById('v-crm-lista-container');
-    if (!lista.length) { container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-users"></i></div><div class="placeholder-title">Sin prospectos</div><div class="placeholder-desc">Cargá tu primer prospecto con el botón de arriba.</div></div>'; return; }
-    container.innerHTML = lista.map(p => `
-      <div onclick="abrirVCRMDetalle('${p.id}')" style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px"
-        onmouseover="this.style.borderColor='var(--orange-border)'" onmouseout="this.style.borderColor='var(--border)'">
-        <div style="font-size:22px">${getVTemperatura(p)}</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:14px;font-weight:700;color:var(--text)">${p.nombre}</div>
-          <div style="font-size:12px;color:var(--text3)">${p.etapa}${p.contacto?' · '+p.contacto:''}${p.telefono?' · '+p.telefono:''}</div>
+    if (!lista.length) {
+      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-users"></i></div><div class="placeholder-title">Sin prospectos</div><div class="placeholder-desc">Cargá tu primer prospecto con el botón de arriba.</div></div>';
+      return;
+    }
+
+    const totalPags = Math.ceil(lista.length / VCRM_LISTA_POR_PAGINA);
+    vCRMListaPagina = Math.min(vCRMListaPagina, totalPags - 1);
+    const desde = vCRMListaPagina * VCRM_LISTA_POR_PAGINA;
+    const pagina = lista.slice(desde, desde + VCRM_LISTA_POR_PAGINA);
+
+    const tarjetas = pagina.map(p => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:8px;box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+          <div style="font-size:22px;flex-shrink:0">${getVTemperatura(p)}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px">${p.nombre}</div>
+            <div style="font-size:12px;color:var(--text3)">${p.etapa}${p.rubro?' · '+p.rubro:''}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button onclick="openVCRMModal('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px"><i class="ti ti-pencil"></i></button>
+            <button onclick="deleteVCRM('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px"><i class="ti ti-trash"></i></button>
+          </div>
         </div>
-        ${p.valor ? `<div style="font-size:14px;font-weight:700;color:var(--green)">$${parseFloat(p.valor).toLocaleString('es-AR')}</div>` : ''}
-        <button onclick="event.stopPropagation();openVCRMModal('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px"><i class="ti ti-pencil"></i></button>
-        <button onclick="event.stopPropagation();deleteVCRM('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px"><i class="ti ti-trash"></i></button>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          ${p.telefono ? `<a href="https://wa.me/${p.telefono.replace(/\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--green)18;color:var(--green);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-whatsapp" style="font-size:13px"></i>${p.telefono}</a>` : ''}
+          ${p.mail ? `<a href="mailto:${p.mail}" style="display:inline-flex;align-items:center;gap:4px;background:var(--blue)18;color:var(--blue);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-mail" style="font-size:13px"></i>${p.mail}</a>` : ''}
+          ${p.instagram ? `<a href="https://instagram.com/${p.instagram.replace('@','')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:#e1306c18;color:#e1306c;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-instagram" style="font-size:13px"></i>${p.instagram}</a>` : ''}
+          ${p.web ? `<a href="${p.web}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--bg4);color:var(--text2);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-world" style="font-size:13px"></i>Web</a>` : ''}
+          ${p.ubicacion ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text3)"><i class="ti ti-map-pin" style="font-size:12px"></i>${p.ubicacion}</span>` : ''}
+        </div>
+        ${p.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg4);border-radius:8px;padding:8px 10px;margin-top:10px;line-height:1.5">${p.notas}</div>` : ''}
+        ${p.seguimiento_fecha ? `<div style="font-size:11px;color:var(--orange);font-weight:600;margin-top:8px">📅 Seguimiento: ${p.seguimiento_fecha}</div>` : ''}
       </div>`).join('');
+
+    const infoEl = document.getElementById('v-crm-lista-info');
+    const pagEl = document.getElementById('v-crm-lista-paginacion');
+    if (infoEl) infoEl.textContent = `${lista.length} prospecto${lista.length !== 1 ? 's' : ''} · Mostrando ${desde + 1}–${Math.min(desde + VCRM_LISTA_POR_PAGINA, lista.length)}`;
+    container.innerHTML = tarjetas;
+    if (pagEl) pagEl.innerHTML = totalPags > 1 ? `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px">
+        <button onclick="vCRMListaIrPag(${vCRMListaPagina - 1})" ${vCRMListaPagina === 0 ? 'disabled' : ''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMListaPagina === 0 ? 'var(--text3)' : 'var(--text2)'};cursor:${vCRMListaPagina === 0 ? 'default' : 'pointer'}">‹ Anterior</button>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${Array.from({length: totalPags}, (_,i) => `<button onclick="vCRMListaIrPag(${i})" style="width:32px;height:32px;border-radius:8px;border:1px solid ${i === vCRMListaPagina ? 'var(--orange)' : 'var(--border2)'};background:${i === vCRMListaPagina ? 'var(--orange)' : 'none'};color:${i === vCRMListaPagina ? 'white' : 'var(--text2)'};font-size:13px;font-weight:${i === vCRMListaPagina ? '700' : '400'};cursor:pointer">${i+1}</button>`).join('')}
+        </div>
+        <button onclick="vCRMListaIrPag(${vCRMListaPagina + 1})" ${vCRMListaPagina === totalPags - 1 ? 'disabled' : ''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMListaPagina === totalPags - 1 ? 'var(--text3)' : 'var(--text2)'};cursor:${vCRMListaPagina === totalPags - 1 ? 'default' : 'pointer'}">Siguiente ›</button>
+      </div>` : '';
   }
+
+  function vCRMListaIrPag(pag) {
+    const lista = vCRMGetDataDelMes();
+    const totalPags = Math.ceil(lista.length / VCRM_LISTA_POR_PAGINA);
+    vCRMListaPagina = Math.max(0, Math.min(totalPags - 1, pag));
+    renderVCRMLista(false);
+    document.getElementById('v-crm-lista-container')?.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  let vCRMHistorialPagina = 0;
+  const VCRM_HISTORIAL_POR_PAGINA = 8;
 
   function renderVCRMHistorial() {
     const container = document.getElementById('v-crm-historial-container');
-    const historial = vCRMData.flatMap(p => (p.historial||[]).map(h => ({ ...h, prospecto: p.nombre, prospectoId: p.id })))
-      .sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).slice(0,30);
-    if (!historial.length) { container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clock"></i></div><div class="placeholder-title">Sin historial</div></div>'; return; }
-    container.innerHTML = historial.map(h => `
+    const todos = vCRMGetDataDelMes().flatMap(p => (p.historial||[]).map(h => ({ ...h, prospecto: p.nombre, prospectoId: p.id })))
+      .sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+
+    if (!todos.length) {
+      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clock"></i></div><div class="placeholder-title">Sin historial</div></div>';
+      return;
+    }
+
+    const totalPags = Math.ceil(todos.length / VCRM_HISTORIAL_POR_PAGINA);
+    vCRMHistorialPagina = Math.min(vCRMHistorialPagina, totalPags - 1);
+    const desde = vCRMHistorialPagina * VCRM_HISTORIAL_POR_PAGINA;
+    const pagina = todos.slice(desde, desde + VCRM_HISTORIAL_POR_PAGINA);
+
+    const items = pagina.map(h => `
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
           <div>
@@ -9472,11 +9790,32 @@
           <div style="font-size:11px;color:var(--text3);white-space:nowrap">${h.fecha}</div>
         </div>
       </div>`).join('');
+
+    const infoHistEl = document.getElementById('v-crm-historial-info');
+    const pagHistEl = document.getElementById('v-crm-historial-paginacion');
+    if (infoHistEl) infoHistEl.textContent = `${todos.length} registros · Mostrando ${desde+1}–${Math.min(desde+VCRM_HISTORIAL_POR_PAGINA, todos.length)}`;
+    container.innerHTML = items;
+    if (pagHistEl) pagHistEl.innerHTML = totalPags > 1 ? `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px">
+        <button onclick="vCRMHistorialIrPag(${vCRMHistorialPagina-1})" ${vCRMHistorialPagina===0?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMHistorialPagina===0?'var(--text3)':'var(--text2)'};cursor:${vCRMHistorialPagina===0?'default':'pointer'}">‹ Anterior</button>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${Array.from({length: totalPags}, (_,i) => `<button onclick="vCRMHistorialIrPag(${i})" style="width:32px;height:32px;border-radius:8px;border:1px solid ${i===vCRMHistorialPagina?'var(--orange)':'var(--border2)'};background:${i===vCRMHistorialPagina?'var(--orange)':'none'};color:${i===vCRMHistorialPagina?'white':'var(--text2)'};font-size:13px;cursor:pointer">${i+1}</button>`).join('')}
+        </div>
+        <button onclick="vCRMHistorialIrPag(${vCRMHistorialPagina+1})" ${vCRMHistorialPagina===totalPags-1?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMHistorialPagina===totalPags-1?'var(--text3)':'var(--text2)'};cursor:${vCRMHistorialPagina===totalPags-1?'default':'pointer'}">Siguiente ›</button>
+      </div>` : '';
+  }
+
+  function vCRMHistorialIrPag(pag) {
+    const todos = vCRMGetDataDelMes().flatMap(p => p.historial||[]);
+    const totalPags = Math.ceil(todos.length / VCRM_HISTORIAL_POR_PAGINA);
+    vCRMHistorialPagina = Math.max(0, Math.min(totalPags-1, pag));
+    renderVCRMHistorial();
+    document.getElementById('v-crm-historial-container')?.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function checkVCRMAlertas() {
     const alertas = [];
-    vCRMData.forEach(p => {
+    vCRMGetDataDelMes().forEach(p => {
       if (['Cerrado','Perdido'].includes(p.etapa)) return;
       const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
       if (dias >= 14) alertas.push({ msg: `<strong>${p.nombre}</strong> — Sin contacto hace ${dias} días`, id: p.id });
@@ -9504,12 +9843,16 @@
     document.getElementById('v-crm-modal-title').textContent = p ? 'Editar prospecto' : 'Nuevo prospecto';
     document.getElementById('v-crm-edit-id').value = editId || '';
     document.getElementById('v-crm-nombre').value = p?.nombre || '';
-    document.getElementById('v-crm-etapa').value = p?.etapa || 'Contactado';
-    document.getElementById('v-crm-valor').value = p?.valor || '';
-    document.getElementById('v-crm-contacto').value = p?.contacto || '';
     document.getElementById('v-crm-telefono').value = p?.telefono || '';
+    document.getElementById('v-crm-mail').value = p?.mail || '';
+    document.getElementById('v-crm-ubicacion').value = p?.ubicacion || '';
+    document.getElementById('v-crm-rubro').value = p?.rubro || '';
+    document.getElementById('v-crm-web').value = p?.web || '';
+    document.getElementById('v-crm-instagram').value = p?.instagram || '';
+    document.getElementById('v-crm-etapa').value = p?.etapa || 'Contactado';
     document.getElementById('v-crm-seguimiento').value = p?.seguimiento_fecha || '';
     document.getElementById('v-crm-notas').value = p?.notas || '';
+    document.getElementById('v-crm-modal-error').style.display = 'none';
     document.getElementById('v-crm-modal').classList.add('open');
     setTimeout(() => document.getElementById('v-crm-nombre').focus(), 100);
   }
@@ -9520,26 +9863,42 @@
 
   function saveVCRM() {
     const nombre = document.getElementById('v-crm-nombre').value.trim();
-    if (!nombre) { alert('El nombre es obligatorio.'); return; }
+    const telefono = document.getElementById('v-crm-telefono').value.trim();
+    const errEl = document.getElementById('v-crm-modal-error');
+
+    if (!nombre || !telefono) {
+      errEl.textContent = 'Nombre y teléfono son obligatorios.';
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+
     const editId = document.getElementById('v-crm-edit-id').value;
     const existing = editId ? vCRMData.find(x => x.id === editId) : null;
     const entry = {
       id: editId || 'vcrm_' + Date.now(),
       nombre,
+      telefono,
+      mail: document.getElementById('v-crm-mail').value.trim(),
+      ubicacion: document.getElementById('v-crm-ubicacion').value.trim(),
+      rubro: document.getElementById('v-crm-rubro').value.trim(),
+      web: document.getElementById('v-crm-web').value.trim(),
+      instagram: document.getElementById('v-crm-instagram').value.trim(),
       etapa: document.getElementById('v-crm-etapa').value,
-      valor: document.getElementById('v-crm-valor').value,
-      contacto: document.getElementById('v-crm-contacto').value,
-      telefono: document.getElementById('v-crm-telefono').value,
       seguimiento_fecha: document.getElementById('v-crm-seguimiento').value,
-      notas: document.getElementById('v-crm-notas').value,
+      notas: document.getElementById('v-crm-notas').value.trim(),
       fecha_creacion: existing?.fecha_creacion || new Date().toISOString().split('T')[0],
-      ultimo_contacto: new Date().toISOString().split('T')[0],
+      ultimo_contacto: new Date().toISOString().split('T')[0], // siempre hoy al guardar
       vendedor: currentUser?.username,
       historial: existing?.historial || []
     };
-    if (document.getElementById('v-crm-notas').value && (!existing || existing.notas !== entry.notas)) {
-      entry.historial.unshift({ fecha: new Date().toLocaleDateString('es-AR'), nota: document.getElementById('v-crm-notas').value });
+
+    // Agregar nota al historial si cambió
+    const notaActual = document.getElementById('v-crm-notas').value.trim();
+    if (notaActual && (!existing || existing.notas !== notaActual)) {
+      entry.historial.unshift({ fecha: new Date().toLocaleDateString('es-AR'), nota: notaActual });
     }
+
     if (editId) {
       const idx = vCRMData.findIndex(x => x.id === editId);
       if (idx !== -1) vCRMData[idx] = entry; else vCRMData.push(entry);
@@ -9557,6 +9916,143 @@
     vCRMData = vCRMData.filter(x => x.id !== id);
     saveVCRMData();
     renderVCRM();
+  }
+
+  // ============ VENDOR DASHBOARD ============
+  function initVendorDashboard() {
+    const wn = document.getElementById('vend-welcome-name');
+    if (wn) wn.innerHTML = '¡Hola, ' + (currentUser?.name || '') + '! 👋';
+
+    // Load tasks if not loaded
+    if (!allTasks.length) loadTasks().then(() => renderVendorTareas());
+    else renderVendorTareas();
+
+    // Load CRM then update KPIs
+    if (!vCRMData.length) {
+      loadVCRMData().then(() => { updateVendorKPIs(); renderVendorSeguimientos(); });
+    } else {
+      updateVendorKPIs();
+      renderVendorSeguimientos();
+    }
+  }
+
+  function updateVendorKPIs() {
+    const activos = vCRMData.filter(p => !['Cerrado','Perdido'].includes(p.etapa));
+    const calientes = activos.filter(p => getVTemperatura(p) === '🔥').length;
+    const ahora = new Date();
+    const cerradosMes = vCRMData.filter(p => p.etapa === 'Cerrado' && p.fecha_cierre &&
+      new Date(p.fecha_cierre).getMonth() === ahora.getMonth() &&
+      new Date(p.fecha_cierre).getFullYear() === ahora.getFullYear()).length;
+    const kt = document.getElementById('vend-k-total');
+    const kc = document.getElementById('vend-k-calientes');
+    const kcerr = document.getElementById('vend-k-cerrados');
+    if (kt) kt.textContent = activos.length;
+    if (kc) kc.textContent = calientes;
+    if (kcerr) kcerr.textContent = cerradosMes;
+  }
+
+  let vendTaskFilter = 'pendientes';
+
+  function vendSetTaskFilter(filter, btn) {
+    vendTaskFilter = filter;
+    document.querySelectorAll('#vend-task-filter-btns button').forEach(b => {
+      b.style.background = 'var(--bg2)';
+      b.style.color = 'var(--text2)';
+      b.style.border = '1px solid var(--border2)';
+    });
+    btn.style.background = 'var(--orange)';
+    btn.style.color = 'white';
+    btn.style.border = 'none';
+    renderVendorTareas();
+  }
+
+  function renderVendorTareas() {
+    const listEl = document.getElementById('vend-tareas-list');
+    if (!listEl) return;
+    const myName = (currentUser?.name || '').toLowerCase();
+    const myUser = (currentUser?.username || '').toLowerCase();
+    const isPendientes = vendTaskFilter === 'pendientes';
+
+    const myTasks = allTasks.filter(t => {
+      const resp = (t.responsable || '').toLowerCase();
+      const matchUser = resp.includes(myName) || resp.includes(myUser);
+      const matchEstado = isPendientes ? t.estado !== 'hecho' : t.estado === 'hecho';
+      return matchUser && matchEstado;
+    }).slice(0, 10);
+
+    if (!myTasks.length) {
+      listEl.innerHTML = `<div style="text-align:center;padding:40px 20px">
+        <div style="font-size:32px;margin-bottom:8px">${isPendientes ? '✅' : '📋'}</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">${isPendientes ? 'Sin tareas pendientes' : 'Sin tareas completadas'}</div>
+        <div style="font-size:12px;color:var(--text3)">${isPendientes ? 'Buen trabajo 🎉' : 'Completá tareas para verlas acá'}</div>
+      </div>`;
+      return;
+    }
+
+    const prioColors = { Alta: '#ef4444', Media: '#f59e0b', Baja: '#22c55e' };
+    listEl.innerHTML = myTasks.map(t => `
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+        <div style="width:18px;height:18px;border-radius:5px;border:2px solid ${t.estado==='hecho'?'var(--green)':'var(--border2)'};background:${t.estado==='hecho'?'var(--green)':'transparent'};flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center">
+          ${t.estado==='hecho'?'<i class="ti ti-check" style="color:white;font-size:10px"></i>':''}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;color:${t.estado==='hecho'?'var(--text3)':'var(--text)'};${t.estado==='hecho'?'text-decoration:line-through':''};margin-bottom:3px">${t.tarea}</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            ${t.cliente ? `<span style="font-size:11px;color:var(--text3)">${t.cliente}</span>` : ''}
+            ${t.vencimiento && t.vencimiento !== '—' ? `<span style="font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px"><i class="ti ti-calendar" style="font-size:10px"></i>${t.vencimiento}</span>` : ''}
+          </div>
+        </div>
+        ${t.prioridad ? `<span style="background:${prioColors[t.prioridad]||'#f59e0b'}18;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:2px 8px;white-space:nowrap;flex-shrink:0">${t.prioridad}</span>` : ''}
+      </div>`).join('');
+  }
+
+  function renderVendorSeguimientos() {
+    const listEl = document.getElementById('vend-seguimientos-list');
+    if (!listEl) return;
+    const hoy = new Date();
+    hoy.setHours(0,0,0,0);
+    const proximos = vCRMData
+      .filter(p => p.seguimiento_fecha && !['Cerrado','Perdido'].includes(p.etapa))
+      .map(p => {
+        const d = new Date(p.seguimiento_fecha + 'T00:00:00');
+        const diasHasta = Math.ceil((d - hoy) / (1000*60*60*24));
+        return { ...p, diasHasta, fechaObj: d };
+      })
+      .filter(p => p.diasHasta >= -3)
+      .sort((a,b) => a.diasHasta - b.diasHasta)
+      .slice(0, 8);
+
+    if (!proximos.length) {
+      listEl.innerHTML = `<div style="text-align:center;padding:40px 20px">
+        <div style="font-size:32px;margin-bottom:8px">📅</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">Sin seguimientos próximos</div>
+        <div style="font-size:12px;color:var(--text3)">Cargá fechas de seguimiento en el CRM</div>
+      </div>`;
+      return;
+    }
+
+    listEl.innerHTML = proximos.map(p => {
+      const label = p.diasHasta < 0 ? 'Vencido' : p.diasHasta === 0 ? 'Hoy' : p.diasHasta === 1 ? 'Mañana' : `${p.diasHasta} días`;
+      const color = p.diasHasta < 0 ? '#ef4444' : p.diasHasta === 0 ? 'var(--orange)' : p.diasHasta <= 2 ? '#f59e0b' : 'var(--blue)';
+      const bgColor = p.diasHasta < 0 ? '#fef2f2' : p.diasHasta === 0 ? 'var(--orange-light)' : p.diasHasta <= 2 ? '#fffbeb' : '#eff6ff';
+      const dia = p.fechaObj.getDate();
+      const mes = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][p.fechaObj.getMonth()];
+      return `
+        <div onclick="go('crm-vendedores')" style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;cursor:pointer;margin-bottom:10px;transition:all 0.15s"
+          onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
+          onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg2)'">
+          <!-- Fecha visual -->
+          <div style="width:52px;height:52px;background:${bgColor};border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid ${color}22">
+            <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;color:${color};line-height:1">${dia}</div>
+            <div style="font-size:9px;font-weight:700;color:${color};letter-spacing:0.05em">${mes}</div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">${p.nombre}</div>
+            <div style="font-size:11px;color:var(--text3)">${p.etapa}${p.rubro?' · '+p.rubro:''}</div>
+          </div>
+          <span style="background:${bgColor};color:${color};border-radius:999px;font-size:11px;font-weight:700;padding:4px 10px;white-space:nowrap;border:1px solid ${color}33">${label}</span>
+        </div>`;
+    }).join('');
   }
 
 </script>
