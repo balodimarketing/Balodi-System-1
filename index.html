@@ -788,6 +788,156 @@
   .fin-stat-num.red { color: var(--red); }
   .fin-stat-num.blue { color: var(--blue); }
   .fin-stat-sub { font-size: 11px; color: var(--text3); font-weight: 500; }
+
+  /* ============================================================
+     CRM VENDEDORES — DARK THEME
+  ============================================================ */
+  #panel-crm-vendedores { background: #141414; min-height: 100vh; }
+  #panel-crm-vendedores .page-header {
+    background: #1c1c1c;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 28px 36px 22px;
+  }
+  #panel-crm-vendedores .page-eyebrow { color: var(--orange); }
+  #panel-crm-vendedores .page-title { color: #ffffff; }
+  #panel-crm-vendedores .page-desc { color: #888; }
+  #panel-crm-vendedores .page-content { padding: 24px 36px 60px; background: #141414; }
+
+  /* ── MEJORA 8: Stat cards — número más grande e impactante */
+  #panel-crm-vendedores .fin-stat-card {
+    background: #1e1e1e;
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 14px;
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  #panel-crm-vendedores .fin-stat-card:nth-child(1) { border-top: 3px solid var(--orange); }
+  #panel-crm-vendedores .fin-stat-card:nth-child(2) { border-top: 3px solid var(--blue); }
+  #panel-crm-vendedores .fin-stat-card:nth-child(3) { border-top: 3px solid var(--green); }
+  #panel-crm-vendedores .fin-stat-label { color: #999; letter-spacing: 0.08em; }
+  #panel-crm-vendedores .fin-stat-num { color: #fff; font-size: 32px !important; line-height: 1.1 !important; margin-bottom: 5px !important; }
+  #panel-crm-vendedores .fin-stat-num.orange { color: var(--orange); }
+  #panel-crm-vendedores .fin-stat-num.blue { color: var(--blue); }
+  #panel-crm-vendedores .fin-stat-sub { color: #555; font-size: 12px; }
+
+  /* ── MEJORA 4: Separador visual entre filtros y lista */
+  #panel-crm-vendedores .crm-v-controls-bar {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  /* Filter buttons dark */
+  #panel-crm-vendedores .filter-btn {
+    background: #252525;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    color: #bbb;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 7px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  #panel-crm-vendedores .filter-btn:hover { background: #2e2e2e; color: #fff; border-color: rgba(255,255,255,0.2); }
+  #panel-crm-vendedores .filter-btn.active { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+  /* Month selector dark */
+  #panel-crm-vendedores #crm-v-mes-filter {
+    background: #252525 !important;
+    border: 1.5px solid rgba(255,255,255,0.1) !important;
+    color: #ccc !important;
+    border-radius: 10px !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+  }
+
+  /* Nuevo prospecto button */
+  #panel-crm-vendedores .btn-new-task {
+    background: #252525;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 9px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  #panel-crm-vendedores .btn-new-task:hover { background: #2e2e2e; border-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+
+  /* ── MEJORA 3: Padding más generoso en las cards */
+  #panel-crm-vendedores .card {
+    background: #1e1e1e !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: 14px !important;
+    transition: all 0.2s ease !important;
+  }
+  #panel-crm-vendedores .card:hover {
+    border-color: rgba(255,255,255,0.14) !important;
+    background: #222 !important;
+    transform: translateY(-2px);
+  }
+
+  /* ── MEJORA 6: Botones de acción visibles solo en hover */
+  #panel-crm-vendedores .crm-card-actions { opacity: 0; transition: opacity 0.18s ease; }
+  #panel-crm-vendedores .card:hover .crm-card-actions { opacity: 1; }
+
+  /* Prospect count label */
+  #panel-crm-vendedores .crm-v-count-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 14px;
+  }
+
+  /* ── MEJORA 1: Scroll más generoso con degradado inferior */
+  #crm-v-list-wrap { position: relative; }
+  #crm-v-list-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 48px;
+    background: linear-gradient(to bottom, transparent, #141414);
+    pointer-events: none;
+    border-radius: 0 0 14px 14px;
+    z-index: 2;
+  }
+
+  /* ── MEJORA 2: Tipografía consistente — 3 niveles */
+  #panel-crm-vendedores .crm-empresa { font-size: 15px; font-weight: 700; color: #fff; }
+  #panel-crm-vendedores .crm-secundario { font-size: 13px; color: #aaa; }
+  #panel-crm-vendedores .crm-chip { font-size: 11px; font-weight: 600; }
+
+  /* ── MEJORA 5: Franja lateral más ancha */
+  #panel-crm-vendedores .crm-stripe { width: 6px; flex-shrink: 0; border-radius: 4px 0 0 4px; }
+
+  /* Avatar initials */
+  #panel-crm-vendedores .crm-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Outfit", sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  /* Scrollbar dark */
+  #crm-v-list::-webkit-scrollbar { width: 5px; }
+  #crm-v-list::-webkit-scrollbar-track { background: transparent; }
+  #crm-v-list::-webkit-scrollbar-thumb { background: #2e2e2e; border-radius: 3px; }
+  #crm-v-list::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
   .fin-chart-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
   .fin-chart-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
   .fin-bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; }
@@ -2243,37 +2393,46 @@
           <div class="fin-stat-card" style="flex:1;min-width:140px">
             <div class="fin-stat-label">Total prospectos</div>
             <div class="fin-stat-num orange" id="crm-v-total">—</div>
+            <div class="fin-stat-sub">todos los estados</div>
           </div>
           <div class="fin-stat-card" style="flex:1;min-width:140px">
             <div class="fin-stat-label">En proceso</div>
             <div class="fin-stat-num blue" id="crm-v-proceso">—</div>
+            <div class="fin-stat-sub">en contacto o propuesta</div>
           </div>
           <div class="fin-stat-card" style="flex:1;min-width:140px">
             <div class="fin-stat-label">Cerrados</div>
             <div class="fin-stat-num" style="color:var(--green)" id="crm-v-cerrados">—</div>
+            <div class="fin-stat-sub">convertidos este mes</div>
           </div>
         </div>
 
-        <!-- Actions bar -->
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-            <button class="filter-btn active" onclick="filterCRMV('Todos',this)" style="font-size:12px;padding:6px 14px">Todos</button>
-            <button class="filter-btn" onclick="filterCRMV('Nuevo',this)" style="font-size:12px;padding:6px 14px">Nuevo</button>
-            <button class="filter-btn" onclick="filterCRMV('En contacto',this)" style="font-size:12px;padding:6px 14px">En contacto</button>
-            <button class="filter-btn" onclick="filterCRMV('Propuesta enviada',this)" style="font-size:12px;padding:6px 14px">Propuesta enviada</button>
-            <button class="filter-btn" onclick="filterCRMV('Cerrado',this)" style="font-size:12px;padding:6px 14px">Cerrado</button>
-            <button class="filter-btn" onclick="filterCRMV('Perdido',this)" style="font-size:12px;padding:6px 14px">Perdido</button>
-            <div style="width:1px;height:20px;background:var(--border);margin:0 4px"></div>
-            <select id="crm-v-mes-filter" onchange="renderCRMV()" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);cursor:pointer;outline:none">
+        <!-- Actions bar — MEJORA 4: separador visual -->
+        <div class="crm-v-controls-bar">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+            <button class="filter-btn active" onclick="filterCRMV('Todos',this)">Todos</button>
+            <button class="filter-btn" onclick="filterCRMV('Nuevo',this)">Nuevo</button>
+            <button class="filter-btn" onclick="filterCRMV('En contacto',this)">En contacto</button>
+            <button class="filter-btn" onclick="filterCRMV('Propuesta enviada',this)">Propuesta enviada</button>
+            <button class="filter-btn" onclick="filterCRMV('Cerrado',this)">Cerrado</button>
+            <button class="filter-btn" onclick="filterCRMV('Perdido',this)">Perdido</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <select id="crm-v-mes-filter" onchange="renderCRMV()" style="background:#252525;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 14px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:#ccc;cursor:pointer;outline:none;min-width:220px">
               <option value="">Todos los meses</option>
             </select>
+            <button class="btn-new-task" onclick="openCRMVModal()"><i class="ti ti-plus"></i> Nuevo prospecto</button>
           </div>
-          <button class="btn-new-task" onclick="openCRMVModal()"><i class="ti ti-plus"></i> Nuevo prospecto</button>
         </div>
 
-        <!-- Loading / List — altura máxima con scroll -->
-        <div id="crm-v-list" style="display:flex;flex-direction:column;gap:10px;max-height:65vh;overflow-y:auto;padding-right:4px">
-          <div class="tasks-loading">Cargando prospectos...</div>
+        <!-- Count label -->
+        <div id="crm-v-count-label" class="crm-v-count-label"></div>
+
+        <!-- MEJORA 1: wrapper con degradado inferior -->
+        <div id="crm-v-list-wrap" class="crm-v-list-wrap">
+          <div id="crm-v-list" style="display:flex;flex-direction:column;gap:10px;max-height:72vh;overflow-y:auto;padding-right:6px;padding-bottom:24px">
+            <div class="tasks-loading">Cargando prospectos...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -4931,12 +5090,16 @@
     if (pEl) pEl.textContent = proceso;
     if (cEl) cEl.textContent = cerrados;
 
+    // Update count label
+    const countLabel = document.getElementById('crm-v-count-label');
+    if (countLabel) countLabel.textContent = filtered.length + ' PROSPECTO' + (filtered.length !== 1 ? 'S' : '');
+
     if (!filtered.length) {
-      list.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-briefcase" style="color:var(--text3)"></i></div><div>No hay prospectos en esta categoría</div></div>';
+      list.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-briefcase" style="color:#555"></i></div><div style="color:#555">No hay prospectos en esta categoría</div></div>';
       return;
     }
 
-    const estadoColor  = { 'Nuevo':'var(--blue)', 'En contacto':'var(--orange)', 'Propuesta enviada':'var(--amber)', 'Cerrado':'var(--green)', 'Perdido':'var(--red)' };
+    const estadoColor  = { 'Nuevo':'#3b82f6', 'En contacto':'#f5620a', 'Propuesta enviada':'#d97706', 'Cerrado':'#16a34a', 'Perdido':'#dc2626' };
     const estadoIcon   = { 'Nuevo':'ti-circle', 'En contacto':'ti-phone', 'Propuesta enviada':'ti-send', 'Cerrado':'ti-circle-check', 'Perdido':'ti-circle-x' };
 
     function fmtFecha(val) {
@@ -4946,44 +5109,57 @@
       return d.toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
     }
 
+    function getInitials(name) {
+      if (!name) return '?';
+      const parts = name.trim().split(/\s+/);
+      if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      return name.slice(0,2).toUpperCase();
+    }
+
     list.innerHTML = filtered.map((p, i) => {
-      const color     = estadoColor[p.estado] || 'var(--text3)';
+      const color     = estadoColor[p.estado] || '#888';
       const icon      = estadoIcon[p.estado]  || 'ti-circle';
       const valorFmt  = p.valor ? '$' + Number(p.valor).toLocaleString('es-AR') : null;
       const fechaFmt  = fmtFecha(p.seguimiento);
+      const initials  = getInitials(p.empresa);
+      // MEJORA 5: avatar usa el mismo color del estado para coherencia cromática
+      const avatarBg  = color;
 
       return `<div class="card" style="padding:0;overflow:hidden">
         <div style="display:flex;align-items:stretch">
-          <!-- Franja de color lateral -->
-          <div style="width:4px;flex-shrink:0;background:${color};border-radius:4px 0 0 4px"></div>
-          <!-- Contenido principal -->
-          <div style="flex:1;padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <!-- MEJORA 5: franja lateral 6px -->
+          <div class="crm-stripe" style="background:${color}"></div>
+          <!-- Contenido principal — MEJORA 3: padding más generoso -->
+          <div style="flex:1;padding:18px 20px;display:flex;align-items:flex-start;gap:14px">
+            <!-- Avatar coherente con el estado -->
+            <div class="crm-avatar" style="background:${avatarBg}20;border:1.5px solid ${avatarBg}50;color:${avatarBg};margin-top:1px">${initials}</div>
+            <!-- Info — MEJORA 2: 3 niveles tipográficos claros -->
             <div style="flex:1;min-width:0">
-              <!-- Fila 1: empresa + badge estado -->
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap">
-                <span style="font-weight:700;font-size:15px;color:var(--text)">${p.empresa || '—'}</span>
-                <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:${color}22;color:${color}">
+              <!-- Nivel 1: empresa 15px/700 + badge estado -->
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+                <span class="crm-empresa">${p.empresa || '—'}</span>
+                <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:${color}20;color:${color};border:1px solid ${color}35">
                   <i class="ti ${icon}" style="font-size:10px"></i>${p.estado || '—'}
                 </span>
               </div>
-              <!-- Fila 2: contacto + teléfono -->
-              ${(p.contacto || p.telefono) ? `<div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text2);margin-bottom:8px">
-                ${p.contacto ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-user" style="font-size:12px;color:var(--text3)"></i>${p.contacto}</span>` : ''}
-                ${p.telefono ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-phone" style="font-size:12px;color:var(--text3)"></i>${p.telefono}</span>` : ''}
+              <!-- Nivel 2: datos secundarios 13px -->
+              ${(p.contacto || p.telefono) ? `<div class="crm-secundario" style="display:flex;align-items:center;gap:14px;margin-bottom:9px">
+                ${p.contacto ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-user" style="font-size:12px;color:#555"></i>${p.contacto}</span>` : ''}
+                ${p.telefono ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-device-mobile" style="font-size:12px;color:#555"></i>${p.telefono}</span>` : ''}
               </div>` : ''}
-              <!-- Fila 3: notas -->
-              ${p.notas ? `<div style="font-size:12px;color:var(--text3);background:var(--bg4);border-radius:8px;padding:6px 10px;margin-bottom:8px;line-height:1.4">${p.notas}</div>` : ''}
-              <!-- Fila 4: chips de datos -->
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                ${p.vendedor ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text3);background:var(--bg4);border-radius:6px;padding:3px 8px"><i class="ti ti-tag" style="font-size:10px"></i>${p.vendedor}</span>` : ''}
-                ${valorFmt  ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--green);background:var(--bg4);border-radius:6px;padding:3px 8px"><i class="ti ti-coin" style="font-size:10px"></i>${valorFmt}</span>` : ''}
-                ${fechaFmt  ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text3);background:var(--bg4);border-radius:6px;padding:3px 8px"><i class="ti ti-calendar" style="font-size:10px"></i>${fechaFmt}</span>` : ''}
+              <!-- Notas -->
+              ${p.notas ? `<div style="font-size:12px;color:#777;background:#202020;border-radius:8px;padding:7px 12px;margin-bottom:10px;line-height:1.5;border-left:2px solid ${color}50">${p.notas}</div>` : ''}
+              <!-- Nivel 3: chips 11px — MEJORA 7: colores diferenciados por tipo -->
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                ${p.vendedor ? `<span class="crm-chip" style="display:inline-flex;align-items:center;gap:4px;color:#777;background:#222;border-radius:6px;padding:3px 9px;border:1px solid rgba(255,255,255,0.06)"><i class="ti ti-tag" style="font-size:10px"></i>${p.vendedor}</span>` : ''}
+                ${valorFmt  ? `<span class="crm-chip" style="display:inline-flex;align-items:center;gap:4px;font-weight:700;color:#4ade80;background:#16a34a14;border-radius:6px;padding:3px 9px;border:1px solid #16a34a30"><i class="ti ti-coin" style="font-size:10px"></i>${valorFmt}</span>` : ''}
+                ${fechaFmt  ? `<span class="crm-chip" style="display:inline-flex;align-items:center;gap:4px;color:#c2900f;background:#d9770610;border-radius:6px;padding:3px 9px;border:1px solid #d9770628"><i class="ti ti-calendar" style="font-size:10px"></i>${fechaFmt}</span>` : ''}
               </div>
             </div>
-            <!-- Botones acción -->
-            <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-              <button onclick="editCRMV(${i})" title="Editar" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 10px;cursor:pointer;color:var(--text2);line-height:1"><i class="ti ti-edit" style="font-size:14px"></i></button>
-              <button onclick="deleteCRMV(${i})" title="Eliminar" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 10px;cursor:pointer;color:var(--red);line-height:1"><i class="ti ti-trash" style="font-size:14px"></i></button>
+            <!-- MEJORA 6: botones visibles solo en hover via clase crm-card-actions -->
+            <div class="crm-card-actions" style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+              <button onclick="editCRMV(${i})" title="Editar" style="background:#242424;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:7px 10px;cursor:pointer;color:#aaa;line-height:1;transition:all 0.15s"><i class="ti ti-edit" style="font-size:14px"></i></button>
+              <button onclick="deleteCRMV(${i})" title="Eliminar" style="background:#242424;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:7px 10px;cursor:pointer;color:#dc2626;line-height:1;transition:all 0.15s"><i class="ti ti-trash" style="font-size:14px"></i></button>
             </div>
           </div>
         </div>
