@@ -25,7 +25,27 @@
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--text); font-family: "Plus Jakarta Sans", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
   .app { display: flex; min-height: 100vh; width: 100%; }
-  .sidebar { width: 240px; min-width: 240px; background: var(--bg2); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 100; display: flex; flex-direction: column; box-shadow: var(--shadow-sm); }
+  .sidebar { width: 240px; min-width: 240px; background: var(--bg2); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 100; display: flex; flex-direction: column; box-shadow: var(--shadow-sm); transition: width 0.2s ease; }
+  /* Facundo icon-only sidebar */
+  body.sidebar-mini .sidebar { width: 64px; min-width: 64px; overflow: visible; }
+  body.sidebar-mini .main { margin-left: 64px; }
+  body.sidebar-mini .sidebar-logo-text { display: none; }
+  body.sidebar-mini .nav-label { display: none !important; }
+  body.sidebar-mini .nav-item { padding: 10px 0; justify-content: center; border-left: none; border-radius: 0; }
+  body.sidebar-mini .nav-item .nav-icon { margin: 0; font-size: 20px; }
+  body.sidebar-mini .nav-item .nav-text { display: none; }
+  body.sidebar-mini .nav-item.active { background: var(--orange-light); border-left: 3px solid var(--orange); }
+  body.sidebar-mini .nav-item.active .nav-icon { color: var(--orange); }
+  body.sidebar-mini .dark-toggle .dark-toggle-label,
+  body.sidebar-mini .dark-toggle .toggle-switch { display: none; }
+  body.sidebar-mini .dark-toggle { justify-content: center; padding: 12px 0; }
+  body.sidebar-mini .sidebar-logo { justify-content: center; padding: 14px 0; position: relative; }
+  body.sidebar-mini .sidebar-logo:hover::after { content: 'Inicio'; position: absolute; left: 68px; top: 50%; transform: translateY(-50%); background: var(--text); color: var(--bg); font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; white-space: nowrap; z-index: 999; font-family: 'Plus Jakarta Sans', sans-serif; }
+  /* Tooltip for mini sidebar */
+  body.sidebar-mini .nav-item-wrapper { position: relative; }
+  body.sidebar-mini .nav-item-wrapper:hover .nav-tooltip { opacity: 1; pointer-events: auto; transform: translateX(0); }
+  .nav-tooltip { position: absolute; left: 68px; top: 50%; transform: translateX(-6px) translateY(-50%); background: var(--text); color: var(--bg); font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; white-space: nowrap; opacity: 0; pointer-events: none; transition: all 0.15s; z-index: 999; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .nav-tooltip::before { content:''; position:absolute; left:-5px; top:50%; transform:translateY(-50%); border:5px solid transparent; border-right-color:var(--text); border-left:none; }
   .sidebar-logo { padding: 20px 18px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
   .logo-icon { width: 32px; height: 32px; background: var(--orange); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-size: 16px; }
   .logo-mark { font-family: "Outfit", sans-serif; font-weight: 800; font-size: 16px; color: var(--text); letter-spacing: -0.02em; }
@@ -1161,42 +1181,82 @@
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo" style="padding:16px 18px">
-      <div style="line-height:1.1"><div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--orange);letter-spacing:-0.02em">Balodi</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase">Agencia de Marketing</div></div>
+    <div class="sidebar-logo" style="padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer" onclick="go('dashboard')" title="Inicio">
+      <!-- Logo icon always visible -->
+      <div style="width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Outfit',sans-serif;font-weight:900;font-size:16px;color:white;letter-spacing:-1px">B</div>
+      <!-- Text hidden in mini mode -->
+      <div class="sidebar-logo-text" style="line-height:1.1">
+        <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--orange);letter-spacing:-0.02em">Balodi</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase">Agencia de Marketing</div>
+      </div>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-label">General</div>
-      <div class="nav-item" id="nav-dashboard" onclick="go('dashboard')"><i class="ti ti-home nav-icon" aria-hidden="true"></i> Inicio</div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item" id="nav-dashboard" onclick="go('dashboard')"><i class="ti ti-home nav-icon" aria-hidden="true"></i><span class="nav-text"> Inicio</span></div>
+        <div class="nav-tooltip">Inicio</div>
+      </div>
+      <!-- CRM Vendedores (Facundo lo usa más — segundo lugar) -->
+      <div class="nav-item-wrapper">
+        <div class="nav-item" id="nav-crm-vendedores" onclick="go('crm-vendedores')" style="position:relative"><i class="ti ti-briefcase nav-icon" aria-hidden="true"></i><span class="nav-text"> CRM Vendedores</span></div>
+        <div class="nav-tooltip">CRM Vendedores</div>
+      </div>
       <div class="nav-label">Compartido — Todo el equipo</div>
-      <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><i class="ti ti-users nav-icon" aria-hidden="true"></i> Clientes</div>
-      <div class="nav-item nav-sub" id="nav-c-balodi" onclick="go('c-balodi')" style="color:var(--orange);font-weight:700"><i class="ti ti-star nav-icon" aria-hidden="true" style="color:var(--orange)"></i> Balodi Marketing</div>
-      <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><i class="ti ti-calendar nav-icon" aria-hidden="true"></i> Calendario mensual</div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item" id="nav-clientes" onclick="go('clientes')"><i class="ti ti-users nav-icon" aria-hidden="true"></i><span class="nav-text"> Clientes</span></div>
+        <div class="nav-tooltip">Clientes</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-sub" id="nav-c-balodi" onclick="go('c-balodi')" style="color:var(--orange);font-weight:700"><i class="ti ti-star nav-icon" aria-hidden="true" style="color:var(--orange)"></i><span class="nav-text"> Balodi Marketing</span></div>
+        <div class="nav-tooltip">Balodi Marketing</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item" id="nav-calendario" onclick="go('calendario')"><i class="ti ti-calendar nav-icon" aria-hidden="true"></i><span class="nav-text"> Calendario mensual</span></div>
+        <div class="nav-tooltip">Calendario</div>
+      </div>
       <div class="nav-label nav-admin-only" id="label-privado">Privado — Bau y Nico</div>
-      <div class="nav-item nav-admin-only" id="nav-crm" onclick="go('crm')" style="position:relative"><i class="ti ti-target nav-icon" aria-hidden="true"></i> CRM <span class="notif-dot hidden" id="notif-crm">0</span></div>
-      <div class="nav-item nav-admin-only" id="nav-estrategia" onclick="go('estrategia')"><i class="ti ti-chess nav-icon" aria-hidden="true"></i> Estrategia Balodi</div>
-      <div class="nav-item nav-admin-only" id="nav-alianzas" onclick="go('alianzas')"><i class="ti ti-heart-handshake nav-icon" aria-hidden="true"></i> Red de Alianzas</div>
-      <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><i class="ti ti-chart-line nav-icon" aria-hidden="true"></i> Finanzas</div>
-      <div class="nav-item nav-admin-only" id="nav-seguimiento" onclick="go('seguimiento')"><i class="ti ti-user-check nav-icon" aria-hidden="true"></i> Seguimiento empleados</div>
-      <div class="nav-item nav-admin-only" id="nav-admin" onclick="go('admin')" style="position:relative"><i class="ti ti-settings nav-icon" aria-hidden="true"></i> Administración</div>
-
-      <div class="nav-label nav-vendedor-only" id="label-vendedores">Ventas</div>
-      <div class="nav-item nav-vendedor-only" id="nav-crm-vendedores" onclick="go('crm-vendedores')" style="position:relative"><i class="ti ti-target nav-icon" aria-hidden="true"></i> CRM Vendedores <span class="notif-dot hidden" id="notif-crm-vendedores">0</span></div>
-      <div class="nav-item nav-vendedor-only" id="nav-calendario-vendedor" onclick="go('calendario')"><i class="ti ti-calendar nav-icon" aria-hidden="true"></i> Calendario</div>
-      <div class="nav-vendedor-only" id="nav-meet-wrapper" style="padding:8px 12px 0">
-        <a href="https://meet.google.com/landing" target="_blank"
-          style="display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:10px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:white;text-decoration:none;font-size:13px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 2px 8px rgba(26,115,232,0.35);transition:all 0.2s"
-          onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 16px rgba(26,115,232,0.45)'"
-          onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(26,115,232,0.35)'">
-          <i class="ti ti-video" style="font-size:16px"></i>
-          <span>Iniciar Google Meet</span>
-        </a>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-admin-only" id="nav-crm" onclick="go('crm')" style="position:relative"><i class="ti ti-target nav-icon" aria-hidden="true"></i><span class="nav-text"> CRM <span class="notif-dot hidden" id="notif-crm">0</span></span></div>
+        <div class="nav-tooltip">CRM Pipeline</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-admin-only" id="nav-estrategia" onclick="go('estrategia')"><i class="ti ti-chess nav-icon" aria-hidden="true"></i><span class="nav-text"> Estrategia Balodi</span></div>
+        <div class="nav-tooltip">Estrategia</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-admin-only" id="nav-alianzas" onclick="go('alianzas')"><i class="ti ti-heart-handshake nav-icon" aria-hidden="true"></i><span class="nav-text"> Red de Alianzas</span></div>
+        <div class="nav-tooltip">Alianzas</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-admin-only" id="nav-finanzas" onclick="go('finanzas')"><i class="ti ti-chart-line nav-icon" aria-hidden="true"></i><span class="nav-text"> Finanzas</span></div>
+        <div class="nav-tooltip">Finanzas</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-admin-only" id="nav-seguimiento" onclick="go('seguimiento')"><i class="ti ti-user-check nav-icon" aria-hidden="true"></i><span class="nav-text"> Seguimiento empleados</span></div>
+        <div class="nav-tooltip">Seguimiento</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-admin-only" id="nav-admin" onclick="go('admin')" style="position:relative"><i class="ti ti-settings nav-icon" aria-hidden="true"></i><span class="nav-text"> Administración</span></div>
+        <div class="nav-tooltip">Administración</div>
       </div>
       <div class="nav-label nav-videos-only" style="display:none">Producción</div>
-      <div class="nav-item nav-videos-only" id="nav-videos" onclick="go('videos')" style="position:relative;display:none"><i class="ti ti-video nav-icon" aria-hidden="true"></i> Videos <span class="notif-dot hidden" id="notif-videos">0</span></div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item nav-videos-only" id="nav-videos" onclick="go('videos')" style="position:relative;display:none"><i class="ti ti-video nav-icon" aria-hidden="true"></i><span class="nav-text"> Videos <span class="notif-dot hidden" id="notif-videos">0</span></span></div>
+        <div class="nav-tooltip">Videos</div>
+      </div>
       <div class="nav-label">Operaciones</div>
-      <div class="nav-item" id="nav-tareas" onclick="go('tareas')" style="position:relative"><i class="ti ti-checkbox nav-icon" aria-hidden="true"></i> Tareas pendientes<span class="notif-dot hidden" id="notif-tareas">0</span></div>
-      <div class="nav-item" id="nav-banco" onclick="go('banco')" style="position:relative"><i class="ti ti-bulb nav-icon" aria-hidden="true"></i> Banco de Ideas<span class="notif-dot hidden" id="notif-banco">0</span></div>
-      <div class="nav-item" id="nav-creativas" onclick="go('creativas')" style="position:relative"><i class="ti ti-sparkles nav-icon" aria-hidden="true"></i> Ideas Creativas<span class="notif-dot hidden" id="notif-creativas">0</span></div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item" id="nav-tareas" onclick="go('tareas')" style="position:relative"><i class="ti ti-checkbox nav-icon" aria-hidden="true"></i><span class="nav-text"> Tareas pendientes<span class="notif-dot hidden" id="notif-tareas">0</span></span></div>
+        <div class="nav-tooltip">Tareas</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item" id="nav-banco" onclick="go('banco')" style="position:relative"><i class="ti ti-bulb nav-icon" aria-hidden="true"></i><span class="nav-text"> Banco de Ideas<span class="notif-dot hidden" id="notif-banco">0</span></span></div>
+        <div class="nav-tooltip">Banco de Ideas</div>
+      </div>
+      <div class="nav-item-wrapper">
+        <div class="nav-item" id="nav-creativas" onclick="go('creativas')" style="position:relative"><i class="ti ti-sparkles nav-icon" aria-hidden="true"></i><span class="nav-text"> Ideas Creativas<span class="notif-dot hidden" id="notif-creativas">0</span></span></div>
+        <div class="nav-tooltip">Ideas Creativas</div>
+      </div>
     </nav>
     <div class="dark-toggle" onclick="toggleDarkMode()">
       <span style="font-size:15px"><i class="ti ti-moon" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em"></i></span>
@@ -2170,24 +2230,124 @@
       </div>
     </div>
 
+    <!-- CRM VENDEDORES -->
+    <div class="panel" id="panel-crm-vendedores">
+      <div class="page-header">
+        <div class="page-eyebrow">Ventas</div>
+        <div class="page-title">CRM Vendedores</div>
+        <div class="page-desc">Gestión de prospectos y seguimiento de ventas del equipo comercial.</div>
+      </div>
+      <div class="page-content">
+        <!-- Stats cards -->
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px">
+          <div class="fin-stat-card" style="flex:1;min-width:140px">
+            <div class="fin-stat-label">Total prospectos</div>
+            <div class="fin-stat-num orange" id="crm-v-total">—</div>
+          </div>
+          <div class="fin-stat-card" style="flex:1;min-width:140px">
+            <div class="fin-stat-label">En proceso</div>
+            <div class="fin-stat-num blue" id="crm-v-proceso">—</div>
+          </div>
+          <div class="fin-stat-card" style="flex:1;min-width:140px">
+            <div class="fin-stat-label">Cerrados</div>
+            <div class="fin-stat-num" style="color:var(--green)" id="crm-v-cerrados">—</div>
+          </div>
+        </div>
+
+        <!-- Actions bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button class="filter-btn active" onclick="filterCRMV('Todos',this)" style="font-size:12px;padding:6px 14px">Todos</button>
+            <button class="filter-btn" onclick="filterCRMV('Nuevo',this)" style="font-size:12px;padding:6px 14px">Nuevo</button>
+            <button class="filter-btn" onclick="filterCRMV('En contacto',this)" style="font-size:12px;padding:6px 14px">En contacto</button>
+            <button class="filter-btn" onclick="filterCRMV('Propuesta enviada',this)" style="font-size:12px;padding:6px 14px">Propuesta enviada</button>
+            <button class="filter-btn" onclick="filterCRMV('Cerrado',this)" style="font-size:12px;padding:6px 14px">Cerrado</button>
+            <button class="filter-btn" onclick="filterCRMV('Perdido',this)" style="font-size:12px;padding:6px 14px">Perdido</button>
+            <div style="width:1px;height:20px;background:var(--border);margin:0 4px"></div>
+            <select id="crm-v-mes-filter" onchange="renderCRMV()" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);cursor:pointer;outline:none">
+              <option value="">Todos los meses</option>
+            </select>
+          </div>
+          <button class="btn-new-task" onclick="openCRMVModal()"><i class="ti ti-plus"></i> Nuevo prospecto</button>
+        </div>
+
+        <!-- Loading / List — altura máxima con scroll -->
+        <div id="crm-v-list" style="display:flex;flex-direction:column;gap:10px;max-height:65vh;overflow-y:auto;padding-right:4px">
+          <div class="tasks-loading">Cargando prospectos...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal CRM Vendedores -->
+    <div class="task-modal-overlay" id="crm-v-modal">
+      <div class="task-modal" style="max-width:520px">
+        <div class="task-modal-title"><i class="ti ti-briefcase" style="font-size:1em;vertical-align:-0.15em"></i> <span id="crm-v-modal-title">Nuevo prospecto</span></div>
+        <input type="hidden" id="crm-v-edit-id" value="">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Empresa / Prospecto *</label>
+            <input class="form-input" id="crm-v-empresa" type="text" placeholder="Nombre de la empresa o persona">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contacto</label>
+            <input class="form-input" id="crm-v-contacto" type="text" placeholder="Nombre del contacto">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Teléfono</label>
+            <input class="form-input" id="crm-v-telefono" type="text" placeholder="+54 ...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" id="crm-v-email" type="email" placeholder="email@ejemplo.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Estado *</label>
+            <select class="form-select" id="crm-v-estado">
+              <option value="Nuevo">Nuevo</option>
+              <option value="En contacto">En contacto</option>
+              <option value="Propuesta enviada">Propuesta enviada</option>
+              <option value="Cerrado">Cerrado</option>
+              <option value="Perdido">Perdido</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor estimado ($)</label>
+            <input class="form-input" id="crm-v-valor" type="number" placeholder="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vendedor *</label>
+          <select class="form-select" id="crm-v-vendedor">
+            <option value="Facundo">Facundo</option>
+            <option value="Bautista">Bautista</option>
+            <option value="Nicolás">Nicolás</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Próximo seguimiento</label>
+          <input class="form-input" id="crm-v-seguimiento" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notas</label>
+          <textarea class="form-textarea" id="crm-v-notas" placeholder="Detalles del prospecto, contexto, necesidades..."></textarea>
+        </div>
+        <div class="task-modal-actions">
+          <button class="btn-cancel-task" onclick="closeCRMVModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveCRMV()">Guardar</button>
+        </div>
+      </div>
+    </div>
+
     <!-- CALENDARIO -->
     <div class="panel" id="panel-calendario">
       <div class="page-header">
         <div class="breadcrumb"><span onclick="go('estructura')">Estructura</span><span class="breadcrumb-sep">/</span><span>Calendario mensual</span></div>
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
-          <div>
-            <div class="page-title">Calendario mensual</div>
-            <div class="page-desc">Calendario de contenido en vivo. Todo lo que agregues en Google Calendar aparece acá automáticamente.</div>
-          </div>
-          <a href="https://meet.google.com/landing" target="_blank"
-            style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:white;text-decoration:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;box-shadow:0 2px 12px rgba(26,115,232,0.35);transition:all 0.2s;white-space:nowrap;flex-shrink:0;margin-top:4px"
-            onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(26,115,232,0.45)'"
-            onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(26,115,232,0.35)'">
-            <i class="ti ti-video" style="font-size:16px"></i>
-            Iniciar Google Meet
-            <i class="ti ti-external-link" style="font-size:13px;opacity:0.8"></i>
-          </a>
-        </div>
+        <div class="page-title">Calendario mensual</div>
+        <div class="page-desc">Calendario de contenido en vivo. Todo lo que agregues en Google Calendar aparece acá automáticamente.</div>
       </div>
       <div class="page-content">
 
@@ -2814,6 +2974,149 @@
 
     <!-- DASHBOARD -->
     <div class="panel" id="panel-dashboard">
+      <!-- ===================== DASHBOARD FACUNDO ===================== -->
+      <div id="dash-facundo" style="display:none">
+        <div style="padding:28px 28px 0">
+
+          <!-- HEADER -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text);letter-spacing:-0.02em">¡Hola, <span style="color:var(--orange)" id="fac-welcome-name">Facundo</span>! 👋</div>
+              <div style="font-size:13px;color:var(--text3);margin-top:3px" id="fac-fecha-hoy"></div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <!-- Botón Meet -->
+              <a href="https://meet.google.com/landing" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:white;text-decoration:none;border-radius:12px;padding:11px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;box-shadow:0 4px 14px rgba(26,115,232,0.3);transition:all 0.15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,115,232,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(26,115,232,0.3)'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4z" fill="white"/></svg>
+                Iniciar reunión
+              </a>
+            </div>
+          </div>
+
+          <!-- FILA 1: MÉTRICAS CRM + META -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px">
+            <div style="background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:14px;padding:16px 18px;color:white">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;opacity:0.85;margin-bottom:6px">Prospectos totales</div>
+              <div style="font-size:34px;font-weight:800;font-family:'Outfit',sans-serif;line-height:1" id="fac-total">—</div>
+              <div style="font-size:11px;opacity:0.75;margin-top:4px">En el CRM</div>
+            </div>
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 18px">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">En proceso</div>
+              <div style="font-size:34px;font-weight:800;font-family:'Outfit',sans-serif;color:var(--blue);line-height:1" id="fac-proceso">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Contacto + Propuesta</div>
+            </div>
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 18px">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">Cerrados este mes</div>
+              <div style="font-size:34px;font-weight:800;font-family:'Outfit',sans-serif;color:var(--green);line-height:1" id="fac-cerrados">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Conversiones</div>
+            </div>
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 18px">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">Pipeline ($)</div>
+              <div style="font-size:24px;font-weight:800;font-family:'Outfit',sans-serif;color:var(--green);line-height:1;margin-top:4px" id="fac-pipeline">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Valor en proceso</div>
+            </div>
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 18px">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:6px">Mis tareas</div>
+              <div style="font-size:34px;font-weight:800;font-family:'Outfit',sans-serif;color:var(--amber);line-height:1" id="fac-tareas-count">—</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Pendientes</div>
+            </div>
+          </div>
+
+          <!-- META MENSUAL -->
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+              <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;color:var(--text);display:flex;align-items:center;gap:7px">
+                <i class="ti ti-target" style="color:var(--orange)"></i> Meta del mes
+                <span style="font-size:12px;font-weight:500;color:var(--text3)" id="fac-meta-label"></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:12px;color:var(--text3)">Meta:</span>
+                <input type="number" id="fac-meta-input" min="1" max="99" style="width:54px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:4px 8px;font-size:13px;font-weight:700;color:var(--text);font-family:'Outfit',sans-serif;outline:none;text-align:center" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'" placeholder="5">
+                <button onclick="saveFacMeta()" style="background:var(--orange);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer">Guardar</button>
+              </div>
+            </div>
+            <div style="background:var(--bg4);border-radius:20px;height:10px;overflow:hidden">
+              <div id="fac-meta-bar" style="height:100%;background:linear-gradient(90deg,var(--orange),var(--orange2));border-radius:20px;transition:width 0.6s ease;width:0%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span style="font-size:11px;color:var(--text3)" id="fac-meta-sub">Cargando meta...</span>
+              <span style="font-size:11px;font-weight:700;color:var(--orange)" id="fac-meta-pct">—</span>
+            </div>
+          </div>
+
+          <!-- FILA 2: Seguimientos hoy + Tareas + CRM Preview + Notas -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+            <!-- Seguimientos de hoy/mañana -->
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--border)">
+                <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;color:var(--text);display:flex;align-items:center;gap:6px">
+                  <i class="ti ti-bell-ringing" style="color:var(--amber)"></i> Seguimientos pendientes
+                </div>
+                <button onclick="go('crm-vendedores')" style="font-size:11px;font-weight:700;color:var(--orange);background:none;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Ver CRM →</button>
+              </div>
+              <div id="fac-seguimientos" style="max-height:200px;overflow-y:auto">
+                <div style="padding:16px;text-align:center;font-size:13px;color:var(--text3)">Cargando...</div>
+              </div>
+            </div>
+
+            <!-- Mis tareas -->
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--border)">
+                <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;color:var(--text);display:flex;align-items:center;gap:6px">
+                  <i class="ti ti-circle-check" style="color:var(--green)"></i> Mis tareas
+                </div>
+                <button onclick="go('tareas')" style="font-size:11px;font-weight:700;color:var(--orange);background:none;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Ver todas →</button>
+              </div>
+              <div id="fac-tasks-list" style="max-height:200px;overflow-y:auto">
+                <div style="padding:16px;text-align:center;font-size:13px;color:var(--text3)">Cargando...</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- FILA 3: Últimos prospectos + Notas al equipo -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-bottom:28px">
+
+            <!-- Preview CRM -->
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--border)">
+                <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;color:var(--text);display:flex;align-items:center;gap:6px">
+                  <i class="ti ti-briefcase" style="color:var(--orange)"></i> Últimos prospectos
+                </div>
+                <button onclick="go('crm-vendedores')" style="font-size:11px;font-weight:700;color:var(--orange);background:none;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Ver todos →</button>
+              </div>
+              <div id="fac-crm-preview" style="max-height:220px;overflow-y:auto">
+                <div style="padding:16px;text-align:center;font-size:13px;color:var(--text3)">Cargando...</div>
+              </div>
+            </div>
+
+            <!-- Notas al equipo -->
+            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;gap:6px;padding:14px 16px 10px;border-bottom:1px solid var(--border)">
+                <i class="ti ti-message-circle" style="color:var(--blue)"></i>
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;color:var(--text)">Notas para el equipo</span>
+              </div>
+              <div id="fac-notas-list" style="flex:1;max-height:140px;overflow-y:auto"></div>
+              <div style="padding:10px 14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:6px">
+                  <select id="fac-nota-para" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:5px 8px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;flex-shrink:0">
+                    <option value="Bautista">→ Bautista</option>
+                    <option value="Nicolás">→ Nicolás</option>
+                    <option value="Equipo">→ Todo el equipo</option>
+                  </select>
+                  <input type="text" id="fac-nota-text" placeholder="Escribí tu nota..." style="flex:1;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border2)'" onkeydown="if(event.key==='Enter')sendFacNota()">
+                  <button onclick="sendFacNota()" style="background:var(--orange);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;flex-shrink:0">Enviar</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== DASHBOARD NORMAL ===================== -->
+      <div id="dash-normal">
       <div class="page-header">
         <div class="page-eyebrow">Balodi Marketing</div>
         <div class="welcome-msg">Bienvenido de vuelta,</div>
@@ -2898,106 +3201,7 @@
           </div>
         </div>
       </div>
-
-    </div>
-
-    <!-- DASHBOARD VENDEDOR (solo para Facundo y vendedores) -->
-    <div class="panel" id="panel-dashboard-vendedor" style="padding:0">
-
-      <!-- HEADER VENDEDOR -->
-      <div style="padding:28px 32px 20px;border-bottom:1px solid var(--border);background:var(--bg2)">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
-          <div>
-            <div style="font-size:13px;color:var(--text3);font-weight:500;margin-bottom:4px">Buenos días,</div>
-            <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--text);line-height:1.1;margin-bottom:4px"><span id="vend-welcome-name" style="color:var(--orange)"></span> <span style="color:var(--text)">.</span></div>
-            <div style="font-size:13px;color:var(--text2)">Esto es lo más importante hoy.</div>
-          </div>
-          <a href="https://meet.google.com/landing" target="_blank"
-            style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:white;text-decoration:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;box-shadow:0 2px 12px rgba(26,115,232,0.35);transition:all 0.2s;white-space:nowrap"
-            onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(26,115,232,0.45)'"
-            onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(26,115,232,0.35)'">
-            <i class="ti ti-video" style="font-size:16px"></i>
-            Google Meet
-            <i class="ti ti-external-link" style="font-size:13px;opacity:0.8"></i>
-          </a>
-        </div>
-
-        <!-- KPI CARDS HORIZONTALES -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px" id="vend-kpi-row">
-          <div onclick="go('crm-vendedores')" style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all 0.15s"
-            onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
-            onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
-            <div>
-              <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--text);line-height:1" id="vend-k-total">0</div>
-              <div style="font-size:12px;color:var(--text3);font-weight:600;margin-top:4px">Prospectos activos</div>
-            </div>
-            <div style="width:44px;height:44px;background:var(--orange-light);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <i class="ti ti-users" style="font-size:20px;color:var(--orange)"></i>
-            </div>
-            <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px"></i>
-          </div>
-
-          <div onclick="go('crm-vendedores')" style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all 0.15s"
-            onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
-            onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
-            <div>
-              <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:#ef4444;line-height:1" id="vend-k-calientes">0</div>
-              <div style="font-size:12px;color:var(--text3);font-weight:600;margin-top:4px">Calientes 🔥</div>
-            </div>
-            <div style="width:44px;height:44px;background:#fef2f2;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <i class="ti ti-flame" style="font-size:20px;color:#ef4444"></i>
-            </div>
-            <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px"></i>
-          </div>
-
-          <div onclick="go('crm-vendedores')" style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all 0.15s"
-            onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
-            onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
-            <div>
-              <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--green);line-height:1" id="vend-k-cerrados">0</div>
-              <div style="font-size:12px;color:var(--text3);font-weight:600;margin-top:4px">Cerrados este mes</div>
-            </div>
-            <div style="width:44px;height:44px;background:#f0fdf4;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <i class="ti ti-circle-check" style="font-size:20px;color:var(--green)"></i>
-            </div>
-            <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- CUERPO: dos columnas -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;height:calc(100vh - 260px);overflow:hidden">
-
-        <!-- COLUMNA IZQUIERDA: Tareas -->
-        <div style="border-right:1px solid var(--border);overflow-y:auto;padding:24px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-            <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--text)">Mis tareas</div>
-            <button onclick="go('tareas')" style="display:flex;align-items:center;gap:6px;background:var(--orange);color:white;border:none;border-radius:8px;padding:7px 14px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer">
-              <i class="ti ti-plus" style="font-size:13px"></i> Nueva tarea
-            </button>
-          </div>
-          <!-- Filtros -->
-          <div style="display:flex;gap:6px;margin-bottom:16px" id="vend-task-filter-btns">
-            <button onclick="vendSetTaskFilter('pendientes',this)" style="padding:6px 14px;border-radius:999px;border:none;background:var(--orange);color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Pendientes</button>
-            <button onclick="vendSetTaskFilter('completadas',this)" style="padding:6px 14px;border-radius:999px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Completadas</button>
-          </div>
-          <div id="vend-tareas-list">
-            <div style="font-size:13px;color:var(--text3);text-align:center;padding:32px">Cargando...</div>
-          </div>
-        </div>
-
-        <!-- COLUMNA DERECHA: Seguimientos -->
-        <div style="overflow-y:auto;padding:24px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-            <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--text)">Próximos seguimientos</div>
-            <button onclick="go('crm-vendedores')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Ver CRM →</button>
-          </div>
-          <div id="vend-seguimientos-list">
-            <div style="font-size:13px;color:var(--text3);text-align:center;padding:32px">Cargando...</div>
-          </div>
-        </div>
-
-      </div>
+      </div><!-- /dash-normal -->
 
     </div>
 
@@ -3185,7 +3389,6 @@
             <button class="filter-btn" onclick="filterTasks('Enzo', this)">Enzo</button>
             <button class="filter-btn" onclick="filterTasks('Brunela', this)">Brunela</button>
             <button class="filter-btn" onclick="filterTasks('Nicolás', this)">Nicolás</button>
-            <button class="filter-btn" onclick="filterTasks('Facundo', this)">Facundo</button>
             <button class="filter-btn" onclick="filterTasks('pendiente', this)">Pendientes</button>
             <button class="filter-btn" onclick="filterTasks('hecho', this)">Completadas</button>
           </div>
@@ -3248,68 +3451,6 @@
         <div class="task-modal-actions">
           <button class="btn-cancel-task" onclick="closeTaskModal()">Cancelar</button>
           <button class="btn-save" onclick="saveTask()">Guardar tarea</button>
-        </div>
-      </div>
-    </div>
-
-  <!-- CRM VENDEDORES -->
-    <div class="panel" id="panel-crm-vendedores">
-      <div class="page-header">
-        <div class="page-eyebrow" style="color:var(--blue)"><i class="ti ti-target"></i> Ventas</div>
-        <div class="page-title">CRM — Pipeline de ventas</div>
-        <div class="page-desc">Tu pipeline personal. Solo vos ves tus prospectos.</div>
-      </div>
-      <div class="page-content">
-
-        <!-- SELECTOR DE MES -->
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-          <div style="display:flex;align-items:center;gap:0;background:var(--bg2);border:1.5px solid var(--border2);border-radius:10px;overflow:hidden">
-            <button onclick="vCRMCambiarMes(-1)" style="background:none;border:none;padding:9px 16px;cursor:pointer;color:var(--text2);font-size:18px;transition:background 0.15s" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='none'">‹</button>
-            <div id="v-crm-mes-label" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);padding:9px 16px;min-width:140px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)">Mayo 2026</div>
-            <button onclick="vCRMCambiarMes(1)" style="background:none;border:none;padding:9px 16px;cursor:pointer;color:var(--text2);font-size:18px;transition:background 0.15s" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='none'">›</button>
-          </div>
-          <div style="font-size:12px;color:var(--text3)" id="v-crm-mes-desc">Prospectos activos + cerrados/descartados este mes</div>
-        </div>
-
-        <div id="v-crm-alertas-box" style="margin-bottom:20px;display:none">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px"><i class="ti ti-alert-triangle" style="color:var(--amber)"></i> Requieren atención hoy</div>
-          <div id="v-crm-alertas-lista"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px">
-          <div class="stat-card"><div class="stat-icon" style="background:#eff6ff"><i class="ti ti-clipboard-list"></i></div><div class="stat-number" id="v-crm-k-total">0</div><div class="stat-label">Total prospectos</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#fff4ee">🔥</div><div class="stat-number" id="v-crm-k-calientes">0</div><div class="stat-label">Calientes</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#fffbeb">🟡</div><div class="stat-number" id="v-crm-k-tibios">0</div><div class="stat-label">Tibios</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#f0fdf4"><i class="ti ti-circle-check" style="color:var(--green)"></i></div><div class="stat-number" id="v-crm-k-cerrados">0</div><div class="stat-label">Cerrados este mes</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#fef2f2"><i class="ti ti-coin"></i></div><div class="stat-number" id="v-crm-k-valor">$0</div><div class="stat-label">Valor del pipeline</div></div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-          <div class="est-tabs" style="margin:0">
-            <button class="est-tab active" onclick="switchVCRMTab('pipeline',this)"><i class="ti ti-chart-bar"></i> Pipeline</button>
-            <button class="est-tab" onclick="switchVCRMTab('lista',this)"><i class="ti ti-clipboard-list"></i> Lista completa</button>
-            <button class="est-tab" onclick="switchVCRMTab('historial',this)"><i class="ti ti-pencil"></i> Historial</button>
-          </div>
-          <button class="btn-new-task" onclick="openVCRMModal()">+ Nuevo prospecto</button>
-        </div>
-        <div class="est-section active" id="v-crm-tab-pipeline">
-          <div style="display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));gap:10px;overflow-x:auto;padding-bottom:8px" id="v-crm-kanban"></div>
-        </div>
-        <div class="est-section" id="v-crm-tab-lista">
-          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
-            <input id="v-crm-search" type="text" placeholder="Buscar prospecto..." oninput="renderVCRMLista(true)" style="flex:1;min-width:180px;background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
-            <select id="v-crm-filter-etapa" onchange="renderVCRMLista(true)" style="background:var(--bg4);border:1.5px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none">
-              <option value="">Todas las etapas</option>
-              <option>Contactado</option><option>Reunión agendada</option><option>Propuesta enviada</option>
-              <option>Negociación</option><option>Cerrado</option><option>Perdido</option>
-            </select>
-          </div>
-          <div id="v-crm-lista-info" style="font-size:12px;color:var(--text3);margin-bottom:12px"></div>
-          <div id="v-crm-lista-container" style="max-height:55vh;overflow-y:auto;padding-right:4px"></div>
-          <div id="v-crm-lista-paginacion" style="margin-top:12px"></div>
-        </div>
-        <div class="est-section" id="v-crm-tab-historial">
-          <div id="v-crm-historial-info" style="font-size:12px;color:var(--text3);margin-bottom:12px"></div>
-          <div id="v-crm-historial-container" style="max-height:55vh;overflow-y:auto;padding-right:4px"></div>
-          <div id="v-crm-historial-paginacion" style="margin-top:12px"></div>
         </div>
       </div>
     </div>
@@ -3631,76 +3772,6 @@
   </div>
 </div>
 
-<!-- MODAL CRM VENDEDORES -->
-<div class="modal-overlay" id="v-crm-modal" style="z-index:350">
-  <div class="modal" style="max-width:500px">
-    <div class="modal-icon"><i class="ti ti-target"></i></div>
-    <div class="modal-title" id="v-crm-modal-title">Nuevo prospecto</div>
-    <div style="text-align:left;margin-bottom:16px">
-      <input type="hidden" id="v-crm-edit-id">
-
-      <div style="margin-bottom:12px">
-        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Nombre / Empresa *</label>
-        <input class="modal-input" id="v-crm-nombre" type="text" placeholder="Ej: Capilar Vibes" style="margin-bottom:0">
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div>
-          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Teléfono / WhatsApp *</label>
-          <input class="modal-input" id="v-crm-telefono" type="tel" placeholder="+54 341..." style="margin-bottom:0">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Mail</label>
-          <input class="modal-input" id="v-crm-mail" type="email" placeholder="ejemplo@mail.com" style="margin-bottom:0">
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div>
-          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Ubicación</label>
-          <input class="modal-input" id="v-crm-ubicacion" type="text" placeholder="Ej: Rosario, Santa Fe" style="margin-bottom:0">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Rubro</label>
-          <input class="modal-input" id="v-crm-rubro" type="text" placeholder="Ej: Peluquería" style="margin-bottom:0">
-        </div>
-      </div>
-
-      <div style="margin-bottom:12px">
-        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Sitio web</label>
-        <input class="modal-input" id="v-crm-web" type="url" placeholder="https://..." style="margin-bottom:0">
-      </div>
-
-      <div style="margin-bottom:12px">
-        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Instagram</label>
-        <input class="modal-input" id="v-crm-instagram" type="text" placeholder="@usuario" style="margin-bottom:0">
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div>
-          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Etapa</label>
-          <select class="modal-input" id="v-crm-etapa" style="margin-bottom:0;cursor:pointer">
-            <option>Contactado</option><option>Reunión agendada</option><option>Propuesta enviada</option>
-            <option>Negociación</option><option>Cerrado</option><option>Perdido</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Seguimiento</label>
-          <input class="modal-input" id="v-crm-seguimiento" type="date" style="margin-bottom:0">
-        </div>
-      </div>
-
-      <div style="margin-bottom:4px">
-        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);display:block;margin-bottom:5px">Notas</label>
-        <textarea class="modal-input" id="v-crm-notas" placeholder="Contexto, próximos pasos, detalles..." style="margin-bottom:0;resize:vertical;min-height:65px"></textarea>
-      </div>
-    </div>
-    <div id="v-crm-modal-error" style="display:none;color:var(--red);font-size:13px;font-weight:600;margin-bottom:10px;text-align:center"></div>
-    <button class="modal-btn" onclick="saveVCRM()">Guardar prospecto</button>
-    <button class="modal-cancel" onclick="closeVCRMModal()">Cancelar</button>
-  </div>
-</div>
-
 <!-- PASSWORD MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
@@ -3737,7 +3808,7 @@
     'lourdes':   { pass: 'lourdes28',   name: 'Lourdes',   role: 'CM',         avatar: 'LO', color: '#16a34a' },
     'enzo':      { pass: 'enzo28',      name: 'Enzo',      role: 'Editor',     avatar: 'EN', color: '#d97706' },
     'brunela':   { pass: 'brunela28',   name: 'Brunela',   role: 'Proyectos',  avatar: 'BR', color: '#dc2626' },
-    'facundo':   { pass: 'facundo28',   name: 'Facundo',   role: 'Vendedor',   avatar: 'FA', color: '#0891b2', type: 'vendedor' },
+    'facundo':   { pass: 'facundo28',   name: 'Facundo',   role: 'Vendedor',   avatar: 'FA', color: '#7c3aed' },
   };
 
   let currentUser = null;
@@ -3853,26 +3924,17 @@
     const tb = document.getElementById('topbar-bar');
     if (tb) tb.style.display = 'flex';
 
+    // Mostrar secciones admin solo a bautista y nicolas
     const isAdmin = ['bautista', 'nicolas'].includes(currentUser.username);
-    const isVendedor = currentUser.type === 'vendedor';
-    const canSeeVideos = ['bautista', 'nicolas', 'enzo'].includes(currentUser.username);
-
-    // Admin sections
     document.querySelectorAll('.nav-admin-only').forEach(el => {
       el.style.display = isAdmin ? '' : 'none';
     });
-
-    // Videos section
+    // Mostrar sección videos a bautista, nicolas y enzo
+    const canSeeVideos = ['bautista', 'nicolas', 'enzo'].includes(currentUser.username);
     document.querySelectorAll('.nav-videos-only').forEach(el => {
       el.style.display = canSeeVideos ? '' : 'none';
     });
-
-    // Vendor section
-    document.querySelectorAll('.nav-vendedor-only').forEach(el => {
-      el.style.display = isVendedor ? '' : 'none';
-    });
-
-    // Enzo: solo Videos y Tareas
+    // Enzo solo ve Videos y Tareas en el menú
     if (currentUser.username === 'enzo') {
       document.querySelectorAll('.nav-item:not(#nav-videos):not(#nav-tareas):not(#nav-dashboard)').forEach(el => {
         if (!el.classList.contains('nav-videos-only')) el.style.display = 'none';
@@ -3881,38 +3943,40 @@
         if (el.id !== 'label-privado') el.style.display = 'none';
       });
     }
-
-    // Vendedor: solo Tareas, Ideas y CRM Vendedores
-    if (isVendedor) {
-      // Ocultar todo
-      document.querySelectorAll('.nav-item, .nav-label').forEach(el => {
+    // Facundo solo ve Calendario, Tareas, Banco de Ideas y CRM Vendedores
+    if (currentUser.username === 'facundo') {
+      document.querySelectorAll('.nav-item').forEach(el => {
+        if (!['nav-calendario','nav-tareas','nav-banco','nav-crm-vendedores'].includes(el.id)) {
+          el.style.display = 'none';
+        }
+      });
+      document.querySelectorAll('.nav-label').forEach(el => {
         el.style.display = 'none';
       });
-      // Mostrar solo lo permitido
-      ['nav-dashboard','nav-tareas','nav-banco','nav-crm-vendedores','nav-calendario-vendedor'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = '';
-      });
-      // Mostrar el botón de Meet
-      const meetWrapper = document.getElementById('nav-meet-wrapper');
-      if (meetWrapper) meetWrapper.style.display = '';
-      document.getElementById('label-operaciones') && (document.getElementById('label-operaciones').style.display = '');
-      document.getElementById('label-vendedores') && (document.getElementById('label-vendedores').style.display = '');
+      // Mostrar dashboard de Facundo, ocultar el normal
+      const df = document.getElementById('dash-facundo');
+      const dn = document.getElementById('dash-normal');
+      if (df) df.style.display = '';
+      if (dn) dn.style.display = 'none';
+      // Sidebar icon-only para Facundo
+      document.body.classList.add('sidebar-mini');
+      // Fecha de hoy
+      const fechaEl = document.getElementById('fac-fecha-hoy');
+      if (fechaEl) fechaEl.textContent = new Date().toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+      const nameEl = document.getElementById('fac-welcome-name');
+      if (nameEl) nameEl.textContent = currentUser.name;
+    } else {
+      const df = document.getElementById('dash-facundo');
+      const dn = document.getElementById('dash-normal');
+      if (df) df.style.display = 'none';
+      if (dn) dn.style.display = '';
+      document.body.classList.remove('sidebar-mini');
     }
   }
 
   // ============ NAVIGATION ============
   function go(id) {
     if (!currentUser) { showLoginScreen(); return; }
-
-    // Vendors see their own dashboard
-    if (id === 'dashboard' && currentUser.type === 'vendedor') {
-      id = 'dashboard-vendedor';
-    }
-    // Vendors can't access other panels
-    if (currentUser.type === 'vendedor' && !['dashboard','dashboard-vendedor','tareas','banco','crm-vendedores','calendario'].includes(id)) {
-      return;
-    }
     if (PRIVATE_PANELS.includes(id) && !privateUnlocked) {
       pendingPanel = id; openModal(); return;
     }
@@ -3944,12 +4008,11 @@
       creativas: 'Ideas Creativas',
       'c-balodi': 'Balodi Marketing', 'c-tarjeta': 'Tarjeta Primicia',
       crm: 'CRM — Pipeline',
+      'crm-vendedores': 'CRM Vendedores',
       videos: 'Videos',
       'c-mutual': 'Mutual Entre Asociados', 'c-capilar': 'Capilar Vibes',
       'c-hielo': 'Hielo Rosario', 'c-donatelli': 'Donatelli',
       'c-mma': 'MMAPantera', 'c-murad': 'Murad',
-      'crm-vendedores': 'CRM Vendedores',
-      'dashboard-vendedor': 'Inicio',
       admin: 'Administración',
       clientes: 'Clientes',
       'cliente-detalle': 'Cliente'
@@ -3959,6 +4022,7 @@
     const mbt = document.getElementById('mobile-page-title');
     if (mbt && titles[id]) mbt.textContent = titles[id];
     if (id === 'tareas') loadTasks();
+    if (id === 'crm-vendedores') loadCRMV();
     if (id === 'banco') { sessionStorage.setItem('balodi_ideas_seen', allIdeas.length); loadIdeas(); updateIdeasBadge(); }
     if (id === 'creativas') { sessionStorage.setItem('balodi_creativas_seen', allCreativas.length); loadCreativas(); updateCreativasBadge(); }
     if (id === 'seguimiento') loadRendimiento();
@@ -3970,8 +4034,6 @@
     if (id === 'videos') initVideos();
     if (id === 'c-balodi') { loadMetaAds(); loadBalodiIdeas(); loadBalodiObjs(); }
     if (id === 'admin') { checkAdminAccess(); renderAdminPanel(); }
-    if (id === 'crm-vendedores') initVCRM();
-    if (id === 'dashboard-vendedor') initVendorDashboard();
     if (id === 'clientes') renderClientesPanel();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeSidebar();
@@ -4131,6 +4193,7 @@
       updateDashCount();
       updateResumen();
       buildFeed();
+      updateFacundoDash();
     } catch(e) {
       container.innerHTML = '<div class="tasks-error"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:1em;vertical-align:-0.15em;color:var(--amber)"></i>️ No se pudieron cargar las tareas. Verificá la conexión.</div>';
     }
@@ -4648,6 +4711,354 @@
     }
     input.disabled = false;
     input.focus();
+  }
+
+  // ============ CRM VENDEDORES ============
+  const CRM_V_URL = 'https://script.google.com/macros/s/AKfycbyyjsLuAtpF_xiK85H45PQmPtiGVDHaUn60rcVKm-H4w-Rp5MAYCykVv_DZ037HoUzD/exec';
+  let allCRMV = [];
+  let crmVFilter = 'Todos';
+
+  async function loadCRMV() {
+    const list = document.getElementById('crm-v-list');
+    if (!list) return;
+    list.innerHTML = '<div class="tasks-loading">Cargando prospectos...</div>';
+    try {
+      const res = await fetch(CRM_V_URL + '?action=getCRM', { method: 'GET' });
+      const data = await res.json();
+      allCRMV = Array.isArray(data) ? data : (data.data || []);
+      populateCRMVMeses();
+      renderCRMV();
+      updateFacundoDash();
+    } catch(e) {
+      list.innerHTML = '<div class="tasks-error"><i class="ti ti-alert-triangle" style="color:var(--amber)"></i> No se pudieron cargar los prospectos. Verificá que el AppScript esté publicado como webapp pública.</div>';
+    }
+  }
+
+  // ============ FACUNDO DASHBOARD ============
+  let facMeta = 0;
+  let facNotas = [];
+
+  async function loadFacundoData() {
+    if (!currentUser || currentUser.username !== 'facundo') return;
+    const mes = new Date().getFullYear() + '-' + String(new Date().getMonth()+1).padStart(2,'0');
+    try {
+      const r = await fetch(CRM_V_URL + '?action=getMeta&mes=' + mes);
+      const d = await r.json();
+      facMeta = Number(d.meta) || 0;
+    } catch(e) { facMeta = 0; }
+    try {
+      const r = await fetch(CRM_V_URL + '?action=getNotes');
+      const d = await r.json();
+      facNotas = Array.isArray(d) ? d : [];
+    } catch(e) { facNotas = []; }
+    updateFacundoDash();
+  }
+
+  async function saveFacMeta() {
+    const val = parseInt(document.getElementById('fac-meta-input')?.value) || 0;
+    if (!val || val < 1) { alert('Ingresá una meta válida'); return; }
+    const mes = new Date().getFullYear() + '-' + String(new Date().getMonth()+1).padStart(2,'0');
+    const params = new URLSearchParams({ action: 'saveMeta', mes, meta: val }).toString();
+    try {
+      await fetch(CRM_V_URL + '?' + params, { method: 'GET', mode: 'no-cors' });
+      facMeta = val;
+      updateFacundoDash();
+    } catch(e) { alert('Error al guardar la meta'); }
+  }
+
+  async function sendFacNota() {
+    const texto = document.getElementById('fac-nota-text')?.value.trim();
+    const para  = document.getElementById('fac-nota-para')?.value || 'Bautista';
+    if (!texto) return;
+    const params = new URLSearchParams({ action: 'saveNote', id: String(Date.now()), fecha: new Date().toLocaleDateString('es-AR'), autor: 'Facundo', para, mensaje: texto }).toString();
+    try {
+      await fetch(CRM_V_URL + '?' + params, { method: 'GET', mode: 'no-cors' });
+      document.getElementById('fac-nota-text').value = '';
+      facNotas.push({ id: String(Date.now()), fecha: new Date().toLocaleDateString('es-AR'), autor: 'Facundo', para, mensaje: texto });
+      renderFacNotas();
+    } catch(e) { alert('Error al enviar la nota'); }
+  }
+
+  async function deleteFacNota(id) {
+    const params = new URLSearchParams({ action: 'deleteNote', id }).toString();
+    try {
+      await fetch(CRM_V_URL + '?' + params, { method: 'GET', mode: 'no-cors' });
+      facNotas = facNotas.filter(n => String(n.id) !== String(id));
+      renderFacNotas();
+    } catch(e) {}
+  }
+
+  function renderFacNotas() {
+    const el = document.getElementById('fac-notas-list');
+    if (!el) return;
+    if (!facNotas.length) {
+      el.innerHTML = '<div style="padding:14px 16px;font-size:12px;color:var(--text3);text-align:center">Sin notas aún</div>';
+      return;
+    }
+    el.innerHTML = [...facNotas].reverse().slice(0,5).map(n => `
+      <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 14px;border-bottom:1px solid var(--border)">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11px;font-weight:700;color:var(--orange);margin-bottom:2px">→ ${n.para}</div>
+          <div style="font-size:12px;color:var(--text);line-height:1.4">${n.mensaje}</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px">${n.fecha}</div>
+        </div>
+        <button onclick="deleteFacNota('${n.id}')" style="background:none;border:none;cursor:pointer;color:var(--text3);padding:2px;flex-shrink:0;font-size:12px"><i class="ti ti-x"></i></button>
+      </div>`).join('');
+  }
+
+  function updateFacundoDash() {
+    if (!currentUser || currentUser.username !== 'facundo') return;
+    const el = id => document.getElementById(id);
+    const now = new Date();
+    const mesActual = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+    // Métricas
+    const total    = allCRMV.length;
+    const proceso  = allCRMV.filter(p => ['En contacto','Propuesta enviada'].includes(p.estado)).length;
+    const cerradosMes = allCRMV.filter(p => {
+      if (p.estado !== 'Cerrado') return false;
+      const d = new Date(p.fecha); if (isNaN(d)) return false;
+      return (d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0')) === mesActual;
+    }).length;
+    const pipeline = allCRMV.filter(p => ['En contacto','Propuesta enviada'].includes(p.estado) && p.valor).reduce((s,p) => s + Number(p.valor), 0);
+    if (el('fac-total'))    el('fac-total').textContent    = total;
+    if (el('fac-proceso'))  el('fac-proceso').textContent  = proceso;
+    if (el('fac-cerrados')) el('fac-cerrados').textContent = cerradosMes;
+    if (el('fac-pipeline')) el('fac-pipeline').textContent = pipeline ? '$' + pipeline.toLocaleString('es-AR') : '—';
+    // Meta
+    const metaInput = el('fac-meta-input');
+    if (metaInput && facMeta) metaInput.value = facMeta;
+    const pct = facMeta > 0 ? Math.min(100, Math.round((cerradosMes / facMeta) * 100)) : 0;
+    const bar = el('fac-meta-bar');
+    if (bar) { bar.style.width = pct + '%'; bar.style.background = pct >= 100 ? 'var(--green)' : 'linear-gradient(90deg,var(--orange),var(--orange2))'; }
+    if (el('fac-meta-label')) el('fac-meta-label').textContent = now.toLocaleDateString('es-AR', { month:'long', year:'numeric' });
+    if (el('fac-meta-sub'))   el('fac-meta-sub').textContent   = facMeta ? cerradosMes + ' de ' + facMeta + ' cierres' : 'Definí tu meta arriba';
+    if (el('fac-meta-pct'))   el('fac-meta-pct').textContent   = facMeta ? pct + '%' : '';
+    // Tareas
+    const misTareas = allTasks.filter(t => t.responsable === 'Facundo' && t.estado !== 'hecho');
+    if (el('fac-tareas-count')) el('fac-tareas-count').textContent = misTareas.length;
+    const tList = el('fac-tasks-list');
+    if (tList) {
+      if (!misTareas.length) {
+        tList.innerHTML = '<div style="padding:20px;text-align:center;font-size:13px;color:var(--text3)">Sin tareas pendientes 🎉</div>';
+      } else {
+        tList.innerHTML = misTareas.slice(0,8).map(t => {
+          const pc = t.prioridad === 'Alta' ? 'var(--red)' : t.prioridad === 'Baja' ? 'var(--green)' : 'var(--amber)';
+          return '<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border)"><div style="width:6px;height:6px;border-radius:50%;background:' + pc + ';flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + t.tarea + '</div>' + (t.vencimiento && t.vencimiento !== '—' ? '<div style="font-size:11px;color:var(--text3);margin-top:1px">' + t.vencimiento + '</div>' : '') + '</div></div>';
+        }).join('');
+      }
+    }
+    // Seguimientos hoy/mañana
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const manana = new Date(hoy); manana.setDate(manana.getDate()+1);
+    const seguimientos = allCRMV.filter(p => {
+      if (!p.seguimiento || p.estado === 'Cerrado' || p.estado === 'Perdido') return false;
+      const d = new Date(p.seguimiento); d.setHours(0,0,0,0);
+      return d <= manana;
+    }).sort((a,b) => new Date(a.seguimiento) - new Date(b.seguimiento));
+    const sEl = el('fac-seguimientos');
+    if (sEl) {
+      if (!seguimientos.length) {
+        sEl.innerHTML = '<div style="padding:20px;text-align:center;font-size:13px;color:var(--text3)">Sin seguimientos próximos ✅</div>';
+      } else {
+        sEl.innerHTML = seguimientos.map(p => {
+          const d = new Date(p.seguimiento); d.setHours(0,0,0,0);
+          const esHoy = d.getTime() === hoy.getTime();
+          const esPasado = d < hoy;
+          const badge = esPasado ? '<span style="font-size:10px;font-weight:700;color:var(--red);background:#fee2e2;border-radius:6px;padding:2px 6px">Vencido</span>' : esHoy ? '<span style="font-size:10px;font-weight:700;color:var(--amber);background:#fef3c7;border-radius:6px;padding:2px 6px">Hoy</span>' : '<span style="font-size:10px;font-weight:700;color:var(--blue);background:#dbeafe;border-radius:6px;padding:2px 6px">Mañana</span>';
+          return '<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border)"><i class="ti ti-calendar-event" style="color:var(--amber);font-size:15px;flex-shrink:0"></i><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + p.empresa + '</div>' + (p.contacto ? '<div style="font-size:11px;color:var(--text3)">' + p.contacto + '</div>' : '') + '</div>' + badge + '</div>';
+        }).join('');
+      }
+    }
+    // CRM preview
+    const cList = el('fac-crm-preview');
+    if (cList) {
+      const ec = { 'Nuevo':'var(--blue)', 'En contacto':'var(--orange)', 'Propuesta enviada':'var(--amber)', 'Cerrado':'var(--green)', 'Perdido':'var(--red)' };
+      const recientes = [...allCRMV].slice(-5).reverse();
+      if (!recientes.length) {
+        cList.innerHTML = '<div style="padding:20px;text-align:center;font-size:13px;color:var(--text3)">Aún no hay prospectos</div>';
+      } else {
+        cList.innerHTML = recientes.map(p => { const c = ec[p.estado]||'var(--text3)'; return '<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border)"><div style="width:8px;height:8px;border-radius:50%;background:' + c + ';flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (p.empresa||'—') + '</div><div style="font-size:11px;color:' + c + ';font-weight:600">' + p.estado + '</div></div>' + (p.valor ? '<div style="font-size:12px;font-weight:700;color:var(--green);flex-shrink:0">$' + Number(p.valor).toLocaleString('es-AR') + '</div>' : '') + '</div>'; }).join('');
+      }
+    }
+    renderFacNotas();
+  }
+  function populateCRMVMeses() {
+    const sel = document.getElementById('crm-v-mes-filter');
+    if (!sel) return;
+    const meses = new Set();
+    allCRMV.forEach(p => {
+      if (p.fecha) {
+        const d = new Date(p.fecha);
+        if (!isNaN(d)) meses.add(d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0'));
+      }
+    });
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Todos los meses</option>';
+    [...meses].sort().reverse().forEach(m => {
+      const [y, mo] = m.split('-');
+      const label = new Date(y, mo-1, 1).toLocaleDateString('es-AR', { month:'long', year:'numeric' });
+      sel.innerHTML += `<option value="${m}" ${current===m?'selected':''}>${label.charAt(0).toUpperCase()+label.slice(1)}</option>`;
+    });
+  }
+
+  function filterCRMV(f, btn) {
+    crmVFilter = f;
+    document.querySelectorAll('#panel-crm-vendedores .filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderCRMV();
+  }
+
+  function renderCRMV() {
+    const list = document.getElementById('crm-v-list');
+    if (!list) return;
+    const mesFilter = (document.getElementById('crm-v-mes-filter') || {}).value || '';
+    let filtered = crmVFilter === 'Todos' ? [...allCRMV] : allCRMV.filter(p => p.estado === crmVFilter);
+    if (mesFilter) {
+      filtered = filtered.filter(p => {
+        if (!p.fecha) return false;
+        const d = new Date(p.fecha);
+        if (isNaN(d)) return false;
+        return (d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0')) === mesFilter;
+      });
+    }
+    const total = allCRMV.length;
+    const proceso = allCRMV.filter(p => ['En contacto','Propuesta enviada'].includes(p.estado)).length;
+    const cerrados = allCRMV.filter(p => p.estado === 'Cerrado').length;
+    const tEl = document.getElementById('crm-v-total');
+    const pEl = document.getElementById('crm-v-proceso');
+    const cEl = document.getElementById('crm-v-cerrados');
+    if (tEl) tEl.textContent = total;
+    if (pEl) pEl.textContent = proceso;
+    if (cEl) cEl.textContent = cerrados;
+
+    if (!filtered.length) {
+      list.innerHTML = '<div class="tasks-empty"><div class="tasks-empty-icon"><i class="ti ti-briefcase" style="color:var(--text3)"></i></div><div>No hay prospectos en esta categoría</div></div>';
+      return;
+    }
+
+    const estadoColor  = { 'Nuevo':'var(--blue)', 'En contacto':'var(--orange)', 'Propuesta enviada':'var(--amber)', 'Cerrado':'var(--green)', 'Perdido':'var(--red)' };
+    const estadoIcon   = { 'Nuevo':'ti-circle', 'En contacto':'ti-phone', 'Propuesta enviada':'ti-send', 'Cerrado':'ti-circle-check', 'Perdido':'ti-circle-x' };
+
+    function fmtFecha(val) {
+      if (!val) return '';
+      const d = new Date(val);
+      if (isNaN(d)) return val;
+      return d.toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
+    }
+
+    list.innerHTML = filtered.map((p, i) => {
+      const color     = estadoColor[p.estado] || 'var(--text3)';
+      const icon      = estadoIcon[p.estado]  || 'ti-circle';
+      const valorFmt  = p.valor ? '$' + Number(p.valor).toLocaleString('es-AR') : null;
+      const fechaFmt  = fmtFecha(p.seguimiento);
+
+      return `<div class="card" style="padding:0;overflow:hidden">
+        <div style="display:flex;align-items:stretch">
+          <!-- Franja de color lateral -->
+          <div style="width:4px;flex-shrink:0;background:${color};border-radius:4px 0 0 4px"></div>
+          <!-- Contenido principal -->
+          <div style="flex:1;padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="flex:1;min-width:0">
+              <!-- Fila 1: empresa + badge estado -->
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap">
+                <span style="font-weight:700;font-size:15px;color:var(--text)">${p.empresa || '—'}</span>
+                <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:${color}22;color:${color}">
+                  <i class="ti ${icon}" style="font-size:10px"></i>${p.estado || '—'}
+                </span>
+              </div>
+              <!-- Fila 2: contacto + teléfono -->
+              ${(p.contacto || p.telefono) ? `<div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text2);margin-bottom:8px">
+                ${p.contacto ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-user" style="font-size:12px;color:var(--text3)"></i>${p.contacto}</span>` : ''}
+                ${p.telefono ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-phone" style="font-size:12px;color:var(--text3)"></i>${p.telefono}</span>` : ''}
+              </div>` : ''}
+              <!-- Fila 3: notas -->
+              ${p.notas ? `<div style="font-size:12px;color:var(--text3);background:var(--bg4);border-radius:8px;padding:6px 10px;margin-bottom:8px;line-height:1.4">${p.notas}</div>` : ''}
+              <!-- Fila 4: chips de datos -->
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                ${p.vendedor ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text3);background:var(--bg4);border-radius:6px;padding:3px 8px"><i class="ti ti-tag" style="font-size:10px"></i>${p.vendedor}</span>` : ''}
+                ${valorFmt  ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--green);background:var(--bg4);border-radius:6px;padding:3px 8px"><i class="ti ti-coin" style="font-size:10px"></i>${valorFmt}</span>` : ''}
+                ${fechaFmt  ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--text3);background:var(--bg4);border-radius:6px;padding:3px 8px"><i class="ti ti-calendar" style="font-size:10px"></i>${fechaFmt}</span>` : ''}
+              </div>
+            </div>
+            <!-- Botones acción -->
+            <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+              <button onclick="editCRMV(${i})" title="Editar" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 10px;cursor:pointer;color:var(--text2);line-height:1"><i class="ti ti-edit" style="font-size:14px"></i></button>
+              <button onclick="deleteCRMV(${i})" title="Eliminar" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 10px;cursor:pointer;color:var(--red);line-height:1"><i class="ti ti-trash" style="font-size:14px"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function openCRMVModal(data) {
+    document.getElementById('crm-v-edit-id').value = '';
+    document.getElementById('crm-v-modal-title').textContent = 'Nuevo prospecto';
+    ['empresa','contacto','telefono','email','notas'].forEach(f => document.getElementById('crm-v-' + f).value = '');
+    document.getElementById('crm-v-estado').value = 'Nuevo';
+    document.getElementById('crm-v-valor').value = '';
+    document.getElementById('crm-v-seguimiento').value = '';
+    document.getElementById('crm-v-vendedor').value = currentUser?.name || 'Facundo';
+    if (data) {
+      document.getElementById('crm-v-modal-title').textContent = 'Editar prospecto';
+      document.getElementById('crm-v-edit-id').value = data.id || '';
+      ['empresa','contacto','telefono','email','notas','estado','valor','seguimiento'].forEach(f => {
+        const el = document.getElementById('crm-v-' + f);
+        if (el && data[f] !== undefined) el.value = data[f];
+      });
+      if (data.vendedor) document.getElementById('crm-v-vendedor').value = data.vendedor;
+    }
+    document.getElementById('crm-v-modal').classList.add('open');
+  }
+
+  function editCRMV(idx) {
+    const item = (crmVFilter === 'Todos' ? allCRMV : allCRMV.filter(p => p.estado === crmVFilter))[idx];
+    if (item) openCRMVModal(item);
+  }
+
+  function closeCRMVModal() {
+    document.getElementById('crm-v-modal').classList.remove('open');
+  }
+
+  async function saveCRMV() {
+    const empresa = document.getElementById('crm-v-empresa').value.trim();
+    if (!empresa) { alert('El nombre de empresa es obligatorio'); return; }
+    const payload = {
+      action: 'saveCRM',
+      id: document.getElementById('crm-v-edit-id').value || Date.now().toString(),
+      empresa,
+      contacto: document.getElementById('crm-v-contacto').value.trim(),
+      telefono: document.getElementById('crm-v-telefono').value.trim(),
+      email: document.getElementById('crm-v-email').value.trim(),
+      estado: document.getElementById('crm-v-estado').value,
+      valor: document.getElementById('crm-v-valor').value,
+      vendedor: document.getElementById('crm-v-vendedor').value,
+      seguimiento: document.getElementById('crm-v-seguimiento').value,
+      notas: document.getElementById('crm-v-notas').value.trim(),
+      fecha: new Date().toLocaleDateString('es-AR'),
+    };
+    try {
+      // Google Apps Script requiere form-encoded o GET params para evitar problemas de CORS
+      const params = new URLSearchParams(payload).toString();
+      await fetch(CRM_V_URL + '?' + params, { method: 'GET', mode: 'no-cors' });
+      // no-cors no retorna respuesta legible, esperamos un momento y recargamos
+      closeCRMVModal();
+      setTimeout(() => loadCRMV(), 1500);
+    } catch(e) {
+      alert('Error al guardar. Revisá la conexión.');
+    }
+  }
+
+  async function deleteCRMV(idx) {
+    const item = (crmVFilter === 'Todos' ? allCRMV : allCRMV.filter(p => p.estado === crmVFilter))[idx];
+    if (!item || !confirm('¿Eliminar este prospecto?')) return;
+    try {
+      const params = new URLSearchParams({ action: 'deleteCRM', id: item.id }).toString();
+      await fetch(CRM_V_URL + '?' + params, { method: 'GET', mode: 'no-cors' });
+      setTimeout(() => loadCRMV(), 1500);
+    } catch(e) {
+      alert('Error al eliminar.');
+    }
   }
 
   // ============ FINANZAS ============
@@ -5866,21 +6277,18 @@
     updateUserUI();
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-    if (currentUser?.type === 'vendedor') {
-      document.getElementById('panel-dashboard-vendedor').classList.add('active');
-      document.getElementById('nav-dashboard').classList.add('active');
-      initVendorDashboard();
-    } else {
-      document.getElementById('panel-dashboard').classList.add('active');
-      document.getElementById('nav-dashboard').classList.add('active');
-      loadTasks();
-      loadIdeas();
-      loadCreativas();
-      loadAllComments();
-      loadClientesFromSheets();
+    document.getElementById('panel-dashboard').classList.add('active');
+    document.getElementById('nav-dashboard').classList.add('active');
+    loadTasks();
+    loadIdeas();
+    loadCreativas();
+    loadAllComments();
+    // Cargar clientes desde Sheets en background
+    loadClientesFromSheets();
+    if (currentUser && currentUser.username === 'facundo') {
+      loadCRMV();
+      loadFacundoData();
     }
-
     if (currentUser && currentUser.username === 'bautista') {
       initClapDetection();
     }
@@ -8086,7 +8494,7 @@
     const AVATAR_COLORS = ['#b45309','#2563eb','#16a34a','#d97706','#dc2626','#7c3aed','#0891b2','#be185d'];
     const extraUsers = JSON.parse(localStorage.getItem('balodi_extra_users') || '{}');
     usersList.innerHTML = Object.entries(allUsers).map(([username, u]) => {
-      const isBuiltin = ['bautista','nicolas','lourdes','enzo','brunela'].includes(username);
+      const isBuiltin = ['bautista','nicolas','lourdes','enzo','brunela','facundo'].includes(username);
       const isAdminUser = ['bautista','nicolas'].includes(username);
       return `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)">
         <div style="width:42px;height:42px;border-radius:50%;background:${u.color || '#f5620a'};display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;color:white;flex-shrink:0">${u.avatar || u.name?.[0] || '?'}</div>
@@ -8190,7 +8598,7 @@
     const colorIdx = (Object.keys(extra).length) % COLORS.length;
 
     const target = editUsername || username;
-    const isBuiltin = ['bautista','nicolas','lourdes','enzo','brunela'].includes(target);
+    const isBuiltin = ['bautista','nicolas','lourdes','enzo','brunela','facundo'].includes(target);
 
     if (isBuiltin) {
       // Editar usuario built-in: solo actualizar en USERS (imposible sin reload, así que guardamos en extra con override)
@@ -8214,7 +8622,7 @@
   }
 
   function deleteUser(username) {
-    if (['bautista','nicolas','lourdes','enzo','brunela'].includes(username)) {
+    if (['bautista','nicolas','lourdes','enzo','brunela','facundo'].includes(username)) {
       alert('No podés eliminar los usuarios base del sistema.');
       return;
     }
@@ -9497,565 +9905,10 @@
       if (container) container.innerHTML = `<div class="alert alert-warning"><div class="alert-icon"><i class="ti ti-alert-triangle"></i></div><div>No se pudo conectar con Meta. Verificá el token y el ID de cuenta.</div></div>`;
     }
   }
-  // ============ CRM VENDEDORES ============
-
-  let vCRMData = [];
-  let vCRMTabActual = 'pipeline';
-  const VCRM_MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  let vCRMMesActual = { year: new Date().getFullYear(), month: new Date().getMonth() };
-
-  // ── Lógica de mes por prospecto ──
-  // Un prospecto "pertenece" al mes de su última interacción si está cerrado/perdido/no-interesado
-  // Si está activo, pertenece al mes actual siempre
-  function getVCRMMesProspecto(p) {
-    const etapasFinal = ['Cerrado', 'Perdido'];
-    if (etapasFinal.includes(p.etapa)) {
-      // Usar fecha de última interacción
-      const ref = p.ultimo_contacto || p.fecha_creacion || '';
-      if (ref) {
-        const d = new Date(ref + (ref.length === 10 ? 'T00:00:00' : ''));
-        return { year: d.getFullYear(), month: d.getMonth() };
-      }
-    }
-    // Activo → mes actual
-    return { year: new Date().getFullYear(), month: new Date().getMonth() };
-  }
-
-  function vCRMGetDataDelMes() {
-    const { year, month } = vCRMMesActual;
-    return vCRMData.filter(p => {
-      const m = getVCRMMesProspecto(p);
-      return m.year === year && m.month === month;
-    });
-  }
-
-  function vCRMCambiarMes(delta) {
-    vCRMMesActual.month += delta;
-    if (vCRMMesActual.month > 11) { vCRMMesActual.month = 0; vCRMMesActual.year++; }
-    if (vCRMMesActual.month < 0) { vCRMMesActual.month = 11; vCRMMesActual.year--; }
-    vCRMPaginas = {}; // reset paginación kanban al cambiar de mes
-    vCRMListaPagina = 0; // reset paginación lista
-    vCRMHistorialPagina = 0; // reset paginación historial
-    const el = document.getElementById('v-crm-mes-label');
-    if (el) el.textContent = VCRM_MESES[vCRMMesActual.month] + ' ' + vCRMMesActual.year;
-    const isCurrentMonth = vCRMMesActual.year === new Date().getFullYear() && vCRMMesActual.month === new Date().getMonth();
-    const desc = document.getElementById('v-crm-mes-desc');
-    if (desc) desc.textContent = isCurrentMonth ? 'Prospectos activos + cerrados/descartados este mes' : 'Prospectos cerrados o descartados en ' + VCRM_MESES[vCRMMesActual.month];
-    renderVCRM();
-    checkVCRMAlertas();
-  }
-
-  // Clave por usuario — cada vendedor tiene sus propios datos
-  function getVCRMKey() {
-    return 'crm_vendedores_' + (currentUser?.username || 'guest');
-  }
-
-  function getVCRMSheetsKey() {
-    return 'crm_vendedores_' + (currentUser?.username || 'guest');
-  }
-
-  function initVCRM() {
-    // Set month label
-    const el = document.getElementById('v-crm-mes-label');
-    if (el) el.textContent = VCRM_MESES[vCRMMesActual.month] + ' ' + vCRMMesActual.year;
-    loadVCRMData();
-  }
-
-  async function loadVCRMData() {
-    try {
-      const saved = localStorage.getItem(getVCRMKey());
-      if (saved) vCRMData = JSON.parse(saved);
-      else vCRMData = [];
-    } catch(e) { vCRMData = []; }
-
-    // Intentar traer desde Sheets
-    try {
-      const res = await fetch(`${SO_URL}?action=getVCRM&vendedor=${encodeURIComponent(currentUser?.username)}&t=${Date.now()}`);
-      const data = await res.json();
-      if (Array.isArray(data) && data.length) {
-        vCRMData = data;
-        localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
-      }
-    } catch(e) {}
-
-    renderVCRM();
-    checkVCRMAlertas();
-  }
-
-  function saveVCRMData() {
-    localStorage.setItem(getVCRMKey(), JSON.stringify(vCRMData));
-    // Sync a Sheets
-    fetch(SO_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'saveVCRM', vendedor: currentUser?.username, data: vCRMData })
-    }).catch(() => {});
-  }
-
-  function renderVCRM() {
-    renderVCRMKPIs();
-    if (vCRMTabActual === 'pipeline') renderVCRMKanban();
-    else if (vCRMTabActual === 'lista') renderVCRMLista();
-    else renderVCRMHistorial();
-  }
-
-  function renderVCRMKPIs() {
-    const data = vCRMGetDataDelMes();
-    const activos = data.filter(p => !['Cerrado','Perdido'].includes(p.etapa));
-    const calientes = activos.filter(p => getVTemperatura(p) === '🔥').length;
-    const tibios = activos.filter(p => getVTemperatura(p) === '🟡').length;
-    const ahora = new Date();
-    const cerradosMes = data.filter(p => p.etapa === 'Cerrado').length;
-    const valorPipeline = activos.reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
-    document.getElementById('v-crm-k-total').textContent = data.length;
-    document.getElementById('v-crm-k-calientes').textContent = calientes;
-    document.getElementById('v-crm-k-tibios').textContent = tibios;
-    document.getElementById('v-crm-k-cerrados').textContent = cerradosMes;
-    document.getElementById('v-crm-k-valor').textContent = '$' + Math.round(valorPipeline).toLocaleString('es-AR');
-  }
-
-  function getVTemperatura(p) {
-    const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
-    if (['Cerrado','Perdido'].includes(p.etapa)) return '✅';
-    if (dias >= 14) return '❄️';
-    if (dias >= 7) return '🟡';
-    return '🔥';
-  }
-
-  function switchVCRMTab(tab, btn) {
-    vCRMTabActual = tab;
-    document.querySelectorAll('#panel-crm-vendedores .est-tab').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    document.querySelectorAll('#panel-crm-vendedores .est-section').forEach(s => s.classList.remove('active'));
-    document.getElementById('v-crm-tab-' + tab)?.classList.add('active');
-    renderVCRM();
-  }
-
-  const VCRM_POR_PAGINA = 5;
-  let vCRMPaginas = {}; // { etapa: paginaActual }
-
-  function renderVCRMKanban() {
-    const data = vCRMGetDataDelMes();
-    const etapas = ['Contactado','Reunión agendada','Propuesta enviada','Negociación','Cerrado','Perdido','Sin respuesta'];
-    const etapaColors = {
-      'Contactado': 'var(--blue)', 'Reunión agendada': 'var(--orange)', 'Propuesta enviada': '#7c3aed',
-      'Negociación': 'var(--amber)', 'Cerrado': 'var(--green)', 'Perdido': 'var(--red)', 'Sin respuesta': 'var(--text3)'
-    };
-    const kanban = document.getElementById('v-crm-kanban');
-    kanban.innerHTML = etapas.map(etapa => {
-      const prospectos = data.filter(p => p.etapa === etapa);
-      const pagina = vCRMPaginas[etapa] || 0;
-      const desde = pagina * VCRM_POR_PAGINA;
-      const hasta = desde + VCRM_POR_PAGINA;
-      const visibles = prospectos.slice(desde, hasta);
-      const hayMas = hasta < prospectos.length;
-      const hayAntes = pagina > 0;
-      const totalPags = Math.ceil(prospectos.length / VCRM_POR_PAGINA);
-
-      return `
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;min-height:120px;max-height:70vh">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${etapaColors[etapa]||'var(--text3)'}">${etapa}</div>
-            <span style="background:${etapaColors[etapa]||'var(--text3)'}22;color:${etapaColors[etapa]||'var(--text3)'};border-radius:999px;font-size:11px;font-weight:700;padding:2px 8px">${prospectos.length}</span>
-          </div>
-
-          <div style="flex:1;overflow-y:auto;scrollbar-width:thin">
-            ${visibles.map(p => `
-              <div onclick="abrirVCRMDetalle('${p.id}')" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s"
-                onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
-                onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg)'">
-                <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">${p.nombre}</div>
-                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px">
-                  <span style="font-size:18px">${getVTemperatura(p)}</span>
-                  ${p.rubro ? `<span style="font-size:10px;color:var(--text3)">${p.rubro}</span>` : ''}
-                </div>
-                ${p.telefono ? `<div style="font-size:11px;color:var(--text2);margin-top:4px"><i class="ti ti-phone" style="color:var(--orange);font-size:10px"></i> ${p.telefono}</div>` : ''}
-                ${p.seguimiento_fecha ? `<div style="font-size:10px;color:var(--orange);margin-top:4px;font-weight:600">📅 ${p.seguimiento_fecha}</div>` : ''}
-              </div>`).join('')}
-            ${prospectos.length === 0 ? `<div style="text-align:center;padding:16px 0;font-size:12px;color:var(--text3)">Vacío</div>` : ''}
-          </div>
-
-          ${prospectos.length > VCRM_POR_PAGINA ? `
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-shrink:0;border-top:1px solid var(--border);padding-top:10px">
-            <button onclick="vCRMKanbanPag('${etapa}',-1)" ${!hayAntes?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:7px;padding:4px 10px;font-size:12px;color:${hayAntes?'var(--text2)':'var(--text3)'};cursor:${hayAntes?'pointer':'default'}">‹</button>
-            <span style="font-size:11px;color:var(--text3);font-weight:600">${pagina+1} / ${totalPags}</span>
-            <button onclick="vCRMKanbanPag('${etapa}',1)" ${!hayMas?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:7px;padding:4px 10px;font-size:12px;color:${hayMas?'var(--text2)':'var(--text3)'};cursor:${hayMas?'pointer':'default'}">›</button>
-          </div>` : ''}
-        </div>`;
-    }).join('');
-  }
-
-  function vCRMKanbanPag(etapa, delta) {
-    if (!vCRMPaginas[etapa]) vCRMPaginas[etapa] = 0;
-    const data = vCRMGetDataDelMes().filter(p => p.etapa === etapa);
-    const totalPags = Math.ceil(data.length / VCRM_POR_PAGINA);
-    vCRMPaginas[etapa] = Math.max(0, Math.min(totalPags - 1, vCRMPaginas[etapa] + delta));
-    renderVCRMKanban();
-  }
-
-  let vCRMListaPagina = 0;
-  const VCRM_LISTA_POR_PAGINA = 5;
-
-  function renderVCRMLista(resetPagina = false) {
-    const search = document.getElementById('v-crm-search')?.value?.toLowerCase() || '';
-    const etapaF = document.getElementById('v-crm-filter-etapa')?.value || '';
-    if (resetPagina) vCRMListaPagina = 0;
-    const lista = vCRMGetDataDelMes().filter(p => {
-      if (etapaF && p.etapa !== etapaF) return false;
-      if (search && !p.nombre.toLowerCase().includes(search)) return false;
-      return true;
-    });
-    const container = document.getElementById('v-crm-lista-container');
-    if (!lista.length) {
-      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-users"></i></div><div class="placeholder-title">Sin prospectos</div><div class="placeholder-desc">Cargá tu primer prospecto con el botón de arriba.</div></div>';
-      return;
-    }
-
-    const totalPags = Math.ceil(lista.length / VCRM_LISTA_POR_PAGINA);
-    vCRMListaPagina = Math.min(vCRMListaPagina, totalPags - 1);
-    const desde = vCRMListaPagina * VCRM_LISTA_POR_PAGINA;
-    const pagina = lista.slice(desde, desde + VCRM_LISTA_POR_PAGINA);
-
-    const tarjetas = pagina.map(p => `
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:8px;box-shadow:var(--shadow-sm)">
-        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
-          <div style="font-size:22px;flex-shrink:0">${getVTemperatura(p)}</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px">${p.nombre}</div>
-            <div style="font-size:12px;color:var(--text3)">${p.etapa}${p.rubro?' · '+p.rubro:''}</div>
-          </div>
-          <div style="display:flex;gap:6px;flex-shrink:0">
-            <button onclick="openVCRMModal('${p.id}')" style="background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:11px"><i class="ti ti-pencil"></i></button>
-            <button onclick="deleteVCRM('${p.id}')" style="background:none;border:1px solid #fecaca;border-radius:8px;padding:5px 10px;color:var(--red);cursor:pointer;font-size:11px"><i class="ti ti-trash"></i></button>
-          </div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
-          ${p.telefono ? `<a href="https://wa.me/${p.telefono.replace(/\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--green)18;color:var(--green);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-whatsapp" style="font-size:13px"></i>${p.telefono}</a>` : ''}
-          ${p.mail ? `<a href="mailto:${p.mail}" style="display:inline-flex;align-items:center;gap:4px;background:var(--blue)18;color:var(--blue);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-mail" style="font-size:13px"></i>${p.mail}</a>` : ''}
-          ${p.instagram ? `<a href="https://instagram.com/${p.instagram.replace('@','')}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:#e1306c18;color:#e1306c;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-brand-instagram" style="font-size:13px"></i>${p.instagram}</a>` : ''}
-          ${p.web ? `<a href="${p.web}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:var(--bg4);color:var(--text2);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;text-decoration:none"><i class="ti ti-world" style="font-size:13px"></i>Web</a>` : ''}
-          ${p.ubicacion ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text3)"><i class="ti ti-map-pin" style="font-size:12px"></i>${p.ubicacion}</span>` : ''}
-        </div>
-        ${p.notas ? `<div style="font-size:12px;color:var(--text2);background:var(--bg4);border-radius:8px;padding:8px 10px;margin-top:10px;line-height:1.5">${p.notas}</div>` : ''}
-        ${p.seguimiento_fecha ? `<div style="font-size:11px;color:var(--orange);font-weight:600;margin-top:8px">📅 Seguimiento: ${p.seguimiento_fecha}</div>` : ''}
-      </div>`).join('');
-
-    const infoEl = document.getElementById('v-crm-lista-info');
-    const pagEl = document.getElementById('v-crm-lista-paginacion');
-    if (infoEl) infoEl.textContent = `${lista.length} prospecto${lista.length !== 1 ? 's' : ''} · Mostrando ${desde + 1}–${Math.min(desde + VCRM_LISTA_POR_PAGINA, lista.length)}`;
-    container.innerHTML = tarjetas;
-    if (pagEl) pagEl.innerHTML = totalPags > 1 ? `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px">
-        <button onclick="vCRMListaIrPag(${vCRMListaPagina - 1})" ${vCRMListaPagina === 0 ? 'disabled' : ''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMListaPagina === 0 ? 'var(--text3)' : 'var(--text2)'};cursor:${vCRMListaPagina === 0 ? 'default' : 'pointer'}">‹ Anterior</button>
-        <div style="display:flex;align-items:center;gap:6px">
-          ${Array.from({length: totalPags}, (_,i) => `<button onclick="vCRMListaIrPag(${i})" style="width:32px;height:32px;border-radius:8px;border:1px solid ${i === vCRMListaPagina ? 'var(--orange)' : 'var(--border2)'};background:${i === vCRMListaPagina ? 'var(--orange)' : 'none'};color:${i === vCRMListaPagina ? 'white' : 'var(--text2)'};font-size:13px;font-weight:${i === vCRMListaPagina ? '700' : '400'};cursor:pointer">${i+1}</button>`).join('')}
-        </div>
-        <button onclick="vCRMListaIrPag(${vCRMListaPagina + 1})" ${vCRMListaPagina === totalPags - 1 ? 'disabled' : ''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMListaPagina === totalPags - 1 ? 'var(--text3)' : 'var(--text2)'};cursor:${vCRMListaPagina === totalPags - 1 ? 'default' : 'pointer'}">Siguiente ›</button>
-      </div>` : '';
-  }
-
-  function vCRMListaIrPag(pag) {
-    const lista = vCRMGetDataDelMes();
-    const totalPags = Math.ceil(lista.length / VCRM_LISTA_POR_PAGINA);
-    vCRMListaPagina = Math.max(0, Math.min(totalPags - 1, pag));
-    renderVCRMLista(false);
-    document.getElementById('v-crm-lista-container')?.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  let vCRMHistorialPagina = 0;
-  const VCRM_HISTORIAL_POR_PAGINA = 8;
-
-  function renderVCRMHistorial() {
-    const container = document.getElementById('v-crm-historial-container');
-    const todos = vCRMGetDataDelMes().flatMap(p => (p.historial||[]).map(h => ({ ...h, prospecto: p.nombre, prospectoId: p.id })))
-      .sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
-
-    if (!todos.length) {
-      container.innerHTML = '<div class="placeholder"><div class="placeholder-icon"><i class="ti ti-clock"></i></div><div class="placeholder-title">Sin historial</div></div>';
-      return;
-    }
-
-    const totalPags = Math.ceil(todos.length / VCRM_HISTORIAL_POR_PAGINA);
-    vCRMHistorialPagina = Math.min(vCRMHistorialPagina, totalPags - 1);
-    const desde = vCRMHistorialPagina * VCRM_HISTORIAL_POR_PAGINA;
-    const pagina = todos.slice(desde, desde + VCRM_HISTORIAL_POR_PAGINA);
-
-    const items = pagina.map(h => `
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">${h.prospecto}</div>
-            <div style="font-size:12px;color:var(--text2)">${h.nota}</div>
-          </div>
-          <div style="font-size:11px;color:var(--text3);white-space:nowrap">${h.fecha}</div>
-        </div>
-      </div>`).join('');
-
-    const infoHistEl = document.getElementById('v-crm-historial-info');
-    const pagHistEl = document.getElementById('v-crm-historial-paginacion');
-    if (infoHistEl) infoHistEl.textContent = `${todos.length} registros · Mostrando ${desde+1}–${Math.min(desde+VCRM_HISTORIAL_POR_PAGINA, todos.length)}`;
-    container.innerHTML = items;
-    if (pagHistEl) pagHistEl.innerHTML = totalPags > 1 ? `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px">
-        <button onclick="vCRMHistorialIrPag(${vCRMHistorialPagina-1})" ${vCRMHistorialPagina===0?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMHistorialPagina===0?'var(--text3)':'var(--text2)'};cursor:${vCRMHistorialPagina===0?'default':'pointer'}">‹ Anterior</button>
-        <div style="display:flex;align-items:center;gap:6px">
-          ${Array.from({length: totalPags}, (_,i) => `<button onclick="vCRMHistorialIrPag(${i})" style="width:32px;height:32px;border-radius:8px;border:1px solid ${i===vCRMHistorialPagina?'var(--orange)':'var(--border2)'};background:${i===vCRMHistorialPagina?'var(--orange)':'none'};color:${i===vCRMHistorialPagina?'white':'var(--text2)'};font-size:13px;cursor:pointer">${i+1}</button>`).join('')}
-        </div>
-        <button onclick="vCRMHistorialIrPag(${vCRMHistorialPagina+1})" ${vCRMHistorialPagina===totalPags-1?'disabled':''} style="background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:13px;color:${vCRMHistorialPagina===totalPags-1?'var(--text3)':'var(--text2)'};cursor:${vCRMHistorialPagina===totalPags-1?'default':'pointer'}">Siguiente ›</button>
-      </div>` : '';
-  }
-
-  function vCRMHistorialIrPag(pag) {
-    const todos = vCRMGetDataDelMes().flatMap(p => p.historial||[]);
-    const totalPags = Math.ceil(todos.length / VCRM_HISTORIAL_POR_PAGINA);
-    vCRMHistorialPagina = Math.max(0, Math.min(totalPags-1, pag));
-    renderVCRMHistorial();
-    document.getElementById('v-crm-historial-container')?.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function checkVCRMAlertas() {
-    const alertas = [];
-    vCRMGetDataDelMes().forEach(p => {
-      if (['Cerrado','Perdido'].includes(p.etapa)) return;
-      const dias = getDiasDesde(p.ultimo_contacto || p.fecha_creacion);
-      if (dias >= 14) alertas.push({ msg: `<strong>${p.nombre}</strong> — Sin contacto hace ${dias} días`, id: p.id });
-      if (p.seguimiento_fecha && getDiasDesde(p.seguimiento_fecha) >= 0) alertas.push({ msg: `<strong>${p.nombre}</strong> — Seguimiento programado para hoy`, id: p.id });
-    });
-    const box = document.getElementById('v-crm-alertas-box');
-    const lista = document.getElementById('v-crm-alertas-lista');
-    const notif = document.getElementById('notif-crm-vendedores');
-    if (alertas.length) {
-      box.style.display = 'block';
-      lista.innerHTML = alertas.map(a => `<div onclick="abrirVCRMDetalle('${a.id}')" style="background:#fffbeb;border-left:3px solid var(--amber);border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--text)">${a.msg}</div>`).join('');
-      if (notif) { notif.textContent = alertas.length; notif.classList.remove('hidden'); }
-    } else {
-      box.style.display = 'none';
-      if (notif) notif.classList.add('hidden');
-    }
-  }
-
-  function abrirVCRMDetalle(id) {
-    openVCRMModal(id);
-  }
-
-  function openVCRMModal(editId) {
-    const p = editId ? vCRMData.find(x => x.id === editId) : null;
-    document.getElementById('v-crm-modal-title').textContent = p ? 'Editar prospecto' : 'Nuevo prospecto';
-    document.getElementById('v-crm-edit-id').value = editId || '';
-    document.getElementById('v-crm-nombre').value = p?.nombre || '';
-    document.getElementById('v-crm-telefono').value = p?.telefono || '';
-    document.getElementById('v-crm-mail').value = p?.mail || '';
-    document.getElementById('v-crm-ubicacion').value = p?.ubicacion || '';
-    document.getElementById('v-crm-rubro').value = p?.rubro || '';
-    document.getElementById('v-crm-web').value = p?.web || '';
-    document.getElementById('v-crm-instagram').value = p?.instagram || '';
-    document.getElementById('v-crm-etapa').value = p?.etapa || 'Contactado';
-    document.getElementById('v-crm-seguimiento').value = p?.seguimiento_fecha || '';
-    document.getElementById('v-crm-notas').value = p?.notas || '';
-    document.getElementById('v-crm-modal-error').style.display = 'none';
-    document.getElementById('v-crm-modal').classList.add('open');
-    setTimeout(() => document.getElementById('v-crm-nombre').focus(), 100);
-  }
-
-  function closeVCRMModal() {
-    document.getElementById('v-crm-modal').classList.remove('open');
-  }
-
-  function saveVCRM() {
-    const nombre = document.getElementById('v-crm-nombre').value.trim();
-    const telefono = document.getElementById('v-crm-telefono').value.trim();
-    const errEl = document.getElementById('v-crm-modal-error');
-
-    if (!nombre || !telefono) {
-      errEl.textContent = 'Nombre y teléfono son obligatorios.';
-      errEl.style.display = 'block';
-      return;
-    }
-    errEl.style.display = 'none';
-
-    const editId = document.getElementById('v-crm-edit-id').value;
-    const existing = editId ? vCRMData.find(x => x.id === editId) : null;
-    const entry = {
-      id: editId || 'vcrm_' + Date.now(),
-      nombre,
-      telefono,
-      mail: document.getElementById('v-crm-mail').value.trim(),
-      ubicacion: document.getElementById('v-crm-ubicacion').value.trim(),
-      rubro: document.getElementById('v-crm-rubro').value.trim(),
-      web: document.getElementById('v-crm-web').value.trim(),
-      instagram: document.getElementById('v-crm-instagram').value.trim(),
-      etapa: document.getElementById('v-crm-etapa').value,
-      seguimiento_fecha: document.getElementById('v-crm-seguimiento').value,
-      notas: document.getElementById('v-crm-notas').value.trim(),
-      fecha_creacion: existing?.fecha_creacion || new Date().toISOString().split('T')[0],
-      ultimo_contacto: new Date().toISOString().split('T')[0], // siempre hoy al guardar
-      vendedor: currentUser?.username,
-      historial: existing?.historial || []
-    };
-
-    // Agregar nota al historial si cambió
-    const notaActual = document.getElementById('v-crm-notas').value.trim();
-    if (notaActual && (!existing || existing.notas !== notaActual)) {
-      entry.historial.unshift({ fecha: new Date().toLocaleDateString('es-AR'), nota: notaActual });
-    }
-
-    if (editId) {
-      const idx = vCRMData.findIndex(x => x.id === editId);
-      if (idx !== -1) vCRMData[idx] = entry; else vCRMData.push(entry);
-    } else {
-      vCRMData.unshift(entry);
-    }
-    saveVCRMData();
-    closeVCRMModal();
-    renderVCRM();
-    checkVCRMAlertas();
-  }
-
-  function deleteVCRM(id) {
-    if (!confirm('¿Eliminar este prospecto?')) return;
-    vCRMData = vCRMData.filter(x => x.id !== id);
-    saveVCRMData();
-    renderVCRM();
-  }
-
-  // ============ VENDOR DASHBOARD ============
-  function initVendorDashboard() {
-    const wn = document.getElementById('vend-welcome-name');
-    if (wn) wn.innerHTML = '¡Hola, ' + (currentUser?.name || '') + '! 👋';
-
-    // Load tasks if not loaded
-    if (!allTasks.length) loadTasks().then(() => renderVendorTareas());
-    else renderVendorTareas();
-
-    // Load CRM then update KPIs
-    if (!vCRMData.length) {
-      loadVCRMData().then(() => { updateVendorKPIs(); renderVendorSeguimientos(); });
-    } else {
-      updateVendorKPIs();
-      renderVendorSeguimientos();
-    }
-  }
-
-  function updateVendorKPIs() {
-    const activos = vCRMData.filter(p => !['Cerrado','Perdido'].includes(p.etapa));
-    const calientes = activos.filter(p => getVTemperatura(p) === '🔥').length;
-    const ahora = new Date();
-    const cerradosMes = vCRMData.filter(p => p.etapa === 'Cerrado' && p.fecha_cierre &&
-      new Date(p.fecha_cierre).getMonth() === ahora.getMonth() &&
-      new Date(p.fecha_cierre).getFullYear() === ahora.getFullYear()).length;
-    const kt = document.getElementById('vend-k-total');
-    const kc = document.getElementById('vend-k-calientes');
-    const kcerr = document.getElementById('vend-k-cerrados');
-    if (kt) kt.textContent = activos.length;
-    if (kc) kc.textContent = calientes;
-    if (kcerr) kcerr.textContent = cerradosMes;
-  }
-
-  let vendTaskFilter = 'pendientes';
-
-  function vendSetTaskFilter(filter, btn) {
-    vendTaskFilter = filter;
-    document.querySelectorAll('#vend-task-filter-btns button').forEach(b => {
-      b.style.background = 'var(--bg2)';
-      b.style.color = 'var(--text2)';
-      b.style.border = '1px solid var(--border2)';
-    });
-    btn.style.background = 'var(--orange)';
-    btn.style.color = 'white';
-    btn.style.border = 'none';
-    renderVendorTareas();
-  }
-
-  function renderVendorTareas() {
-    const listEl = document.getElementById('vend-tareas-list');
-    if (!listEl) return;
-    const myName = (currentUser?.name || '').toLowerCase();
-    const myUser = (currentUser?.username || '').toLowerCase();
-    const isPendientes = vendTaskFilter === 'pendientes';
-
-    const myTasks = allTasks.filter(t => {
-      const resp = (t.responsable || '').toLowerCase();
-      const matchUser = resp.includes(myName) || resp.includes(myUser);
-      const matchEstado = isPendientes ? t.estado !== 'hecho' : t.estado === 'hecho';
-      return matchUser && matchEstado;
-    }).slice(0, 10);
-
-    if (!myTasks.length) {
-      listEl.innerHTML = `<div style="text-align:center;padding:40px 20px">
-        <div style="font-size:32px;margin-bottom:8px">${isPendientes ? '✅' : '📋'}</div>
-        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">${isPendientes ? 'Sin tareas pendientes' : 'Sin tareas completadas'}</div>
-        <div style="font-size:12px;color:var(--text3)">${isPendientes ? 'Buen trabajo 🎉' : 'Completá tareas para verlas acá'}</div>
-      </div>`;
-      return;
-    }
-
-    const prioColors = { Alta: '#ef4444', Media: '#f59e0b', Baja: '#22c55e' };
-    listEl.innerHTML = myTasks.map(t => `
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
-        <div style="width:18px;height:18px;border-radius:5px;border:2px solid ${t.estado==='hecho'?'var(--green)':'var(--border2)'};background:${t.estado==='hecho'?'var(--green)':'transparent'};flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center">
-          ${t.estado==='hecho'?'<i class="ti ti-check" style="color:white;font-size:10px"></i>':''}
-        </div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:600;color:${t.estado==='hecho'?'var(--text3)':'var(--text)'};${t.estado==='hecho'?'text-decoration:line-through':''};margin-bottom:3px">${t.tarea}</div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            ${t.cliente ? `<span style="font-size:11px;color:var(--text3)">${t.cliente}</span>` : ''}
-            ${t.vencimiento && t.vencimiento !== '—' ? `<span style="font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px"><i class="ti ti-calendar" style="font-size:10px"></i>${t.vencimiento}</span>` : ''}
-          </div>
-        </div>
-        ${t.prioridad ? `<span style="background:${prioColors[t.prioridad]||'#f59e0b'}18;color:${prioColors[t.prioridad]||'#f59e0b'};border-radius:999px;font-size:10px;font-weight:700;padding:2px 8px;white-space:nowrap;flex-shrink:0">${t.prioridad}</span>` : ''}
-      </div>`).join('');
-  }
-
-  function renderVendorSeguimientos() {
-    const listEl = document.getElementById('vend-seguimientos-list');
-    if (!listEl) return;
-    const hoy = new Date();
-    hoy.setHours(0,0,0,0);
-    const proximos = vCRMData
-      .filter(p => p.seguimiento_fecha && !['Cerrado','Perdido'].includes(p.etapa))
-      .map(p => {
-        const d = new Date(p.seguimiento_fecha + 'T00:00:00');
-        const diasHasta = Math.ceil((d - hoy) / (1000*60*60*24));
-        return { ...p, diasHasta, fechaObj: d };
-      })
-      .filter(p => p.diasHasta >= -3)
-      .sort((a,b) => a.diasHasta - b.diasHasta)
-      .slice(0, 8);
-
-    if (!proximos.length) {
-      listEl.innerHTML = `<div style="text-align:center;padding:40px 20px">
-        <div style="font-size:32px;margin-bottom:8px">📅</div>
-        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">Sin seguimientos próximos</div>
-        <div style="font-size:12px;color:var(--text3)">Cargá fechas de seguimiento en el CRM</div>
-      </div>`;
-      return;
-    }
-
-    listEl.innerHTML = proximos.map(p => {
-      const label = p.diasHasta < 0 ? 'Vencido' : p.diasHasta === 0 ? 'Hoy' : p.diasHasta === 1 ? 'Mañana' : `${p.diasHasta} días`;
-      const color = p.diasHasta < 0 ? '#ef4444' : p.diasHasta === 0 ? 'var(--orange)' : p.diasHasta <= 2 ? '#f59e0b' : 'var(--blue)';
-      const bgColor = p.diasHasta < 0 ? '#fef2f2' : p.diasHasta === 0 ? 'var(--orange-light)' : p.diasHasta <= 2 ? '#fffbeb' : '#eff6ff';
-      const dia = p.fechaObj.getDate();
-      const mes = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][p.fechaObj.getMonth()];
-      return `
-        <div onclick="go('crm-vendedores')" style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;cursor:pointer;margin-bottom:10px;transition:all 0.15s"
-          onmouseover="this.style.borderColor='var(--orange-border)';this.style.background='var(--orange-light)'"
-          onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg2)'">
-          <!-- Fecha visual -->
-          <div style="width:52px;height:52px;background:${bgColor};border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid ${color}22">
-            <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:900;color:${color};line-height:1">${dia}</div>
-            <div style="font-size:9px;font-weight:700;color:${color};letter-spacing:0.05em">${mes}</div>
-          </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">${p.nombre}</div>
-            <div style="font-size:11px;color:var(--text3)">${p.etapa}${p.rubro?' · '+p.rubro:''}</div>
-          </div>
-          <span style="background:${bgColor};color:${color};border-radius:999px;font-size:11px;font-weight:700;padding:4px 10px;white-space:nowrap;border:1px solid ${color}33">${label}</span>
-        </div>`;
-    }).join('');
-  }
 
 </script>
+
+<!-- CAMPAIGN DETAIL MODAL -->
 <div id="camp-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)" onclick="closeCampModal()">
   <div style="background:var(--bg2);border-radius:20px;width:100%;max-width:680px;margin:20px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:fadeUp 0.2s ease" onclick="event.stopPropagation()">
     <div style="padding:24px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
