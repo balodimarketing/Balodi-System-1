@@ -897,20 +897,10 @@
     margin-bottom: 14px;
   }
 
-  /* ── MEJORA 1: Scroll más generoso con degradado inferior */
+  /* Scroll wrapper */
   #crm-v-list-wrap { position: relative; }
-  #crm-v-list-wrap::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 48px;
-    background: linear-gradient(to bottom, transparent, #141414);
-    pointer-events: none;
-    border-radius: 0 0 14px 14px;
-    z-index: 2;
-  }
 
-  /* ── MEJORA 2: Tipografía consistente — 3 niveles */
+  /* ── Tipografía consistente — 3 niveles */
   #panel-crm-vendedores .crm-empresa { font-size: 15px; font-weight: 700; color: #fff; }
   #panel-crm-vendedores .crm-secundario { font-size: 13px; color: #aaa; }
   #panel-crm-vendedores .crm-chip { font-size: 11px; font-weight: 600; }
@@ -2430,7 +2420,7 @@
 
         <!-- MEJORA 1: wrapper con degradado inferior -->
         <div id="crm-v-list-wrap" class="crm-v-list-wrap">
-          <div id="crm-v-list" style="display:flex;flex-direction:column;gap:10px;max-height:72vh;overflow-y:auto;padding-right:6px;padding-bottom:24px">
+          <div id="crm-v-list" style="display:flex;flex-direction:column;gap:10px;padding-right:6px;padding-bottom:24px">
             <div class="tasks-loading">Cargando prospectos...</div>
           </div>
         </div>
@@ -5125,38 +5115,38 @@
       // MEJORA 5: avatar usa el mismo color del estado para coherencia cromática
       const avatarBg  = color;
 
-      return `<div class="card" style="padding:0;overflow:hidden">
+      return `<div class="card crm-v-card" style="padding:0;overflow:hidden">
         <div style="display:flex;align-items:stretch">
-          <!-- MEJORA 5: franja lateral 6px -->
+          <!-- franja lateral 6px -->
           <div class="crm-stripe" style="background:${color}"></div>
-          <!-- Contenido principal — MEJORA 3: padding más generoso -->
+          <!-- Contenido principal -->
           <div style="flex:1;padding:18px 20px;display:flex;align-items:flex-start;gap:14px">
             <!-- Avatar coherente con el estado -->
             <div class="crm-avatar" style="background:${avatarBg}20;border:1.5px solid ${avatarBg}50;color:${avatarBg};margin-top:1px">${initials}</div>
-            <!-- Info — MEJORA 2: 3 niveles tipográficos claros -->
+            <!-- Info: 3 niveles tipográficos -->
             <div style="flex:1;min-width:0">
-              <!-- Nivel 1: empresa 15px/700 + badge estado -->
+              <!-- Nivel 1: empresa + badge estado -->
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
                 <span class="crm-empresa">${p.empresa || '—'}</span>
                 <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:${color}20;color:${color};border:1px solid ${color}35">
                   <i class="ti ${icon}" style="font-size:10px"></i>${p.estado || '—'}
                 </span>
               </div>
-              <!-- Nivel 2: datos secundarios 13px -->
+              <!-- Nivel 2: datos secundarios -->
               ${(p.contacto || p.telefono) ? `<div class="crm-secundario" style="display:flex;align-items:center;gap:14px;margin-bottom:9px">
                 ${p.contacto ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-user" style="font-size:12px;color:#555"></i>${p.contacto}</span>` : ''}
                 ${p.telefono ? `<span style="display:flex;align-items:center;gap:4px"><i class="ti ti-device-mobile" style="font-size:12px;color:#555"></i>${p.telefono}</span>` : ''}
               </div>` : ''}
               <!-- Notas -->
               ${p.notas ? `<div style="font-size:12px;color:#777;background:#202020;border-radius:8px;padding:7px 12px;margin-bottom:10px;line-height:1.5;border-left:2px solid ${color}50">${p.notas}</div>` : ''}
-              <!-- Nivel 3: chips 11px — MEJORA 7: colores diferenciados por tipo -->
+              <!-- Nivel 3: chips -->
               <div style="display:flex;gap:6px;flex-wrap:wrap">
                 ${p.vendedor ? `<span class="crm-chip" style="display:inline-flex;align-items:center;gap:4px;color:#777;background:#222;border-radius:6px;padding:3px 9px;border:1px solid rgba(255,255,255,0.06)"><i class="ti ti-tag" style="font-size:10px"></i>${p.vendedor}</span>` : ''}
                 ${valorFmt  ? `<span class="crm-chip" style="display:inline-flex;align-items:center;gap:4px;font-weight:700;color:#4ade80;background:#16a34a14;border-radius:6px;padding:3px 9px;border:1px solid #16a34a30"><i class="ti ti-coin" style="font-size:10px"></i>${valorFmt}</span>` : ''}
                 ${fechaFmt  ? `<span class="crm-chip" style="display:inline-flex;align-items:center;gap:4px;color:#c2900f;background:#d9770610;border-radius:6px;padding:3px 9px;border:1px solid #d9770628"><i class="ti ti-calendar" style="font-size:10px"></i>${fechaFmt}</span>` : ''}
               </div>
             </div>
-            <!-- MEJORA 6: botones visibles solo en hover via clase crm-card-actions -->
+            <!-- Botones visibles solo en hover -->
             <div class="crm-card-actions" style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
               <button onclick="editCRMV(${i})" title="Editar" style="background:#242424;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:7px 10px;cursor:pointer;color:#aaa;line-height:1;transition:all 0.15s"><i class="ti ti-edit" style="font-size:14px"></i></button>
               <button onclick="deleteCRMV(${i})" title="Eliminar" style="background:#242424;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:7px 10px;cursor:pointer;color:#dc2626;line-height:1;transition:all 0.15s"><i class="ti ti-trash" style="font-size:14px"></i></button>
